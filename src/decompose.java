@@ -447,6 +447,6 @@ public class decompose {
 
         //progress_update(1.0, progress);   //TODO massive problem with the callback functions of progress
 
-        return new potrace_path();
+        return plist;
     }
 }

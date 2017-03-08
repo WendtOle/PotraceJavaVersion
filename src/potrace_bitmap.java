@@ -69,11 +69,21 @@ public class potrace_bitmap {
         this.map = new int[this.dy * this.h];
     }
 
-    public void default_bitmap() {
-        this.map[3]= 0x90000000;
-        this.map[2]= 0xE0000000;
-        this.map[1]= 0x30000000;
-        this.map[0]= 0x90000000;
+    public void default_bitmap_simple() {
+        this.map[3]= 0x90000000;            // X o o X
+        this.map[2]= 0xE0000000;            // X X X o
+        this.map[1]= 0x30000000;            // o o X X
+        this.map[0]= 0x90000000;            // X o o X
+    }
+
+    public void default_bitmap_normal() {
+        this.map[6]= 0xfe000000;            //  X X X X X X X
+        this.map[5]= 0x82000000;            //  X o o o o o X
+        this.map[4]= 0xba000000;            //  X o X X X o X
+        this.map[3]= 0xaa000000;            //  X o X o X o X
+        this.map[2]= 0xba000000;            //  X o X X X o X
+        this.map[1]= 0x82000000;            //  X o o o o o X
+        this.map[0]= 0xfe000000;            //  X X X X X X X
     }
 
     static potrace_bitmap bm_dup(potrace_bitmap bm) {
