@@ -177,20 +177,20 @@ public class decompose {
 
         if (xhi<xa) {
             for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
-                //potrace_bitmap.bm_index(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ BM_ALLBITS); //Todo check
+                potrace_bitmap.bm_setPotraceWord(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
             }
         } else {
             for (i = xa; i < xhi; i+=potrace_bitmap.PIXELINWORD) {
-                //potrace_bitmap.bm_index(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ BM_ALLBITS); //Todo check
+                potrace_bitmap.bm_setPotraceWord(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
             }
         }
-        /* TODO not sure if needed
+
         // note: the following "if" is needed because x86 treats a<<b as
         //a<<(b&31). I spent hours looking for this bug.
-        if (xlo) {
-            potrace_bitmap.bm_index(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
+        if (xlo > 0) {
+            potrace_bitmap.bm_setPotraceWord(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
         }
-        */
+
     }
 
     //TODO hier weiter
@@ -403,7 +403,7 @@ public class decompose {
         int x;
         int y;
         potrace_path p;
-        potrace_path plist = new potrace_path();  // linked list of path objects
+        potrace_path plist = null;  // linked list of path objects
         //potrace_path plist_hook = plist;  // used to speed up appending to linked list TODO would guess linked list is already implement very efficient
         potrace_bitmap bm1 = potrace_bitmap.bm_dup(bm);
         int sign;
@@ -421,10 +421,10 @@ public class decompose {
         while ((xy = findnext(bm1,xy)) != null) {
             // calculate the sign by looking at the original bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
             // mit dem nachgucken nach dem sign in der original bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
-            sign = potrace_bitmap.BM_GET(bm, x, y) ? '+' : '-';
+            sign = potrace_bitmap.BM_GET(bm, xy.x, xy.y) ? '+' : '-';
 
             // calculate the path
-            p = findpath(bm1, x, y+1, sign, param.turnpolicy);
+            p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
             //TODO here we catch a maybe error if p = null
 
             // update buffered image
