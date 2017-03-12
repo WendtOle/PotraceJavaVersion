@@ -4,6 +4,7 @@
 public class potrace_bitmap {
 
     static int PIXELINWORD = 32;
+    static int BM_ALLBITS = (~0);
 
     int w, h;              /* width and height, in pixels */
     int dy;                /* words per scanline (not bytes) */
@@ -53,9 +54,70 @@ public class potrace_bitmap {
         return bm_scanline(bm,y)[x/PIXELINWORD];
     }
 
+
+    static int getsize(int dy, int h) {
+        int size;
+
+        if (dy < 0) {
+            dy = -dy;
+        }
+
+        size = dy * h * potrace_bitmap.PIXELINWORD;
+
+  /* check for overflow error */
+        if (size < 0 || (h != 0 && dy != 0 && size / h / dy != potrace_bitmap.PIXELINWORD)) {
+            return -1;
+        }
+
+        return size;
+    }
+
+    static int bm_size(potrace_bitmap bm) {
+        return getsize(bm.dy, bm.h);
+    }
+
+
+    static int[] bm_base(potrace_bitmap bm) {
+        int dy = bm.dy;
+
+        if (dy >= 0 || bm.h == 0) {
+            return bm.map;
+        } else {
+            return bm_scanline(bm, bm.h - 1);
+        }
+    }
+
+    static potrace_bitmap bm_clear(potrace_bitmap bm, int c) {
+  /* Note: if the bitmap was created with bm_new, then it is
+     guaranteed that size will fit into the ptrdiff_t type. */
+        //int size = bm_size(bm);
+        //memset(bm_base(bm), c ? -1 : 0, size); //TODO not sure what that does?
+        //TODO Think it is not necessary that i run this, simply overwrite the
+
+        int filler = (c == 1 ? -1 : 0);
+
+        for (int i = 0; i < bm.map.length; i ++) {
+            bm.map[i] = filler;
+        }
+        return bm;
+    }
+
     //TODO new written because in c you it is no difference wether you want to get the value or you want to set the value
     static potrace_bitmap bm_setPotraceWord(potrace_bitmap bm, int x, int y, int newValue) {
         bm.map[y + bm.dy - 1] = newValue;
+        return bm;
+    }
+
+    static potrace_bitmap bm_clearexcess(potrace_bitmap bm) {
+        int mask;
+        int y;
+
+        if (bm.w % potrace_bitmap.PIXELINWORD != 0) {
+            mask = BM_ALLBITS << (potrace_bitmap.PIXELINWORD - (bm.w % potrace_bitmap.PIXELINWORD));
+            for (y=0; y<bm.h; y++) {
+                bm.map[y + bm.dy - 1] = potrace_bitmap.bm_index(bm, bm.w, y) & mask;
+            }
+        }
         return bm;
     }
 
@@ -84,6 +146,18 @@ public class potrace_bitmap {
         this.map[2]= 0xba000000;            //  X o X X X o X
         this.map[1]= 0x82000000;            //  X o o o o o X
         this.map[0]= 0xfe000000;            //  X X X X X X X
+    }
+
+    public void default_bitmap_difficult() {
+        this.map[8]= 0x007f8000;
+        this.map[7]= 0xf3e08000;
+        this.map[6]= 0x98ee8000;
+        this.map[5]= 0xfeea8000;
+        this.map[4]= 0x82ee8000;
+        this.map[3]= 0xaa608000;
+        this.map[2]= 0xa23f8000;
+        this.map[1]= 0x8e000000;
+        this.map[0]= 0xf8000000;
     }
 
     static potrace_bitmap bm_dup(potrace_bitmap bm) {

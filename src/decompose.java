@@ -6,21 +6,6 @@ import java.util.LinkedList;
  */
 public class decompose {
 
-    static int BM_ALLBITS = (~0);
-
-    static potrace_bitmap bm_clearexcess(potrace_bitmap bm) {
-        int mask;
-        int y;
-
-        if (bm.w % potrace_bitmap.PIXELINWORD != 0) {
-            mask = BM_ALLBITS << (potrace_bitmap.PIXELINWORD - (bm.w % potrace_bitmap.PIXELINWORD));
-            for (y=0; y<bm.h; y++) {
-                bm.map[y + bm.dy - 1] = potrace_bitmap.bm_index(bm, bm.w, y) & mask;
-            }
-        }
-        return bm;
-    }
-
     static Point findnext(potrace_bitmap bm, Point XY) { //TODO check it its working correct
         int x0;
 
@@ -188,7 +173,7 @@ public class decompose {
         // note: the following "if" is needed because x86 treats a<<b as
         //a<<(b&31). I spent hours looking for this bug.
         if (xlo > 0) {
-            potrace_bitmap.bm_setPotraceWord(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
+            potrace_bitmap.bm_setPotraceWord(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (potrace_bitmap.BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
         }
 
     }
@@ -274,20 +259,20 @@ public class decompose {
     bitmap of the correct size (large enough to hold all the paths),
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
-/*
+
     static void pathlist_to_tree(potrace_path plist, potrace_bitmap bm) {
         potrace_path p = new potrace_path();
-        potrace_path *p1;
+        potrace_path p1;
         potrace_path heap = new potrace_path();
-        potrace_path *heap1;
+        potrace_path heap1;
         potrace_path cur = new potrace_path();
         potrace_path head = new potrace_path();
-        potrace_path **plist_hook;          // for fast appending to linked list
+        potrace_path plist_hook;          // for fast appending to linked list
         potrace_path hook_in, hook_out; // for fast appending to linked list
         bbox bbox = new bbox();
 
-        bm_clear(bm, 0);    //TODO wenn man ein Bild weitergibt und dann komplett auf null zurücksetzt dann kann man sich das auch klemmen
-                            //Todo die dimensionen wären höchstens interessant
+        bm = potrace_bitmap.bm_clear(bm, 0);
+        bm = potrace_bitmap.bm_clearexcess(bm);
 
 
         // save original "next" pointers
@@ -333,7 +318,7 @@ public class decompose {
                 if (p.priv.pt[0].y <= bbox.y0) {
                     hook_out = list.list_insert_beforehook(p, hook_out);
 	                // append the remainder of the list to hook_out
-	                hook_out = cur; //TODO kommt mir übel komisch vor, funktioniert bestimmt nur weil die sich alle abgefuckt gegenseitig referenzieren
+	                hook_out = cur;
                     break;
                 }
                 if (potrace_bitmap.BM_GET(bm, p.priv.pt[0].x, p.priv.pt[0].y-1)) {
@@ -344,25 +329,25 @@ public class decompose {
             }
 
             // clear bm
-            clear_bm_with_bbox(bm, &bbox);
+            clear_bm_with_bbox(bm, bbox);
 
             // now schedule head->childlist and head->next for further
            // processing
-            if (head->next) {
-                head->next->childlist = heap;
-                heap = head->next;
+            if (head.next != null) {
+                head.next.childlist = heap;
+                heap = head.next;
             }
-            if (head->childlist) {
-                head->childlist->childlist = heap;
-                heap = head->childlist;
+            if (head.childlist != null) {
+                head.childlist.childlist = heap;
+                heap = head.childlist;
             }
         }
 
         // copy sibling structure from "next" to "sibling" component
         p = plist;
-        while (p) {
-            p1 = p->sibling;
-            p->sibling = p->next;
+        while (p != null) {
+            p1 = p.sibling;
+            p.sibling = p.next;
             p = p1;
         }
 
@@ -372,25 +357,28 @@ public class decompose {
         // contains a list of childlists which still need to be
         // processed.
         heap = plist;
-        if (heap) {
-            heap->next = NULL;  // heap is a linked list of childlists
+        if (heap != null) {
+            heap.next = null;  // heap is a linked list of childlists
         }
-        plist = NULL;
-        plist_hook = &plist;
-        while (heap) {
-            heap1 = heap->next;
-            for (p=heap; p; p=p->sibling) {
+        plist = null;
+        plist_hook = plist;
+        while (heap != null) {
+            heap1 = heap.next;
+            for (p=heap; p != null; p=p.sibling) {
                 // p is a positive path
                 // append to linked list
-                list_insert_beforehook(p, plist_hook);
+                list.list_insert_beforehook(p, plist_hook);
 
                 // go through its children
-                for (p1=p->childlist; p1; p1=p1->sibling) {
+                for (p1=p.childlist; p1 != null; p1=p1.sibling) {
 	                // append to linked list
-                    list_insert_beforehook(p1, plist_hook);
+                    list.list_insert_beforehook(p1, plist_hook);
 	                // append its childlist to heap, if non-empty
-                    if (p1->childlist) {
-                        list_append(path_t, heap1, p1->childlist);
+                    if (p1.childlist != null) {
+                        potrace_path hook;
+                        for (hook=heap1; hook!=null; hook=hook.next) {}
+                        list.list_insert_athook(p1.childlist, hook);
+
                     }
                 }
             }
@@ -398,20 +386,20 @@ public class decompose {
         }
         return;
     }
-*/
+
     static potrace_path bm_to_pathlist(potrace_bitmap bm, potrace_param param) {
         int x;
         int y;
         potrace_path p;
         potrace_path plist = null;  // linked list of path objects
-        //potrace_path plist_hook = plist;  // used to speed up appending to linked list TODO would guess linked list is already implement very efficient
+        //potrace_path plist_hook = null;  // used to speed up appending to linked list
         potrace_bitmap bm1 = potrace_bitmap.bm_dup(bm);
         int sign;
 
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
-        bm1 = bm_clearexcess(bm1);
+        bm1 = potrace_bitmap.bm_clearexcess(bm1);
 
 
         // iterate through components
@@ -432,7 +420,17 @@ public class decompose {
 
             // if it's a turd, eliminate it, else append it to the list
             if (p.area > param.turdsize) {
-                plist = list.list_insert_beforehook(p,plist);
+
+                //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the list
+                if (plist != null) {
+                    potrace_path current = plist;
+                    while (current.next != null) {
+                        current = current.next;
+                    }
+                    current.next = p;
+                } else {
+                    plist = p;
+                }
             }
             /* TODO massive problem with the callback functions of progress
             if (bm1.h > 0) { // to be sure
@@ -441,7 +439,7 @@ public class decompose {
             */
         }
 
-        //pathlist_to_tree(plist, bm1);
+        pathlist_to_tree(plist, bm1);
         //bm_free(bm1);                     //TODO simply commented because of errer
         //plistp = plist;
 
