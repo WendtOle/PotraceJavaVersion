@@ -23,7 +23,7 @@ public class potrace_param {
     }
 
     void param_default() {
-            this.turdsize = 2;                             /* turdsize */
+            this.turdsize = 1; //TODO normal value was 2 but i use small pictures so 1 is okay   /* turdsize */
             this.turnpolicy = POTRACE_TURNPOLICY_MINORITY;   /* turnpolicy */
             this.alphamax = 1.0;                           /* alphamax */
             this.opticurve= 1;                             /* opticurve */

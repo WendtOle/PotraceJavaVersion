@@ -103,8 +103,13 @@ public class potrace_bitmap {
     }
 
     //TODO new written because in c you it is no difference wether you want to get the value or you want to set the value
-    static potrace_bitmap bm_setPotraceWord(potrace_bitmap bm, int x, int y, int newValue) {
-        bm.map[y + bm.dy - 1] = newValue;
+    static potrace_bitmap bm_setPotraceWord_WithX(potrace_bitmap bm, int x, int y, int newValue) {
+        bm.map[y + (bm.dy - 1)+(x / PIXELINWORD)] = newValue;
+        return bm;
+    }
+
+    static potrace_bitmap bm_setPotraceWord_WithI(potrace_bitmap bm, int i, int y, int newValue) {
+        bm.map[y + (bm.dy - 1) + i] = newValue;
         return bm;
     }
 
@@ -148,16 +153,23 @@ public class potrace_bitmap {
         this.map[0]= 0xfe000000;            //  X X X X X X X
     }
 
-    public void default_bitmap_difficult() {
-        this.map[8]= 0x007f8000;
-        this.map[7]= 0xf3e08000;
-        this.map[6]= 0x98ee8000;
-        this.map[5]= 0xfeea8000;
-        this.map[4]= 0x82ee8000;
-        this.map[3]= 0xaa608000;
-        this.map[2]= 0xa23f8000;
-        this.map[1]= 0x8e000000;
-        this.map[0]= 0xf8000000;
+    public void default_bitmap_normalSecond() {
+        this.map[7]= 0xfb000000;            //  X X X X X o X X
+        this.map[6]= 0x88000000;            //  X o o o X o X o
+        this.map[5]= 0xae000000;            //  X o X o X X X o
+        this.map[4]= 0xa2000000;            //  X o X o o o X o
+        this.map[3]= 0x8a000000;            //  X o o o X o X o
+        this.map[2]= 0xba000000;            //  X o X X X o X o
+        this.map[1]= 0x82000000;            //  X o o o o o X o
+        this.map[0]= 0xfe000000;            //  X X X X X X X o
+    }
+
+    public void default_bitmap_normalThird() {
+        this.map[0]= 0xf0000000;            //  X X X X
+        this.map[1]= 0x90000000;            //  X o o X
+        this.map[2]= 0xf0000000;            //  X X X X
+        this.map[3]= 0x00000000;            //  o o o o
+        this.map[4]= 0xf0000000;            //  X X X X
     }
 
     static potrace_bitmap bm_dup(potrace_bitmap bm) {

@@ -155,35 +155,36 @@ public class decompose {
         return ((a) < (b) ? (a) : (b));
     }
 
-    static void xor_to_ref(potrace_bitmap bm, int x, int y, int xa) {
+    static potrace_bitmap xor_to_ref(potrace_bitmap bm, int x, int y, int xa) {
         int xhi = x & - potrace_bitmap.PIXELINWORD;
         int xlo = x & (potrace_bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
         int i;
 
         if (xhi<xa) {
             for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
-                potrace_bitmap.bm_setPotraceWord(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
+                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
             }
         } else {
             for (i = xa; i < xhi; i+=potrace_bitmap.PIXELINWORD) {
-                potrace_bitmap.bm_setPotraceWord(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
+                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
             }
         }
 
         // note: the following "if" is needed because x86 treats a<<b as
         //a<<(b&31). I spent hours looking for this bug.
         if (xlo > 0) {
-            potrace_bitmap.bm_setPotraceWord(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (potrace_bitmap.BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
+            bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (potrace_bitmap.BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
         }
 
+        return bm;
     }
 
     //TODO hier weiter
-    static void xor_path(potrace_bitmap bm, potrace_path p) {
+    static potrace_bitmap xor_path(potrace_bitmap bm, potrace_path p) {
         int xa, x, y, k, y1;
 
         if (p.priv.len <= 0) {  /* a path of length 0 is silly, but legal */
-            return;
+            return null;
         }
 
         y1 = p.priv.pt[p.priv.len-1].y;
@@ -195,10 +196,12 @@ public class decompose {
 
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                xor_to_ref(bm, x, min(y,y1), xa);
+                bm = xor_to_ref(bm, x, min(y,y1), xa);
                 y1 = y;
             }
         }
+
+        return bm;
     }
 
     /* Find the bounding box of a given path. Path is assumed to be of
@@ -232,16 +235,18 @@ public class decompose {
         return bbox;
     }
 
-    static void clear_bm_with_bbox(potrace_bitmap bm, bbox bbox) {
+    static potrace_bitmap clear_bm_with_bbox(potrace_bitmap bm, bbox bbox) {
         int imin = (bbox.x0 / potrace_bitmap.PIXELINWORD);
         int imax = ((bbox.x1 + potrace_bitmap.PIXELINWORD-1) / potrace_bitmap.PIXELINWORD);
         int i, y;
 
         for (y=bbox.y0; y<bbox.y1; y++) {
             for (i=imin; i<imax; i++) {
-                //bm_scanline(bm, y)[i] = 0;
+                bm = potrace_bitmap.bm_setPotraceWord_WithI(bm, i, y, 0);
             }
         }
+
+        return bm;
     }
 
     /* Give a tree structure to the given path list, based on "insideness"
@@ -260,7 +265,7 @@ public class decompose {
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
 
-    static void pathlist_to_tree(potrace_path plist, potrace_bitmap bm) {
+    static potrace_path pathlist_to_tree(potrace_path plist, potrace_bitmap bm) {
         potrace_path p = new potrace_path();
         potrace_path p1;
         potrace_path heap = new potrace_path();
@@ -302,7 +307,7 @@ public class decompose {
             head.next = null;
 
             // render path
-            xor_path(bm, head);
+            bm = xor_path(bm, head);
             bbox = setbbox_path(bbox, head);
 
             // now do insideness test for each element of cur; append it to
@@ -316,20 +321,23 @@ public class decompose {
                 p.next=null;
 
                 if (p.priv.pt[0].y <= bbox.y0) {
-                    hook_out = list.list_insert_beforehook(p, hook_out);
+                    head.next = list.unefficient_list_insert_beforehook(p,head.next);
 	                // append the remainder of the list to hook_out
-	                hook_out = cur;
+                    //TODO not sure what i should do here
+	                //hook_out = cur;
+                    head.next = list.unefficient_list_insert_beforehook(cur,head.next);
                     break;
                 }
                 if (potrace_bitmap.BM_GET(bm, p.priv.pt[0].x, p.priv.pt[0].y-1)) {
-                    hook_in = list.list_insert_beforehook(p, hook_in);
+                    head.childlist = list.unefficient_list_insert_beforehook(p,head.childlist);
                 } else {
-                    hook_out = list.list_insert_beforehook(p, hook_out);
+                    //hook_out = list.list_insert_beforehook(p, hook_out);
+                    head.next = list.unefficient_list_insert_beforehook(p,head.next);
                 }
             }
 
             // clear bm
-            clear_bm_with_bbox(bm, bbox);
+            bm = clear_bm_with_bbox(bm, bbox);
 
             // now schedule head->childlist and head->next for further
            // processing
@@ -361,30 +369,58 @@ public class decompose {
             heap.next = null;  // heap is a linked list of childlists
         }
         plist = null;
-        plist_hook = plist;
         while (heap != null) {
             heap1 = heap.next;
             for (p=heap; p != null; p=p.sibling) {
                 // p is a positive path
                 // append to linked list
-                list.list_insert_beforehook(p, plist_hook);
+                plist = list.unefficient_list_insert_beforehook(p, plist);
 
                 // go through its children
                 for (p1=p.childlist; p1 != null; p1=p1.sibling) {
 	                // append to linked list
-                    list.list_insert_beforehook(p1, plist_hook);
+                    plist = list.unefficient_list_insert_beforehook(p1, plist);
 	                // append its childlist to heap, if non-empty
                     if (p1.childlist != null) {
-                        potrace_path hook;
-                        for (hook=heap1; hook!=null; hook=hook.next) {}
-                        list.list_insert_athook(p1.childlist, hook);
+                        //TODO produce the error
 
+                        potrace_path current = heap1;
+                        while (current != null)
+                            current = current.next;
+                        p1.childlist .next = current;
+                        heap1 = p1.childlist;
+
+                        //heap1 = list.unefficient_list_insert_beforehook(heap1, p1.childlist);
+/*
+                        list_append(path_t, heap1, p1->childlist);
+
+                        ->
+
+                        list_append(listtype, list, elt)
+                            listtype **_hook;
+                            _list_forall_hook(list, _hook) {}
+                            list_insert_athook(elt, _hook);
+
+                        ->
+
+                        list_append(listtype, list, elt)
+                            listtype **_hook;
+                            _list_forall_hook(list, hook)
+                                for (hook=&list; *hook!=NULL; hook=&(*hook)->next) {}
+                            list_insert_athook(elt, hook)
+                                elt->next = *hook;
+                                *hook = elt;
+
+
+
+
+*/
                     }
                 }
             }
             heap = heap1;
         }
-        return;
+        return plist;
     }
 
     static potrace_path bm_to_pathlist(potrace_bitmap bm, potrace_param param) {
@@ -416,21 +452,13 @@ public class decompose {
             //TODO here we catch a maybe error if p = null
 
             // update buffered image
-            xor_path(bm1, p);
+            bm1 = xor_path(bm1, p);
 
             // if it's a turd, eliminate it, else append it to the list
             if (p.area > param.turdsize) {
 
-                //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the list
-                if (plist != null) {
-                    potrace_path current = plist;
-                    while (current.next != null) {
-                        current = current.next;
-                    }
-                    current.next = p;
-                } else {
-                    plist = p;
-                }
+                //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
+                plist = list.unefficient_list_insert_beforehook(p,plist);
             }
             /* TODO massive problem with the callback functions of progress
             if (bm1.h > 0) { // to be sure
@@ -439,7 +467,7 @@ public class decompose {
             */
         }
 
-        pathlist_to_tree(plist, bm1);
+        plist = pathlist_to_tree(plist, bm1);
         //bm_free(bm1);                     //TODO simply commented because of errer
         //plistp = plist;
 

@@ -103,7 +103,7 @@ public class potrace_bitmapTest {
     public void checkWetherMethodbm_setPotraceWordWorksCorrectSimplePicture() throws Exception {
         System.out.println("Checking bm_setPotraceWord() with simple Picture");
         int should = 0x20000000;
-        potrace_bitmap bm_new = potrace_bitmap.bm_setPotraceWord(simpleDefaultPicture, 0, 0, should);
+        potrace_bitmap bm_new = potrace_bitmap.bm_setPotraceWord_WithX(simpleDefaultPicture, 0, 0, should);
         int actual = potrace_bitmap.bm_index(bm_new, 0, 0);
         assertEquals(should, actual);
     }
