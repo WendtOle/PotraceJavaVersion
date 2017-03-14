@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Created by andreydelany on 13/03/2017.
@@ -1006,16 +1007,18 @@ public class trace {
         int i, x, y;
         int n = pp.len;
 
-        //TODO Probably not necessary
-        //SAFE_CALLOC(pp->sums, pp->len+1, sums_t);
+        pp.sums = new sums[pp.len+1];
 
         //origin
         pp.x0 = pp.pt[0].x;
         pp.y0 = pp.pt[0].y;
 
         //preparatory computation for later fast summing
-        pp.sums[0].x2 = pp.sums[0].xy = pp.sums[0].y2 = pp.sums[0].x = pp.sums[0].y = 0;
+        sums startSum = new sums();
+        startSum.x2 = startSum.xy = startSum.y2 = startSum.x = startSum.y = 0;
+        pp.sums[0] = startSum;
         for (i=0; i<n; i++) {
+            pp.sums[i+1] = new sums();
             x = pp.pt[i].x - pp.x0;
             y = pp.pt[i].y - pp.y0;
             pp.sums[i+1].x = pp.sums[i].x + x;

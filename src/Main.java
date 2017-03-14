@@ -7,8 +7,8 @@ public class Main {
     public static void main(String [] args)
     {
         potrace_param param = new potrace_param();
-        potrace_bitmap bm = new potrace_bitmap(8,8);
-        bm.default_bitmap_normalSecond();
+        potrace_bitmap bm = new potrace_bitmap(4,4);
+        bm.default_bitmap_simple();
         potrace_path result = PotraceLib.potrace_trace(param,bm);
     }
 }
