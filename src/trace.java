@@ -767,12 +767,12 @@ public class trace {
     static potrace_privepath bestpolygon(potrace_privepath pp) {
         int i, j, m, k;
         int n = pp.len;
-        double[] pen = null; /* pen[n+1]: penalty vector */
-        int[] prev = null;   /* prev[n+1]: best path pointer vector */
-        int[] clip0 = null;  /* clip0[n]: longest segment pointer, non-cyclic */
-        int[] clip1 = null;  /* clip1[n+1]: backwards segment pointer, non-cyclic */
-        int[] seg0 = null;    /* seg0[m+1]: forward segment bounds, m<=n */
-        int[] seg1 = null;   /* seg1[m+1]: backward segment bounds, m<=n */
+        double[] pen = new double[n+1]; /* pen[n+1]: penalty vector */
+        int[] prev = new int[n+1];   /* prev[n+1]: best path pointer vector */
+        int[] clip0 = new int[n];  /* clip0[n]: longest segment pointer, non-cyclic */
+        int[] clip1 = new int[n+1];  /* clip1[n+1]: backwards segment pointer, non-cyclic */
+        int[] seg0 = new int[n+1];    /* seg0[m+1]: forward segment bounds, m<=n */
+        int[] seg1 = new int[n+1];   /* seg1[m+1]: backward segment bounds, m<=n */
         double thispen;
         double best;
         int c;
@@ -837,6 +837,7 @@ public class trace {
         }
 
         pp.m = m;
+        pp.po = new int[m];
 
         /* read off shortest path */
         for (i=n, j=m-1; i>0; j--) {
