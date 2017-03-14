@@ -869,11 +869,11 @@ public class trace {
         int[] ct = new int[4];
         int dir;
         Point[] constraint = new Point[2];
-        Point cur = null;
-        Point off = null;
-        int[] pivk = null;   //pivk[n]
-        int[] nc = null;   //nc[n]: next corner //TODO probably a array
-        Point dk = null;           //direction of k-k1
+        Point cur = new Point();
+        Point off = new Point();
+        int[] pivk = new int[n];   //pivk[n]
+        int[] nc = new int[n];   //nc[n]: next corner
+        Point dk = new Point();           //direction of k-k1
         int a, b, c, d;
 
         //initialize the nc data structure. Point from each point to the
@@ -892,6 +892,8 @@ public class trace {
             nc[i] = k;
         }
 
+        pp.lon = new int[n];
+
         //determine pivot points: for each i, let pivk[i] be the furthest k
         //such that all j with i<j<k lie on a line connecting i,k.
 
@@ -904,10 +906,8 @@ public class trace {
             dir = (3+3*(pt[auxiliary.mod(i+1,n)].x-pt[i].x)+(pt[auxiliary.mod(i+1,n)].y-pt[i].y))/2;
             ct[dir]++;
 
-            constraint[0].x = 0;
-            constraint[0].y = 0;
-            constraint[1].x = 0;
-            constraint[1].y = 0;
+            constraint[0] = new Point(0,0);
+            constraint[1] = new Point(0,0);
 
             //find the next k such that no straight line from i to k
             k = nc[i];
@@ -918,7 +918,7 @@ public class trace {
                 ct[dir]++;
 
                 //if all four "directions" have occurred, cut this path
-                if (ct[0]==1 && ct[1]==1 && ct[2]==1 && ct[3]==1) {
+                if (ct[0]!=0 && ct[1]!=0 && ct[2]!=0 && ct[3]!=0) {
                     pivk[i] = k1;
 	                continue outerloop;
                 }
@@ -965,12 +965,12 @@ public class trace {
                     off.x = cur.x + ((cur.y>=0 && (cur.y>0 || cur.x<0)) ? 1 : -1);
                     off.y = cur.y + ((cur.x<=0 && (cur.x<0 || cur.y<0)) ? 1 : -1);
                     if (xprod(constraint[0], off) >= 0) {
-                        constraint[0] = off;
+                        constraint[0] = new Point(off.x, off.y);
                     }
                     off.x = cur.x + ((cur.y<=0 && (cur.y<0 || cur.x<0)) ? 1 : -1);
                     off.y = cur.y + ((cur.x>=0 && (cur.x>0 || cur.y<0)) ? 1 : -1);
                     if (xprod(constraint[1], off) <= 0) {
-                        constraint[1] = off;
+                        constraint[1] = new Point(off.x, off.y);
                     }
                 }
                 k1 = k;
