@@ -6,16 +6,13 @@ public class PotraceLib {
     static int POTRACE_STATUS_OK = 0;
     static int POTRACE_STATUS_INCOMPLETE = 1;
 
-    static potrace_state potrace_trace(potrace_param param, potrace_bitmap bm) {
-        potrace_state st = new potrace_state();             //TODO: Potential Array
+    static potrace_path potrace_trace(potrace_param param, potrace_bitmap bm) {
 
-        /* process the image */
         potrace_path plist = decompose.bm_to_pathlist(bm, param);
 
-        st.status = POTRACE_STATUS_OK;
-        //st.plist = plist;
+        plist = trace.process_path(plist, param);
 
-        return st;
+        return plist;
 
     }
 }
