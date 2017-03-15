@@ -14,7 +14,7 @@ public class trace {
     /* calculate point of a bezier curve */
     static potrace_dpoint bezier(double t, potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2, potrace_dpoint p3) {
         double s = 1-t;
-        potrace_dpoint res = null;
+        potrace_dpoint res = new potrace_dpoint();
 
   /* Note: a good optimizing compiler (such as gcc-3) reduces the
      following to 16 multiplications, using common subexpression
@@ -106,7 +106,7 @@ public class trace {
     /* calculate best fit from i+.5 to j+.5.  Assume i<j (cyclically).
    Return 0 and set badness and parameters (alpha, beta), if
    possible. Return 1 if impossible. */
-    static potrace_privepath opti_penalty(potrace_privepath pp, int i, int j, potrace_opti res, double opttolerance, int[] convc, double[] areac) {
+    static potrace_opti opti_penalty(potrace_privepath pp, int i, int j, potrace_opti res, double opttolerance, int[] convc, double[] areac) {
         int m = pp.curve.n;
         int conv;
         int k, k1, k2, i1;
@@ -242,7 +242,7 @@ public class trace {
             }
         }
 
-        return pp;
+        return res;
     }
 
     /* optimize the path p, replacing sequences of Bezier segments by a
@@ -253,7 +253,12 @@ public class trace {
         int[] pt = new int[m+1];            //pt[m+1]
         double[]  pen = new double[m+1];       //pen[m+1]
         int[] len = new int [m+1];           //len[m+1]
-        potrace_opti[]  opt = new potrace_opti[m+1];         //opt[m+1]
+        potrace_opti[]  opt = new potrace_opti[m+1];    //opt[m+1]
+
+        for (int i = 0; i < opt.length; i++) {
+            opt[i] = new potrace_opti();
+        }
+
         int om;
         int i,j,r;
         potrace_opti o = new potrace_opti();
@@ -303,17 +308,17 @@ public class trace {
             len[j] = len[j-1]+1;
 
             for (i=j-2; i>=0; i--) {
-                 potrace_privepath testpp = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
-                if (testpp == null) {
+                 potrace_opti testO = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
+                if (testO == null) {
                     break;
                 } else {
-                    pp = testpp;
+                    o = testO;
                 }
                 if (len[j] > len[i]+1 || (len[j] == len[i]+1 && pen[j] > pen[i] + o.pen)) {
                     pt[j] = i;
                     pen[j] = pen[i] + o.pen;
                     len[j] = len[i] + 1;
-                    opt[j] = o;
+                    opt[j] = potrace_opti.copy(o);
                 }
             }
         }
@@ -327,6 +332,11 @@ public class trace {
         for (i=om-1; i>=0; i--) {
             if (pt[j]==j-1) {
                 pp.ocurve.tag[i]     = pp.curve.tag[auxiliary.mod(j,m)];
+                /*for debugging
+                potrace_dpoint test1 = pp.curve.c[auxiliary.mod(j,m)][0];
+                potrace_dpoint test2 = pp.curve.c[auxiliary.mod(j,m)][1];
+                potrace_dpoint test3 = pp.curve.c[auxiliary.mod(j,m)][2];
+                */
                 pp.ocurve.c[i][0]    = pp.curve.c[auxiliary.mod(j,m)][0];
                 pp.ocurve.c[i][1]    = pp.curve.c[auxiliary.mod(j,m)][1];
                 pp.ocurve.c[i][2]    = pp.curve.c[auxiliary.mod(j,m)][2];
@@ -337,6 +347,11 @@ public class trace {
                 s[i] = t[i] = 1.0;
             } else {
                 pp.ocurve.tag[i] = POTRACE_CURVETO;
+                /*for debugging*/
+                potrace_dpoint test1 = opt[j].c[0];
+                potrace_dpoint test2 = opt[j].c[1];
+                potrace_dpoint test3 = pp.curve.c[auxiliary.mod(j,m)][2];
+
                 pp.ocurve.c[i][0] = opt[j].c[0];
                 pp.ocurve.c[i][1] = opt[j].c[1];
                 pp.ocurve.c[i][2] = pp.curve.c[auxiliary.mod(j,m)][2];
@@ -1062,7 +1077,7 @@ public class trace {
             }
             p.priv.curve= smooth(p.priv.curve, param.alphamax);
             if (param.opticurve != 0) {
-                opticurve(p.priv, param.opttolerance);
+                p.priv = opticurve(p.priv, param.opttolerance);
                 p.priv.fcurve = p.priv.ocurve;
             } else {
                 p.priv.fcurve = p.priv.curve;

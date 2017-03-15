@@ -162,7 +162,7 @@ public class potrace_bitmap {
 
     public void default_bitmap_normalSecond() {
         this.map[7]= 0xfb000000;            //  X X X X X o X X
-        this.map[6]= 0x88000000;            //  X o o o X o X o
+        this.map[6]= 0x88000000;            //  X o o o X o o o
         this.map[5]= 0xae000000;            //  X o X o X X X o
         this.map[4]= 0xa2000000;            //  X o X o o o X o
         this.map[3]= 0x8a000000;            //  X o o o X o X o
