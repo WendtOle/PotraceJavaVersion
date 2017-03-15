@@ -171,12 +171,14 @@ public class potrace_bitmap {
         this.map[0]= 0xfe000000;            //  X X X X X X X o
     }
 
-    public void default_bitmap_normalThird() {
-        this.map[0]= 0xf0000000;            //  X X X X
-        this.map[1]= 0x90000000;            //  X o o X
-        this.map[2]= 0xf0000000;            //  X X X X
-        this.map[3]= 0x00000000;            //  o o o o
-        this.map[4]= 0xf0000000;            //  X X X X
+    static potrace_bitmap default_bitmap_normalThird() {
+        potrace_bitmap newBitmap = new potrace_bitmap(4,5);
+        newBitmap.map[0]= 0xf0000000;            //  X X X X
+        newBitmap.map[1]= 0x90000000;            //  X o o X
+        newBitmap.map[2]= 0xf0000000;            //  X X X X
+        newBitmap.map[3]= 0x00000000;            //  o o o o
+        newBitmap.map[4]= 0xf0000000;            //  X X X X
+        return newBitmap;
     }
 
     static potrace_bitmap bm_dup(potrace_bitmap bm) {
