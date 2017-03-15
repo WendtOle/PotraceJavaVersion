@@ -29,7 +29,7 @@ public class auxiliary {
 
     /* range over the straight line segment [a,b] when lambda ranges over [0,1] */
     static potrace_dpoint interval(double lambda, potrace_dpoint a, potrace_dpoint b) {
-        potrace_dpoint res = null;
+        potrace_dpoint res = new potrace_dpoint();
 
         res.x = a.x + lambda * (b.x - a.x);
         res.y = a.y + lambda * (b.y - a.y);

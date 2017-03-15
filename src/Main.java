@@ -8,7 +8,7 @@ public class Main {
     {
         potrace_param param = new potrace_param();
         potrace_bitmap bm = new potrace_bitmap(4,4);
-        bm.default_bitmap_simple();
+        bm.default_bitmap_simpleSecond();
         potrace_path result = PotraceLib.potrace_trace(param,bm);
     }
 }

@@ -17,5 +17,22 @@ public class privcurve {
 
     public privcurve(int n) {
         this.n = n;
+
+        tag = new int[n];
+
+        vertex = new potrace_dpoint[n];
+        for (int i = 0; i < vertex.length; i++) {
+            vertex[i] = new potrace_dpoint();
+        }
+
+        c = new potrace_dpoint[n][3];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < 3; j ++)
+                c[i][j] = new potrace_dpoint();
+
+        alpha = new double[n];
+        alpha0 = new double[n];
+        beta = new double[n];
+
     }
 }

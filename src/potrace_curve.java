@@ -10,11 +10,12 @@ public class potrace_curve {
     //Return 0 on success, 1 on error with errno set.
 
     /* copy private to public curve structure */
-    static potrace_curve privcurve_to_curve(privcurve pc, potrace_curve c) {
-        c.n = pc.n;
-        c.tag = pc.tag;
-        c.c = pc.c;
-        return c;
+    static potrace_curve privcurve_to_curve(privcurve pc) {
+        potrace_curve publicCurve = new potrace_curve();
+        publicCurve.n = pc.n;
+        publicCurve.tag = pc.tag;
+        publicCurve.c = pc.c;
+        return publicCurve;
     }
 
 }

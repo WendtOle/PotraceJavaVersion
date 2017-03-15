@@ -250,13 +250,13 @@ public class trace {
        on failure. */
     static potrace_privepath opticurve(potrace_privepath pp, double opttolerance) {
         int m = pp.curve.n;
-        int[] pt = null;            //pt[m+1]
-        double[]  pen = null;       //pen[m+1]
-        int[] len = null;           //len[m+1]
-        potrace_opti[]  opt = null;         //opt[m+1]
+        int[] pt = new int[m+1];            //pt[m+1]
+        double[]  pen = new double[m+1];       //pen[m+1]
+        int[] len = new int [m+1];           //len[m+1]
+        potrace_opti[]  opt = new potrace_opti[m+1];         //opt[m+1]
         int om;
         int i,j,r;
-        potrace_opti o = null;
+        potrace_opti o = new potrace_opti();
         potrace_dpoint p0;
         int i1;
         double area;
@@ -264,8 +264,8 @@ public class trace {
         double[]  s = null;
         double[]  t = null;
 
-        int[]  convc = null; /* conv[m]: pre-computed convexities */
-        double[]  areac = null; /* cumarea[m+1]: cache for fast area computation */
+        int[]  convc = new int[m]; /* conv[m]: pre-computed convexities */
+        double[]  areac = new double[m+1]; /* cumarea[m+1]: cache for fast area computation */
 
         /* pre-calculate convexity: +1 = right turn, -1 = left turn, 0 = corner */
         for (i=0; i<m; i++) {
@@ -303,9 +303,11 @@ public class trace {
             len[j] = len[j-1]+1;
 
             for (i=j-2; i>=0; i--) {
-                 pp = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
-                if (pp == null) {
+                 potrace_privepath testpp = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
+                if (testpp == null) {
                     break;
+                } else {
+                    pp = testpp;
                 }
                 if (len[j] > len[i]+1 || (len[j] == len[i]+1 && pen[j] > pen[i] + o.pen)) {
                     pt[j] = i;
@@ -317,6 +319,9 @@ public class trace {
         }
         om = len[m];
         pp.ocurve = new privcurve(om);
+
+        s = new double[om];
+        t = new double[om];
 
         j = m;
         for (i=om-1; i>=0; i--) {
@@ -356,7 +361,7 @@ public class trace {
     /* return a direction that is 90 degrees counterclockwise from p2-p0,
        but then restricted to one of the major wind directions (n, nw, w, etc) */
     static Point dorth_infty(potrace_dpoint p0, potrace_dpoint p2) {
-        Point r = null;
+        Point r = new Point();
 
         r.y = auxiliary.sign(p2.x-p0.x);
         r.x = -auxiliary.sign(p2.y-p0.y);
@@ -467,8 +472,11 @@ public class trace {
 
     //determine the center and slope of the line i..j. Assume i<j. Needs
     //"sum" components of p to be set.
-    static void pointslope(potrace_privepath pp, int i, int j, potrace_dpoint ctr, potrace_dpoint dir) {
+    static potrace_dpoint[] pointslope(potrace_privepath pp, int i, int j) {
     //assume i<j
+
+        potrace_dpoint ctr = new potrace_dpoint();
+        potrace_dpoint dir = new potrace_dpoint();
 
         int n = pp.len;
         sums[] sums = pp.sums;
@@ -531,6 +539,8 @@ public class trace {
         if (l==0) {
             dir.x = dir.y = 0;   //sometimes this can happen when k=4: the two eigenvalues coincide
         }
+        potrace_dpoint[] output = {ctr,dir};
+        return output;
     }
 
     /* Adjust vertices of optimal polygon: calculate the intersection of
@@ -546,13 +556,18 @@ public class trace {
         int x0 = pp.x0;
         int y0 = pp.y0;
 
-        potrace_dpoint[] ctr = null;      /* ctr[m] */
-        potrace_dpoint[] dir = null;      /* dir[m] */
-        potrace_quadform[] q = null;      /* q[m] */
+        potrace_dpoint[] ctr = new potrace_dpoint[m];      /* ctr[m] */
+        potrace_dpoint[] dir = new potrace_dpoint[m];      /* dir[m] */
+        potrace_quadform[] q = new potrace_quadform[m];     /* q[m] */
+
+        for(int i = 0; i < q.length; i++) {
+            q[i] = new potrace_quadform();
+        }
+
         double[] v = new double[3];
         double d;
         int i, j, k, l;
-        potrace_dpoint s = null;
+        potrace_dpoint s = new potrace_dpoint();
 
         pp.curve = new privcurve(m);    //Fixme: check wether it works correct
 
@@ -560,7 +575,9 @@ public class trace {
         for (i=0; i<m; i++) {
             j = po[auxiliary.mod(i+1,m)];
             j = auxiliary.mod(j-po[i],n)+po[i];
-            pointslope(pp, po[i], j, ctr[i], dir[i]);
+            potrace_dpoint[] output = pointslope(pp, po[i], j);
+            ctr[i] = output[0];
+            dir[i] = output[1];
         }
 
         //represent each line segment as a singular quadratic form; the
@@ -591,8 +608,8 @@ public class trace {
         //within a given unit square which minimizes the square distance to
         //the two lines.
         for (i=0; i<m; i++) {
-            potrace_quadform Q = null;
-            potrace_dpoint w = null;
+            potrace_quadform Q = new potrace_quadform();
+            potrace_dpoint w = new potrace_dpoint();
             double dx, dy;
             double det;
             double min, cand;   //minimum and candidate for minimum of quad. form */
@@ -1043,14 +1060,14 @@ public class trace {
             if (p.sign == '-') {   /* reverse orientation of negative paths */
                 reverse(p.priv.curve);
             }
-            smooth(p.priv.curve, param.alphamax);
+            p.priv.curve= smooth(p.priv.curve, param.alphamax);
             if (param.opticurve != 0) {
                 opticurve(p.priv, param.opttolerance);
                 p.priv.fcurve = p.priv.ocurve;
             } else {
                 p.priv.fcurve = p.priv.curve;
             }
-            p.curve = potrace_curve.privcurve_to_curve(p.priv.fcurve, p.curve);
+            p.curve = potrace_curve.privcurve_to_curve(p.priv.fcurve);
         }
         return plist;
 
