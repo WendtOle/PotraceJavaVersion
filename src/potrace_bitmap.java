@@ -136,42 +136,50 @@ public class potrace_bitmap {
         this.map = new int[this.dy * this.h];
     }
 
-    public void default_bitmap_simple() {
-        this.map[3]= 0x90000000;            // X o o X
-        this.map[2]= 0xE0000000;            // X X X o
-        this.map[1]= 0x30000000;            // o o X X
-        this.map[0]= 0x90000000;            // X o o X
+    static potrace_bitmap default_bitmap_second() {
+        potrace_bitmap newBitmap = new potrace_bitmap(4,4);
+        newBitmap.map[3]= 0x90000000;            // X o o X
+        newBitmap.map[2]= 0xE0000000;            // X X X o
+        newBitmap.map[1]= 0x30000000;            // o o X X
+        newBitmap.map[0]= 0x90000000;            // X o o X
+        return newBitmap;
     }
 
-    public void default_bitmap_simpleSecond() {
-        this.map[3]= 0x00000000;            // X o o X
-        this.map[2]= 0x60000000;            // X X X o
-        this.map[1]= 0x60000000;            // o o X X
-        this.map[0]= 0x00000000;            // X o o X
+    static potrace_bitmap default_bitmap_first() {
+        potrace_bitmap newBitmap = new potrace_bitmap(4,4);
+        newBitmap.map[3]= 0x00000000;            // o o o o
+        newBitmap.map[2]= 0x60000000;            // o X X o
+        newBitmap.map[1]= 0x60000000;            // o X X o
+        newBitmap.map[0]= 0x00000000;            // o o o o
+        return newBitmap;
     }
 
-    public void default_bitmap_normal() {
-        this.map[6]= 0xfe000000;            //  X X X X X X X
-        this.map[5]= 0x82000000;            //  X o o o o o X
-        this.map[4]= 0xba000000;            //  X o X X X o X
-        this.map[3]= 0xaa000000;            //  X o X o X o X
-        this.map[2]= 0xba000000;            //  X o X X X o X
-        this.map[1]= 0x82000000;            //  X o o o o o X
-        this.map[0]= 0xfe000000;            //  X X X X X X X
+    static potrace_bitmap default_bitmap_Fourth() {
+        potrace_bitmap newBitmap = new potrace_bitmap(7,7);
+        newBitmap.map[6]= 0xfe000000;            //  X X X X X X X
+        newBitmap.map[5]= 0x82000000;            //  X o o o o o X
+        newBitmap.map[4]= 0xba000000;            //  X o X X X o X
+        newBitmap.map[3]= 0xaa000000;            //  X o X o X o X
+        newBitmap.map[2]= 0xba000000;            //  X o X X X o X
+        newBitmap.map[1]= 0x82000000;            //  X o o o o o X
+        newBitmap.map[0]= 0xfe000000;            //  X X X X X X X
+        return newBitmap;
     }
 
-    public void default_bitmap_normalSecond() {
-        this.map[7]= 0xfb000000;            //  X X X X X o X X
-        this.map[6]= 0x88000000;            //  X o o o X o o o
-        this.map[5]= 0xae000000;            //  X o X o X X X o
-        this.map[4]= 0xa2000000;            //  X o X o o o X o
-        this.map[3]= 0x8a000000;            //  X o o o X o X o
-        this.map[2]= 0xba000000;            //  X o X X X o X o
-        this.map[1]= 0x82000000;            //  X o o o o o X o
-        this.map[0]= 0xfe000000;            //  X X X X X X X o
+    static potrace_bitmap default_bitmap_Fifth() {
+        potrace_bitmap newBitmap = new potrace_bitmap(8,8);
+        newBitmap.map[7]= 0xfb000000;            //  X X X X X o X X
+        newBitmap.map[6]= 0x88000000;            //  X o o o X o o o
+        newBitmap.map[5]= 0xae000000;            //  X o X o X X X o
+        newBitmap.map[4]= 0xa2000000;            //  X o X o o o X o
+        newBitmap.map[3]= 0x8a000000;            //  X o o o X o X o
+        newBitmap.map[2]= 0xba000000;            //  X o X X X o X o
+        newBitmap.map[1]= 0x82000000;            //  X o o o o o X o
+        newBitmap.map[0]= 0xfe000000;            //  X X X X X X X o
+        return newBitmap;
     }
 
-    static potrace_bitmap default_bitmap_normalThird() {
+    static potrace_bitmap default_bitmap_Third() {
         potrace_bitmap newBitmap = new potrace_bitmap(4,5);
         newBitmap.map[0]= 0xf0000000;            //  X X X X
         newBitmap.map[1]= 0x90000000;            //  X o o X
