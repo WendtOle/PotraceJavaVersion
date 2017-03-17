@@ -15,5 +15,4 @@ public class potrace_path {
         this.priv = new potrace_privepath();
     }
 
-
 }

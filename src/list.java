@@ -15,12 +15,16 @@ public class list {
             while (current.next != null) {
                 current = current.next;
             }
+            elt.next = null;
             current.next = elt;
             return list;
         } else {
+            elt.next = null;
             return elt;
         }
     }
+
+
 
 
     static potrace_path list_insert_athook(potrace_path elt, potrace_path hook) {

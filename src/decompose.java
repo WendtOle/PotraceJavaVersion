@@ -381,39 +381,13 @@ public class decompose {
                     plist = list.unefficient_list_insert_beforehook(p1, plist);
 	                // append its childlist to heap, if non-empty
                     if (p1.childlist != null) {
-                        //TODO produce the error
+                        //TODO produce the error <- ??? What does that mean ???
 
                         potrace_path current = heap1;
                         while (current != null)
                             current = current.next;
                         p1.childlist .next = current;
                         heap1 = p1.childlist;
-
-                        //heap1 = list.unefficient_list_insert_beforehook(heap1, p1.childlist);
-/*
-                        list_append(path_t, heap1, p1->childlist);
-
-                        ->
-
-                        list_append(listtype, list, elt)
-                            listtype **_hook;
-                            _list_forall_hook(list, _hook) {}
-                            list_insert_athook(elt, _hook);
-
-                        ->
-
-                        list_append(listtype, list, elt)
-                            listtype **_hook;
-                            _list_forall_hook(list, hook)
-                                for (hook=&list; *hook!=NULL; hook=&(*hook)->next) {}
-                            list_insert_athook(elt, hook)
-                                elt->next = *hook;
-                                *hook = elt;
-
-
-
-
-*/
                     }
                 }
             }
