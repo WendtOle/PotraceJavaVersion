@@ -24,14 +24,9 @@ public class list {
         }
     }
 
-
-
-
     static potrace_path list_insert_athook(potrace_path elt, potrace_path hook) {
         elt.next = hook;
         return elt;
 
     }
-
-
 }

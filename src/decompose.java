@@ -94,7 +94,9 @@ public class decompose {
             if (len>=size) {
                 size += 100;
                 size = (int)(1.3 * size);
-                pt1 = new Point[size];
+                Point[] newSizedPointArray = new Point[size];
+                System.arraycopy(pt,0,newSizedPointArray,0,pt.length);
+                pt1 = newSizedPointArray;
                 pt = pt1;
             }
             pt[len] = new Point(x,y);
@@ -196,6 +198,7 @@ public class decompose {
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
                 bm = xor_to_ref(bm, x, min(y,y1), xa);
+                Main.printBitMap(bm);
                 y1 = y;
             }
         }
@@ -426,6 +429,8 @@ public class decompose {
 
             // update buffered image
             bm1 = xor_path(bm1, p);
+            Main.printBitMap(bm1);
+
 
             // if it's a turd, eliminate it, else append it to the list
             if (p.area > param.turdsize) {

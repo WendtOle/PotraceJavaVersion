@@ -45,7 +45,7 @@ public class potrace_bitmap {
     static int[] bm_scanline(potrace_bitmap bm, int y) {
         int[] scanLine = new int[bm.dy];
         for (int i = 0; i < bm.dy ; i ++) {
-            scanLine[i] = bm.map[y * bm.dy + i];
+            scanLine[i] = bm.map[(y * bm.dy) + i];
         }
         return scanLine;
     }
@@ -104,12 +104,12 @@ public class potrace_bitmap {
 
     //TODO new written because in c you it is no difference wether you want to get the value or you want to set the value
     static potrace_bitmap bm_setPotraceWord_WithX(potrace_bitmap bm, int x, int y, int newValue) {
-        bm.map[y + (bm.dy - 1)+(x / PIXELINWORD)] = newValue;
+        bm.map[(y * bm.dy)+(x / PIXELINWORD)] = newValue;
         return bm;
     }
 
     static potrace_bitmap bm_setPotraceWord_WithI(potrace_bitmap bm, int i, int y, int newValue) {
-        bm.map[y + (bm.dy - 1) + i] = newValue;
+        bm.map[(y * bm.dy) + i] = newValue;
         return bm;
     }
 
@@ -192,6 +192,23 @@ public class potrace_bitmap {
         for(int i = 0; i < 3; i ++) {
             newBitmap.map[i]= 0x1;
         }
+        return newBitmap;
+    }
+
+    static potrace_bitmap default_bitmap_Eigth() {
+        potrace_bitmap newBitmap = new potrace_bitmap(128,3);
+        newBitmap.map[0]= 0xffffffff;
+        newBitmap.map[1]= 0xffffffff;
+        newBitmap.map[2]= 0xffffffff;
+        newBitmap.map[3]= 0xffffffff;
+        newBitmap.map[4]= 0x80000000;
+        newBitmap.map[5]= 0x0;
+        newBitmap.map[6]= 0x0;
+        newBitmap.map[7]= 0x1;
+        newBitmap.map[8]= 0xffffffff;
+        newBitmap.map[9]= 0xffffffff;
+        newBitmap.map[10]= 0xffffffff;
+        newBitmap.map[11]= 0xffffffff;
         return newBitmap;
     }
 

@@ -82,15 +82,31 @@ public class Main {
         System.out.println();
     }
 
-    public static void main(String [] args)
-    {
+    public static void printBitMap(potrace_bitmap bm){
+        System.out.println();
+        for(int y = bm.h-1; y >=0; y --) {
+            for(int dy = 0; dy < bm.dy; dy ++) {
+                String currentPotraceWord = Integer.toBinaryString(bm.map[y*bm.dy + dy]);
+                int amountOfZeros = potrace_bitmap.PIXELINWORD - currentPotraceWord.length();
+                for (int i = 0; i < amountOfZeros; i++)
+                    System.out.print("0");
+                System.out.print(currentPotraceWord);
+            }
+            System.out.println();
+        }
+    }
+
+    public static void main(String [] args) {
         potrace_param param = new potrace_param();
-        potrace_bitmap bm = potrace_bitmap.default_bitmap_Sixth();
+        potrace_bitmap bm = potrace_bitmap.default_bitmap_Eigth();
+        printBitMap(bm);
         long startTime = System.currentTimeMillis();
         potrace_path result = PotraceLib.potrace_trace(param,bm);
         long  endTime = System.currentTimeMillis();
 
         System.out.println("Excecution needed: " + (endTime - startTime) + "ms");
+
+        printBitMap(bm);
 
         printArchitectureOfPolygons(result);
 
