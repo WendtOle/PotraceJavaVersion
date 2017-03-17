@@ -162,11 +162,11 @@ public class decompose {
 
         if (xhi<xa) {
             for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
-                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
+                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.BM_ALLBITS); //Todo check
             }
         } else {
             for (i = xa; i < xhi; i+=potrace_bitmap.PIXELINWORD) {
-                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.PIXELINWORD); //Todo check
+                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.BM_ALLBITS); //Todo check
             }
         }
 
@@ -179,7 +179,6 @@ public class decompose {
         return bm;
     }
 
-    //TODO hier weiter
     static potrace_bitmap xor_path(potrace_bitmap bm, potrace_path p) {
         int xa, x, y, k, y1;
 
@@ -188,7 +187,7 @@ public class decompose {
         }
 
         y1 = p.priv.pt[p.priv.len-1].y;
-        xa = p.priv.pt[0].x & - 32; //TODO what da fuck //xa = p.priv.pt[0].x & - BM_WORDBITS;
+        xa = p.priv.pt[0].x & - potrace_bitmap.PIXELINWORD; //TODO what da fuck //xa = p.priv.pt[0].x & - BM_WORDBITS;
 
         for (k=0; k<p.priv.len; k++) {
             x = p.priv.pt[k].x;

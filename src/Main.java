@@ -85,7 +85,7 @@ public class Main {
     public static void main(String [] args)
     {
         potrace_param param = new potrace_param();
-        potrace_bitmap bm = potrace_bitmap.default_bitmap_Fifth();
+        potrace_bitmap bm = potrace_bitmap.default_bitmap_Sixth();
         long startTime = System.currentTimeMillis();
         potrace_path result = PotraceLib.potrace_trace(param,bm);
         long  endTime = System.currentTimeMillis();

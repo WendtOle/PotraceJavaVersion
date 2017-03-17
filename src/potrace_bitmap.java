@@ -179,13 +179,19 @@ public class potrace_bitmap {
         return newBitmap;
     }
 
-    static potrace_bitmap default_bitmap_Third() {
-        potrace_bitmap newBitmap = new potrace_bitmap(4,5);
-        newBitmap.map[0]= 0xf0000000;            //  X X X X
-        newBitmap.map[1]= 0x90000000;            //  X o o X
-        newBitmap.map[2]= 0xf0000000;            //  X X X X
-        newBitmap.map[3]= 0x00000000;            //  o o o o
-        newBitmap.map[4]= 0xf0000000;            //  X X X X
+    static potrace_bitmap default_bitmap_Sixth() {
+        potrace_bitmap newBitmap = new potrace_bitmap(32,32);
+        for(int i = 0; i < 32; i ++) {
+            newBitmap.map[i]= 0xfedcba9;
+        }
+        return newBitmap;
+    }
+
+    static potrace_bitmap default_bitmap_Seventh() {
+        potrace_bitmap newBitmap = new potrace_bitmap(32,3);
+        for(int i = 0; i < 3; i ++) {
+            newBitmap.map[i]= 0x1;
+        }
         return newBitmap;
     }
 
