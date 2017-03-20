@@ -16,7 +16,6 @@ public class potrace_param {
     double alphamax;     /* corner threshold */
     int opticurve;       /* use curve optimization? */
     double opttolerance; /* curve optimization tolerance */
-    potrace_progress progress; /* progress callback function */
 
     public potrace_param() {
         param_default();
