@@ -244,10 +244,9 @@ public class decompose {
 
         for (y=bbox.y0; y<bbox.y1; y++) {
             for (i=imin; i<imax; i++) {
-                bm = potrace_bitmap.bm_setPotraceWord_WithI(bm, i, y, 0);
+                bm.map[y * bm.dy + i] = 0;
             }
         }
-
         return bm;
     }
 

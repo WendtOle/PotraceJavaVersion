@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -117,5 +118,152 @@ public class potrace_bitmapTest {
         assertEquals(should, actual);
     }
 
+    @org.junit.Test
+    public void checkWhatHappensWhenPictureIsWiderThen32Bit() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(40,2);
+        testBitMap.map[3] = 0x90000000;
+        testBitMap.map[2] = 0x5;
+        testBitMap.map[1] = 0x80000000;
+        testBitMap.map[0] = 0x5;
+        assertEquals(true, potrace_bitmap.BM_GET(testBitMap,32,0));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,33,0));
+        assertEquals(true, potrace_bitmap.BM_GET(testBitMap,31,0));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,30,0));
+        assertEquals(true, potrace_bitmap.BM_GET(testBitMap,32,1));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,33,1));
+        assertEquals(true, potrace_bitmap.BM_GET(testBitMap,31,1));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,30,1));
+
+        assertEquals(true, potrace_bitmap.bm_safe(testBitMap,39,0));
+        assertEquals(false, potrace_bitmap.bm_safe(testBitMap,40,0));
+    }
+
+    @org.junit.Test
+    public void test_bm_hibit() throws Exception {
+        int actual = potrace_bitmap.bm_hibit();
+        int should = 0x80000000;
+        assertEquals(should, actual);
+    }
+
+    @org.junit.Test
+    public void test_bm_range() throws Exception {
+        assertEquals(true, potrace_bitmap.bm_range(1,2));
+        assertEquals(false, potrace_bitmap.bm_range(3,2));
+        assertEquals(true, potrace_bitmap.bm_range(1.0,2.0));
+        assertEquals(false, potrace_bitmap.bm_range(3.0,2.0));
+    }
+
+    @org.junit.Test
+    public void test_bm_safe() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(2,2);
+        assertEquals(true, potrace_bitmap.bm_safe(testBitMap,1,1));
+        assertEquals(false, potrace_bitmap.bm_safe(testBitMap,2,1));
+        assertEquals(false, potrace_bitmap.bm_safe(testBitMap,1,2));
+        assertEquals(false, potrace_bitmap.bm_safe(testBitMap,3,3));
+    }
+
+    @org.junit.Test
+    public void test_bm_uget() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(2,2);
+        testBitMap.map[0] = 0x80000000;
+        testBitMap.map[1] = 0x0;
+        assertEquals(false, potrace_bitmap.BM_UGET(testBitMap,1,0));
+        assertEquals(true, potrace_bitmap.BM_UGET(testBitMap,0,0));
+        assertEquals(false, potrace_bitmap.BM_UGET(testBitMap,0,1));
+        assertEquals(false, potrace_bitmap.BM_UGET(testBitMap,1,1));
+    }
+
+    @org.junit.Test
+    public void test_bm_get() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(2,2);
+        testBitMap.map[1] = 0x40000000;
+        testBitMap.map[0] = 0x0;
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,1,0));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,0,1));
+        assertEquals(true, potrace_bitmap.BM_GET(testBitMap,1,1));
+
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,-1,0));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,0,-1));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,2,0));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,0,2));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,2,2));
+        assertEquals(false, potrace_bitmap.BM_GET(testBitMap,-1,-1));
+    }
+
+    @org.junit.Test
+    //TODO wie kann denn eine negatives dy entstehen?
+    public void test_bm_size() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(-33,1);
+        System.out.println(potrace_bitmap.bm_size(testBitMap));
+        assertEquals(32, potrace_bitmap.bm_size(new potrace_bitmap(1,1)));
+        assertEquals(64, potrace_bitmap.bm_size(new potrace_bitmap(33,1)));
+        assertEquals(64, potrace_bitmap.bm_size(new potrace_bitmap(4,2)));
+    }
+
+    @org.junit.Test
+    public void test_bm_clearexcess() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(40,2);
+        testBitMap.map[3] = 0xf8ffffff;
+        testBitMap.map[2] = 0xffffffff;
+        testBitMap.map[1] = 0xffffffff;
+        testBitMap.map[0] = 0xffffffff;
+        potrace_bitmap.bm_clearexcess(testBitMap);
+        assertEquals(-1,testBitMap.map[0]);
+        assertEquals(0xff000000,testBitMap.map[1]);
+        assertEquals(-1,testBitMap.map[2]);
+        assertEquals(0xf8000000,testBitMap.map[3]);
+    }
+
+    @org.junit.Test
+    public void test_bm_clear() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(40,2);
+        testBitMap.map[3] = 0xf8ffffff;
+        testBitMap.map[2] = 0xffffffff;
+        testBitMap.map[1] = 0xffffffff;
+        testBitMap.map[0] = 0xffffffff;
+        potrace_bitmap.bm_clear(testBitMap,0);
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,40,2));
+        potrace_bitmap.bm_clear(testBitMap,1);
+        assertEquals(true,potrace_bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,40,2));
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,40,1));
+    }
+
+    @org.junit.Test
+    public void test_bm_setPotraceWort_WithI() throws Exception {
+        potrace_bitmap testBitMap = new potrace_bitmap(40,2);
+        testBitMap.map[3] = 0xf8ffffff;
+        testBitMap.map[2] = 0xffffffff;
+        testBitMap.map[1] = 0xffffffff;
+        testBitMap.map[0] = 0xffffffff;
+        potrace_bitmap.bm_clear(testBitMap,0);
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,40,2));
+        potrace_bitmap.bm_clear(testBitMap,1);
+        assertEquals(true,potrace_bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,40,2));
+        assertEquals(false,potrace_bitmap.BM_GET(testBitMap,40,1));
+    }
+
+    @org.junit.Test
+    public void test_bm_dup() throws Exception {
+        potrace_bitmap originBitMap = new potrace_bitmap(40,2);
+        originBitMap.map[3] = 0xf8000000;
+        originBitMap.map[2] = 0xffffffff;
+        originBitMap.map[1] = 0xff000000;
+        originBitMap.map[0] = 0xffffffff;
+
+        potrace_bitmap copiedBitmap = potrace_bitmap.bm_dup(originBitMap);
+
+        //check wether reference is difference
+        Assert.assertFalse(originBitMap == copiedBitmap);
+        Assert.assertArrayEquals(originBitMap.map,copiedBitmap.map);
+        assertEquals(originBitMap.dy, copiedBitmap.dy);
+        assertEquals(originBitMap.h, copiedBitmap.h);
+        assertEquals(originBitMap.w, copiedBitmap.w);
+    }
 
 }
+

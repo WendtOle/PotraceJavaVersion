@@ -15,7 +15,8 @@ public class listTest {
         first.next = second;
         second.next = third;
 
-        potrace_path result = list.list_insert_beforehook(fourth,first);
+        //TODO replace tthis
+        //potrace_path result = list.list_insert_beforehook(fourth,first);
     }
 
 }

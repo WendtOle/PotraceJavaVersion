@@ -31,9 +31,6 @@ public class potrace_bitmap {
     }
 
     static boolean BM_UGET(potrace_bitmap bm, int x, int y) {
-        boolean test = (bm_index(bm, x, y) & bm_mask(x)) != 0;
-        int test1 = bm_index(bm, x, y);
-        int test2 = bm_mask(x);
         return(bm_index(bm, x, y) & bm_mask(x)) != 0;
     }
 
@@ -76,40 +73,18 @@ public class potrace_bitmap {
         return getsize(bm.dy, bm.h);
     }
 
-
-    static int[] bm_base(potrace_bitmap bm) {
-        int dy = bm.dy;
-
-        if (dy >= 0 || bm.h == 0) {
-            return bm.map;
-        } else {
-            return bm_scanline(bm, bm.h - 1);
-        }
-    }
-
     static potrace_bitmap bm_clear(potrace_bitmap bm, int c) {
-  /* Note: if the bitmap was created with bm_new, then it is
-     guaranteed that size will fit into the ptrdiff_t type. */
-        //int size = bm_size(bm);
-        //memset(bm_base(bm), c ? -1 : 0, size); //TODO not sure what that does?
-        //TODO Think it is not necessary that i run this, simply overwrite the
-
-        int filler = (c == 1 ? -1 : 0);
-
+        int filler = (c == 0? 0 : -1);
         for (int i = 0; i < bm.map.length; i ++) {
             bm.map[i] = filler;
         }
+        potrace_bitmap.bm_clearexcess(bm);
         return bm;
     }
 
     //TODO new written because in c you it is no difference wether you want to get the value or you want to set the value
     static potrace_bitmap bm_setPotraceWord_WithX(potrace_bitmap bm, int x, int y, int newValue) {
         bm.map[(y * bm.dy)+(x / PIXELINWORD)] = newValue;
-        return bm;
-    }
-
-    static potrace_bitmap bm_setPotraceWord_WithI(potrace_bitmap bm, int i, int y, int newValue) {
-        bm.map[(y * bm.dy) + i] = newValue;
         return bm;
     }
 
@@ -120,13 +95,10 @@ public class potrace_bitmap {
         if (bm.w % potrace_bitmap.PIXELINWORD != 0) {
             mask = BM_ALLBITS << (potrace_bitmap.PIXELINWORD - (bm.w % potrace_bitmap.PIXELINWORD));
             for (y=0; y<bm.h; y++) {
-                bm.map[y + bm.dy - 1] = potrace_bitmap.bm_index(bm, bm.w, y) & mask;
+                bm.map[y * bm.dy + bm.dy - 1] = potrace_bitmap.bm_index(bm, bm.w, y) & mask;
             }
         }
         return bm;
-    }
-
-    public potrace_bitmap (){
     }
 
     public potrace_bitmap(int w, int h) {
