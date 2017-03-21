@@ -198,7 +198,6 @@ public class decompose {
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
                 bm = xor_to_ref(bm, x, min(y,y1), xa);
-                Main.printBitMap(bm);
                 y1 = y;
             }
         }
@@ -407,11 +406,9 @@ public class decompose {
         potrace_bitmap bm1 = potrace_bitmap.bm_dup(bm);
         int sign;
 
-
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
         bm1 = potrace_bitmap.bm_clearexcess(bm1);
-
 
         // iterate through components
         x = 0;
@@ -424,12 +421,9 @@ public class decompose {
 
             // calculate the path
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
-            //TODO here we catch a maybe error if p = null
 
             // update buffered image
             bm1 = xor_path(bm1, p);
-            Main.printBitMap(bm1);
-
 
             // if it's a turd, eliminate it, else append it to the list
             if (p.area > param.turdsize) {
@@ -437,19 +431,9 @@ public class decompose {
                 //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
                 plist = list.unefficient_list_insert_beforehook(p,plist);
             }
-            /* TODO massive problem with the callback functions of progress
-            if (bm1.h > 0) { // to be sure
-                progress_update(1-y/(double)bm1->h, progress);
-            }
-            */
         }
 
         plist = pathlist_to_tree(plist, bm1);
-        //bm_free(bm1);                     //TODO simply commented because of errer
-        //plistp = plist;
-
-        //progress_update(1.0, progress);   //TODO massive problem with the callback functions of progress
-
         return plist;
     }
 }

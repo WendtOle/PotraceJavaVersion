@@ -184,6 +184,30 @@ public class potrace_bitmap {
         return newBitmap;
     }
 
+    static potrace_bitmap default_bitmap_Ten() {
+        potrace_bitmap newBitmap = new potrace_bitmap(128,4);
+        newBitmap.map[15]= 0x344b90a0;
+        newBitmap.map[14]= 0xb25cd19d;
+        newBitmap.map[13]= 0xf3182ad3;
+        newBitmap.map[12]= 0x5200f5c7;
+
+        newBitmap.map[11]= 0x5f69b290;
+        newBitmap.map[10]= 0xa137ca74;
+        newBitmap.map[9]= 0x8255f352;
+        newBitmap.map[8]= 0x7e2b6daa;
+
+        newBitmap.map[7]= 0x15aac2b8;
+        newBitmap.map[6]= 0x8dd23a93;
+        newBitmap.map[5]= 0x2dd8e813;
+        newBitmap.map[4]= 0x4882ff30;
+
+        newBitmap.map[3]= 0xf488b3a8;
+        newBitmap.map[2]= 0x5bbd4559;
+        newBitmap.map[1]= 0xe7bbcb0e;
+        newBitmap.map[0]= 0x4ef247da;
+        return newBitmap;
+    }
+
     static potrace_bitmap bm_dup(potrace_bitmap bm) {
         potrace_bitmap bm1 = new potrace_bitmap(bm.w, bm.h);
 

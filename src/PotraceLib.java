@@ -10,6 +10,5 @@ public class PotraceLib {
         plist = trace.process_path(plist, param);
 
         return plist;
-
     }
 }
