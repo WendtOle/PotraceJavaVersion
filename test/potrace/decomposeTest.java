@@ -1,3 +1,7 @@
+package potrace;
+
+import Tools.BitmapPrinter;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.awt.*;
@@ -36,7 +40,7 @@ public class decomposeTest {
 
     @Test
     public void test_detrand() throws Exception {
-        assertEquals(false,decompose.detrand(20,4));
+        Assert.assertEquals(false, decompose.detrand(20,4));
     }
 
     @Test
@@ -48,7 +52,7 @@ public class decomposeTest {
         testBitmap.map[0] = 0xe0000000;
         BitmapPrinter bitmapPrinter = new BitmapPrinter(testBitmap);
         bitmapPrinter.print();
-        assertEquals(true,decompose.majority(testBitmap,2,2));
+        Assert.assertEquals(true, decompose.majority(testBitmap,2,2));
     }
 
     @Test
@@ -60,7 +64,7 @@ public class decomposeTest {
         testBitmap.map[0] = 0xc0000000;
         BitmapPrinter bitmapPrinter = new BitmapPrinter(testBitmap);
         bitmapPrinter.print();
-        assertEquals(false,decompose.majority(testBitmap,2,2));
+        Assert.assertEquals(false, decompose.majority(testBitmap,2,2));
     }
 
     @Test
@@ -75,7 +79,7 @@ public class decomposeTest {
 
 
 
-        assertEquals(false,decompose.majority(testBitmap,2,2));
+        Assert.assertEquals(false, decompose.majority(testBitmap,2,2));
     }
 }
 

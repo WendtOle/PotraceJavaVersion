@@ -1,5 +1,7 @@
+package potrace;
+
 import java.awt.*;
-import java.util.LinkedList;
+
 
 /**
  * Created by andreydelany on 05/03/2017.
@@ -249,12 +251,12 @@ public class decompose {
         return bm;
     }
 
-    /* Give a tree structure to the given path list, based on "insideness"
+    /* Give a tree structure to the given path potrace.list, based on "insideness"
     testing. I.e., path A is considered "below" path B if it is inside
     path B. The input pathlist is assumed to be ordered so that "outer"
     paths occur before "inner" paths. The tree structure is stored in
     the "childlist" and "sibling" components of the path_t
-    structure. The linked list structure is also changed so that
+    structure. The linked potrace.list structure is also changed so that
     negative path components are listed immediately after their
     positive parent.  Note: some backends may ignore the tree
     structure, others may use it e.g. to group path components. We
@@ -272,8 +274,8 @@ public class decompose {
         potrace_path heap1;
         potrace_path cur = new potrace_path();
         potrace_path head = new potrace_path();
-        potrace_path plist_hook;          // for fast appending to linked list
-        potrace_path hook_in, hook_out; // for fast appending to linked list
+        potrace_path plist_hook;          // for fast appending to linked potrace.list
+        potrace_path hook_in, hook_out; // for fast appending to linked potrace.list
         bbox bbox = new bbox();
 
         bm = potrace_bitmap.bm_clear(bm, 0);
@@ -288,11 +290,11 @@ public class decompose {
 
         heap = plist;
 
-        // the heap holds a list of lists of paths. Use "childlist" field
-        //for outer list, "next" field for inner list. Each of the sublists
+        // the heap holds a potrace.list of lists of paths. Use "childlist" field
+        //for outer potrace.list, "next" field for inner potrace.list. Each of the sublists
         //is to be turned into a tree. This code is messy, but it is
         //actually fast. Each path is rendered exactly once. We use the
-        //heap to get a tail recursive algorithm: the heap holds a list of
+        //heap to get a tail recursive algorithm: the heap holds a potrace.list of
         //pathlists which still need to be transformed.
 
         while (heap != null) {
@@ -322,7 +324,7 @@ public class decompose {
 
                 if (p.priv.pt[0].y <= bbox.y0) {
                     head.next = list.unefficient_list_insert_beforehook(p,head.next);
-	                // append the remainder of the list to hook_out
+	                // append the remainder of the potrace.list to hook_out
                     //TODO not sure what i should do here
 	                //hook_out = cur;
                     head.next = list.unefficient_list_insert_beforehook(cur,head.next);
@@ -331,7 +333,7 @@ public class decompose {
                 if (potrace_bitmap.BM_GET(bm, p.priv.pt[0].x, p.priv.pt[0].y-1)) {
                     head.childlist = list.unefficient_list_insert_beforehook(p,head.childlist);
                 } else {
-                    //hook_out = list.list_insert_beforehook(p, hook_out);
+                    //hook_out = potrace.list.list_insert_beforehook(p, hook_out);
                     head.next = list.unefficient_list_insert_beforehook(p,head.next);
                 }
             }
@@ -359,26 +361,26 @@ public class decompose {
             p = p1;
         }
 
-        // reconstruct a new linked list ("next") structure from tree
+        // reconstruct a new linked potrace.list ("next") structure from tree
         // ("childlist", "sibling") structure. This code is slightly messy,
         // because we use a heap to make it tail recursive: the heap
-        // contains a list of childlists which still need to be
+        // contains a potrace.list of childlists which still need to be
         // processed.
         heap = plist;
         if (heap != null) {
-            heap.next = null;  // heap is a linked list of childlists
+            heap.next = null;  // heap is a linked potrace.list of childlists
         }
         plist = null;
         while (heap != null) {
             heap1 = heap.next;
             for (p=heap; p != null; p=p.sibling) {
                 // p is a positive path
-                // append to linked list
+                // append to linked potrace.list
                 plist = list.unefficient_list_insert_beforehook(p, plist);
 
                 // go through its children
                 for (p1=p.childlist; p1 != null; p1=p1.sibling) {
-	                // append to linked list
+	                // append to linked potrace.list
                     plist = list.unefficient_list_insert_beforehook(p1, plist);
 	                // append its childlist to heap, if non-empty
                     if (p1.childlist != null) {
@@ -401,8 +403,8 @@ public class decompose {
         int x;
         int y;
         potrace_path p;
-        potrace_path plist = null;  // linked list of path objects
-        //potrace_path plist_hook = null;  // used to speed up appending to linked list
+        potrace_path plist = null;  // linked potrace.list of path objects
+        //potrace.potrace_path plist_hook = null;  // used to speed up appending to linked potrace.list
         potrace_bitmap bm1 = potrace_bitmap.bm_dup(bm);
         int sign;
 
@@ -425,7 +427,7 @@ public class decompose {
             // update buffered image
             bm1 = xor_path(bm1, p);
 
-            // if it's a turd, eliminate it, else append it to the list
+            // if it's a turd, eliminate it, else append it to the potrace.list
             if (p.area > param.turdsize) {
 
                 //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist

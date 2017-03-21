@@ -1,10 +1,12 @@
+package potrace;
+
 /**
  * Created by andreydelany on 04/03/2017.
  */
 public class potrace_curve {
-    int n;      //number of segments
+    public int n;      //number of segments
     int[] tag;    //tag[n] : Potrace_Curveto or potrace_corner //TODO: Array
-    potrace_dpoint[][] c;
+    public potrace_dpoint[][] c;
 
     //initialize the members of the given curve structure to size m.
     //Return 0 on success, 1 on error with errno set.

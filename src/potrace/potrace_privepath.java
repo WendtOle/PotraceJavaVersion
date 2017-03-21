@@ -1,3 +1,5 @@
+package potrace;
+
 import java.awt.*;
 
 /**
@@ -5,7 +7,7 @@ import java.awt.*;
  */
 public class potrace_privepath {
     int len;
-    Point[] pt;       //TODO: Potential Array
+    public Point[] pt;       //TODO: Potential Array
     int[] lon;
     int x0,y0;
 

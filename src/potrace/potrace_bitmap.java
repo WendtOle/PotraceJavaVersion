@@ -1,14 +1,16 @@
+package potrace;
+
 /**
  * Created by andreydelany on 04/03/2017.
  */
 public class potrace_bitmap {
 
-    static int PIXELINWORD = 32;
+    public static int PIXELINWORD = 32;
     static int BM_ALLBITS = (~0);
 
-    int w, h;              /* width and height, in pixels */
-    int dy;                /* words per scanline (not bytes) */
-    int[] map;             /* raw data, dy*h words */ //TODO changed representation of potrace words
+    public int w, h;              /* width and height, in pixels */
+    public int dy;                /* words per scanline (not bytes) */
+    public int[] map;             /* raw data, dy*h words */ //TODO changed representation of potrace words
 
     static int bm_hibit(){
         return 1 << PIXELINWORD -1;

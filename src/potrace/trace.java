@@ -1,5 +1,6 @@
+package potrace;
+
 import java.awt.*;
-import java.util.Arrays;
 
 /**
  * Created by andreydelany on 13/03/2017.
@@ -333,9 +334,9 @@ public class trace {
             if (pt[j]==j-1) {
                 pp.ocurve.tag[i]     = pp.curve.tag[auxiliary.mod(j,m)];
                 /*for debugging
-                potrace_dpoint test1 = pp.curve.c[auxiliary.mod(j,m)][0];
-                potrace_dpoint test2 = pp.curve.c[auxiliary.mod(j,m)][1];
-                potrace_dpoint test3 = pp.curve.c[auxiliary.mod(j,m)][2];
+                potrace.potrace_dpoint test1 = pp.curve.c[potrace.auxiliary.mod(j,m)][0];
+                potrace.potrace_dpoint test2 = pp.curve.c[potrace.auxiliary.mod(j,m)][1];
+                potrace.potrace_dpoint test3 = pp.curve.c[potrace.auxiliary.mod(j,m)][2];
                 */
                 pp.ocurve.c[i][0]    = pp.curve.c[auxiliary.mod(j,m)][0];
                 pp.ocurve.c[i][1]    = pp.curve.c[auxiliary.mod(j,m)][1];

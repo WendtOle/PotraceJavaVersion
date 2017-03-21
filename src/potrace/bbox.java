@@ -1,3 +1,5 @@
+package potrace;
+
 /**
  * Created by andreydelany on 07/03/2017.
  */

@@ -1,6 +1,9 @@
-/**
+package Tools; /**
  * Created by andreydelany on 21/03/2017.
  */
+
+import potrace.potrace_bitmap;
+
 public class BitmapPrinter {
 
     potrace_bitmap bitmap;
