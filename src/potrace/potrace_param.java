@@ -29,14 +29,6 @@ public class potrace_param {
             this.alphamax = 1.0;                           /* alphamax */
             this.opticurve= 1;                             /* opticurve */
             this.opttolerance = 0.2;                          /* opttolerance */
-
-            //TODO massive progress problem
-            /*{
-                    NULL,                        /* callback function
-                    NULL,                        /* callback data
-                    0.0, 1.0,                    /* progress range
-                    0.0,                         /* granularity
-            },*/
     };
 
 }

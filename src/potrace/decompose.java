@@ -327,7 +327,7 @@ public class decompose {
 	                // append the remainder of the potrace.list to hook_out
                     //TODO not sure what i should do here
 	                //hook_out = cur;
-                    head.next = list.unefficient_list_insert_beforehook(cur,head.next);
+                    //head.next = list.unefficient_list_insert_beforehook(cur,head.next);
                     break;
                 }
                 if (potrace_bitmap.BM_GET(bm, p.priv.pt[0].x, p.priv.pt[0].y-1)) {
