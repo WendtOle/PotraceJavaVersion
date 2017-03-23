@@ -122,6 +122,15 @@ public class potrace_bitmapTest {
     }
 
     @org.junit.Test
+    public void checkBitMapMaskFunctionExtended() throws Exception {
+        int should = 0x40000000;
+        int actual = potrace_bitmap.bm_mask(33);
+        System.out.println(Integer.toBinaryString(should));
+        System.out.println(Integer.toBinaryString(actual));
+        assertEquals(should, actual);
+    }
+
+    @org.junit.Test
     public void checkWhatHappensWhenPictureIsWiderThen32Bit() throws Exception {
         potrace_bitmap testBitMap = new potrace_bitmap(40,2);
         testBitMap.map[3] = 0x90000000;

@@ -29,7 +29,7 @@ public class potrace_bitmap {
     }
 
     static int bm_mask(int x) {
-        return ((1) << (PIXELINWORD-1-x));
+        return ((1) << (PIXELINWORD-1-(x)));
     }
 
     static boolean BM_UGET(potrace_bitmap bm, int x, int y) {

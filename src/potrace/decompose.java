@@ -164,7 +164,7 @@ public class decompose {
         int xlo = x & (potrace_bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
         int i;
 
-        if (xhi<xa) {
+        if (xhi<xa) { //Todo find case in which this line is run for testing
             for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
                 bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.BM_ALLBITS); //Todo check
             }
@@ -323,6 +323,7 @@ public class decompose {
                 p.next=null;
 
                 if (p.priv.pt[0].y <= bbox.y0) {
+                //Todo find out what that if condition is for
                     head.next = list.unefficient_list_insert_beforehook(p,head.next);
 	                // append the remainder of the potrace.list to hook_out
                     //TODO not sure what i should do here
@@ -385,7 +386,7 @@ public class decompose {
 	                // append its childlist to heap, if non-empty
                     if (p1.childlist != null) {
                         //TODO produce the error <- ??? What does that mean ???
-
+                        //ToDO i think this part is still not correct
                         potrace_path current = heap1;
                         while (current != null)
                             current = current.next;

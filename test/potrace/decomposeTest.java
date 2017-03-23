@@ -1,6 +1,7 @@
 package potrace;
 
 import Tools.BitmapPrinter;
+import Tools.PolygonArchitecturePrinter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -169,5 +170,192 @@ public class decomposeTest {
             comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
     }
 
+    @Test
+    public void test_findPath_boundary() throws Exception {
+        potrace_bitmap testBitmap = new potrace_bitmap(64,1);
+        testBitmap.map[0] = 1;
+        testBitmap.map[1] = 0x80000000;
+
+        Point[] expectedPoints = new Point[6];
+        expectedPoints[0] = new Point(31,1);
+        expectedPoints[1] = new Point(31,0);
+        expectedPoints[2] = new Point(32,0);
+        expectedPoints[3] = new Point(33,0);
+        expectedPoints[4] = new Point(33,1);
+        expectedPoints[5] = new Point(32,1);
+
+        potrace_path result = decompose.findpath(testBitmap,31,1,43,4);
+        for (int i = 0 ; i < expectedPoints.length; i ++)
+            comparePoints(expectedPoints[i],result.priv.pt[i]);
+    }
+
+    @Test
+    public void test_xor_path_xor_to_ref_one() {
+        potrace_bitmap testBitmap = new potrace_bitmap(4,4);
+        testBitmap.map[0] = 0x10000000;
+        testBitmap.map[1] = 0x60000000;
+        testBitmap.map[2] = 0x60000000;
+        testBitmap.map[3] = 0xc0000000;
+
+        potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
+        potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
+        assertEquals(0,resultBitmap.map[0]);
+        assertEquals(0,resultBitmap.map[1]);
+        assertEquals(0,resultBitmap.map[2]);
+        assertEquals(0,resultBitmap.map[3]);
+    }
+
+    @Test
+    public void test_xor_path_xor_to_ref_two() {
+        potrace_bitmap testBitmap = new potrace_bitmap(40,2);
+        testBitmap.map[0] = 0x00000001;
+        testBitmap.map[1] = 0x80000000;
+        testBitmap.map[2] = 0x00000001;
+        testBitmap.map[3] = 0x80000000;
+
+        potrace_path path = decompose.findpath(testBitmap,31,2,43,4);
+        potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
+        assertEquals(0,resultBitmap.map[0]);
+        assertEquals(0,resultBitmap.map[1]);
+        assertEquals(0,resultBitmap.map[2]);
+        assertEquals(0,resultBitmap.map[3]);
+    }
+
+    @Test
+    public void test_setbbox_path() {
+        bbox box = new bbox();
+        potrace_bitmap testBitmap = new potrace_bitmap(4,4);
+        testBitmap.map[0] = 0x10000000;
+        testBitmap.map[1] = 0x60000000;
+        testBitmap.map[2] = 0x60000000;
+        testBitmap.map[3] = 0xc0000000;
+        potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
+
+        bbox resultBox = decompose.setbbox_path(box,path);
+        assertEquals(0,resultBox.x0);
+        assertEquals(4,resultBox.x1);
+        assertEquals(0,resultBox.y0);
+        assertEquals(4,resultBox.y1);
+    }
+
+    @Test
+    public void test_setbbox_path_extended() {
+        bbox box = new bbox();
+        potrace_bitmap testBitmap = new potrace_bitmap(40,2);
+        testBitmap.map[0] = 0x00000001;
+        testBitmap.map[1] = 0x80000000;
+        testBitmap.map[2] = 0x00000001;
+        testBitmap.map[3] = 0x80000000;
+        potrace_path path = decompose.findpath(testBitmap,31,1,43,4);
+
+        bbox resultBox = decompose.setbbox_path(box,path);
+        assertEquals(31,resultBox.x0);
+        assertEquals(33,resultBox.x1);
+        assertEquals(0,resultBox.y0);
+        assertEquals(2,resultBox.y1);
+    }
+
+    @Test
+    public void test_clear_bm_with_bbox() {
+        bbox box = new bbox();
+        box.x0 = 25;
+        box.x1 = 38;
+        box.y0 = 0;
+        box.y1 = 2;
+        potrace_bitmap testBitmap = new potrace_bitmap(40,2);
+        testBitmap.map[0] = 0x00000001;
+        testBitmap.map[1] = 0x80000000;
+        testBitmap.map[2] = 0x00000001;
+        testBitmap.map[3] = 0x80000000;
+
+        testBitmap = decompose.clear_bm_with_bbox(testBitmap,box);
+
+        assertTrue(testBitmap.map[0] == 0);
+        assertTrue(testBitmap.map[1] == 0);
+        assertTrue(testBitmap.map[2] == 0);
+        assertTrue(testBitmap.map[3] == 0);
+    }
+
+    @Test
+    public void test_pathlist_to_tree_first() {
+        potrace_bitmap testBitmap = new potrace_bitmap(5,4);
+        testBitmap.map[0] = 0xf8000000;
+        testBitmap.map[1] = 0xa8000000;
+        testBitmap.map[2] = 0xa8000000;
+        testBitmap.map[3] = 0xf8000000;
+
+        //potrace_param param = new potrace_param();
+        //potrace_path correctPath = decompose.bm_to_pathlist(testBitmap,param);
+
+        potrace_path outerPath = decompose.findpath(testBitmap,0,4,43,4);
+        potrace_path firstInnerPath = decompose.findpath(testBitmap,1,3,45,4);
+        potrace_path secondInnerPath = decompose.findpath(testBitmap,3,3,45,4);
+
+        outerPath.next = firstInnerPath;
+        firstInnerPath.next = secondInnerPath;
+
+        potrace_path restructuredOuterPath = decompose.pathlist_to_tree(outerPath,testBitmap);
+
+        assertEquals(outerPath.childlist,firstInnerPath);
+        assertEquals(outerPath.childlist.sibling, secondInnerPath);
+
+    }
+
+    @Test
+    public void test_bm_to_pathlist() {
+        potrace_bitmap testBitmap = new potrace_bitmap(7,6);
+        testBitmap.map[0] = 0xfe000000;
+        testBitmap.map[1] = 0x82000000;
+        testBitmap.map[2] = 0xaa000000;
+        testBitmap.map[3] = 0xaa000000;
+        testBitmap.map[4] = 0x82000000;
+        testBitmap.map[5] = 0xfe000000;
+
+        potrace_path restructuredOuterPath = decompose.bm_to_pathlist(testBitmap,new potrace_param());
+
+        assertEquals(true,true);
+        assertEquals(42, restructuredOuterPath.area);
+        assertEquals(20, restructuredOuterPath.childlist.area);
+        assertEquals(2, restructuredOuterPath.childlist.childlist.area);
+        assertEquals(null, restructuredOuterPath.childlist.childlist.childlist);
+        assertEquals(2, restructuredOuterPath.childlist.childlist.sibling.area);
+    }
+
+    @Test
+    public void test_pathlist_to_tree_third() {
+        potrace_bitmap newBitmap = new potrace_bitmap(8,8);
+        newBitmap.map[7]= 0xfb000000;            //  X X X X X o X X
+        newBitmap.map[6]= 0x88000000;            //  X o o o X o o o
+        newBitmap.map[5]= 0xae000000;            //  X o X o X X X o
+        newBitmap.map[4]= 0xa2000000;            //  X o X o o o X o
+        newBitmap.map[3]= 0x8a000000;            //  X o o o X o X o
+        newBitmap.map[2]= 0xba000000;            //  X o X X X o X o
+        newBitmap.map[1]= 0x82000000;            //  X o o o o o X o
+        newBitmap.map[0]= 0xfe000000;            //  X X X X X X X o
+
+        potrace_path bigOuterPath = decompose.findpath(newBitmap, 0,8,43,4);
+        potrace_path smallOuterPath = decompose.findpath(newBitmap, 6,8,43,4);
+        potrace_bitmap changedBitmap = decompose.xor_path(newBitmap,bigOuterPath);
+        potrace_path middlePath = decompose.findpath(changedBitmap,1,7,45,4);
+        changedBitmap = decompose.xor_path(changedBitmap,middlePath);
+        potrace_path firstInnerPaht = decompose.findpath(changedBitmap,2,6,43,4);
+        potrace_path secondInnerPaht = decompose.findpath(changedBitmap,4,4,43,4);
+
+        bigOuterPath.next = middlePath;
+        middlePath.next = firstInnerPaht;
+        firstInnerPaht.next = secondInnerPaht;
+        secondInnerPaht.next = smallOuterPath;
+
+        potrace_path reconstructedPath = decompose.pathlist_to_tree(bigOuterPath,newBitmap);
+
+        assertEquals(smallOuterPath,bigOuterPath.sibling);
+        assertEquals(null,smallOuterPath.childlist);
+        assertEquals(middlePath,bigOuterPath.childlist);
+        assertEquals(null,middlePath.sibling);
+        assertEquals(firstInnerPaht,middlePath.childlist);
+        assertEquals(secondInnerPaht,firstInnerPaht.sibling);
+        assertEquals(null,firstInnerPaht.childlist);
+        assertEquals(secondInnerPaht,firstInnerPaht.sibling);
+    }
 }
 
