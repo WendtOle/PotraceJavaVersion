@@ -104,15 +104,6 @@ public class potrace_bitmapTest {
     }
 
     @org.junit.Test
-    public void checkWetherMethodbm_setPotraceWordWorksCorrectSimplePicture() throws Exception {
-        System.out.println("Checking bm_setPotraceWord() with simple Picture");
-        int should = 0x20000000;
-        potrace_bitmap bm_new = potrace_bitmap.bm_setPotraceWord_WithX(simpleDefaultPicture, 0, 0, should);
-        int actual = potrace_bitmap.bm_index(bm_new, 0, 0);
-        assertEquals(should, actual);
-    }
-
-    @org.junit.Test
     public void checkBitMapMaskFunction() throws Exception {
         int should = 0x40000000;
         int actual = potrace_bitmap.bm_mask(1);
@@ -148,13 +139,6 @@ public class potrace_bitmapTest {
 
         Assert.assertEquals(true, potrace_bitmap.bm_safe(testBitMap,39,0));
         Assert.assertEquals(false, potrace_bitmap.bm_safe(testBitMap,40,0));
-    }
-
-    @org.junit.Test
-    public void test_bm_hibit() throws Exception {
-        int actual = potrace_bitmap.bm_hibit();
-        int should = 0x80000000;
-        assertEquals(should, actual);
     }
 
     @org.junit.Test
@@ -220,7 +204,7 @@ public class potrace_bitmapTest {
         testBitMap.map[2] = 0xffffffff;
         testBitMap.map[1] = 0xffffffff;
         testBitMap.map[0] = 0xffffffff;
-        potrace_bitmap.bm_clearexcess(testBitMap);
+        decompose.bm_clearexcess(testBitMap);
         Assert.assertEquals(-1,testBitMap.map[0]);
         Assert.assertEquals(0xff000000,testBitMap.map[1]);
         Assert.assertEquals(-1,testBitMap.map[2]);
@@ -230,9 +214,9 @@ public class potrace_bitmapTest {
     @org.junit.Test
     public void test_bm_clear() throws Exception {
         potrace_bitmap testBitMap = new potrace_bitmap(40,2);
-        testBitMap.map[3] = 0xf8ffffff;
+        testBitMap.map[3] = 0xf0000000;
         testBitMap.map[2] = 0xffffffff;
-        testBitMap.map[1] = 0xffffffff;
+        testBitMap.map[1] = 0xf0000000;
         testBitMap.map[0] = 0xffffffff;
         potrace_bitmap.bm_clear(testBitMap,0);
         Assert.assertEquals(false, potrace_bitmap.BM_GET(testBitMap,0,0));

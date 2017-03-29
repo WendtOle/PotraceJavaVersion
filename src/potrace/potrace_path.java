@@ -3,6 +3,12 @@ package potrace;
 /**
  * Created by andreydelany on 04/03/2017.
  */
+    //Entwickler:
+    /* Linked list of signed curve segments. Also carries a tree structure. */
+
+    //Ole:
+    /* Ursprünglich aus potracelib.h */
+
 public class potrace_path {
     public int area;               //area of the bitmap path
     public int sign;               //+ or -, depending on orientation

@@ -3,6 +3,15 @@ package potrace;
 /**
  * Created by andreydelany on 04/03/2017.
  */
+
+    //Ole:
+    /*
+    Ursprünglich war die Typdefinition von potrace_param in potracelib.h -> extra klasse
+    Außerdem habe ich auch die Default Belegung und die TurnPolicies mit ausgelagert */
+
+    //TODO: Turnpolicies zu einem ENUM machen
+    //TODO: Die Entscheidungen in welche Richtung ein Ambigouse Turn gemacht werden soll in decompose könnten hier entschieden werden, oder in dem ENUM
+
 public class potrace_param {
 
     static int POTRACE_TURNPOLICY_BLACK = 0;

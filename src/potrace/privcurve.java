@@ -3,6 +3,11 @@ package potrace;
 /**
  * Created by andreydelany on 06/03/2017.
  */
+
+    //Ole:
+    /* Ursprongliche in Curve.c
+    Die Klasse kümmert sich um die genauen informationen zu der Curve, und nicht nur um die öffentlich zugänglichen wie bei potrace_curve */
+
 public class privcurve {
     int n;                                          //number of segments
     int[] tag;                                      //tag[n]: POTRACE_CORNER or POTRACE_CURVETO

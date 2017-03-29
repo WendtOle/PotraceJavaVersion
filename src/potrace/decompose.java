@@ -6,35 +6,18 @@ import java.awt.*;
 /**
  * Created by andreydelany on 05/03/2017.
  */
+
+    //Ole:
+    /* Nichts groß geändert, außer das bbox in einer eigenen klasse ist,
+    und dass das arbeiten mit listen schwieriger ist in Java. */
+
 public class decompose {
-
-    static Point findnext(potrace_bitmap bm, Point XY) { //TODO check it its working correct
-        int x0;
-
-        x0 = (XY.x) & ~(potrace_bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
-
-        for (int y=XY.y; y>=0; y--) {
-            for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {
-
-                if (potrace_bitmap.bm_index(bm, x, y) != 0) {
-                    while (!potrace_bitmap.BM_GET(bm, x, y)) {
-                        x++;
-                    }
-	                /* found */
-                    return new Point(x,y);
-                }
-            }
-            x0 = 0;
-        }
-        /* not found */
-        return null;
-    }
 
     static boolean detrand(int x, int y) {
         int z; //TODO unsigned
         char t[] = {
-    /* non-linear sequence: constant term of inverse in GF(8),
-       mod x^8+x^4+x^3+x+1 */
+        /* non-linear sequence: constant term of inverse in GF(8),
+        mod x^8+x^4+x^3+x+1 */
             0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1,
                     0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0,
                     0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
@@ -48,12 +31,49 @@ public class decompose {
                     1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
         };
 
-  /* 0x04b3e375 and 0x05a8ef93 are chosen to contain every possible
-     5-bit sequence */
+        /* 0x04b3e375 and 0x05a8ef93 are chosen to contain every possible
+        5-bit sequence */
         z = ((0x04b3e375 * x) ^ y) * 0x05a8ef93;
         z = t[z & 0xff] ^ t[(z>>8) & 0xff] ^ t[(z>>16) & 0xff] ^ t[(z>>24) & 0xff];
         return z == 1 ? true : false;
     }
+
+    static potrace_bitmap bm_clearexcess(potrace_bitmap bm) {
+        int mask;
+        int y;
+
+        if (bm.w % potrace_bitmap.PIXELINWORD != 0) {
+            mask = potrace_bitmap.BM_ALLBITS << (potrace_bitmap.PIXELINWORD - (bm.w % potrace_bitmap.PIXELINWORD));
+            for (y=0; y<bm.h; y++) {
+                bm.map[y * bm.dy + bm.dy - 1] = potrace_bitmap.bm_index(bm, bm.w, y) & mask;
+            }
+        }
+        return bm;
+    }
+
+    //Ole:
+    /* gehört definitiv in die bbox klasse, da sie die bbox einfach mit standartwerten füllt, also initialisiert */
+
+    //Entwickler:
+    /*Find the bounding box of a given path. Path is assumed to be of
+    non-zero length. */
+
+
+    static potrace_bitmap clear_bm_with_bbox(potrace_bitmap bm, bbox bbox) {
+        int imin = (bbox.x0 / potrace_bitmap.PIXELINWORD);
+        int imax = ((bbox.x1 + potrace_bitmap.PIXELINWORD-1) / potrace_bitmap.PIXELINWORD);
+        int i, y;
+
+        for (y=bbox.y0; y<bbox.y1; y++) {
+            for (i=imin; i<imax; i++) {
+                bm.map[y * bm.dy + i] = 0;
+            }
+        }
+        return bm;
+    }
+
+    /* return the "majority" value of bitmap bm at intersection (x,y). We
+    assume that the bitmap is balanced at "radius" 1.  */
 
     static boolean majority(potrace_bitmap bm, int x, int y) {
         int i, a, ct;
@@ -74,6 +94,122 @@ public class decompose {
         }
         return false;
     }
+
+    //Entwickler:
+    /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
+    must be a multiple of BM_WORDBITS. */
+
+    //Ole:
+    /* die beiden Methoden xor_to_ref und xor_path, könnten beide Methoden der Bitmap klasse sein
+    oder in eine eigene Methode gehören, da sie wenige abhängigkeiten besitzen
+    sie verändern einfach nur den Zustand der Bitmap in dem sie den eingegebenen Pfad von der Bitmap abziehen */
+    /*Ich musste hier den Code etwas verändern. In C wurde einfach ^= verwendet, was mir nicht möglich war,
+    ich musste zuerst mir den Wert holen, ihn verunden und dann überschreiben, im wesendtlichen aber gleich */
+
+    static potrace_bitmap xor_to_ref(potrace_bitmap bm, int x, int y, int xa) {
+        int xhi = x & - potrace_bitmap.PIXELINWORD;
+        int xlo = x & (potrace_bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
+        int i;
+
+        if (xhi<xa) { //Todo find case in which this line is run for testing
+            for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
+                int accessIndex = (bm.dy * y) + (i / potrace_bitmap.PIXELINWORD);
+                bm.map[accessIndex] = bm.map[accessIndex]  ^ potrace_bitmap.BM_ALLBITS; //Todo check
+            }
+        } else {
+            for (i = xa; i < xhi; i+=potrace_bitmap.PIXELINWORD) {
+                int accessIndex = (bm.dy * y) + (i / potrace_bitmap.PIXELINWORD);
+                bm.map[accessIndex] = bm.map[accessIndex]  ^ potrace_bitmap.BM_ALLBITS; //Todo check
+            }
+        }
+
+        // note: the following "if" is needed because x86 treats a<<b as
+        //a<<(b&31). I spent hours looking for this bug.
+        if (xlo > 0) {
+            int accessIndex = (bm.dy * y) + (xhi / potrace_bitmap.PIXELINWORD);
+            bm.map[accessIndex] = bm.map[accessIndex]  ^ (potrace_bitmap.BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)); //Todo check
+        }
+
+        return bm;
+    }
+
+    //Entwickler:
+    /* a path is represented as an array of points, which are thought to
+    lie on the corners of pixels (not on their centers). The path point
+    (x,y) is the lower left corner of the pixel (x,y). Paths are
+    represented by the len/pt components of a path_t object (which
+    also stores other information about the path) */
+
+    /* xor the given pixmap with the interior of the given path. Note: the
+    path must be within the dimensions of the pixmap. */
+
+    static potrace_bitmap xor_path(potrace_bitmap bm, potrace_path p) {
+        int xa, x, y, k, y1;
+
+        if (p.priv.len <= 0) {  /* a path of length 0 is silly, but legal */
+            return null;
+        }
+
+        y1 = p.priv.pt[p.priv.len-1].y;
+        xa = p.priv.pt[0].x & - potrace_bitmap.PIXELINWORD;
+
+        for (k=0; k<p.priv.len; k++) {
+            x = p.priv.pt[k].x;
+            y = p.priv.pt[k].y;
+
+            if (y != y1) {
+                /* efficiently invert the rectangle [x,xa] x [y,y1] */
+                bm = xor_to_ref(bm, x, auxiliary.min(y,y1), xa);
+                y1 = y;
+            }
+        }
+
+        return bm;
+    }
+
+    //Ole:
+    /* kann möglicherweise zur bbox klasse gehören und als Initialisator oder constructor fungieren */
+
+    //Entwickler:
+    /* Find the bounding box of a given path. Path is assumed to be of
+    non-zero length. */
+
+    static bbox setbbox_path(bbox bbox, potrace_path p) {
+        int x, y;
+        int k;
+
+        bbox.y0 = Integer.MAX_VALUE;
+        bbox.y1 = 0;
+        bbox.x0 = Integer.MAX_VALUE;
+        bbox.x1 = 0;
+
+        for (k=0; k<p.priv.len; k++) {
+            x = p.priv.pt[k].x;
+            y = p.priv.pt[k].y;
+
+            if (x < bbox.x0) {
+                bbox.x0 = x;
+            }
+            if (x > bbox.x1) {
+                bbox.x1 = x;
+            }
+            if (y < bbox.y0) {
+                bbox.y0 = y;
+            }
+            if (y > bbox.y1) {
+                bbox.y1 = y;
+            }
+        }
+        return bbox;
+    }
+
+    //Entwickler:
+    /* compute a path in the given pixmap, separating black from white.
+    Start path at the point (x0,x1), which must be an upper left corner
+    of the path. Also compute the area enclosed by the path. Return a
+    new path_t object, or NULL on error (note that a legitimate path
+    cannot have length 0). Sign is required for correct interpretation
+    of turnpolicies. */
 
     static potrace_path findpath(potrace_bitmap bm, int x0, int y0, int sign, int turnpolicy) {
         int x, y, dirx, diry, len, size, area;
@@ -155,102 +291,17 @@ public class decompose {
         return p;
     }
 
-    static int min(int a, int b) {
-        return ((a) < (b) ? (a) : (b));
-    }
+    //Ole:
+    /* diese Methode ordnet die herrausgefundenen Pfade einfach nur in eine ordentliche Baumstruktur,
+    ich würde denke, dass das vielleicht in die potrace_path klasse gehört, aber vielleicht sogar in eine eigenen klasse gehört
+    da die Methode ziemlich komplex ist */
+    /* Es war sehr schwierig, weil hier insert_before_hook genutzt werden musste,
+    und dies nicht ohne pointern komplett problem funktioniert hat.
+    Ich hab es etwas umgeschrieben.
+    */
 
-    static potrace_bitmap xor_to_ref(potrace_bitmap bm, int x, int y, int xa) {
-        int xhi = x & - potrace_bitmap.PIXELINWORD;
-        int xlo = x & (potrace_bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
-        int i;
 
-        if (xhi<xa) { //Todo find case in which this line is run for testing
-            for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
-                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.BM_ALLBITS); //Todo check
-            }
-        } else {
-            for (i = xa; i < xhi; i+=potrace_bitmap.PIXELINWORD) {
-                bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,i,y,potrace_bitmap.bm_index(bm, i, y) ^ potrace_bitmap.BM_ALLBITS); //Todo check
-            }
-        }
-
-        // note: the following "if" is needed because x86 treats a<<b as
-        //a<<(b&31). I spent hours looking for this bug.
-        if (xlo > 0) {
-            bm = potrace_bitmap.bm_setPotraceWord_WithX(bm,xhi,y,potrace_bitmap.bm_index(bm, xhi, y) ^ (potrace_bitmap.BM_ALLBITS << (potrace_bitmap.PIXELINWORD - xlo)));
-        }
-
-        return bm;
-    }
-
-    static potrace_bitmap xor_path(potrace_bitmap bm, potrace_path p) {
-        int xa, x, y, k, y1;
-
-        if (p.priv.len <= 0) {  /* a path of length 0 is silly, but legal */
-            return null;
-        }
-
-        y1 = p.priv.pt[p.priv.len-1].y;
-        xa = p.priv.pt[0].x & - potrace_bitmap.PIXELINWORD; //TODO what da fuck //xa = p.priv.pt[0].x & - BM_WORDBITS;
-
-        for (k=0; k<p.priv.len; k++) {
-            x = p.priv.pt[k].x;
-            y = p.priv.pt[k].y;
-
-            if (y != y1) {
-                /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                bm = xor_to_ref(bm, x, min(y,y1), xa);
-                y1 = y;
-            }
-        }
-
-        return bm;
-    }
-
-    /* Find the bounding box of a given path. Path is assumed to be of
-   non-zero length. */
-    static bbox setbbox_path(bbox bbox, potrace_path p) {
-        int x, y;
-        int k;
-
-        bbox.y0 = Integer.MAX_VALUE;
-        bbox.y1 = 0;
-        bbox.x0 = Integer.MAX_VALUE;
-        bbox.x1 = 0;
-
-        for (k=0; k<p.priv.len; k++) {
-            x = p.priv.pt[k].x;
-            y = p.priv.pt[k].y;
-
-            if (x < bbox.x0) {
-                bbox.x0 = x;
-            }
-            if (x > bbox.x1) {
-                bbox.x1 = x;
-            }
-            if (y < bbox.y0) {
-                bbox.y0 = y;
-            }
-            if (y > bbox.y1) {
-                bbox.y1 = y;
-            }
-        }
-        return bbox;
-    }
-
-    static potrace_bitmap clear_bm_with_bbox(potrace_bitmap bm, bbox bbox) {
-        int imin = (bbox.x0 / potrace_bitmap.PIXELINWORD);
-        int imax = ((bbox.x1 + potrace_bitmap.PIXELINWORD-1) / potrace_bitmap.PIXELINWORD);
-        int i, y;
-
-        for (y=bbox.y0; y<bbox.y1; y++) {
-            for (i=imin; i<imax; i++) {
-                bm.map[y * bm.dy + i] = 0;
-            }
-        }
-        return bm;
-    }
-
+    //Entwickler:
     /* Give a tree structure to the given path potrace.list, based on "insideness"
     testing. I.e., path A is considered "below" path B if it is inside
     path B. The input pathlist is assumed to be ordered so that "outer"
@@ -274,13 +325,11 @@ public class decompose {
         potrace_path heap1;
         potrace_path cur = new potrace_path();
         potrace_path head = new potrace_path();
-        potrace_path plist_hook;          // for fast appending to linked potrace.list
-        potrace_path hook_in, hook_out; // for fast appending to linked potrace.list
+        potrace_path plist_hook;                // for fast appending to linked potrace.list
+        potrace_path hook_in, hook_out;         // for fast appending to linked potrace.list
         bbox bbox = new bbox();
 
         bm = potrace_bitmap.bm_clear(bm, 0);
-        bm = potrace_bitmap.bm_clearexcess(bm);
-
 
         // save original "next" pointers
         for (p = plist; p != null; p = p.next) {
@@ -290,12 +339,13 @@ public class decompose {
 
         heap = plist;
 
-        // the heap holds a potrace.list of lists of paths. Use "childlist" field
-        //for outer potrace.list, "next" field for inner potrace.list. Each of the sublists
-        //is to be turned into a tree. This code is messy, but it is
-        //actually fast. Each path is rendered exactly once. We use the
-        //heap to get a tail recursive algorithm: the heap holds a potrace.list of
-        //pathlists which still need to be transformed.
+        //Entwickler:
+        /* the heap holds a potrace.list of lists of paths. Use "childlist" field
+        for outer potrace.list, "next" field for inner potrace.list. Each of the sublists
+        is to be turned into a tree. This code is messy, but it is
+        actually fast. Each path is rendered exactly once. We use the
+        heap to get a tail recursive algorithm: the heap holds a potrace.list of
+        pathlists which still need to be transformed. */
 
         while (heap != null) {
             // unlink first sublist
@@ -312,9 +362,15 @@ public class decompose {
             bm = xor_path(bm, head);
             bbox = setbbox_path(bbox, head);
 
-            // now do insideness test for each element of cur; append it to
-            //head->childlist if it's inside head, else append it to
-            //head->next.
+
+            //Ole:
+            /* vom Gefühl könnte dieser Insidness test in eine eigene methode, wenn nicht sogar in eine eigene klasse */
+
+            //Entwickler:
+            /* now do insideness test for each element of cur; append it to
+            head->childlist if it's inside head, else append it to
+            head->next. */
+
             hook_in = head.childlist;
             hook_out = head.next;
 
@@ -400,6 +456,41 @@ public class decompose {
         return plist;
     }
 
+    //Entwickler:
+    /* find the next set pixel in a row <= y. Pixels are searched first
+    left-to-right, then top-down. In other words, (x,y)<(x',y') if y>y'
+    or y=y' and x<x'. If found, return 0 and store pixel in
+    (*xp,*yp). Else return 1. Note that this function assumes that
+    excess bytes have been cleared with bm_clearexcess. */
+
+    static Point findnext(potrace_bitmap bm, Point XY) { //TODO check it its working correct
+        int x0;
+
+        x0 = (XY.x) & ~(potrace_bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
+
+        for (int y=XY.y; y>=0; y--) {
+            for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {
+
+                if (potrace_bitmap.bm_index(bm, x, y) != 0) {
+                    while (!potrace_bitmap.BM_GET(bm, x, y)) {
+                        x++;
+                    }
+	                /* found */
+                    return new Point(x,y);
+                }
+            }
+            x0 = 0;
+        }
+        /* not found */
+        return null;
+    }
+
+    //Entwickler:
+    /* Decompose the given bitmap into paths. Returns a linked list of
+    path_t objects with the fields len, pt, area, sign filled
+    in. Returns 0 on success with plistp set, or -1 on error with errno
+    set. */
+
     static potrace_path bm_to_pathlist(potrace_bitmap bm, potrace_param param) {
         int x;
         int y;
@@ -411,7 +502,7 @@ public class decompose {
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
-        bm1 = potrace_bitmap.bm_clearexcess(bm1);
+        bm1 = bm_clearexcess(bm1);
 
         // iterate through components
         x = 0;
