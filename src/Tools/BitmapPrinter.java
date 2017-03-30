@@ -37,7 +37,7 @@ public class BitmapPrinter {
     }
 
     private String getCurrentPotraceWord(int currentLine, int currentPotraceWord) {
-        return Integer.toBinaryString(bitmap.map[currentLine*bitmap.dy + currentPotraceWord]);
+        return Long.toBinaryString(bitmap.map[currentLine*bitmap.dy + currentPotraceWord]);
     }
 
     private void fillUpPotraceWordWithZeros(String currentPotraceWord) {
