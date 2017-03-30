@@ -92,7 +92,7 @@ public class decomposeTest {
     @Test
     public void test_majorityWhereIsActualMajority() throws Exception {
         potrace_bitmap testBitmap = new potrace_bitmap(4,4);
-        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,3),new Point(3,0),true);
+        testBitmap = BitMapManipulator.fillCompleteBitMap(testBitmap,true);
         testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(0,3),false);
         testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(1,2),false);
         testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(2,2),false);
@@ -265,7 +265,7 @@ public class decomposeTest {
     @Test
     public void test_pathlist_to_tree_first() {
         potrace_bitmap testBitmap = new potrace_bitmap(5,4);
-        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,3), new Point(4,0),true);
+        testBitmap = BitMapManipulator.fillCompleteBitMap(testBitmap,true);
         testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(1,2), new Point(1,1),false);
         testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(3,2), new Point(3,1),false);
 
@@ -287,7 +287,7 @@ public class decomposeTest {
     public void test_bm_to_pathlist() {
         potrace_bitmap testBitmap = new potrace_bitmap(7,6);
 
-        testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(0,5), new Point(6,0), true);
+        testBitmap = BitMapManipulator.fillCompleteBitMap(testBitmap,true);
         testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(1,4), new Point(5,1), false);
         testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(2,3), new Point(2,2), true);
         testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(4,3), new Point(4,2), true);

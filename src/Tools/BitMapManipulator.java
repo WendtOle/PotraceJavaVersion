@@ -8,6 +8,13 @@ import java.awt.*;
  */
 public class BitMapManipulator {
 
+    public static potrace_bitmap fillCompleteBitMap(potrace_bitmap bitmap, boolean filled) {
+        for (int y = 0; y < bitmap.h; y ++)
+            for (int x = 0 ; x <= bitmap.w; x ++)
+                bitmap.BM_PUT(x,y,filled);
+        return bitmap;
+    }
+
     public static potrace_bitmap addPolygon(potrace_bitmap bitmap, Point upperLeftCorner, Point downRightCorner, boolean filled) {
         for (int y = downRightCorner.y; y <= upperLeftCorner.y; y ++)
             for (int x = upperLeftCorner.x ; x <= downRightCorner.x; x ++)
