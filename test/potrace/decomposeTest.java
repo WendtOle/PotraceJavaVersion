@@ -54,19 +54,12 @@ public class decomposeTest {
         expectedPointsForSmallPath[10] = new Point(1,3);
         expectedPointsForSmallPath[11] = new Point(1,4);
 
-      /*  BitMapManipulator creator = new BitMapManipulator(findPathTestBitmap);
-        creator.addPolygon(new Point(0,3),new Point(1,1), true);
-        creator.addBlob(new Point(1,3),false);
-        creator.addBlob(new Point(0,1),false);
-        creator.addBlob(new Point(0,0),true);
-        creator.addBlob(new Point(2,1),true);
-        creator.addBlob(new Point(3,2),true);
-*/
+        findPathTestBitmap = BitMapManipulator.addPolygon(findPathTestBitmap,new Point(0,3), new Point(0,2),true);
+        findPathTestBitmap = BitMapManipulator.addPolygon(findPathTestBitmap,new Point(1,2), new Point(1,1),true);
+        findPathTestBitmap = BitMapManipulator.addBlob(findPathTestBitmap,new Point(0,0), true);
+        findPathTestBitmap = BitMapManipulator.addBlob(findPathTestBitmap,new Point(2,1), true);
+        findPathTestBitmap = BitMapManipulator.addBlob(findPathTestBitmap,new Point(3,0), true);
 
-        findPathTestBitmap.map[3] = 0x8000000000000000L;
-        findPathTestBitmap.map[2] = 0xc000000000000000L;
-        findPathTestBitmap.map[1] = 0x6000000000000000L;
-        findPathTestBitmap.map[0] = 0x9000000000000000L;
     }
 
 
@@ -83,10 +76,8 @@ public class decomposeTest {
     @Test
     public void test_findnextWithNextPointNotInSameLine() throws Exception {
         potrace_bitmap testBitmap = new potrace_bitmap(128,2);
-        testBitmap.map[3] = 0x4900000000000000L;
-        testBitmap.map[2] = 0;
-        testBitmap.map[1] = 0;
-        testBitmap.map[0] = 0;
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(97,1),true);
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(99,1),true);
 
         Point startPoint = new Point(0,0);
         Point foundPoint = decompose.findnext(testBitmap,startPoint);
@@ -101,10 +92,12 @@ public class decomposeTest {
     @Test
     public void test_majorityWhereIsActualMajority() throws Exception {
         potrace_bitmap testBitmap = new potrace_bitmap(4,4);
-        testBitmap.map[3] = 0x7000000000000000L;
-        testBitmap.map[2] = 0xb000000000000000L;
-        testBitmap.map[1] = 0xd000000000000000L;
-        testBitmap.map[0] = 0xe000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,3),new Point(3,0),true);
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(0,3),false);
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(1,2),false);
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(2,2),false);
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(3,0),false);
+
         BitmapPrinter bitmapPrinter = new BitmapPrinter(testBitmap);
         bitmapPrinter.print();
         Assert.assertEquals(true, decompose.majority(testBitmap,2,2));
@@ -113,10 +106,8 @@ public class decomposeTest {
     @Test
     public void test_majorityWhereIsNoMajority() throws Exception {
         potrace_bitmap testBitmap = new potrace_bitmap(4,4);
-        testBitmap.map[3] = 0x3000000000000000L;
-        testBitmap.map[2] = 0x3000000000000000L;
-        testBitmap.map[1] = 0xc000000000000000L;
-        testBitmap.map[0] = 0xc000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(2,3), new Point(3,2),true);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,1), new Point(1,0),true);
         BitmapPrinter bitmapPrinter = new BitmapPrinter(testBitmap);
         bitmapPrinter.print();
         Assert.assertEquals(false, decompose.majority(testBitmap,2,2));
@@ -147,8 +138,6 @@ public class decomposeTest {
         for (int i = 0 ; i < expectedPointsForSmallPath.length; i ++)
             comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
     }
-
-
 
    @Test
     public void test_findPath_right() throws Exception {
@@ -181,8 +170,7 @@ public class decomposeTest {
     @Test
     public void test_findPath_boundary() throws Exception {
         potrace_bitmap testBitmap = new potrace_bitmap(128,1);
-        testBitmap.map[0] = 1;
-        testBitmap.map[1] = 0x8000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(63,0), new Point(64,0),true);
 
         Point[] expectedPoints = new Point[6];
         expectedPoints[0] = new Point(63,1);
@@ -200,10 +188,9 @@ public class decomposeTest {
     @Test
     public void test_xor_path_xor_to_ref_one() {
         potrace_bitmap testBitmap = new potrace_bitmap(4,4);
-        testBitmap.map[0] = 0x1000000000000000L;
-        testBitmap.map[1] = 0x6000000000000000L;
-        testBitmap.map[2] = 0x6000000000000000L;
-        testBitmap.map[3] = 0xc000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(1,2), new Point(2,1),true);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,0), new Point(1,0),true);
+        testBitmap = BitMapManipulator.addBlob(testBitmap, new Point(3,3),true);
 
         potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
         potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
@@ -216,10 +203,7 @@ public class decomposeTest {
     @Test
     public void test_xor_path_xor_to_ref_two() {
         potrace_bitmap testBitmap = new potrace_bitmap(128,2);
-        testBitmap.map[0] = 1;
-        testBitmap.map[1] = 0x8000000000000000L;
-        testBitmap.map[2] = 1;
-        testBitmap.map[3] = 0x8000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(63,1), new Point(64,0),true);
 
         potrace_path path = decompose.findpath(testBitmap,63,2,43,4);
         potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
@@ -233,10 +217,10 @@ public class decomposeTest {
     public void test_setbbox_path() {
         bbox box = new bbox();
         potrace_bitmap testBitmap = new potrace_bitmap(4,4);
-        testBitmap.map[0] = 0x1000000000000000L;
-        testBitmap.map[1] = 0x6000000000000000L;
-        testBitmap.map[2] = 0x6000000000000000L;
-        testBitmap.map[3] = 0xc000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(1,2), new Point(2,1),true);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,0), new Point(1,0),true);
+        testBitmap = BitMapManipulator.addBlob(testBitmap, new Point(3,3),true);
+
         potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
 
         bbox resultBox = decompose.setbbox_path(box,path);
@@ -250,10 +234,7 @@ public class decomposeTest {
     public void test_setbbox_path_extended() {
         bbox box = new bbox();
         potrace_bitmap testBitmap = new potrace_bitmap(128,2);
-        testBitmap.map[0] = 1;
-        testBitmap.map[1] = 0x8000000000000000L;
-        testBitmap.map[2] = 1;
-        testBitmap.map[3] = 0x8000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(63,1), new Point(64,0),true);
         potrace_path path = decompose.findpath(testBitmap,63,1,43,4);
 
         bbox resultBox = decompose.setbbox_path(box,path);
@@ -271,10 +252,7 @@ public class decomposeTest {
         box.y0 = 0;
         box.y1 = 2;
         potrace_bitmap testBitmap = new potrace_bitmap(128,2);
-        testBitmap.map[0] = 1;
-        testBitmap.map[1] = 0x8000000000000000L;
-        testBitmap.map[2] = 1;
-        testBitmap.map[3] = 0x8000000000000000L;
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(63,1), new Point(64,0),true);
 
         testBitmap = decompose.clear_bm_with_bbox(testBitmap,box);
 
@@ -287,13 +265,9 @@ public class decomposeTest {
     @Test
     public void test_pathlist_to_tree_first() {
         potrace_bitmap testBitmap = new potrace_bitmap(5,4);
-        testBitmap.map[0] = 0xf800000000000000L;
-        testBitmap.map[1] = 0xa800000000000000L;
-        testBitmap.map[2] = 0xa800000000000000L;
-        testBitmap.map[3] = 0xf800000000000000L;
-
-        //potrace_param param = new potrace_param();
-        //potrace_path correctPath = decompose.bm_to_pathlist(testBitmap,param);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(0,3), new Point(4,0),true);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(1,2), new Point(1,1),false);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap,new Point(3,2), new Point(3,1),false);
 
         potrace_path outerPath = decompose.findpath(testBitmap,0,4,43,4);
         potrace_path firstInnerPath = decompose.findpath(testBitmap,1,3,45,4);
@@ -312,12 +286,14 @@ public class decomposeTest {
     @Test
     public void test_bm_to_pathlist() {
         potrace_bitmap testBitmap = new potrace_bitmap(7,6);
-        testBitmap.map[0] = 0xfe00000000000000L;
-        testBitmap.map[1] = 0x8200000000000000L;
-        testBitmap.map[2] = 0xaa00000000000000L;
-        testBitmap.map[3] = 0xaa00000000000000L;
-        testBitmap.map[4] = 0x8200000000000000L;
-        testBitmap.map[5] = 0xfe00000000000000L;
+
+        testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(0,5), new Point(6,0), true);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(1,4), new Point(5,1), false);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(2,3), new Point(2,2), true);
+        testBitmap = BitMapManipulator.addPolygon(testBitmap, new Point(4,3), new Point(4,2), true);
+
+        BitmapPrinter printer = new BitmapPrinter(testBitmap);
+        printer.print();
 
         potrace_path restructuredOuterPath = decompose.bm_to_pathlist(testBitmap,new potrace_param());
 
@@ -332,14 +308,16 @@ public class decomposeTest {
     @Test
     public void test_pathlist_to_tree_third() {
         potrace_bitmap newBitmap = new potrace_bitmap(8,8);
-        newBitmap.map[7]= 0xfb00000000000000L;            //  X X X X X o X X
-        newBitmap.map[6]= 0x8800000000000000L;            //  X o o o X o o o
-        newBitmap.map[5]= 0xae00000000000000L;            //  X o X o X X X o
-        newBitmap.map[4]= 0xa200000000000000L;            //  X o X o o o X o
-        newBitmap.map[3]= 0x8a00000000000000L;            //  X o o o X o X o
-        newBitmap.map[2]= 0xba00000000000000L;            //  X o X X X o X o
-        newBitmap.map[1]= 0x8200000000000000L;            //  X o o o o o X o
-        newBitmap.map[0]= 0xfe00000000000000L;            //  X X X X X X X o
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(0,7), new Point(0,0),true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(0,7), new Point(4,7),true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(0,0), new Point(7,0),true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(6,5), new Point(6,0),true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(4,7), new Point(4,5),true);
+        newBitmap = BitMapManipulator.addBlob(newBitmap, new Point(5,5), true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(6,7), new Point(7,7),true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(2,5), new Point(2,4),true);
+        newBitmap = BitMapManipulator.addPolygon(newBitmap, new Point(2,2), new Point(4,2),true);
+        newBitmap = BitMapManipulator.addBlob(newBitmap, new Point(4,3), true);
 
         potrace_path bigOuterPath = decompose.findpath(newBitmap, 0,8,43,4);
         potrace_path smallOuterPath = decompose.findpath(newBitmap, 6,8,43,4);
