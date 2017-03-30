@@ -72,9 +72,8 @@ public class decomposeTest {
 
     @Test
     public void test_findnextWithNextPointInSameLine() throws Exception {
-        BitMapManipulator creator = new BitMapManipulator(70,1);
-        creator.addBlob(new Point(65,0),true);
-        potrace_bitmap testBitmap = creator.getBitmap();
+        potrace_bitmap testBitmap = new potrace_bitmap(70,1);
+        testBitmap = BitMapManipulator.addBlob(testBitmap,new Point(65,0),true);
 
         Point startPoint = new Point(0,0);
         Point foundPoint = decompose.findnext(testBitmap,startPoint);
