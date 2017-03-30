@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class potraceTest {
 
-    potrace_bitmap[] bitmaps = new potrace_bitmap[6];
+    potrace_bitmap[] bitmaps = new potrace_bitmap[8];
 
     private potrace_bitmap default_bitmap_second() {
         potrace_bitmap newBitmap = new potrace_bitmap(4,4);
@@ -78,42 +78,31 @@ public class potraceTest {
 
     private potrace_bitmap default_bitmap_Eigth() {
         potrace_bitmap newBitmap = new potrace_bitmap(128,3);
-        newBitmap.map[0]= 0xffffffff;
-        newBitmap.map[1]= 0xffffffff;
-        newBitmap.map[2]= 0xffffffff;
-        newBitmap.map[3]= 0xffffffff;
-        newBitmap.map[4]= 0x80000000;
-        newBitmap.map[5]= 0x0;
-        newBitmap.map[6]= 0x0;
-        newBitmap.map[7]= 0x1;
-        newBitmap.map[8]= 0xffffffff;
-        newBitmap.map[9]= 0xffffffff;
-        newBitmap.map[10]= 0xffffffff;
-        newBitmap.map[11]= 0xffffffff;
+        newBitmap.map[0]= -1;
+        newBitmap.map[1]= -1;
+
+        newBitmap.map[2]= 0x8000000000000000L;
+        newBitmap.map[3]= 1;
+
+        newBitmap.map[4]= -1;
+        newBitmap.map[5]= -1;
+
         return newBitmap;
     }
 
     private potrace_bitmap default_bitmap_Ten() {
         potrace_bitmap newBitmap = new potrace_bitmap(128,4);
-        newBitmap.map[15]= 0x344b90a0;
-        newBitmap.map[14]= 0xb25cd19d;
-        newBitmap.map[13]= 0xf3182ad3;
-        newBitmap.map[12]= 0x5200f5c7;
+        newBitmap.map[7]= 0xb25cd19d344b90a0L;
+        newBitmap.map[6]= 0x5200f5c7f3182ad3L;
 
-        newBitmap.map[11]= 0x5f69b290;
-        newBitmap.map[10]= 0xa137ca74;
-        newBitmap.map[9]= 0x8255f352;
-        newBitmap.map[8]= 0x7e2b6daa;
+        newBitmap.map[5]= 0xa137ca745f69b290L;
+        newBitmap.map[4]= 0x7e2b6daa8255f352L;
 
-        newBitmap.map[7]= 0x15aac2b8;
-        newBitmap.map[6]= 0x8dd23a93;
-        newBitmap.map[5]= 0x2dd8e813;
-        newBitmap.map[4]= 0x4882ff30;
+        newBitmap.map[3]= 0x8dd23a9315aac2b8L;
+        newBitmap.map[2]= 0x4882ff302dd8e813L;
 
-        newBitmap.map[3]= 0xf488b3a8;
-        newBitmap.map[2]= 0x5bbd4559;
-        newBitmap.map[1]= 0xe7bbcb0e;
-        newBitmap.map[0]= 0x4ef247da;
+        newBitmap.map[1]= 0x5bbd4559f488b3a8L;
+        newBitmap.map[0]= 0x4ef247dae7bbcb0eL;
         return newBitmap;
     }
 
@@ -126,9 +115,8 @@ public class potraceTest {
         bitmaps[3] = default_bitmap_Fifth();
         bitmaps[4] = default_bitmap_Sixth();
         bitmaps[5] = default_bitmap_Seventh();
-        //FixMe
-        //bitmaps[6] = default_bitmap_Eigth();
-        //bitmaps[7] = default_bitmap_Ten();
+        bitmaps[6] = default_bitmap_Eigth();
+        bitmaps[7] = default_bitmap_Ten();
     }
 
     @Test
