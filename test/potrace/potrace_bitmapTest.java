@@ -1,7 +1,6 @@
 package potrace;
 
-import Tools.BitMapManipulator;
-import Tools.BitmapPrinter;
+import Tools.BetterBitmap;
 import org.junit.Assert;
 
 import java.awt.*;
@@ -16,8 +15,8 @@ public class potrace_bitmapTest {
 
     @org.junit.Test
     public void test_bm_get() throws Exception {
-        potrace_bitmap testBitMap = new potrace_bitmap(2,2);
-        testBitMap = BitMapManipulator.addBlob(testBitMap, new Point(1,1),true);
+        BetterBitmap testBitMap = new BetterBitmap(2,2);
+        testBitMap.addBlob(new Point(1,1),true);
 
         Assert.assertEquals(false, testBitMap.BM_GET(1,0));
         Assert.assertEquals(false, testBitMap.BM_GET(0,0));
@@ -44,8 +43,8 @@ public class potrace_bitmapTest {
 
     @org.junit.Test
     public void test_bm_clear() throws Exception {
-        potrace_bitmap testBitMap = new potrace_bitmap(70,1);
-        testBitMap = BitMapManipulator.addPolygon(testBitMap, new Point(60,0),new Point(67,0),true);
+        BetterBitmap testBitMap = new BetterBitmap(70,1);
+        testBitMap.addPolygon(new Point(60,0),new Point(67,0),true);
 
         potrace_bitmap.bm_clear(testBitMap,0);
         Assert.assertEquals(false, testBitMap.BM_GET(0,0));
@@ -58,8 +57,8 @@ public class potrace_bitmapTest {
 
     @org.junit.Test
     public void test_bm_dup() throws Exception {
-        potrace_bitmap originalBitmap = new potrace_bitmap(70,2);
-        originalBitmap = BitMapManipulator.addPolygon(originalBitmap, new Point(62,1), new Point(65,0),true);
+        BetterBitmap originalBitmap = new BetterBitmap(70,2);
+        originalBitmap.addPolygon(new Point(62,1), new Point(65,0),true);
         potrace_bitmap copiedBitmap = originalBitmap.bm_dup();
 
         //check wether reference is difference
@@ -72,9 +71,9 @@ public class potrace_bitmapTest {
 
     @org.junit.Test
     public void test_bm_put_negative() throws Exception {
-        potrace_bitmap bitMap = new potrace_bitmap(2,2);
-        bitMap = BitMapManipulator.addPolygon(bitMap, new Point(0,1), new Point(1,0),true);
-        bitMap = BitMapManipulator.addBlob(bitMap, new Point(0,1),false);
+        BetterBitmap bitMap = new BetterBitmap(2,2);
+        bitMap.addPolygon(new Point(0,1), new Point(1,0),true);
+        bitMap.addBlob(new Point(0,1),false);
 
         Assert.assertEquals(false,bitMap.BM_GET(0,1));
         Assert.assertEquals(true,bitMap.BM_GET(0,0));

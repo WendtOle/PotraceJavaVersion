@@ -79,7 +79,7 @@ public class decompose {
                 return false;
             }
         }
-        return false;
+        return false; //TODO Find way to run this line for code coverage
     }
 
     //Entwickler:
@@ -98,7 +98,7 @@ public class decompose {
         int xlo = x & (potrace_bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
         int i;
 
-        if (xhi<xa) { //Todo find case in which this line is run for testing
+        if (xhi<xa) {           //Todo find case in which this line is run for testing
             for (i = xhi; i < xa; i+=potrace_bitmap.PIXELINWORD) {
                 int accessIndex = (bm.dy * y) + (i / potrace_bitmap.PIXELINWORD);
                 bm.map[accessIndex] = bm.map[accessIndex]  ^ potrace_bitmap.BM_ALLBITS; //Todo check
@@ -134,7 +134,7 @@ public class decompose {
         int xa, x, y, k, y1;
 
         if (p.priv.len <= 0) {  /* a path of length 0 is silly, but legal */
-            return null;
+            return null; //TODO Find way to run this line for Code Coverage
         }
 
         y1 = p.priv.pt[p.priv.len-1].y;
@@ -432,7 +432,7 @@ public class decompose {
                         //ToDO i think this part is still not correct
                         potrace_path current = heap1;
                         while (current != null)
-                            current = current.next;
+                            current = current.next; //TODO find way to run this line for code coverage
                         p1.childlist .next = current;
                         heap1 = p1.childlist;
                     }

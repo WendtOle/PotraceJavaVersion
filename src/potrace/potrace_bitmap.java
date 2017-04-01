@@ -136,6 +136,7 @@ public class potrace_bitmap {
     /* hab ich neu geschrieben, einfach wegen des unterschieds zwischen Java und C
     Aber im wesentlichen handelt es sich hierbei um einen Constructor */
 
+    public potrace_bitmap() {};
     public potrace_bitmap(int w, int h) {
         this.w = w;
         this.h = h;
