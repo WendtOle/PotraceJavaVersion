@@ -170,8 +170,22 @@ public class decomposeTest {
 
         potrace_path restructuredOuterPath = decompose.pathlist_to_tree(outerPath,testBitmap);
 
-        assertEquals(outerPath.childlist,firstInnerPath);
-        assertEquals(outerPath.childlist.sibling, secondInnerPath);
+        PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(restructuredOuterPath);
+        printer.print();
+
+        assertEquals(outerPath,restructuredOuterPath);
+
+        assertEquals(firstInnerPath,restructuredOuterPath.next);
+        assertEquals(firstInnerPath,restructuredOuterPath.childlist);
+        assertEquals(null,restructuredOuterPath.sibling);
+
+        assertEquals(secondInnerPath,restructuredOuterPath.next.next);
+        assertEquals(null,restructuredOuterPath.next.childlist);
+        assertEquals(secondInnerPath,restructuredOuterPath.next.sibling);
+
+        assertEquals(secondInnerPath,restructuredOuterPath.childlist.next);
+        assertEquals(null,restructuredOuterPath.childlist.childlist);
+        assertEquals(secondInnerPath,restructuredOuterPath.childlist.sibling);
 
     }
 
@@ -226,6 +240,7 @@ public class decomposeTest {
 
         potrace_path reconstructedPath = decompose.pathlist_to_tree(bigOuterPath,newBitmap);
 
+        assertEquals(bigOuterPath,reconstructedPath);
         assertEquals(middlePath,reconstructedPath.next);
         assertEquals(middlePath, reconstructedPath.childlist);
         assertEquals(smallOuterPath, reconstructedPath.sibling);
