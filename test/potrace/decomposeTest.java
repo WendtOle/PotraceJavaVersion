@@ -70,8 +70,6 @@ public class decomposeTest {
         Assert.assertEquals(should.y, actual.y);
     }
 
-
-
     @Test
     public void test_findPath_boundary() throws Exception {
         BetterBitmap testBitmap = new BetterBitmap(128,1);
@@ -210,7 +208,7 @@ public class decomposeTest {
     }
 
     @Test
-    public void test_pathlist_to_tree_third() { //TODO this test is crap, complete crap
+    public void test_pathlist_to_tree_third() {
         BetterBitmap newBitmap = new DefaultBitmapWithChildrenAndSiblings();
 
         potrace_path bigOuterPath = decompose.findpath(newBitmap, 0,8,43,4);
@@ -228,14 +226,73 @@ public class decomposeTest {
 
         potrace_path reconstructedPath = decompose.pathlist_to_tree(bigOuterPath,newBitmap);
 
-        assertEquals(smallOuterPath,bigOuterPath.sibling); //FixMe, warum checke ich denn bigouterpath?
-        assertEquals(null,smallOuterPath.childlist);
-        assertEquals(middlePath,bigOuterPath.childlist);
-        assertEquals(null,middlePath.sibling);
-        assertEquals(firstInnerPaht,middlePath.childlist);
-        assertEquals(secondInnerPaht,firstInnerPaht.sibling);
-        assertEquals(null,firstInnerPaht.childlist);
-        assertEquals(secondInnerPaht,firstInnerPaht.sibling);
+        assertEquals(middlePath,reconstructedPath.next);
+        assertEquals(middlePath, reconstructedPath.childlist);
+        assertEquals(smallOuterPath, reconstructedPath.sibling);
+
+        assertEquals(smallOuterPath, reconstructedPath.next.next);
+        assertEquals(firstInnerPaht, reconstructedPath.next.childlist);
+        assertEquals(null, reconstructedPath.next.sibling);
+
+        assertEquals(smallOuterPath, reconstructedPath.childlist.next);
+        assertEquals(firstInnerPaht, reconstructedPath.childlist.childlist);
+        assertEquals(null, reconstructedPath.childlist.sibling);
+
+        assertEquals(firstInnerPaht, reconstructedPath.sibling.next);
+        assertEquals(null, reconstructedPath.sibling.childlist);
+        assertEquals(null, reconstructedPath.sibling.sibling);
+
+        assertEquals(firstInnerPaht, reconstructedPath.next.next.next);
+        assertEquals(null, reconstructedPath.next.next.childlist);
+        assertEquals(null, reconstructedPath.next.next.sibling);
+
+        assertEquals(secondInnerPaht, reconstructedPath.next.childlist.next);
+        assertEquals(null, reconstructedPath.next.childlist.childlist);
+        assertEquals(secondInnerPaht, reconstructedPath.next.childlist.sibling);
+
+        assertEquals(firstInnerPaht, reconstructedPath.childlist.next.next);
+        assertEquals(null, reconstructedPath.childlist.next.childlist);
+        assertEquals(null, reconstructedPath.childlist.next.sibling);
+
+        assertEquals(secondInnerPaht, reconstructedPath.childlist.childlist.next);
+        assertEquals(null, reconstructedPath.childlist.childlist.childlist);
+        assertEquals(secondInnerPaht, reconstructedPath.childlist.childlist.sibling);
+
+        assertEquals(secondInnerPaht, reconstructedPath.sibling.next.next);
+        assertEquals(null, reconstructedPath.sibling.next.childlist);
+        assertEquals(secondInnerPaht, reconstructedPath.sibling.next.sibling);
+
+        assertEquals(secondInnerPaht, reconstructedPath.next.next.next.next);
+        assertEquals(null, reconstructedPath.next.next.next.childlist);
+        assertEquals(secondInnerPaht, reconstructedPath.next.next.next.sibling);
+
+        assertEquals(null, reconstructedPath.next.childlist.next.next);
+        assertEquals(null, reconstructedPath.next.childlist.next.childlist);
+        assertEquals(null, reconstructedPath.next.childlist.next.sibling);
+
+        assertEquals(null, reconstructedPath.next.childlist.sibling.next);
+        assertEquals(null, reconstructedPath.next.childlist.sibling.childlist);
+        assertEquals(null, reconstructedPath.next.childlist.sibling.sibling);
+
+        assertEquals(secondInnerPaht, reconstructedPath.childlist.next.next.next);
+        assertEquals(null, reconstructedPath.childlist.next.next.childlist);
+        assertEquals(secondInnerPaht, reconstructedPath.childlist.next.next.sibling);
+
+        assertEquals(null, reconstructedPath.childlist.childlist.next.next);
+        assertEquals(null, reconstructedPath.childlist.childlist.next.childlist);
+        assertEquals(null, reconstructedPath.childlist.childlist.next.sibling);
+
+        assertEquals(null, reconstructedPath.childlist.childlist.sibling.next);
+        assertEquals(null, reconstructedPath.childlist.childlist.sibling.childlist);
+        assertEquals(null, reconstructedPath.childlist.childlist.sibling.sibling);
+
+        assertEquals(null, reconstructedPath.sibling.next.next.next);
+        assertEquals(null, reconstructedPath.sibling.next.next.childlist);
+        assertEquals(null, reconstructedPath.sibling.next.next.sibling);
+
+        assertEquals(null, reconstructedPath.sibling.next.sibling.next);
+        assertEquals(null, reconstructedPath.sibling.next.sibling.childlist);
+        assertEquals(null, reconstructedPath.sibling.next.sibling.sibling);
     }
 }
 
