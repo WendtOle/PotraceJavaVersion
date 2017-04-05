@@ -16,7 +16,7 @@ public class potraceTest {
         bitmaps[0] = new DefaultBimapSmallBox();
         bitmaps[1] = new DefaultBitmap();
         bitmaps[2] = new DefaultBitmapSimpleChildList();
-        bitmaps[3] = new DefaultBitmapWithSimpleChildrenAndSiblings();
+        bitmaps[3] = new DefaultBitmapWithChildrenAndSiblings();
         bitmaps[4] = new DefaultBitmapSimpleBoxOverPotraceWordBoundaries();
     }
 

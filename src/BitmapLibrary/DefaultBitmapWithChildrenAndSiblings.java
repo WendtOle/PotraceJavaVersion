@@ -7,8 +7,8 @@ import java.awt.*;
 /**
  * Created by andreydelany on 01/04/2017.
  */
-public class DefaultBitmapWithSimpleChildrenAndSiblings extends BetterBitmap{
-    public DefaultBitmapWithSimpleChildrenAndSiblings() {
+public class DefaultBitmapWithChildrenAndSiblings extends BetterBitmap{
+    public DefaultBitmapWithChildrenAndSiblings() {
         super(8,8);
         addPolygon(new Point(0,7), new Point(0,0),true);
         addPolygon(new Point(0,7), new Point(4,7),true);
@@ -20,5 +20,16 @@ public class DefaultBitmapWithSimpleChildrenAndSiblings extends BetterBitmap{
         addPolygon(new Point(2,5), new Point(2,4),true);
         addPolygon(new Point(2,2), new Point(4,2),true);
         addBlob(new Point(4,3), true);
+
+        /*
+        x x x x x o x x
+        x o o o x o o o
+        x o x o x x x o
+        x o x o o o x o
+        x o o o x o x o
+        x o x x x o x o
+        x o o o o o x o
+        x x x x x x x o
+         */
     }
 }

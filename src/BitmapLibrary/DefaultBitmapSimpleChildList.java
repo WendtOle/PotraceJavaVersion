@@ -15,5 +15,15 @@ public class DefaultBitmapSimpleChildList extends BetterBitmap{
         addPolygon(new Point(2,4), new Point(4,2),true);
         addBlob(new Point(3,3),false);
 
+        /*
+        x x x x x x x
+        x o o o o o x
+        x o x x x o x
+        x o x o x o x
+        x o x x x x x
+        x o o o o o x
+        x x x x x x x
+         */
+
     }
 }

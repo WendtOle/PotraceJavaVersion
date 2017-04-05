@@ -17,5 +17,12 @@ public class DefaultBitmap extends BetterBitmap{
         addBlob(new Point(0,3),true);
         addPolygon(new Point(0,2), new Point(2,2),true);
         addPolygon(new Point(2,1), new Point(3,1),true);
+
+        /*
+        x 0 0 x
+        x x x 0
+        o o x x
+        x o o x
+         */
     }
 }

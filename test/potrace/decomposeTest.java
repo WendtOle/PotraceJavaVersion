@@ -1,6 +1,6 @@
 package potrace;
 
-import BitmapLibrary.DefaultBitmapWithSimpleChildrenAndSiblings;
+import BitmapLibrary.*;
 import Tools.*;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,55 +14,6 @@ import static org.junit.Assert.*;
  * Created by andreydelany on 20/03/2017.
  */
 public class decomposeTest {
-
-    Point[] expectedPointsForBigPath = new Point[20];
-    Point[] expectedPointsForSmallPath = new Point[12];
-    BetterBitmap findPathTestBitmap = new BetterBitmap(4,4);
-
-    @Before
-    public void before() {
-        expectedPointsForBigPath[0] = new Point(0,4);
-        expectedPointsForBigPath[1] = new Point(0,3);
-        expectedPointsForBigPath[2] = new Point(0,2);
-        expectedPointsForBigPath[3] = new Point(1,2);
-        expectedPointsForBigPath[4] = new Point(1,1);
-        expectedPointsForBigPath[5] = new Point(0,1);
-        expectedPointsForBigPath[6] = new Point(0,0);
-        expectedPointsForBigPath[7] = new Point(1,0);
-        expectedPointsForBigPath[8] = new Point(1,1);
-        expectedPointsForBigPath[9] = new Point(2,1);
-        expectedPointsForBigPath[10] = new Point(3,1);
-        expectedPointsForBigPath[11] = new Point(3,0);
-        expectedPointsForBigPath[12] = new Point(4,0);
-        expectedPointsForBigPath[13] = new Point(4,1);
-        expectedPointsForBigPath[14] = new Point(3,1);
-        expectedPointsForBigPath[15] = new Point(3,2);
-        expectedPointsForBigPath[16] = new Point(2,2);
-        expectedPointsForBigPath[17] = new Point(2,3);
-        expectedPointsForBigPath[18] = new Point(1,3);
-        expectedPointsForBigPath[19] = new Point(1,4);
-
-        expectedPointsForSmallPath[0] = new Point(0,4);
-        expectedPointsForSmallPath[1] = new Point(0,3);
-        expectedPointsForSmallPath[2] = new Point(0,2);
-        expectedPointsForSmallPath[3] = new Point(1,2);
-        expectedPointsForSmallPath[4] = new Point(1,1);
-        expectedPointsForSmallPath[5] = new Point(2,1);
-        expectedPointsForSmallPath[6] = new Point(3,1);
-        expectedPointsForSmallPath[7] = new Point(3,2);
-        expectedPointsForSmallPath[8] = new Point(2,2);
-        expectedPointsForSmallPath[9] = new Point(2,3);
-        expectedPointsForSmallPath[10] = new Point(1,3);
-        expectedPointsForSmallPath[11] = new Point(1,4);
-
-        findPathTestBitmap.addPolygon(new Point(0,3), new Point(0,2),true);
-        findPathTestBitmap.addPolygon(new Point(1,2), new Point(1,1),true);
-        findPathTestBitmap.addBlob(new Point(0,0), true);
-        findPathTestBitmap.addBlob(new Point(2,1), true);
-        findPathTestBitmap.addBlob(new Point(3,0), true);
-
-    }
-
 
     @Test
     public void test_findnextWithNextPointInSameLine() throws Exception {
@@ -119,54 +70,7 @@ public class decomposeTest {
         Assert.assertEquals(should.y, actual.y);
     }
 
-    @Test
-    public void test_findPath_minority() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,4);
-        for (int i = 0 ; i < expectedPointsForBigPath.length; i ++)
-            comparePoints(expectedPointsForBigPath[i],result.priv.pt[i]);
-    }
 
-    @Test
-    public void test_findPath_majority() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,5);
-        for (int i = 0 ; i < expectedPointsForSmallPath.length; i ++)
-            comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
-    }
-
-    @Test
-    public void test_findPath_random() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,6);
-        for (int i = 0 ; i < expectedPointsForSmallPath.length; i ++)
-            comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
-    }
-
-   @Test
-    public void test_findPath_right() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,3);
-        for (int i = 0 ; i < expectedPointsForBigPath.length; i ++)
-            comparePoints(expectedPointsForBigPath[i],result.priv.pt[i]);
-    }
-
-    @Test
-    public void test_findPath_left() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,2);
-        for (int i = 0 ; i < expectedPointsForSmallPath.length; i ++)
-            comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
-    }
-
-    @Test
-    public void test_findPath_white() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,1);
-        for (int i = 0 ; i < expectedPointsForSmallPath.length; i ++)
-            comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
-    }
-
-    @Test
-    public void test_findPath_black() throws Exception {
-        potrace_path result = decompose.findpath(findPathTestBitmap,0,4,43,1);
-        for (int i = 0 ; i < expectedPointsForSmallPath.length; i ++)
-            comparePoints(expectedPointsForSmallPath[i],result.priv.pt[i]);
-    }
 
     @Test
     public void test_findPath_boundary() throws Exception {
@@ -188,10 +92,7 @@ public class decomposeTest {
 
     @Test
     public void test_xor_path_xor_to_ref_one() {
-        BetterBitmap testBitmap = new BetterBitmap(4,4);
-        testBitmap.addPolygon(new Point(1,2), new Point(2,1),true);
-        testBitmap.addPolygon(new Point(0,0), new Point(1,0),true);
-        testBitmap.addBlob(new Point(3,3),true);
+        BetterBitmap testBitmap = new DefaultBitmapSimpleBoxWithExtension();
 
         potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
         potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
@@ -203,8 +104,7 @@ public class decomposeTest {
 
     @Test
     public void test_xor_path_xor_to_ref_two() {
-        BetterBitmap testBitmap = new BetterBitmap(128,2);
-        testBitmap.addPolygon(new Point(63,1), new Point(64,0),true);
+        BetterBitmap testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
 
         potrace_path path = decompose.findpath(testBitmap,63,2,43,4);
         potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
@@ -217,10 +117,7 @@ public class decomposeTest {
     @Test
     public void test_setbbox_path() {
         bbox box = new bbox();
-        BetterBitmap testBitmap = new BetterBitmap(4,4);
-        testBitmap.addPolygon(new Point(1,2), new Point(2,1),true);
-        testBitmap.addPolygon(new Point(0,0), new Point(1,0),true);
-        testBitmap.addBlob(new Point(3,3),true);
+        BetterBitmap testBitmap = new DefaultBitmapSimpleBoxWithExtension();
 
         potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
 
@@ -234,8 +131,8 @@ public class decomposeTest {
     @Test
     public void test_setbbox_path_extended() {
         bbox box = new bbox();
-        BetterBitmap testBitmap = new BetterBitmap(128,2);
-        testBitmap.addPolygon(new Point(63,1), new Point(64,0),true);
+        BetterBitmap testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
+
         potrace_path path = decompose.findpath(testBitmap,63,1,43,4);
 
         bbox resultBox = decompose.setbbox_path(box,path);
@@ -252,10 +149,9 @@ public class decomposeTest {
         box.x1 = 70;
         box.y0 = 0;
         box.y1 = 2;
-        BetterBitmap testBitmap = new BetterBitmap(128,2);
-        testBitmap.addPolygon(new Point(63,1), new Point(64,0),true);
+        BetterBitmap testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
 
-        testBitmap = (BetterBitmap)decompose.clear_bm_with_bbox(testBitmap,box); //FixMe It is too Dirty
+        testBitmap = (BetterBitmap)decompose.clear_bm_with_bbox(testBitmap,box); //FixMe -> It is too Dirty
 
         assertTrue(testBitmap.map[0] == 0);
         assertTrue(testBitmap.map[1] == 0);
@@ -265,10 +161,7 @@ public class decomposeTest {
 
     @Test
     public void test_pathlist_to_tree_first() {
-        BetterBitmap testBitmap = new BetterBitmap(5,4);
-        testBitmap.fillCompleteBitMap(true);
-        testBitmap.addPolygon(new Point(1,2), new Point(1,1),false);
-        testBitmap.addPolygon(new Point(3,2), new Point(3,1),false);
+        BetterBitmap testBitmap = new DefaultBitmapWithSimpleChildenAndSiblings();
 
         potrace_path outerPath = decompose.findpath(testBitmap,0,4,43,4);
         potrace_path firstInnerPath = decompose.findpath(testBitmap,1,3,45,4);
@@ -293,6 +186,16 @@ public class decomposeTest {
         testBitmap.addPolygon(new Point(2,3), new Point(2,2), true);
         testBitmap.addPolygon(new Point(4,3), new Point(4,2), true);
 
+        /*
+         x x x x x x x
+         x o o o o o x
+         x o x o x o x
+         x o x o x o x
+         x o o o o o x
+         x x x x x x x
+         */
+
+
         BitmapPrinter printer = new BitmapPrinter(testBitmap);
         printer.print();
 
@@ -307,8 +210,8 @@ public class decomposeTest {
     }
 
     @Test
-    public void test_pathlist_to_tree_third() {
-        BetterBitmap newBitmap = new DefaultBitmapWithSimpleChildrenAndSiblings();
+    public void test_pathlist_to_tree_third() { //TODO this test is crap, complete crap
+        BetterBitmap newBitmap = new DefaultBitmapWithChildrenAndSiblings();
 
         potrace_path bigOuterPath = decompose.findpath(newBitmap, 0,8,43,4);
         potrace_path smallOuterPath = decompose.findpath(newBitmap, 6,8,43,4);
@@ -325,7 +228,7 @@ public class decomposeTest {
 
         potrace_path reconstructedPath = decompose.pathlist_to_tree(bigOuterPath,newBitmap);
 
-        assertEquals(smallOuterPath,bigOuterPath.sibling);
+        assertEquals(smallOuterPath,bigOuterPath.sibling); //FixMe, warum checke ich denn bigouterpath?
         assertEquals(null,smallOuterPath.childlist);
         assertEquals(middlePath,bigOuterPath.childlist);
         assertEquals(null,middlePath.sibling);
