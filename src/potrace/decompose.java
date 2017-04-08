@@ -130,7 +130,7 @@ public class decompose {
     /* xor the given pixmap with the interior of the given path. Note: the
     path must be within the dimensions of the pixmap. */
 
-    static potrace_bitmap xor_path(potrace_bitmap bm, potrace_path p) {
+    public static potrace_bitmap xor_path(potrace_bitmap bm, potrace_path p) {
         int xa, x, y, k, y1;
 
         if (p.priv.len <= 0) {  /* a path of length 0 is silly, but legal */
@@ -198,7 +198,7 @@ public class decompose {
     cannot have length 0). Sign is required for correct interpretation
     of turnpolicies. */
 
-    static potrace_path findpath(potrace_bitmap bm, int x0, int y0, int sign, int turnpolicy) {
+    public static potrace_path findpath(potrace_bitmap bm, int x0, int y0, int sign, int turnpolicy) {
         int x, y, dirx, diry, len, size, area;
         int tmp;
         boolean c,d;
@@ -450,7 +450,7 @@ public class decompose {
     (*xp,*yp). Else return 1. Note that this function assumes that
     excess bytes have been cleared with bm_clearexcess. */
 
-    static Point findnext(potrace_bitmap bm, Point XY) { //TODO check it its working correct
+    public static Point findnext(potrace_bitmap bm, Point XY) { //TODO check it its working correct
         int x0;
 
         x0 = (XY.x) & ~(potrace_bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?

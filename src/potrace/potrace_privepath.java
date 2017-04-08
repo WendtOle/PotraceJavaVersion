@@ -17,7 +17,7 @@ import java.awt.*;
     /* Ursprünglich aus curve.h */
 
 public class potrace_privepath {
-    int len;
+    public int len;
     public Point[] pt;
     int[] lon;
     int x0,y0;

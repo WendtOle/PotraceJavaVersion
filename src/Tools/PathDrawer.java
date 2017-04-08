@@ -13,13 +13,14 @@ import java.awt.geom.QuadCurve2D;
 /**
  * Created by andreydelany on 06/04/2017.
  */
-public class PathDrawer extends JPanel{
+public class PathDrawer{
 
     potrace_path path;
     Graphics2D graphics;
     int scale, height;
 
     public PathDrawer(potrace_path path, int skalierung, int height) { //Fixme: to use height, is not good
+
         this.path = path;
         this.scale = skalierung;
         this.height = height;

@@ -22,8 +22,8 @@ public class potrace_param {
     static int  POTRACE_TURNPOLICY_MAJORITY = 5;
     static int  POTRACE_TURNPOLICY_RANDOM = 6;
 
-    int turdsize;        /* area of largest path to be ignored */
-    int turnpolicy;      /* resolves ambiguous turns in path decomposition */
+    public int turdsize;        /* area of largest path to be ignored */
+    public int turnpolicy;      /* resolves ambiguous turns in path decomposition */
     double alphamax;     /* corner threshold */
     int opticurve;       /* use curve optimization? */
     double opttolerance; /* curve optimization tolerance */

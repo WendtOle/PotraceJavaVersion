@@ -10,7 +10,7 @@ public class Main {
         potrace_path result = PotraceLib.potrace_trace(new potrace_param(),testBitmap);
 
         Plotter plotter = new Plotter();
-        plotter.showPath(result);
+        plotter.showPathAndBitmap(result,testBitmap);
 
         PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(result);
         printer.print();

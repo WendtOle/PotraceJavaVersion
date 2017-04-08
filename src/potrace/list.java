@@ -19,7 +19,7 @@ public class list {
     MACRO_BEGIN elt->next = *hook; *hook = elt; hook=&elt->next; MACRO_END
      */
 
-    static potrace_path unefficient_list_insert_beforehook(potrace_path elt, potrace_path list) {
+    public static potrace_path unefficient_list_insert_beforehook(potrace_path elt, potrace_path list) {
         if (elt != null) {
             if (list != null) {
                 potrace_path current = list;
