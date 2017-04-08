@@ -6,11 +6,13 @@ import Tools.*;
  */
 public class Main {
     public static void main(String [] args){
-        potrace_bitmap testBitmap = Importer.importBitmap("test.bmp");
+        potrace_bitmap testBitmap = Importer.importBitmap("test3.bmp");
         potrace_path result = PotraceLib.potrace_trace(new potrace_param(),testBitmap);
 
         Plotter plotter = new Plotter();
-        plotter.showPathAndBitmap(result,testBitmap);
+        //plotter.showPathAndBitmap(result,testBitmap);
+        //plotter.showPath(result);
+        plotter.showBitmap(testBitmap);
 
         PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(result);
         printer.print();

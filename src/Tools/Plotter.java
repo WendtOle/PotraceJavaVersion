@@ -22,20 +22,20 @@ public class Plotter {
         jFrame = new JFrame(name);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setSize(width,height);
-    }
+    };
 
-    /*public void showPath(potrace_path path) {
-        PathDrawer drawedPath = new PathDrawer(path,SCALE, jFrame.getHeight());
-        jFrame.add(drawedPath);
+    public void showPath(potrace_path path) {
+        Drawer drawer = new Drawer(path,SCALE, jFrame.getHeight());
+        jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
-    public void showBitmap(potrace_path path) {
-        BitmapDrawer drawedBitmap = new BitmapDrawer(path,SCALE,jFrame.getHeight());
-        jFrame.add(drawedBitmap);
+    public void showBitmap(potrace_bitmap bitmap) {
+        Drawer drawer = new Drawer(bitmap,SCALE, jFrame.getHeight());
+        jFrame.add(drawer);
         jFrame.setVisible(true);
     }
-*/
+
     public void showPathAndBitmap(potrace_path path, potrace_bitmap bitmap) {
         Drawer drawer = new Drawer(path,bitmap,SCALE, jFrame.getHeight());
         jFrame.add(drawer);

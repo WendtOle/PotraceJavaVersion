@@ -22,10 +22,22 @@ public class Drawer extends JPanel {
         this.height = height;
     }
 
+    public Drawer(potrace_path path, int scale, int height) {
+        this(path,null,scale,height);
+    }
+
+    public Drawer(potrace_bitmap bitmap, int scale, int height) {
+        this(null,bitmap,scale,height);
+    }
+
     public void paintComponent(Graphics g) {
-        PathDrawer drawedPath = new PathDrawer(path,scale, height);
-        BitmapDrawer drawedBitmap = new BitmapDrawer(bitmap,scale,height);
-        drawedPath.paintComponent(g);
-        drawedBitmap.paintComponent(g);
+        if(path != null) {
+            PathDrawer drawedPath = new PathDrawer(path,scale, height);
+            drawedPath.paintComponent(g);
+        }
+        if(bitmap != null) {
+            BitmapDrawer drawedBitmap = new BitmapDrawer(bitmap,scale,height);
+            drawedBitmap.paintComponent(g);
+        }
     }
 }
