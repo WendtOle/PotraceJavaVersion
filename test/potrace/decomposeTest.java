@@ -147,14 +147,14 @@ public class decomposeTest {
         box.x1 = 70;
         box.y0 = 0;
         box.y1 = 2;
-        BetterBitmap testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
+        DefaultBitmapBoxOnPotraceWordBoundary testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
 
-        testBitmap = (BetterBitmap)decompose.clear_bm_with_bbox(testBitmap,box); //FixMe -> It is too Dirty
+        potrace_bitmap resultBitmap = decompose.clear_bm_with_bbox(testBitmap,box);
 
-        assertTrue(testBitmap.map[0] == 0);
-        assertTrue(testBitmap.map[1] == 0);
-        assertTrue(testBitmap.map[2] == 0);
-        assertTrue(testBitmap.map[3] == 0);
+        assertTrue(resultBitmap.map[0] == 0);
+        assertTrue(resultBitmap.map[1] == 0);
+        assertTrue(resultBitmap.map[2] == 0);
+        assertTrue(resultBitmap.map[3] == 0);
     }
 
     @Test
@@ -308,6 +308,30 @@ public class decomposeTest {
         assertEquals(null, reconstructedPath.sibling.next.sibling.next);
         assertEquals(null, reconstructedPath.sibling.next.sibling.childlist);
         assertEquals(null, reconstructedPath.sibling.next.sibling.sibling);
+    }
+
+    @Test
+    public void test_specialCaseInPathlistToTree(){
+        BetterBitmap newBitmap = new DefaultBitmapSpiegelverkehrtesL();
+        potrace_path result = decompose.bm_to_pathlist(newBitmap,new potrace_param());
+
+        //check wether all three pathes are there
+
+        assertEquals(4,result.area);
+        assertEquals(9,result.next.area);
+        assertEquals(4,result.next.next.area);
+    }
+
+    @Test
+    public void test_specialCaseInPathlistToTreeSecond(){
+        BetterBitmap newBitmap = new DefaultBitmapSpiegelverkehrtesLExtended();
+        potrace_path result = decompose.bm_to_pathlist(newBitmap,new potrace_param());
+
+        //check wether all three pathes are there
+        assertEquals(4,result.area);
+        assertEquals(2,result.next.area);
+        assertEquals(9,result.next.next.area);
+        assertEquals(3,result.next.next.next.area);
     }
 }
 

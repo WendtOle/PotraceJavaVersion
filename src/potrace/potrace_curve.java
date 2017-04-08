@@ -13,7 +13,7 @@ package potrace;
 
 public class potrace_curve {
     public int n;                   //number of segments
-    int[] tag;                      //tag[n] : Potrace_Curveto or potrace_corner //TODO: Array
+    public int[] tag;                      //tag[n] : Potrace_Curveto or potrace_corner //TODO: Array
     public potrace_dpoint[][] c;
 
     /* copy private to public curve structure */

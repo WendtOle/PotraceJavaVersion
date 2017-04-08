@@ -39,7 +39,7 @@ public class decompose {
     }
 
     //Ole:
-    /* gehört definitiv in die bbox klasse, da sie die bbox einfach mit standartwerten füllt, also initialisiert */
+    /* Auch wenn es einen ausgabeparameter gibt, wird der eingabeparameter bm mit verändert -> weird */
 
     //Entwickler:
     /*Find the bounding box of a given path. Path is assumed to be of
@@ -361,7 +361,7 @@ public class decompose {
             hook_in = head.childlist;
             hook_out = head.next;
 
-            for (p=cur; p != null; p=cur) {
+            for (p=cur; (p != null); p=cur) {
                 cur=p.next;
                 p.next=null;
 
@@ -371,7 +371,7 @@ public class decompose {
 	                // append the remainder of the potrace.list to hook_out
                     //TODO not sure what i should do here
 	                //hook_out = cur;
-                    //head.next = list.unefficient_list_insert_beforehook(cur,head.next);
+                    head.next = list.unefficient_list_insert_beforehook(cur,head.next);
                     break;
                 }
                 if (bm.BM_GET(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
