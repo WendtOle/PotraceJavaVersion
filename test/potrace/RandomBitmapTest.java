@@ -23,10 +23,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class RandomBitmapTest {
-    static int MAXWIDTH = 200;
-    static int MAXHEIGHT = 200;
-    static double WHITEBLACKRATIO = 0.8;
-    static Random randomGenerator;
     static ArrayList<potrace_bitmap> bitmaps = new ArrayList<>();
     int expectedAmountOfPathes;
     int actualAmountOfPathes;
@@ -54,7 +50,8 @@ public class RandomBitmapTest {
     }
 
     public static void findNewErrorBitmap() {
-        BetterBitmap bitmap = prepareRandomBitmap();
+        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(200,200,0.6);
+        BetterBitmap bitmap = bitmapGenerator.getRandomBitmap();
         int tryCounter = 1;
         potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmap);
         potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
@@ -62,37 +59,11 @@ public class RandomBitmapTest {
             tryCounter ++;
             shouldPath = PathFinder.findOriginalBitmap(bitmap);
             actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
-            bitmap = prepareRandomBitmap();
+            bitmap = bitmapGenerator.getRandomBitmap();
         }
         System.out.println("Needed " + tryCounter + " tries to find a bitmap which throws an error.");
         BitmapExporter bitmapExporter = new BitmapExporter("error","errorBitmap");
         bitmapExporter.export(bitmap);
-    }
-
-
-    private static BetterBitmap prepareRandomBitmap() {
-        randomGenerator = new Random();
-        int width = randomGenerator.nextInt(MAXWIDTH)+1;
-        int height = randomGenerator.nextInt(MAXHEIGHT)+1;
-        return decideRandomOverEveryPixel(width, height);
-    }
-
-    private static BetterBitmap decideRandomOverEveryPixel(int width, int height) {
-        BetterBitmap bitmap = new BetterBitmap(width,height);
-        Random randomGenerator = new Random();
-        for (int y = 0; y < height; y++)
-            for(int x = 0; x < width; x++) {
-                if(isPixelFilled())
-                    bitmap.addBlob(new Point(x,y),true);
-            }
-        return bitmap;
-    }
-
-    private static boolean isPixelFilled() {
-        double randomDouble = randomGenerator.nextDouble();
-        if (randomDouble >= WHITEBLACKRATIO)
-            return true;
-        return false;
     }
 
     @Test

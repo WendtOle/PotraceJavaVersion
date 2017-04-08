@@ -29,4 +29,5 @@ public class BetterBitmap extends potrace_bitmap{
     public void addBlob(Point blob, boolean filled) {
         fillArea(blob, blob,filled);
     }
+
 }
