@@ -1,22 +1,18 @@
 package potrace;
 import Tools.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * Created by andreydelany on 06/03/2017.
  */
 public class Main {
     public static void main(String [] args){
-        potrace_bitmap testBitmap = Importer.importBitmap("test3.bmp");
-        potrace_path result = PotraceLib.potrace_trace(new potrace_param(),testBitmap);
-
-        Plotter plotter = new Plotter();
-        //plotter.showPathAndBitmap(result,testBitmap);
-        //plotter.showPath(result);
-        plotter.showBitmap(testBitmap);
-
-        PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(result);
-        printer.print();
-        BitmapPrinter printer1 = new BitmapPrinter(testBitmap);
-        printer1.print();
+        System.out.println(new File(System.getProperty("user.dir") + File.separator + "error").list().length);
     }
+
+
 }
