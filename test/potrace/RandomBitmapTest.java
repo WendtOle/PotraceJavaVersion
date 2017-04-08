@@ -1,20 +1,15 @@
 package potrace;
 
 import Tools.*;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Random;
 
-import static Tools.Importer.importBitmap;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -31,15 +26,14 @@ public class RandomBitmapTest {
     @Parameterized.Parameters(name = "Testing {index}. Bitmap")
     public static Collection primeNumbers() {
         findNewErrorBitmap();
-        int alreadyExistingFiles = new File(System.getProperty("user.dir") + File.separator + "error").list().length;
-        Object[][] testParameters = new Object[alreadyExistingFiles][2];
-        for (int i = 1; alreadyExistingFiles >= i; i++) {
-            potrace_bitmap bitmap = Importer.importBitmap(System.getProperty("user.dir") + File.separator + "error" + File.separator + "errorBitmap" + i + ".bmp");
-            potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmap);
-            potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
-            int expectedAmountOfPathes = countPathes(shouldPath);
-            int actualAmountOfPathes = countPathes(actualPath);
-            testParameters[i-1] = new Object[]{expectedAmountOfPathes,actualAmountOfPathes};
+
+        BitmapImporter bitmapImporter = new BitmapImporter("error");
+        ArrayList<potrace_bitmap> bitmaps = bitmapImporter.importAllBitmaps();
+        Object[][] testParameters = new Object[bitmaps.size()][2];
+        for(int i = 0; i < bitmaps.size(); i ++) {
+            potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmaps.get(i));
+            potrace_path actualPath = decompose.bm_to_pathlist(bitmaps.get(i),new potrace_param());
+            testParameters[i] = new Object[] {countPathes(shouldPath),countPathes(actualPath)};
         }
         return Arrays.asList(testParameters);
     }
@@ -51,19 +45,31 @@ public class RandomBitmapTest {
 
     public static void findNewErrorBitmap() {
         RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(200,200,0.6);
-        BetterBitmap bitmap = bitmapGenerator.getRandomBitmap();
-        int tryCounter = 1;
-        potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmap);
-        potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
-        while (shouldPath == null || actualPath == null || countPathes(shouldPath) == countPathes(actualPath)) {
+        int tryCounter = 0;
+        BetterBitmap bitmap;
+
+        do {
             tryCounter ++;
-            shouldPath = PathFinder.findOriginalBitmap(bitmap);
-            actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
             bitmap = bitmapGenerator.getRandomBitmap();
-        }
+        } while(isBitmapCorrectAnalyzed(bitmap));
+
         System.out.println("Needed " + tryCounter + " tries to find a bitmap which throws an error.");
         BitmapExporter bitmapExporter = new BitmapExporter("error","errorBitmap");
         bitmapExporter.export(bitmap);
+    }
+
+    private static boolean isBitmapCorrectAnalyzed(potrace_bitmap bitmap) {
+        potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmap);
+        potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
+        if (isOnePathAmountNull(shouldPath, actualPath))
+            return true;
+        int should = countPathes(shouldPath);
+        int actual = countPathes(actualPath);
+        return should == actual;
+    }
+
+    private static boolean isOnePathAmountNull(potrace_path firstPath, potrace_path secondPath) {
+        return firstPath == null ^ secondPath == null;
     }
 
     @Test

@@ -5,12 +5,35 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import potrace.*;
 
 /**
  * Created by andreydelany on 06/04/2017.
  */
-public class Importer {
+public class BitmapImporter {
+
+    String folderName;
+
+    public BitmapImporter (String folderName) {
+        this.folderName = folderName;
+    }
+
+    public ArrayList<potrace_bitmap> importAllBitmaps() {
+        ArrayList<potrace_bitmap> bitmaps = new ArrayList<>();
+        try {
+            File[] bitmapFiles = new File(System.getProperty("user.dir") + File.separator + folderName).listFiles();
+            for (int i = 0; i < bitmapFiles.length; i++) {
+                BufferedImage image = ImageIO.read(bitmapFiles[i]);
+                bitmaps.add(copyValues(image));
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return bitmaps;
+    }
+
     public static potrace_bitmap importBitmap(String name){
         try {
             BufferedImage image = ImageIO.read(new File(name));
