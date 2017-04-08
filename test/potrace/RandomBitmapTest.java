@@ -65,7 +65,8 @@ public class RandomBitmapTest {
             bitmap = prepareRandomBitmap();
         }
         System.out.println("Needed " + tryCounter + " tries to find a bitmap which throws an error.");
-        BitmapExporter.exportErrorPictures(bitmap);
+        BitmapExporter bitmapExporter = new BitmapExporter("error","errorBitmap");
+        bitmapExporter.export(bitmap);
     }
 
 

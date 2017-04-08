@@ -6,28 +6,34 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 
 /**
  * Created by andreydelany on 08/04/2017.
  */
 public class BitmapExporter {
 
-    public static void exportErrorPictures(potrace_bitmap bitmap) {
+    String folderName;
+    String fileName;
 
-        int alreadyExistingFiles = new File(System.getProperty("user.dir") + File.separator + "error").list().length;
+    public BitmapExporter(String folderName, String fileName) {
+        this.folderName = folderName;
+        this.fileName = fileName;
+    }
+
+    public void export(potrace_bitmap bitmap) {
+        int alreadyExistingFiles = getCurrentNumberOfFilesInFolder();
         try {
-            BufferedImage bufferedImage = getMyImage(bitmap);
-            File outputfile = new File(System.getProperty("user.dir") + File.separator + "error" + File.separator + "errorBitmap" + (alreadyExistingFiles + 1) + ".bmp");
+            BufferedImage bufferedImage = saveBitmapToFile(bitmap);
+            File outputfile = new File(getBitMapPath(getIndexForNextFile()));
             ImageIO.write(bufferedImage, "bmp", outputfile);
         } catch (IOException e) {
             System.out.println(e);
         }
     }
 
-    public static void exporter(potrace_bitmap bitmap,String fileName) {
+    public static void export(potrace_bitmap bitmap,String fileName) {
         try {
-            BufferedImage bufferedImage = getMyImage(bitmap);
+            BufferedImage bufferedImage = saveBitmapToFile(bitmap);
             File outputfile = new File(fileName + ".bmp");
             ImageIO.write(bufferedImage, "bmp", outputfile);
         } catch (IOException e) {
@@ -35,7 +41,7 @@ public class BitmapExporter {
         }
     }
 
-    private static BufferedImage getMyImage(potrace_bitmap bitmap) {
+    private static BufferedImage saveBitmapToFile(potrace_bitmap bitmap) {
         BufferedImage image = new BufferedImage(bitmap.w,bitmap.h,BufferedImage.TYPE_BYTE_BINARY);
         for (int y = 0; y < bitmap.h; y ++)
             for (int x = 0; x < bitmap.w; x ++){
@@ -45,5 +51,21 @@ public class BitmapExporter {
                     image.setRGB(x,y,0xffffffff);
             }
         return image;
+    }
+
+    public String getBitMapFolderPath() {
+        return System.getProperty("user.dir") + File.separator + folderName;
+    }
+
+    public String getBitMapPath(int index) {
+        return getBitMapFolderPath() + File.separator + fileName + index + ".bmp";
+    }
+
+    public int  getCurrentNumberOfFilesInFolder(){
+        return new File(getBitMapFolderPath()).list().length;
+    }
+
+    public int getIndexForNextFile() {
+        return getCurrentNumberOfFilesInFolder() + 1;
     }
 }
