@@ -24,11 +24,7 @@ public class BitmapImporter {
     public ArrayList<potrace_bitmap> importAllBitmaps() {
         ArrayList<potrace_bitmap> bitmaps = new ArrayList<>();
         try {
-            File[] bitmapFiles = new File(System.getProperty("user.dir") + File.separator + folderName).listFiles((dir, name) -> {
-                        return name.toLowerCase().endsWith(".bmp");
-                    }
-            );
-            //http://stackoverflow.com/questions/5751335/using-file-listfiles-with-filenameextensionfilter 19.46 - 08.04.2017
+            File[] bitmapFiles = getCurrentNumberOfFilesInFolder();
 
             for (int i = 0; i < bitmapFiles.length; i++) {
                 BufferedImage image = ImageIO.read(bitmapFiles[i]);
@@ -38,6 +34,18 @@ public class BitmapImporter {
             System.out.println(e);
         }
         return bitmaps;
+    }
+
+    public File[] getCurrentNumberOfFilesInFolder(){
+        return new File(getBitMapFolderPath()).listFiles((dir, name) -> {
+                    return name.toLowerCase().endsWith(".bmp");
+                }
+        );
+        //http://stackoverflow.com/questions/5751335/using-file-listfiles-with-filenameextensionfilter 19.46 - 08.04.2017
+    }
+
+    public String getBitMapFolderPath() {
+        return System.getProperty("user.dir") + File.separator + folderName;
     }
 
     public static potrace_bitmap importBitmap(String name){
@@ -69,5 +77,8 @@ public class BitmapImporter {
             }
         return bitmap;
     }
+
+
+
 
 }

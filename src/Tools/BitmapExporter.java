@@ -21,7 +21,6 @@ public class BitmapExporter {
     }
 
     public void export(potrace_bitmap bitmap) {
-        int alreadyExistingFiles = getCurrentNumberOfFilesInFolder();
         try {
             BufferedImage bufferedImage = saveBitmapToFile(bitmap);
             File outputfile = new File(getBitMapPath(getIndexForNextFile()));
@@ -57,15 +56,23 @@ public class BitmapExporter {
         return System.getProperty("user.dir") + File.separator + folderName;
     }
 
-    public String getBitMapPath(int index) {
+    public String getBitMapPath(String index) {
         return getBitMapFolderPath() + File.separator + fileName + index + ".bmp";
     }
 
     public int  getCurrentNumberOfFilesInFolder(){
-        return new File(getBitMapFolderPath()).list().length;
+        return new File(getBitMapFolderPath()).listFiles((dir, name) -> {
+                    return name.toLowerCase().endsWith(".bmp");
+                }
+        ).length;
+        //http://stackoverflow.com/questions/5751335/using-file-listfiles-with-filenameextensionfilter 19.46 - 08.04.2017
     }
 
-    public int getIndexForNextFile() {
-        return getCurrentNumberOfFilesInFolder() + 1;
+    public String getIndexForNextFile() {
+        int numberOfFilesInFolder = getCurrentNumberOfFilesInFolder() + 1;
+        if (numberOfFilesInFolder < 10)
+            return "0" + numberOfFilesInFolder;
+        else
+            return numberOfFilesInFolder + "";
     }
 }
