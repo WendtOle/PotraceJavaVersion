@@ -24,7 +24,7 @@ public class RandomBitmapTest {
 
 
     @Parameterized.Parameters(name = "Testing {index}. Bitmap")
-    public static Collection primeNumbers() {
+    public static Collection testData() {
         findNewErrorBitmap();
 
         BitmapImporter bitmapImporter = new BitmapImporter("error");
@@ -44,32 +44,37 @@ public class RandomBitmapTest {
     }
 
     public static void findNewErrorBitmap() {
-        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(200,200,0.6);
+        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(100,100,0.6);
         int tryCounter = 0;
         BetterBitmap bitmap;
 
         do {
             tryCounter ++;
             bitmap = bitmapGenerator.getRandomBitmap();
-        } while(isBitmapCorrectAnalyzed(bitmap));
+        } while(isBitmapCorrectAnalyzed(bitmap) && tryCounter < 1000);
 
-        System.out.println("Needed " + tryCounter + " tries to find a bitmap which throws an error.");
-        BitmapExporter bitmapExporter = new BitmapExporter("error","errorBitmap");
-        bitmapExporter.export(bitmap);
+        if (tryCounter < 1000) {
+            System.out.println("Needed " + tryCounter + " tries to find a bitmap which throws an error.");
+            BitmapExporter bitmapExporter = new BitmapExporter("error","errorBitmap");
+            bitmapExporter.export(bitmap);
+        } else {
+            System.out.println("Wasnt able to find a bitmap which throws an error.");
+        }
+
     }
 
     private static boolean isBitmapCorrectAnalyzed(potrace_bitmap bitmap) {
         potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmap);
         potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
-        if (isOnePathAmountNull(shouldPath, actualPath))
+        if (noPathesfound(shouldPath, actualPath))
             return true;
         int should = countPathes(shouldPath);
         int actual = countPathes(actualPath);
         return should == actual;
     }
 
-    private static boolean isOnePathAmountNull(potrace_path firstPath, potrace_path secondPath) {
-        return firstPath == null ^ secondPath == null;
+    private static boolean noPathesfound(potrace_path firstPath, potrace_path secondPath) {
+        return firstPath == null && secondPath == null;
     }
 
     @Test

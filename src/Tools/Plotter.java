@@ -10,34 +10,36 @@ import javax.swing.*;
  */
 public class Plotter {
     JFrame jFrame;
-    static final int SCALE = 40;
+    int scale;
+    static final int standartScale = 40;
     static final int standartWidth = 1000;
     static final int standartHeight = 800;
 
     public Plotter() {
-        this("Plotter", standartWidth, standartHeight );
+        this("Plotter", standartWidth, standartHeight,standartScale);
     }
 
-    public Plotter(String name, int width, int height){
+    public Plotter(String name, int width, int height,int scale){
+        this.scale = scale;
         jFrame = new JFrame(name);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setSize(width,height);
     };
 
     public void showPath(potrace_path path) {
-        Drawer drawer = new Drawer(path,SCALE, jFrame.getHeight());
+        Drawer drawer = new Drawer(path,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
     public void showBitmap(potrace_bitmap bitmap) {
-        Drawer drawer = new Drawer(bitmap,SCALE, jFrame.getHeight());
+        Drawer drawer = new Drawer(bitmap,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
     public void showPathAndBitmap(potrace_path path, potrace_bitmap bitmap) {
-        Drawer drawer = new Drawer(path,bitmap,SCALE, jFrame.getHeight());
+        Drawer drawer = new Drawer(path,bitmap,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }

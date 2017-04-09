@@ -319,10 +319,12 @@ public class decompose {
         bm = potrace_bitmap.bm_clear(bm, 0);
 
         // save original "next" pointers
+
         for (p = plist; p != null; p = p.next) {
             p.sibling = p.next;
             p.childlist = null;
         }
+        p = null;
 
         heap = plist;
 
@@ -339,16 +341,18 @@ public class decompose {
             cur = heap;
             heap = heap.childlist;
             cur.childlist = null;
+            //Ole: in cur ist jetzt der erste path drin aber ohne childlist, und in heap ist das erst child drin
 
             // unlink first path
             head = cur;
             cur = cur.next;
             head.next = null;
+            //Ole: in cur ist der erste path von next drin, und in im head ist nun der erste path drin aber ohne next-liste und ohne child-liste
 
             // render path
             bm = xor_path(bm, head);
             bbox = setbbox_path(bbox, head);
-
+            //Ole: jetzt wird der erste path zuerst in die bitmap eingetragen und dann auch eine bbox für den ersten path erstellt -> die außmaße sind also bekannt vom ersten path
 
             //Ole:
             /* vom Gefühl könnte dieser Insidness test in eine eigene methode, wenn nicht sogar in eine eigene klasse */
@@ -364,21 +368,26 @@ public class decompose {
             for (p=cur; (p != null); p=cur) {
                 cur=p.next;
                 p.next=null;
+                //Ole: in cur ist nun der zweite path der next liste, und in p der erste path der next liste
 
-                if (p.priv.pt[0].y <= bbox.y0) {
+                if (p.priv.pt[0].y <= bbox.y0) { //Ole: wenn erste path der next liste mit dem y wert (an der oberen kante) unter dem untersten (Kante) y-wert der bbox des aller ersten pathes liegt dann heißt dass, das er kein child ist
                 //Todo find out what that if condition is for
                     head.next = list.unefficient_list_insert_beforehook(p,head.next);
 	                // append the remainder of the potrace.list to hook_out
                     //TODO not sure what i should do here
-	                //hook_out = cur;
-                    head.next = list.unefficient_list_insert_beforehook(cur,head.next);
+	                //*hook_out = cur;
+                    head.next = list.putElementWhereNextIsNull(cur,head.next); //Fixme: bei dieser anweisung bin ich mir äußerst unsicher
+                    //Ole: Was eigentlich hier passieren sollte, ist dass an alle hook_outs oder halt an die next dinger, wo es nicht weiter geht, current angehöngt wird.
                     break;
+                    //Ole: Also falls p außerhalb vom head liegen sollte, wird p an head.next angefügt, und ebenfalls wird cur an head.next angefügt (also praktisch an p)
                 }
-                if (bm.BM_GET(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
+                if (bm.BM_GET(p.priv.pt[0].x, p.priv.pt[0].y-1)) { //Ole: der erste Punkt (pt[0]) ist immer der oberste punkt links des pathes, hier wird geprüft, ob ein pixel oberhalb von diesem feld sich der aller erste path befindet, mit zugriff auf die bitmap
                     head.childlist = list.unefficient_list_insert_beforehook(p,head.childlist);
+                    //Ole: es handelt sich also um ein child und p wird an die childliste angehängt
                 } else {
                     //hook_out = potrace.list.list_insert_beforehook(p, hook_out);
                     head.next = list.unefficient_list_insert_beforehook(p,head.next);
+                    //Ole: sollte das allerdings nicht der fall sein, handelt es sich um ein path der links, rechts oder über dem aller ersten path liegt und wird daher an head.next angefügt.
                 }
             }
 
@@ -387,14 +396,18 @@ public class decompose {
 
             // now schedule head->childlist and head->next for further
            // processing
-            if (head.next != null) {
+            if (head.next != null) { //Ole: es gab pfade die außerhalb des aller ersten pfades waren
                 head.next.childlist = heap;
                 heap = head.next;
+                //Ole: Im heap war ursprünglich das erste child, nun steht dieses child in head.next.children, und der heap wird zum head.next
             }
-            if (head.childlist != null) {
+            if (head.childlist != null) { //Ole: es gab children
                 head.childlist.childlist = heap;
                 heap = head.childlist;
+                //Ole: Falls es nur Children gegeben hat -> das child vom heap steht nun im head.child.child, und der heap wird zum nächsten child
+                //Ole: Falls es nicht nur Children gab -> etwas anderes
             }
+
         }
 
         // copy sibling structure from "next" to "sibling" component
@@ -404,6 +417,7 @@ public class decompose {
             p.sibling = p.next;
             p = p1;
         }
+        //Ole: Ursprünglich waren in Sibling der gesamte Next pfad mit abgespeichert, nun wird dieser mit dem next pfad (der mitlerweile die siblings enthält) vertauscht, so wie es eigentlich sein sollte
 
         // reconstruct a new linked potrace.list ("next") structure from tree
         // ("childlist", "sibling") structure. This code is slightly messy,

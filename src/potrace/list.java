@@ -36,4 +36,20 @@ public class list {
         }
         return list;
     }
+
+    public static potrace_path putElementWhereNextIsNull(potrace_path elt, potrace_path list) {
+        if (elt != null) {
+            if (list != null) {
+                potrace_path current = list;
+                while (current.next != null) {
+                    current = current.next;
+                }
+                current.next = elt;
+                return list;
+            } else {
+                return elt;
+            }
+        }
+        return list;
+    }
 }

@@ -11,7 +11,10 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String [] args){
-        System.out.println(new File(System.getProperty("user.dir") + File.separator + "error").list().length);
+        potrace_bitmap bitmap = BitmapImporter.importBitmap("errorBitmap17","error");
+        potrace_path result = PotraceLib.potrace_trace(new potrace_param(),bitmap);
+        Plotter plotter = new Plotter("Plotter",1000,800,9);
+        plotter.showPathAndBitmap(result,bitmap);
     }
 
 
