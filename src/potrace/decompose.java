@@ -441,14 +441,16 @@ public class decompose {
 	                // append to linked potrace.list
                     plist = list.unefficient_list_insert_beforehook(p1, plist);
 	                // append its childlist to heap, if non-empty
+                    //Ole:
+                    /* Ich habe zuerst versucht den ursprünglichen Quelltext für den das Macro:
+                     "list_append(path_t, heap1, p1->childlist);"
+                     steht zu verwenden,
+                     da wieder hooks verwendet wurden -> was fehlgeschlagen hat,
+                     im Endeffekt passiert wirklich was im Code-Schnipsel steht
+                     Es wird an den heap1 die p1.childlist angehängt
+                     */
                     if (p1.childlist != null) {
-                        //TODO produce the error <- ??? What does that mean ???
-                        //ToDO i think this part is still not correct
-                        potrace_path current = heap1;
-                        while (current != null)
-                            current = current.next; //TODO find way to run this line for code coverage
-                        p1.childlist .next = current;
-                        heap1 = p1.childlist;
+                        heap1 = list.unefficient_list_insert_beforehook(p1.childlist,heap1);
                     }
                 }
             }

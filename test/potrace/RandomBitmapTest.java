@@ -44,16 +44,16 @@ public class RandomBitmapTest {
     }
 
     public static void findNewErrorBitmap() {
-        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(100,100,0.6);
+        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(15,15,0.4);
         int tryCounter = 0;
         BetterBitmap bitmap;
 
         do {
             tryCounter ++;
             bitmap = bitmapGenerator.getRandomBitmap();
-        } while(isBitmapCorrectAnalyzed(bitmap) && tryCounter < 1000);
+        } while(isBitmapCorrectAnalyzed(bitmap) && tryCounter < 10000);
 
-        if (tryCounter < 1000) {
+        if (tryCounter < 10000) {
             System.out.println("Needed " + tryCounter + " tries to find a bitmap which throws an error.");
             BitmapExporter bitmapExporter = new BitmapExporter("error","errorBitmap");
             bitmapExporter.export(bitmap);
