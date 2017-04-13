@@ -9,7 +9,7 @@ import BitmapLibrary.*;
  */
 public class potraceTest {
 
-    potrace_bitmap[] bitmaps = new potrace_bitmap[5];
+    potrace_bitmap[] bitmaps = new potrace_bitmap[4];
 
     @Before
     public void before() {
@@ -17,7 +17,6 @@ public class potraceTest {
         bitmaps[1] = new DefaultBitmap();
         bitmaps[2] = new DefaultBitmapSimpleChildList();
         bitmaps[3] = new DefaultBitmapWithChildrenAndSiblings();
-        bitmaps[4] = new DefaultBitmapSimpleBoxOverPotraceWordBoundaries();
     }
 
     @Test

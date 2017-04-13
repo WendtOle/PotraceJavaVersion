@@ -50,9 +50,22 @@ public class TestPathReductionOfPathlistToTree {
         potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
         if (noPathesfound(shouldPath, actualPath))
             return true;
-        int should = PathCounter.count(shouldPath);
-        int actual = PathCounter.count(actualPath);
-        return should == actual;
+
+        PathCounter pathIteratorShould = new PathCounter(shouldPath);
+        int shouldCounter = 1;
+        while (pathIteratorShould.hasNext()) {
+            shouldCounter ++;
+            pathIteratorShould.goToNextPath();
+        }
+
+        PathCounter pathIteratorActual = new PathCounter(actualPath);
+        int actualCounter = 1;
+        while (pathIteratorActual.hasNext()) {
+            actualCounter ++;
+            pathIteratorActual.goToNextPath();
+        }
+
+        return shouldCounter == actualCounter;
     }
 
     private static boolean noPathesfound(potrace_path firstPath, potrace_path secondPath) {

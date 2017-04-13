@@ -25,7 +25,7 @@ public class DefaultBitMapForFindingDifferentPathes extends BetterBitmap{
         x x o o
         o x x o
         x o o x
-         */
+        */
 
         setPointsForLongPath();
         setPointsForShortPath();
