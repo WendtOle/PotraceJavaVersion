@@ -60,7 +60,7 @@ public class BitmapImporter {
 
     public static potrace_bitmap importBitmap(String filename, String folderName){
         try {
-            BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + folderName + File.separator + filename + ".bmp"));
+            BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + folderName + File.separator + filename));
             return copyValues(image);
         } catch (IOException e) {
             System.out.println(e);

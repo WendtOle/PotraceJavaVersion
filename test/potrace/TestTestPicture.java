@@ -1,6 +1,5 @@
 package potrace;
 
-import BitmapLibrary.*;
 import Tools.BitmapImporter;
 import Tools.PathCounter;
 import org.junit.Test;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 @RunWith(Parameterized.class)
-public class TestPathAmountInPicture {
+public class TestTestPicture {
 
     int expectedAmountOfPahtes;
     int[] areasOfPathes;
@@ -33,19 +32,23 @@ public class TestPathAmountInPicture {
 
     @Parameterized.Parameters(name = "Testing {index}. Bitmap")
     public static Collection testData() {
-        Object[][] testParameters = TestDataForTestPictures.getTestParameters();
+        Object[][] testParameters = new Object[][]{
+                (new TestDataPicture01()).getTestParameters(),
+                (new TestDataPicture02()).getTestParameters()
+
+        };
         return Arrays.asList(testParameters);
     }
 
-    public TestPathAmountInPicture(String nameOfTestPicture,
-                                   int amountOfPathes,
-                                   int[] areasOfPathes,
-                                   int[] signsOfPathes,
-                                   int[] lengthOfCurve,
-                                   int[][]expectedTagsOfCurve,
-                                   boolean[][] expectedChildsAndSiblings,
-                                   double[][][][] expectedPointsOfCurve,
-                                   int[][] expectedPrivInformations) {
+    public TestTestPicture(String nameOfTestPicture,
+                           int amountOfPathes,
+                           int[] areasOfPathes,
+                           int[] signsOfPathes,
+                           int[] lengthOfCurve,
+                           int[][]expectedTagsOfCurve,
+                           boolean[][] expectedChildsAndSiblings,
+                           double[][][][] expectedPointsOfCurve,
+                           int[][] expectedPrivInformations) {
 
         potrace_bitmap bitmap = BitmapImporter.importBitmap(nameOfTestPicture,testPictureFolderName);
         this.path = PotraceLib.potrace_trace(new potrace_param(),bitmap);

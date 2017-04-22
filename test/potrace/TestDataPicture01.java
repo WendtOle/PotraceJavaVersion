@@ -1,23 +1,32 @@
 package potrace;
 
 /**
- * Created by andreydelany on 13/04/2017.
+ * Created by andreydelany on 14/04/2017.
  */
-public class TestDataForTestPictures {
+public class TestDataPicture01 extends TestData{
 
-    public static Object[][] getTestParameters() {
-        return new Object[][]{
-                getTestParametersForPicture01(),
-                getTestParametersForPicture02()};
+    String getName() {
+        return "01.bmp";
     }
 
-    private static Object[] getTestParametersForPicture01(){
-        String name = "01";
-        int amountOfPathes = 9;
-        int[] areasOfPathes = new int[]{180, 22, 3, 6, 12, 4, 2, 2, 3};
-        int[] signsOfPathes = new int[]{43,45,45,45,45,45,45,43,43};
-        int[] lengthOfCurve = new int[]{20,10,3,5,3,4,3,3,3};
-        int[][] tagsOfCurves = new int[][]{
+    int getAmountOfPathes(){
+        return 9;
+    }
+
+    int[] getArrayWithAreaOfPathes(){
+        return new int[]{180, 22, 3, 6, 12, 4, 2, 2, 3};
+    }
+
+    int[] getArrayWithSignOfPathes(){
+        return new int[]{43,45,45,45,45,45,45,43,43};
+    }
+
+    int[] getArrayWithLengthOfPathes(){
+        return new int[]{20,10,3,5,3,4,3,3,3};
+    }
+
+    int[][] getArrayTagsOfCurvesOfPathes(){
+        return new int[][]{
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 {1, 1, 1},
@@ -27,18 +36,24 @@ public class TestDataForTestPictures {
                 {1, 1, 1},
                 {1, 1, 1},
                 {1, 1, 1}};
-        boolean[][] areThereChildListAnSibling = new boolean[][] {
+    }
+
+    boolean[][] getArrayOfChildSiblingRelationOfPathes() {
+        return new boolean[][]{
                 {true, false},
-                {true,true},
-                {false,true},
-                {false,true},
-                {true,true},
-                {false,true},
-                {false,false},
-                {false,false},
-                {false,false}
+                {true, true},
+                {false, true},
+                {false, true},
+                {true, true},
+                {false, true},
+                {false, false},
+                {false, false},
+                {false, false}
         };
-        double [][][][] pointsOfCurves = new double[][][][]{
+    }
+
+    double [][][][] getPointsOfCurvesOfPahtes () {
+        return new double[][][][]{
                 {
                         {{1.437500, 13.056319}, {2.000000, 12.394276}, {2.000000, 11.857650}},
                         {{2.000000, 11.321024}, {1.644355, 11.101766}, {1.209679, 11.370411}},
@@ -111,50 +126,20 @@ public class TestDataForTestPictures {
                         {{11.971985,4.534375}, {11.936458,5.396875}, {11.604167,5.729167}},
                         {{11.271875,6.061458}, {11.035526,5.470833}, {11.078947,4.416667}}
                 }
-            };
-            int[][] privInformations = new int[][]{
-                    {108,0,14,21},
-                    {48,6,13,12},
-                    {10,11,13,4},
-                    {16,3,11,6},
-                    {18,11,7,4},
-                    {8,4,6,4},
-                    {6,8,4,3},
-                    {6,7,12,3},
-                    {8,11,6,3}
-            };
-        return new Object[] {name,amountOfPathes,areasOfPathes,signsOfPathes,lengthOfCurve,tagsOfCurves,areThereChildListAnSibling,pointsOfCurves,privInformations};
+        };
     }
 
-    private static Object[] getTestParametersForPicture02(){
-        String name = "02";
-        int amountOfPathes = 2;
-        int[] areasOfPathes = new int[]{90,28};
-        int[] signsOfPathes = new int[]{43,45};
-        int[] lengthOfCurve = new int[]{4,4};
-        int[][] tagsOfCurves = new int[][]{
-                {1, 1, 1, 1},
-                {1, 1, 1}};
-        boolean[][] areThereChildListAnSibling = new boolean[][] {
-                {true, false},
-                {false,false},
+    int[][] getInformationsAboutPrivePath() {
+        return new int[][]{
+                {108,0,14,21},
+                {48,6,13,12},
+                {10,11,13,4},
+                {16,3,11,6},
+                {18,11,7,4},
+                {8,4,6,4},
+                {6,8,4,3},
+                {6,7,12,3},
+                {8,11,6,3}
         };
-        double [][][][] pointsOfCurves = new double[][][][]{
-        {
-                {{48.000000,0.233333}, {50.333333,0.000000}, {63.000000,0.000000}},
-                {{75.666667,0.000000}, {78.000000,0.233333}, {78.000000,1.500000}},
-                {{78.000000,2.766667}, {75.666667,3.000000}, {63.000000,3.000000}},
-                {{50.333333,3.000000}, {48.000000,2.766667}, {48.000000,1.500000}}
-        },
-        {
-                {{66.262500,1.067682}, {59.737500,1.067682}, {55.750000,1.257493}},
-                {{51.762500,1.447305}, {55.025000,1.602606}, {63.000000,1.602606}},
-                {{70.975000,1.602606}, {74.237500,1.447305}, {70.250000,1.257493}}
-        }};
-        int[][] privInformations = new int[][]{
-                {66,48,3,4},
-                {58,49,2,3}
-        };
-        return new Object[] {name,amountOfPathes,areasOfPathes,signsOfPathes,lengthOfCurve,tagsOfCurves,areThereChildListAnSibling,pointsOfCurves,privInformations};
     }
 }

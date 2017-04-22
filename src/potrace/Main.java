@@ -11,8 +11,10 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String [] args){
-        potrace_bitmap bitmap = BitmapImporter.importBitmap("01","testPictures");
+        potrace_bitmap bitmap = BitmapImporter.importBitmap("03.jpg","testPictures");
         potrace_path path = PotraceLib.potrace_trace(new potrace_param(),bitmap);
+        PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(path);
+        printer.print();
     }
 
 

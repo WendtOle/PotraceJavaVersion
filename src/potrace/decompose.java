@@ -374,9 +374,7 @@ public class decompose {
                 //Todo find out what that if condition is for
                     head.next = list.unefficient_list_insert_beforehook(p,head.next);
 	                // append the remainder of the potrace.list to hook_out
-                    //TODO not sure what i should do here
-	                //*hook_out = cur;
-                    head.next = list.putElementWhereNextIsNull(cur,head.next); //Fixme: bei dieser anweisung bin ich mir äußerst unsicher
+                    head.next = list.putElementWhereNextIsNull(cur,head.next);
                     //Ole: Was eigentlich hier passieren sollte, ist dass an alle hook_outs oder halt an die next dinger, wo es nicht weiter geht, current angehöngt wird.
                     break;
                     //Ole: Also falls p außerhalb vom head liegen sollte, wird p an head.next angefügt, und ebenfalls wird cur an head.next angefügt (also praktisch an p)
