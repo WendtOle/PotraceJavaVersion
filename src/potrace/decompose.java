@@ -345,19 +345,20 @@ public class decompose {
 
                 if (p.priv.pt[0].y <= bbox.y0) {
                 //Todo find out what that if condition is for
-                    head.next = list.unefficient_list_insert_beforehook(p,head.next);
+                    head.next = list.elementInsertAtTheLastNextOfList(p,head.next);
 	                // append the remainder of the potrace.list to hook_out
-                    head.next = list.putElementWhereNextIsNull(cur,head.next);
+                    head.next = list.listInsertAtTheLastNextOfList(cur,head.next);
+                    //head.next = list.listInsertAtTheLastNextOfList(cur,head.next);
 
                     break;
 
                 }
                 if (bm.BM_GET(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
-                    head.childlist = list.unefficient_list_insert_beforehook(p,head.childlist);
+                    head.childlist = list.elementInsertAtTheLastNextOfList(p,head.childlist);
 
                 } else {
 
-                    head.next = list.unefficient_list_insert_beforehook(p,head.next);
+                    head.next = list.elementInsertAtTheLastNextOfList(p,head.next);
 
                 }
             }
@@ -402,16 +403,16 @@ public class decompose {
             for (p=heap; p != null; p=p.sibling) {
                 // p is a positive path
                 // append to linked potrace.list
-                plist = list.unefficient_list_insert_beforehook(p, plist);
+                plist = list.elementInsertAtTheLastNextOfList(p, plist);
 
                 // go through its children
                 for (p1=p.childlist; p1 != null; p1=p1.sibling) {
 	                // append to linked potrace.list
-                    plist = list.unefficient_list_insert_beforehook(p1, plist);
+                    plist = list.elementInsertAtTheLastNextOfList(p1, plist);
 	                // append its childlist to heap, if non-empty
 
                     if (p1.childlist != null) {
-                        heap1 = list.unefficient_list_insert_beforehook(p1.childlist,heap1);
+                        heap1 = list.elementInsertAtTheLastNextOfList(p1.childlist,heap1);
                     }
                 }
             }
@@ -493,7 +494,7 @@ public class decompose {
             if (p.area > param.turdsize) {
 
                 //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
-                plist = list.unefficient_list_insert_beforehook(p,plist);
+                plist = list.elementInsertAtTheLastNextOfList(p,plist);
             }
         }
 

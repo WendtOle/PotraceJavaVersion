@@ -4,39 +4,39 @@ public class list {
 
     //Original Macro:
     /*
-    #define list_insert_beforehook(elt, hook) \
+    #define elementInsertAtTheLastNextOfList(elt, hook) \
     MACRO_BEGIN elt->next = *hook; *hook = elt; hook=&elt->next; MACRO_END
      */
 
-    public static path unefficient_list_insert_beforehook(path elt, path list) {
-        if (elt != null) {
+    public static path elementInsertAtTheLastNextOfList(path elementToAdd, path list) {
+        if (elementToAdd != null) {
             if (list != null) {
                 path current = list;
                 while (current.next != null) {
                     current = current.next;
                 }
-                elt.next = null;
-                current.next = elt;
+                elementToAdd.next = null;
+                current.next = elementToAdd;
                 return list;
             } else {
-                elt.next = null;
-                return elt;
+                elementToAdd.next = null;
+                return elementToAdd;
             }
         }
         return list;
     }
 
-    public static path putElementWhereNextIsNull(path elt, path list) {
-        if (elt != null) {
+    public static path listInsertAtTheLastNextOfList(path listToAdd, path list) {
+        if (listToAdd != null) {
             if (list != null) {
                 path current = list;
                 while (current.next != null) {
                     current = current.next;
                 }
-                current.next = elt;
+                current.next = listToAdd;
                 return list;
             } else {
-                return elt;
+                return listToAdd;
             }
         }
         return list;

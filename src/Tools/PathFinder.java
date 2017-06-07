@@ -41,7 +41,7 @@ public class PathFinder {
             if (p.area > param.turdsize) {
 
                 //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
-                plist = list.unefficient_list_insert_beforehook(p,plist);
+                plist = list.elementInsertAtTheLastNextOfList(p,plist);
             }
         }
         return plist;
