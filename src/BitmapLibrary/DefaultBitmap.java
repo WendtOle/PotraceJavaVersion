@@ -1,7 +1,6 @@
 package BitmapLibrary;
 
 import Tools.BetterBitmap;
-import potrace.potrace_bitmap;
 
 import java.awt.*;
 

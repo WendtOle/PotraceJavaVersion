@@ -1,7 +1,7 @@
 package BitmapLibrary;
 
 import Tools.BetterBitmap;
-import potrace.potrace_bitmap;
+import potrace.bitmap;
 
 import java.awt.*;
 
@@ -10,7 +10,7 @@ import java.awt.*;
  */
 public class DefaultBitmapBoxOnPotraceWordBoundary extends BetterBitmap {
     public DefaultBitmapBoxOnPotraceWordBoundary() {
-        super(potrace_bitmap.PIXELINWORD * 2, 2);
-        addPolygon(new Point(potrace_bitmap.PIXELINWORD -1,1), new Point(potrace_bitmap.PIXELINWORD,0),true);
+        super(bitmap.PIXELINWORD * 2, 2);
+        addPolygon(new Point(bitmap.PIXELINWORD -1,1), new Point(bitmap.PIXELINWORD,0),true);
     }
 }

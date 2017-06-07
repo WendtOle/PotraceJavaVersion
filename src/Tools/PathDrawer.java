@@ -1,25 +1,22 @@
 package Tools;
 
-import potrace.potrace_dpoint;
-import potrace.potrace_path;
+import potrace.dpoint;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Line2D;
-import java.awt.geom.QuadCurve2D;
 
 /**
  * Created by andreydelany on 06/04/2017.
  */
 public class PathDrawer{
 
-    potrace_path path;
+    potrace.path path;
     Graphics2D graphics;
     int scale, height;
 
-    public PathDrawer(potrace_path path, int skalierung, int height) { //Fixme: to use height, is not good
+    public PathDrawer(potrace.path path, int skalierung, int height) { //Fixme: to use height, is not good
 
         this.path = path;
         this.scale = skalierung;
@@ -39,18 +36,18 @@ public class PathDrawer{
         graphics.setTransform(flipVertically);
     }
 
-    private void drawPathes(potrace_path startPath){
-        potrace_path currentPath = startPath;
+    private void drawPathes(potrace.path startPath){
+        potrace.path currentPath = startPath;
         while (currentPath != null) {
             drawPath(currentPath);
             currentPath = currentPath.next;
         }
     }
 
-    private void drawPath(potrace_path path) {
-        potrace_dpoint startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
+    private void drawPath(potrace.path path) {
+        dpoint startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
         for (int i = 0; i < path.curve.n; i++) {
-            potrace_dpoint[] pointsOfCurrentCorner = path.curve.c[i];
+            dpoint[] pointsOfCurrentCorner = path.curve.c[i];
             if (isStraightCorner(path.curve.tag[i]))
                 startPointForNextCorner = drawStraightCorner(startPointForNextCorner, pointsOfCurrentCorner);
             else
@@ -58,9 +55,9 @@ public class PathDrawer{
         }
     }
 
-    private potrace_dpoint getStartPointOfCurrentCurve(potrace_dpoint[][] curvesOfPath){
+    private dpoint getStartPointOfCurrentCurve(dpoint[][] curvesOfPath){
         int indexOfLastCurve = curvesOfPath.length - 1;
-        potrace_dpoint startPoint = curvesOfPath[indexOfLastCurve][2];
+        dpoint startPoint = curvesOfPath[indexOfLastCurve][2];
         return startPoint;
     }
 
@@ -69,40 +66,40 @@ public class PathDrawer{
         return identifier == 2 ? true : false; //2 straight, 1 round
     }
 
-    private potrace_dpoint drawStraightCorner(potrace_dpoint C, potrace_dpoint[] pointsOfCorner){ //Angle ABC -> clockwise
-        potrace_dpoint B = pointsOfCorner[1];
-        potrace_dpoint A = pointsOfCorner[2];
+    private dpoint drawStraightCorner(dpoint C, dpoint[] pointsOfCorner){ //Angle ABC -> clockwise
+        dpoint B = pointsOfCorner[1];
+        dpoint A = pointsOfCorner[2];
         drawLine(C,B);
         drawLine(B,A);
         return A;
     }
 
-    private potrace_dpoint drawRoundCorner(potrace_dpoint P0, potrace_dpoint[] pointsOfCorner) { //PO startPoint, P3 endPoint, P1 & P2 ControllPoint -> clockwise
-        potrace_dpoint P1 = pointsOfCorner[0];
-        potrace_dpoint P2 = pointsOfCorner[1];
-        potrace_dpoint P3 = pointsOfCorner[2];
+    private dpoint drawRoundCorner(dpoint P0, dpoint[] pointsOfCorner) { //PO startPoint, P3 endPoint, P1 & P2 ControllPoint -> clockwise
+        dpoint P1 = pointsOfCorner[0];
+        dpoint P2 = pointsOfCorner[1];
+        dpoint P3 = pointsOfCorner[2];
         drawBezierCurve(P0,P1,P2,P3);
         return P3;
     }
 
-    private void drawLine(potrace_dpoint startIn, potrace_dpoint endIn){
-        potrace_dpoint start = scalePoint(startIn);
-        potrace_dpoint end = scalePoint(endIn);
+    private void drawLine(dpoint startIn, dpoint endIn){
+        dpoint start = scalePoint(startIn);
+        dpoint end = scalePoint(endIn);
         Shape line = new Line2D.Double(start.x,start.y,end.x,end.y);
         graphics.draw(line);
     };
 
-    private void drawBezierCurve(potrace_dpoint p0In, potrace_dpoint p1In, potrace_dpoint p2In, potrace_dpoint p3In) {
-        potrace_dpoint p0 = scalePoint(p0In);
-        potrace_dpoint p1 = scalePoint(p1In);
-        potrace_dpoint p2 = scalePoint(p2In);
-        potrace_dpoint p3 = scalePoint(p3In);
+    private void drawBezierCurve(dpoint p0In, dpoint p1In, dpoint p2In, dpoint p3In) {
+        dpoint p0 = scalePoint(p0In);
+        dpoint p1 = scalePoint(p1In);
+        dpoint p2 = scalePoint(p2In);
+        dpoint p3 = scalePoint(p3In);
         CubicCurve2D.Double bezierCurve = new CubicCurve2D.Double(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
         graphics.draw(bezierCurve);
     }
 
-    private potrace_dpoint scalePoint(potrace_dpoint point){
-        return new potrace_dpoint(point.x * scale, point.y * scale);
+    private dpoint scalePoint(dpoint point){
+        return new dpoint(point.x * scale, point.y * scale);
     }
 
 

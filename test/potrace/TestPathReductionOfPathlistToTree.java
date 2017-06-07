@@ -45,9 +45,9 @@ public class TestPathReductionOfPathlistToTree {
         return true;
     }
 
-    private boolean isBitmapCorrectAnalyzed(potrace_bitmap bitmap) {
-        potrace_path shouldPath = PathFinder.findOriginalBitmap(bitmap);
-        potrace_path actualPath = decompose.bm_to_pathlist(bitmap,new potrace_param());
+    private boolean isBitmapCorrectAnalyzed(bitmap bitmap) {
+        path shouldPath = PathFinder.findOriginalBitmap(bitmap);
+        path actualPath = decompose.bm_to_pathlist(bitmap,new param());
         if (noPathesfound(shouldPath, actualPath))
             return true;
 
@@ -68,7 +68,7 @@ public class TestPathReductionOfPathlistToTree {
         return shouldCounter == actualCounter;
     }
 
-    private static boolean noPathesfound(potrace_path firstPath, potrace_path secondPath) {
+    private static boolean noPathesfound(path firstPath, path secondPath) {
         return firstPath == null && secondPath == null;
     }
 }

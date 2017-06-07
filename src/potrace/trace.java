@@ -1,24 +1,14 @@
 package potrace;
 import java.awt.*;
 
-/**
- * Created by andreydelany on 13/03/2017.
- */
-
-    //Ole:
-    /* Eigentlich ziemlich identisch geblieben, ein paar Structs entfernt und zu extra klassen gemacht.
-    Und Potrace_CuveTo and Potrace_Corner aus Potracelib genommen und hierher gepactk, da sie hier verwendet werden. */
-
 public class trace {
 
     static int INFTY  = 10000000;	            //it suffices that this is longer than any path; it need not be really infinite
     static double COS179 = -0.999847695156;	    /* the cosine of 179 degrees */
-    static int POTRACE_CURVETO = 1;
-    static int POTRACE_CORNER = 2;
 
     /* return a direction that is 90 degrees counterclockwise from p2-p0,
        but then restricted to one of the major wind directions (n, nw, w, etc) */
-    static Point dorth_infty(potrace_dpoint p0, potrace_dpoint p2) {
+    static Point dorth_infty(dpoint p0, dpoint p2) {
         Point r = new Point();
 
         r.y = auxiliary.sign(p2.x-p0.x);
@@ -28,7 +18,7 @@ public class trace {
     }
 
     /* return (p1-p0)x(p2-p0), the area of the parallelogram */
-    static double dpara(potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2) {
+    static double dpara(dpoint p0, dpoint p1, dpoint p2) {
         double x1, y1, x2, y2;
 
         x1 = p1.x-p0.x;
@@ -41,7 +31,7 @@ public class trace {
 
     /* ddenom/dpara have the property that the square of radius 1 centered
     at p1 intersects the line p0p2 iff |dpara(p0,p1,p2)| <= ddenom(p0,p2) */
-    static double ddenom(potrace_dpoint p0, potrace_dpoint p2) {
+    static double ddenom(dpoint p0, dpoint p2) {
         Point r = dorth_infty(p0, p2);
 
         return r.y*(p2.x-p0.x) - r.x*(p2.y-p0.y);
@@ -58,11 +48,11 @@ public class trace {
 
     //determine the center and slope of the line i..j. Assume i<j. Needs
     //"sum" components of p to be set.
-    static potrace_dpoint[] pointslope(potrace_privepath pp, int i, int j) {
+    static dpoint[] pointslope(privepath pp, int i, int j) {
         //assume i<j
 
-        potrace_dpoint ctr = new potrace_dpoint();
-        potrace_dpoint dir = new potrace_dpoint();
+        dpoint ctr = new dpoint();
+        dpoint dir = new dpoint();
 
         int n = pp.len;
         sums[] sums = pp.sums;
@@ -125,12 +115,12 @@ public class trace {
         if (l==0) {
             dir.x = dir.y = 0;   //sometimes this can happen when k=4: the two eigenvalues coincide
         }
-        potrace_dpoint[] output = {ctr,dir};
+        dpoint[] output = {ctr,dir};
         return output;
     }
 
     //Apply quadratic form Q to vector w = (w.x,w.y)
-    static double quadform(potrace_quadform Q, potrace_dpoint w) {
+    static double quadform(quadform Q, dpoint w) {
         double[] v = new double[3];
         int i, j;
         double sum;
@@ -154,7 +144,7 @@ public class trace {
     }
 
     /* calculate (p1-p0)x(p3-p2) */
-    static double cprod(potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2, potrace_dpoint p3) {
+    static double cprod(dpoint p0, dpoint p1, dpoint p2, dpoint p3) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -166,7 +156,7 @@ public class trace {
     }
 
     /* calculate (p1-p0)*(p2-p0) */
-    static double iprod(potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2) {
+    static double iprod(dpoint p0, dpoint p1, dpoint p2) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -178,7 +168,7 @@ public class trace {
     }
 
     /* calculate (p1-p0)*(p3-p2) */
-    static double iprod1(potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2, potrace_dpoint p3) {
+    static double iprod1(dpoint p0, dpoint p1, dpoint p2, dpoint p3) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -190,14 +180,14 @@ public class trace {
     }
 
     /* calculate distance between two points */
-    static double ddist(potrace_dpoint p, potrace_dpoint q) {
+    static double ddist(dpoint p, dpoint q) {
         return Math.sqrt((p.x-q.x)*(p.x-q.x)+(p.y-q.y)*(p.y-q.y));
     }
 
     /* calculate point of a bezier curve */
-    static potrace_dpoint bezier(double t, potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2, potrace_dpoint p3) {
+    static dpoint bezier(double t, dpoint p0, dpoint p1, dpoint p2, dpoint p3) {
         double s = 1-t;
-        potrace_dpoint res = new potrace_dpoint();
+        dpoint res = new dpoint();
 
         //Entwickler:
         /* Note: a good optimizing compiler (such as gcc-3) reduces the
@@ -213,7 +203,7 @@ public class trace {
     /* calculate the point t in [0..1] on the (convex) bezier curve
     (p0,p1,p2,p3) which is tangent to q1-q0. Return -1.0 if there is no
     solution in [0..1]. */
-    static double tangent(potrace_dpoint p0, potrace_dpoint p1, potrace_dpoint p2, potrace_dpoint p3, potrace_dpoint q0, potrace_dpoint q1) {
+    static double tangent(dpoint p0, dpoint p1, dpoint p2, dpoint p3, dpoint q0, dpoint q1) {
         double A, B, C;   /* (1-t)^2 A + 2(1-t)t B + t^2 C = 0 */
         double a, b, c;   /* a t^2 + b t + c = 0 */
         double d, s, r1, r2;
@@ -256,7 +246,7 @@ public class trace {
     rapid summing). Return 0 on success, 1 with errno set on
     failure. */
 
-    static potrace_privepath calc_sums(potrace_privepath pp) {
+    static privepath calc_sums(privepath pp) {
         int i, x, y;
         int n = pp.len;
 
@@ -320,7 +310,7 @@ public class trace {
     und haben dafür continues und breaks für die loops verändert. der Flow sollte am Schluss der gleiche sein. */
 
     /* returns 0 on success, 1 on error with errno set */
-    static potrace_privepath calc_lon(potrace_privepath pp) {
+    static privepath calc_lon(privepath pp) {
         Point[] pt = pp.pt;
         int n = pp.len;
         int i, j, k, k1;
@@ -511,7 +501,7 @@ public class trace {
     /* Auxiliary function: calculate the penalty of an edge from i to j in
     the given path. This needs the "lon" and "sum*" data. */
 
-    static double penalty3(potrace_privepath pp, int i, int j) {
+    static double penalty3(privepath pp, int i, int j) {
         int n = pp.len;
         Point[] pt = pp.pt;
         sums[] sums = pp.sums;
@@ -572,7 +562,7 @@ public class trace {
     Wie man jetzt genau dazu kommt ist mir, wie schon gesagt, etwas schleierhaft. Aber anscheinend funktioniert es.
      */
 
-    static potrace_privepath bestpolygon(potrace_privepath pp) {
+    static privepath bestpolygon(privepath pp) {
         int i, j, m, k;
         int n = pp.len;
         double[] pen = new double[n+1];     /* pen[n+1]: penalty vector */
@@ -668,7 +658,7 @@ public class trace {
     if it lies outside. Return 1 with errno set on error; 0 on
     success. */
 
-    static potrace_privepath adjust_vertices(potrace_privepath pp) {
+    static privepath adjust_vertices(privepath pp) {
         int m = pp.m;
         int[] po = pp.po;
         int n = pp.len;
@@ -676,18 +666,18 @@ public class trace {
         int x0 = pp.x0;
         int y0 = pp.y0;
 
-        potrace_dpoint[] ctr = new potrace_dpoint[m];      /* ctr[m] */
-        potrace_dpoint[] dir = new potrace_dpoint[m];      /* dir[m] */
-        potrace_quadform[] q = new potrace_quadform[m];     /* q[m] */
+        dpoint[] ctr = new dpoint[m];      /* ctr[m] */
+        dpoint[] dir = new dpoint[m];      /* dir[m] */
+        quadform[] q = new quadform[m];     /* q[m] */
 
         for(int i = 0; i < q.length; i++) {
-            q[i] = new potrace_quadform();
+            q[i] = new quadform();
         }
 
         double[] v = new double[3];
         double d;
         int i, j, k, l;
-        potrace_dpoint s = new potrace_dpoint();
+        dpoint s = new dpoint();
 
         pp.curve = new privcurve(m);    //Fixme: check wether it works correct
 
@@ -695,7 +685,7 @@ public class trace {
         for (i=0; i<m; i++) {
             j = po[auxiliary.mod(i+1,m)];
             j = auxiliary.mod(j-po[i],n)+po[i];
-            potrace_dpoint[] output = pointslope(pp, po[i], j);
+            dpoint[] output = pointslope(pp, po[i], j);
             ctr[i] = output[0];
             dir[i] = output[1];
         }
@@ -728,8 +718,8 @@ public class trace {
         //within a given unit square which minimizes the square distance to
         //the two lines.
         for (i=0; i<m; i++) {
-            potrace_quadform Q = new potrace_quadform();
-            potrace_dpoint w = new potrace_dpoint();
+            quadform Q = new quadform();
+            dpoint w = new dpoint();
             double dx, dy;
             double det;
             double min, cand;   //minimum and candidate for minimum of quad. form */
@@ -853,7 +843,7 @@ public class trace {
     static privcurve reverse(privcurve curve) {
         int m = curve.n;
         int i, j;
-        potrace_dpoint tmp;
+        dpoint tmp;
 
         for (i=0, j=m-1; i<j; i++, j--) {
             tmp = curve.vertex[i];
@@ -869,7 +859,7 @@ public class trace {
 
         int i, j, k;
         double dd, denom, alpha;
-        potrace_dpoint p2, p3, p4;
+        dpoint p2, p3, p4;
 
         //examine each vertex and find its best fit
         for (i=0; i<m; i++) {
@@ -889,7 +879,7 @@ public class trace {
             curve.alpha0[j] = alpha;	 /* remember "original" value of alpha */
 
             if (alpha >= alphamax) {  /* pointed corner */
-                curve.tag[j] = POTRACE_CORNER;
+                curve.tag[j] = potraceLib.POTRACE_CORNER;
                 curve.c[j][1] = curve.vertex[j];
                 curve.c[j][2] = p4;
             } else {
@@ -900,7 +890,7 @@ public class trace {
                 }
                 p2 = auxiliary.interval(.5+.5*alpha, curve.vertex[i], curve.vertex[j]);
                 p3 = auxiliary.interval(.5+.5*alpha, curve.vertex[k], curve.vertex[j]);
-                curve.tag[j] = POTRACE_CURVETO;
+                curve.tag[j] = potraceLib.POTRACE_CURVETO;
                 curve.c[j][0] = p2;
                 curve.c[j][1] = p3;
                 curve.c[j][2] = p4;
@@ -919,12 +909,12 @@ public class trace {
     /* calculate best fit from i+.5 to j+.5.  Assume i<j (cyclically).
     Return 0 and set badness and parameters (alpha, beta), if
     possible. Return 1 if impossible. */
-    static potrace_opti opti_penalty(potrace_privepath pp, int i, int j, potrace_opti res, double opttolerance, int[] convc, double[] areac) {
+    static opti opti_penalty(privepath pp, int i, int j, opti res, double opttolerance, int[] convc, double[] areac) {
         int m = pp.curve.n;
         int conv;
         int k, k1, k2, i1;
         double area, alpha, d, d1, d2;
-        potrace_dpoint p0, p1, p2, p3, pt;
+        dpoint p0, p1, p2, p3, pt;
         double A, R, A1, A2, A3, A4;
         double s, t;
 
@@ -1061,21 +1051,21 @@ public class trace {
     /* optimize the path p, replacing sequences of Bezier segments by a
     single segment when possible. Return 0 on success, 1 with errno set
     on failure. */
-    static potrace_privepath opticurve(potrace_privepath pp, double opttolerance) {
+    static privepath opticurve(privepath pp, double opttolerance) {
         int m = pp.curve.n;
         int[] pt = new int[m+1];            //pt[m+1]
         double[]  pen = new double[m+1];       //pen[m+1]
         int[] len = new int [m+1];           //len[m+1]
-        potrace_opti[]  opt = new potrace_opti[m+1];    //opt[m+1]
+        opti[]  opt = new opti[m+1];    //opt[m+1]
 
         for (int i = 0; i < opt.length; i++) {
-            opt[i] = new potrace_opti();
+            opt[i] = new opti();
         }
 
         int om;
         int i,j,r;
-        potrace_opti o = new potrace_opti();
-        potrace_dpoint p0;
+        opti o = new opti();
+        dpoint p0;
         int i1;
         double area;
         double alpha;
@@ -1087,7 +1077,7 @@ public class trace {
 
         /* pre-calculate convexity: +1 = right turn, -1 = left turn, 0 = corner */
         for (i=0; i<m; i++) {
-            if (pp.curve.tag[i] == POTRACE_CURVETO) {
+            if (pp.curve.tag[i] == potraceLib.POTRACE_CURVETO) {
                 convc[i] = auxiliary.sign(dpara(pp.curve.vertex[auxiliary.mod(i-1,m)], pp.curve.vertex[i], pp.curve.vertex[auxiliary.mod(i+1,m)]));
             } else {
                 convc[i] = 0;
@@ -1100,7 +1090,7 @@ public class trace {
         p0 = pp.curve.vertex[0];
         for (i=0; i<m; i++) {
             i1 = auxiliary.mod(i+1, m);
-            if (pp.curve.tag[i1] == POTRACE_CURVETO) {
+            if (pp.curve.tag[i1] == potraceLib.POTRACE_CURVETO) {
                 alpha = pp.curve.alpha[i1];
                 area += 0.3*alpha*(4-alpha)*dpara(pp.curve.c[i][2], pp.curve.vertex[i1], pp.curve.c[i1][2])/2;
                 area += dpara(p0, pp.curve.c[i][2], pp.curve.c[i1][2])/2;
@@ -1121,7 +1111,7 @@ public class trace {
             len[j] = len[j-1]+1;
 
             for (i=j-2; i>=0; i--) {
-                potrace_opti testO = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
+                opti testO = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
                 if (testO == null) {
                     break;
                 } else {
@@ -1131,7 +1121,7 @@ public class trace {
                     pt[j] = i;
                     pen[j] = pen[i] + o.pen;
                     len[j] = len[i] + 1;
-                    opt[j] = potrace_opti.copy(o);
+                    opt[j] = opti.copy(o);
                 }
             }
         }
@@ -1154,7 +1144,7 @@ public class trace {
                 pp.ocurve.beta[i]    = pp.curve.beta[auxiliary.mod(j,m)];
                 s[i] = t[i] = 1.0;
             } else {
-                pp.ocurve.tag[i] = POTRACE_CURVETO;
+                pp.ocurve.tag[i] = potraceLib.POTRACE_CURVETO;
                 pp.ocurve.c[i][0] = opt[j].c[0];
                 pp.ocurve.c[i][1] = opt[j].c[1];
                 pp.ocurve.c[i][2] = pp.curve.c[auxiliary.mod(j,m)][2];
@@ -1177,10 +1167,10 @@ public class trace {
     }
 
     /* return 0 on success, 1 on error with errno set. */
-    static potrace_path process_path(potrace_path plist,  potrace_param param) {
+    static path process_path(path plist, param param) {
         /* call downstream function with each path */
 
-        for (potrace_path p=plist; p!=null; p=p.next) {
+        for (path p = plist; p!=null; p=p.next) {
             p.priv = calc_sums(p.priv);
             p.priv = calc_lon(p.priv);
             p.priv = bestpolygon(p.priv);
@@ -1195,7 +1185,7 @@ public class trace {
             } else {
                 p.priv.fcurve = p.priv.curve;
             }
-            p.curve = potrace_curve.privcurve_to_curve(p.priv.fcurve);
+            p.curve = curve.privcurve_to_curve(p.priv.fcurve);
         }
         return plist;
 

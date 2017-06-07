@@ -8,25 +8,25 @@ import java.awt.*;
  * Created by andreydelany on 08/04/2017.
  */
 public class PathFinder {
-    public static potrace_path findOriginalBitmap(potrace_bitmap bitmap){
-        potrace_param param = new potrace_param();
+    public static path findOriginalBitmap(bitmap bitmap){
+        param param = new param();
         int x;
         int y;
-        potrace_path p;
-        potrace_path plist = null;  // linked potrace.list of path objects
-        //potrace.potrace_path plist_hook = null;  // used to speed up appending to linked potrace.list
-        potrace_bitmap bm1 = bitmap.bm_dup();
+        path p;
+        path plist = null;  // linked potrace.list of path objects
+        //potrace.path plist_hook = null;  // used to speed up appending to linked potrace.list
+        potrace.bitmap bm1 = bitmap.bm_dup();
         int sign;
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
-        bm1.bm_clearexcess();
+        decompose.bm_clearexcess(bm1);
 
         // iterate through components
         x = 0;
         y = bm1.h - 1;
         Point xy = new Point(x,y);
-        while ((xy = decompose.findnext(bm1,xy)) != null) {
+        while ((decompose.findnext(bm1,xy))) {
             // calculate the sign by looking at the original bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
             // mit dem nachgucken nach dem sign in der original bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
             sign = bitmap.BM_GET(xy.x, xy.y) ? '+' : '-';
@@ -35,7 +35,7 @@ public class PathFinder {
             p = decompose.findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
 
             // update buffered image
-            bm1 = decompose.xor_path(bm1, p);
+            decompose.xor_path(bm1, p);
 
             // if it's a turd, eliminate it, else append it to the potrace.list
             if (p.area > param.turdsize) {

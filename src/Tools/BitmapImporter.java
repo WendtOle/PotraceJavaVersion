@@ -4,7 +4,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,8 +20,8 @@ public class BitmapImporter {
         this.folderName = folderName;
     }
 
-    public ArrayList<potrace_bitmap> importAllBitmaps() {
-        ArrayList<potrace_bitmap> bitmaps = new ArrayList<>();
+    public ArrayList<bitmap> importAllBitmaps() {
+        ArrayList<bitmap> bitmaps = new ArrayList<>();
         try {
             File[] bitmapFiles = getCurrentNumberOfFilesInFolder();
 
@@ -48,7 +47,7 @@ public class BitmapImporter {
         return System.getProperty("user.dir") + File.separator + folderName;
     }
 
-    public static potrace_bitmap importBitmap(String name){
+    public static bitmap importBitmap(String name){
         try {
             BufferedImage image = ImageIO.read(new File(name));
             return copyValues(image);
@@ -58,7 +57,7 @@ public class BitmapImporter {
         return null;
     }
 
-    public static potrace_bitmap importBitmap(String filename, String folderName){
+    public static bitmap importBitmap(String filename, String folderName){
         try {
             BufferedImage image = ImageIO.read(new File(System.getProperty("user.dir") + File.separator + folderName + File.separator + filename));
             return copyValues(image);

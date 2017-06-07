@@ -34,11 +34,11 @@ public class potrace_bitmapTest {
     @org.junit.Test
     //TODO wie kann denn eine negatives dy entstehen?
     public void test_bm_size() throws Exception {
-        potrace_bitmap testBitMap = new potrace_bitmap(-33,1);
+        bitmap testBitMap = new bitmap(-33,1);
         System.out.println(testBitMap.bm_size());
-        Assert.assertEquals(64, (new potrace_bitmap(1,1)).bm_size());
-        Assert.assertEquals(128, (new potrace_bitmap(70,1)).bm_size());
-        Assert.assertEquals(128, (new potrace_bitmap(4,2)).bm_size());
+        Assert.assertEquals(64, (new bitmap(1,1)).bm_size());
+        Assert.assertEquals(128, (new bitmap(70,1)).bm_size());
+        Assert.assertEquals(128, (new bitmap(4,2)).bm_size());
     }
 
     @org.junit.Test
@@ -46,10 +46,10 @@ public class potrace_bitmapTest {
         BetterBitmap testBitMap = new BetterBitmap(70,1);
         testBitMap.addPolygon(new Point(60,0),new Point(67,0),true);
 
-        potrace_bitmap.bm_clear(testBitMap,0);
+        bitmap.bm_clear(testBitMap,0);
         Assert.assertEquals(false, testBitMap.BM_GET(0,0));
         Assert.assertEquals(false, testBitMap.BM_GET(40,2));
-        potrace_bitmap.bm_clear(testBitMap,1);
+        bitmap.bm_clear(testBitMap,1);
         Assert.assertEquals(true, testBitMap.BM_GET(0,0));
         Assert.assertEquals(false, testBitMap.BM_GET(40,2));
         Assert.assertEquals(false, testBitMap.BM_GET(40,1));
@@ -59,7 +59,7 @@ public class potrace_bitmapTest {
     public void test_bm_dup() throws Exception {
         BetterBitmap originalBitmap = new BetterBitmap(70,2);
         originalBitmap.addPolygon(new Point(62,1), new Point(65,0),true);
-        potrace_bitmap copiedBitmap = originalBitmap.bm_dup();
+        bitmap copiedBitmap = originalBitmap.bm_dup();
 
         //check wether reference is difference
         Assert.assertFalse(originalBitmap == copiedBitmap);

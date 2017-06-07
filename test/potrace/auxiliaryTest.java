@@ -2,8 +2,6 @@ package potrace;
 
 import org.junit.Test;
 
-import java.awt.*;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -71,12 +69,12 @@ public class auxiliaryTest {
 
     @Test
     public void testInterval() throws Exception {
-        potrace_dpoint firstPoint = new potrace_dpoint(1.2,3.4);
-        potrace_dpoint secondPoint = new potrace_dpoint(3.5,8.1);
+        dpoint firstPoint = new dpoint(1.2,3.4);
+        dpoint secondPoint = new dpoint(3.5,8.1);
         double lampda = 0.5;
 
-        potrace_dpoint expected = new potrace_dpoint(2.3499999999999996,5.75);
-        potrace_dpoint actual = auxiliary.interval(lampda,firstPoint,secondPoint);
+        dpoint expected = new dpoint(2.3499999999999996,5.75);
+        dpoint actual = auxiliary.interval(lampda,firstPoint,secondPoint);
 
         assertEquals(expected.x, actual.x,0);
         assertEquals(expected.y, actual.y,0);

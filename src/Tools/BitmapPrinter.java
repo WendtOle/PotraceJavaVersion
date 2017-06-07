@@ -2,13 +2,11 @@ package Tools; /**
  * Created by andreydelany on 21/03/2017.
  */
 
-import potrace.potrace_bitmap;
-
 public class BitmapPrinter {
 
-    potrace_bitmap bitmap;
+    potrace.bitmap bitmap;
 
-    public BitmapPrinter(potrace_bitmap bm) {
+    public BitmapPrinter(potrace.bitmap bm) {
         this.bitmap = bm;
     }
 
@@ -41,7 +39,7 @@ public class BitmapPrinter {
     }
 
     private void fillUpPotraceWordWithZeros(String currentPotraceWord) {
-        int amountOfZeros = potrace_bitmap.PIXELINWORD - currentPotraceWord.length();
+        int amountOfZeros = potrace.bitmap.PIXELINWORD - currentPotraceWord.length();
         printCertainAmountOfZeros(amountOfZeros);
     }
 

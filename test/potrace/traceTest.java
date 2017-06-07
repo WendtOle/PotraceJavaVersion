@@ -1,7 +1,6 @@
 package potrace;
 
 import org.junit.Test;
-import org.junit.Assert;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -19,9 +18,9 @@ public class traceTest {
 
     @Test
     public void test_calc_sums() {
-        potrace_bitmap testBitmap = new potrace_bitmap(2,2);
-        potrace_path path = decompose.findpath(testBitmap,0,2,43,4);
-        potrace_privepath privepath = trace.calc_sums(path.priv);
+        bitmap testBitmap = new bitmap(2,2);
+        path path = decompose.findpath(testBitmap,0,2,43,4);
+        privepath privepath = trace.calc_sums(path.priv);
 
         assertTrue(isSumsEqual(new Double[]{0.,0.,0.,0.,0.},privepath.sums[0]));
         assertTrue(isSumsEqual(new Double[]{0.,0.,0.,0.,0.},privepath.sums[1]));
@@ -32,9 +31,9 @@ public class traceTest {
 
     @Test
     public void test_calc_lon() {
-        potrace_bitmap testBitmap = new potrace_bitmap(2,2);
-        potrace_path path = decompose.findpath(testBitmap,0,2,43,4);
-        potrace_privepath privepath = trace.calc_sums(path.priv);
+        bitmap testBitmap = new bitmap(2,2);
+        path path = decompose.findpath(testBitmap,0,2,43,4);
+        privepath privepath = trace.calc_sums(path.priv);
         privepath = trace.calc_lon(privepath);
 
         assertEquals(3,privepath.lon[0]);

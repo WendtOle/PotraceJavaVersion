@@ -1,6 +1,6 @@
 package Tools;
 
-import potrace.potrace_bitmap;
+import potrace.bitmap;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,7 +20,7 @@ public class BitmapExporter {
         this.fileName = fileName;
     }
 
-    public void export(potrace_bitmap bitmap) {
+    public void export(bitmap bitmap) {
         try {
             BufferedImage bufferedImage = saveBitmapToFile(bitmap);
             File outputfile = new File(getBitMapPath(getIndexForNextFile()));
@@ -30,7 +30,7 @@ public class BitmapExporter {
         }
     }
 
-    public static void export(potrace_bitmap bitmap,String fileName) {
+    public static void export(bitmap bitmap, String fileName) {
         try {
             BufferedImage bufferedImage = saveBitmapToFile(bitmap);
             File outputfile = new File(fileName + ".bmp");
@@ -40,7 +40,7 @@ public class BitmapExporter {
         }
     }
 
-    private static BufferedImage saveBitmapToFile(potrace_bitmap bitmap) {
+    private static BufferedImage saveBitmapToFile(bitmap bitmap) {
         BufferedImage image = new BufferedImage(bitmap.w,bitmap.h,BufferedImage.TYPE_BYTE_BINARY);
         for (int y = 0; y < bitmap.h; y ++)
             for (int x = 0; x < bitmap.w; x ++){

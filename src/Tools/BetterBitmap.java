@@ -1,12 +1,12 @@
 package Tools;
-import potrace.potrace_bitmap;
+import potrace.bitmap;
 
 import java.awt.*;
 
 /**
  * Created by andreydelany on 29/03/2017.
  */
-public class BetterBitmap extends potrace_bitmap{
+public class BetterBitmap extends bitmap {
 
     public BetterBitmap(int width, int height) {
         super(width,height);

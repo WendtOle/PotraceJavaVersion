@@ -3,7 +3,6 @@ package potrace;
 import BitmapLibrary.*;
 import Tools.*;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.*;
@@ -20,9 +19,9 @@ public class decomposeTest {
         BetterBitmap testBitmap = new BetterBitmap(70,1);
         testBitmap.addBlob(new Point(65,0),true);
 
-        Point startPoint = new Point(0,0);
-        Point foundPoint = decompose.findnext(testBitmap,startPoint);
-        assertEquals(new Point(65,0),foundPoint);
+        Point point = new Point(0,0);
+        decompose.findnext(testBitmap,point);
+        assertEquals(new Point(65,0),point);
     }
 
     @Test
@@ -31,9 +30,8 @@ public class decomposeTest {
         testBitmap.addBlob(new Point(97,1),true);
         testBitmap.addBlob(new Point(99,1),true);
 
-        Point startPoint = new Point(0,0);
-        Point foundPoint = decompose.findnext(testBitmap,startPoint);
-        assertEquals(null,foundPoint);
+        Point point = new Point(0,0);
+        assertEquals(false,decompose.findnext(testBitmap,point));
     }
 
     @Test
@@ -83,7 +81,7 @@ public class decomposeTest {
         expectedPoints[4] = new Point(65,1);
         expectedPoints[5] = new Point(64,1);
 
-        potrace_path result = decompose.findpath(testBitmap,63,1,43,4);
+        path result = decompose.findpath(testBitmap,63,1,43,4);
         for (int i = 0 ; i < expectedPoints.length; i ++)
             comparePoints(expectedPoints[i],result.priv.pt[i]);
     }
@@ -92,24 +90,24 @@ public class decomposeTest {
     public void test_xor_path_xor_to_ref_one() {
         BetterBitmap testBitmap = new DefaultBitmapSimpleBoxWithExtension();
 
-        potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
-        potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
-        assertEquals(0,resultBitmap.map[0]);
-        assertEquals(0,resultBitmap.map[1]);
-        assertEquals(0,resultBitmap.map[2]);
-        assertEquals(0,resultBitmap.map[3]);
+        path path = decompose.findpath(testBitmap,1,3,43,4);
+        decompose.xor_path(testBitmap,path);
+        assertEquals(0,testBitmap.map[0]);
+        assertEquals(0,testBitmap.map[1]);
+        assertEquals(0,testBitmap.map[2]);
+        assertEquals(0,testBitmap.map[3]);
     }
 
     @Test
     public void test_xor_path_xor_to_ref_two() {
         BetterBitmap testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
 
-        potrace_path path = decompose.findpath(testBitmap,63,2,43,4);
-        potrace_bitmap resultBitmap = decompose.xor_path(testBitmap,path);
-        assertEquals(0,resultBitmap.map[0]);
-        assertEquals(0,resultBitmap.map[1]);
-        assertEquals(0,resultBitmap.map[2]);
-        assertEquals(0,resultBitmap.map[3]);
+        path path = decompose.findpath(testBitmap,63,2,43,4);
+        decompose.xor_path(testBitmap,path);
+        assertEquals(0,testBitmap.map[0]);
+        assertEquals(0,testBitmap.map[1]);
+        assertEquals(0,testBitmap.map[2]);
+        assertEquals(0,testBitmap.map[3]);
     }
 
     @Test
@@ -117,13 +115,13 @@ public class decomposeTest {
         bbox box = new bbox();
         BetterBitmap testBitmap = new DefaultBitmapSimpleBoxWithExtension();
 
-        potrace_path path = decompose.findpath(testBitmap,1,3,43,4);
+        path path = decompose.findpath(testBitmap,1,3,43,4);
 
-        bbox resultBox = decompose.setbbox_path(box,path);
-        assertEquals(0,resultBox.x0);
-        assertEquals(4,resultBox.x1);
-        assertEquals(0,resultBox.y0);
-        assertEquals(4,resultBox.y1);
+        decompose.setbbox_path(box,path);
+        assertEquals(0,box.x0);
+        assertEquals(4,box.x1);
+        assertEquals(0,box.y0);
+        assertEquals(4,box.y1);
     }
 
     @Test
@@ -131,13 +129,13 @@ public class decomposeTest {
         bbox box = new bbox();
         BetterBitmap testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
 
-        potrace_path path = decompose.findpath(testBitmap,63,1,43,4);
+        path path = decompose.findpath(testBitmap,63,1,43,4);
 
-        bbox resultBox = decompose.setbbox_path(box,path);
-        assertEquals(63,resultBox.x0);
-        assertEquals(65,resultBox.x1);
-        assertEquals(0,resultBox.y0);
-        assertEquals(2,resultBox.y1);
+        decompose.setbbox_path(box,path);
+        assertEquals(63,box.x0);
+        assertEquals(65,box.x1);
+        assertEquals(0,box.y0);
+        assertEquals(2,box.y1);
     }
 
     @Test
@@ -149,43 +147,43 @@ public class decomposeTest {
         box.y1 = 2;
         DefaultBitmapBoxOnPotraceWordBoundary testBitmap = new DefaultBitmapBoxOnPotraceWordBoundary();
 
-        potrace_bitmap resultBitmap = decompose.clear_bm_with_bbox(testBitmap,box);
+        decompose.clear_bm_with_bbox(testBitmap,box);
 
-        assertTrue(resultBitmap.map[0] == 0);
-        assertTrue(resultBitmap.map[1] == 0);
-        assertTrue(resultBitmap.map[2] == 0);
-        assertTrue(resultBitmap.map[3] == 0);
+        assertTrue(testBitmap.map[0] == 0);
+        assertTrue(testBitmap.map[1] == 0);
+        assertTrue(testBitmap.map[2] == 0);
+        assertTrue(testBitmap.map[3] == 0);
     }
 
     @Test
     public void test_pathlist_to_tree_first() {
         BetterBitmap testBitmap = new DefaultBitmapWithSimpleChildenAndSiblings();
 
-        potrace_path outerPath = decompose.findpath(testBitmap,0,4,43,4);
-        potrace_path firstInnerPath = decompose.findpath(testBitmap,1,3,45,4);
-        potrace_path secondInnerPath = decompose.findpath(testBitmap,3,3,45,4);
+        path outerPath = decompose.findpath(testBitmap,0,4,43,4);
+        path firstInnerPath = decompose.findpath(testBitmap,1,3,45,4);
+        path secondInnerPath = decompose.findpath(testBitmap,3,3,45,4);
 
         outerPath.next = firstInnerPath;
         firstInnerPath.next = secondInnerPath;
 
-        potrace_path restructuredOuterPath = decompose.pathlist_to_tree(outerPath,testBitmap);
+        decompose.pathlist_to_tree(outerPath,testBitmap);
 
-        PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(restructuredOuterPath);
+        PolygonArchitecturePrinter printer = new PolygonArchitecturePrinter(outerPath);
         printer.print();
 
-        assertEquals(outerPath,restructuredOuterPath);
+        assertEquals(outerPath,outerPath);
 
-        assertEquals(firstInnerPath,restructuredOuterPath.next);
-        assertEquals(firstInnerPath,restructuredOuterPath.childlist);
-        assertEquals(null,restructuredOuterPath.sibling);
+        assertEquals(firstInnerPath,outerPath.next);
+        assertEquals(firstInnerPath,outerPath.childlist);
+        assertEquals(null,outerPath.sibling);
 
-        assertEquals(secondInnerPath,restructuredOuterPath.next.next);
-        assertEquals(null,restructuredOuterPath.next.childlist);
-        assertEquals(secondInnerPath,restructuredOuterPath.next.sibling);
+        assertEquals(secondInnerPath,outerPath.next.next);
+        assertEquals(null,outerPath.next.childlist);
+        assertEquals(secondInnerPath,outerPath.next.sibling);
 
-        assertEquals(secondInnerPath,restructuredOuterPath.childlist.next);
-        assertEquals(null,restructuredOuterPath.childlist.childlist);
-        assertEquals(secondInnerPath,restructuredOuterPath.childlist.sibling);
+        assertEquals(secondInnerPath,outerPath.childlist.next);
+        assertEquals(null,outerPath.childlist.childlist);
+        assertEquals(secondInnerPath,outerPath.childlist.sibling);
 
     }
 
@@ -211,7 +209,7 @@ public class decomposeTest {
         BitmapPrinter printer = new BitmapPrinter(testBitmap);
         printer.print();
 
-        potrace_path restructuredOuterPath = decompose.bm_to_pathlist(testBitmap,new potrace_param());
+        path restructuredOuterPath = decompose.bm_to_pathlist(testBitmap,new param());
 
         assertEquals(true,true);
         assertEquals(42, restructuredOuterPath.area);
@@ -223,97 +221,98 @@ public class decomposeTest {
 
     @Test
     public void test_pathlist_to_tree_third() {
-        BetterBitmap newBitmap = new DefaultBitmapWithChildrenAndSiblings();
+        BetterBitmap originalBitmap = new DefaultBitmapWithChildrenAndSiblings();
+        bitmap bitmap = originalBitmap.bm_dup();
 
-        potrace_path bigOuterPath = decompose.findpath(newBitmap, 0,8,43,4);
-        potrace_path smallOuterPath = decompose.findpath(newBitmap, 6,8,43,4);
-        potrace_bitmap changedBitmap = decompose.xor_path(newBitmap,bigOuterPath);
-        potrace_path middlePath = decompose.findpath(changedBitmap,1,7,45,4);
-        changedBitmap = decompose.xor_path(changedBitmap,middlePath);
-        potrace_path firstInnerPaht = decompose.findpath(changedBitmap,2,6,43,4);
-        potrace_path secondInnerPaht = decompose.findpath(changedBitmap,4,4,43,4);
+        path bigOuterPath = decompose.findpath(bitmap, 0,8,43,4);
+        path smallOuterPath = decompose.findpath(bitmap, 6,8,43,4);
+        decompose.xor_path(bitmap,bigOuterPath);
+        path middlePath = decompose.findpath(bitmap,1,7,45,4);
+        decompose.xor_path(bitmap,middlePath);
+        path firstInnerPaht = decompose.findpath(bitmap,2,6,43,4);
+        path secondInnerPaht = decompose.findpath(bitmap,4,4,43,4);
 
         bigOuterPath.next = middlePath;
         middlePath.next = firstInnerPaht;
         firstInnerPaht.next = secondInnerPaht;
         secondInnerPaht.next = smallOuterPath;
 
-        potrace_path reconstructedPath = decompose.pathlist_to_tree(bigOuterPath,newBitmap);
+        decompose.pathlist_to_tree(bigOuterPath,originalBitmap);
 
-        assertEquals(bigOuterPath,reconstructedPath);
-        assertEquals(middlePath,reconstructedPath.next);
-        assertEquals(middlePath, reconstructedPath.childlist);
-        assertEquals(smallOuterPath, reconstructedPath.sibling);
+        assertEquals(bigOuterPath,bigOuterPath);
+        assertEquals(middlePath,bigOuterPath.next);
+        assertEquals(middlePath, bigOuterPath.childlist);
+        assertEquals(smallOuterPath, bigOuterPath.sibling);
 
-        assertEquals(smallOuterPath, reconstructedPath.next.next);
-        assertEquals(firstInnerPaht, reconstructedPath.next.childlist);
-        assertEquals(null, reconstructedPath.next.sibling);
+        assertEquals(smallOuterPath, bigOuterPath.next.next);
+        assertEquals(firstInnerPaht, bigOuterPath.next.childlist);
+        assertEquals(null, bigOuterPath.next.sibling);
 
-        assertEquals(smallOuterPath, reconstructedPath.childlist.next);
-        assertEquals(firstInnerPaht, reconstructedPath.childlist.childlist);
-        assertEquals(null, reconstructedPath.childlist.sibling);
+        assertEquals(smallOuterPath, bigOuterPath.childlist.next);
+        assertEquals(firstInnerPaht, bigOuterPath.childlist.childlist);
+        assertEquals(null, bigOuterPath.childlist.sibling);
 
-        assertEquals(firstInnerPaht, reconstructedPath.sibling.next);
-        assertEquals(null, reconstructedPath.sibling.childlist);
-        assertEquals(null, reconstructedPath.sibling.sibling);
+        assertEquals(firstInnerPaht, bigOuterPath.sibling.next);
+        assertEquals(null, bigOuterPath.sibling.childlist);
+        assertEquals(null, bigOuterPath.sibling.sibling);
 
-        assertEquals(firstInnerPaht, reconstructedPath.next.next.next);
-        assertEquals(null, reconstructedPath.next.next.childlist);
-        assertEquals(null, reconstructedPath.next.next.sibling);
+        assertEquals(firstInnerPaht, bigOuterPath.next.next.next);
+        assertEquals(null, bigOuterPath.next.next.childlist);
+        assertEquals(null, bigOuterPath.next.next.sibling);
 
-        assertEquals(secondInnerPaht, reconstructedPath.next.childlist.next);
-        assertEquals(null, reconstructedPath.next.childlist.childlist);
-        assertEquals(secondInnerPaht, reconstructedPath.next.childlist.sibling);
+        assertEquals(secondInnerPaht, bigOuterPath.next.childlist.next);
+        assertEquals(null, bigOuterPath.next.childlist.childlist);
+        assertEquals(secondInnerPaht, bigOuterPath.next.childlist.sibling);
 
-        assertEquals(firstInnerPaht, reconstructedPath.childlist.next.next);
-        assertEquals(null, reconstructedPath.childlist.next.childlist);
-        assertEquals(null, reconstructedPath.childlist.next.sibling);
+        assertEquals(firstInnerPaht, bigOuterPath.childlist.next.next);
+        assertEquals(null, bigOuterPath.childlist.next.childlist);
+        assertEquals(null, bigOuterPath.childlist.next.sibling);
 
-        assertEquals(secondInnerPaht, reconstructedPath.childlist.childlist.next);
-        assertEquals(null, reconstructedPath.childlist.childlist.childlist);
-        assertEquals(secondInnerPaht, reconstructedPath.childlist.childlist.sibling);
+        assertEquals(secondInnerPaht, bigOuterPath.childlist.childlist.next);
+        assertEquals(null, bigOuterPath.childlist.childlist.childlist);
+        assertEquals(secondInnerPaht, bigOuterPath.childlist.childlist.sibling);
 
-        assertEquals(secondInnerPaht, reconstructedPath.sibling.next.next);
-        assertEquals(null, reconstructedPath.sibling.next.childlist);
-        assertEquals(secondInnerPaht, reconstructedPath.sibling.next.sibling);
+        assertEquals(secondInnerPaht, bigOuterPath.sibling.next.next);
+        assertEquals(null, bigOuterPath.sibling.next.childlist);
+        assertEquals(secondInnerPaht, bigOuterPath.sibling.next.sibling);
 
-        assertEquals(secondInnerPaht, reconstructedPath.next.next.next.next);
-        assertEquals(null, reconstructedPath.next.next.next.childlist);
-        assertEquals(secondInnerPaht, reconstructedPath.next.next.next.sibling);
+        assertEquals(secondInnerPaht, bigOuterPath.next.next.next.next);
+        assertEquals(null, bigOuterPath.next.next.next.childlist);
+        assertEquals(secondInnerPaht, bigOuterPath.next.next.next.sibling);
 
-        assertEquals(null, reconstructedPath.next.childlist.next.next);
-        assertEquals(null, reconstructedPath.next.childlist.next.childlist);
-        assertEquals(null, reconstructedPath.next.childlist.next.sibling);
+        assertEquals(null, bigOuterPath.next.childlist.next.next);
+        assertEquals(null, bigOuterPath.next.childlist.next.childlist);
+        assertEquals(null, bigOuterPath.next.childlist.next.sibling);
 
-        assertEquals(null, reconstructedPath.next.childlist.sibling.next);
-        assertEquals(null, reconstructedPath.next.childlist.sibling.childlist);
-        assertEquals(null, reconstructedPath.next.childlist.sibling.sibling);
+        assertEquals(null, bigOuterPath.next.childlist.sibling.next);
+        assertEquals(null, bigOuterPath.next.childlist.sibling.childlist);
+        assertEquals(null, bigOuterPath.next.childlist.sibling.sibling);
 
-        assertEquals(secondInnerPaht, reconstructedPath.childlist.next.next.next);
-        assertEquals(null, reconstructedPath.childlist.next.next.childlist);
-        assertEquals(secondInnerPaht, reconstructedPath.childlist.next.next.sibling);
+        assertEquals(secondInnerPaht, bigOuterPath.childlist.next.next.next);
+        assertEquals(null, bigOuterPath.childlist.next.next.childlist);
+        assertEquals(secondInnerPaht, bigOuterPath.childlist.next.next.sibling);
 
-        assertEquals(null, reconstructedPath.childlist.childlist.next.next);
-        assertEquals(null, reconstructedPath.childlist.childlist.next.childlist);
-        assertEquals(null, reconstructedPath.childlist.childlist.next.sibling);
+        assertEquals(null, bigOuterPath.childlist.childlist.next.next);
+        assertEquals(null, bigOuterPath.childlist.childlist.next.childlist);
+        assertEquals(null, bigOuterPath.childlist.childlist.next.sibling);
 
-        assertEquals(null, reconstructedPath.childlist.childlist.sibling.next);
-        assertEquals(null, reconstructedPath.childlist.childlist.sibling.childlist);
-        assertEquals(null, reconstructedPath.childlist.childlist.sibling.sibling);
+        assertEquals(null, bigOuterPath.childlist.childlist.sibling.next);
+        assertEquals(null, bigOuterPath.childlist.childlist.sibling.childlist);
+        assertEquals(null, bigOuterPath.childlist.childlist.sibling.sibling);
 
-        assertEquals(null, reconstructedPath.sibling.next.next.next);
-        assertEquals(null, reconstructedPath.sibling.next.next.childlist);
-        assertEquals(null, reconstructedPath.sibling.next.next.sibling);
+        assertEquals(null, bigOuterPath.sibling.next.next.next);
+        assertEquals(null, bigOuterPath.sibling.next.next.childlist);
+        assertEquals(null, bigOuterPath.sibling.next.next.sibling);
 
-        assertEquals(null, reconstructedPath.sibling.next.sibling.next);
-        assertEquals(null, reconstructedPath.sibling.next.sibling.childlist);
-        assertEquals(null, reconstructedPath.sibling.next.sibling.sibling);
+        assertEquals(null, bigOuterPath.sibling.next.sibling.next);
+        assertEquals(null, bigOuterPath.sibling.next.sibling.childlist);
+        assertEquals(null, bigOuterPath.sibling.next.sibling.sibling);
     }
 
     @Test
     public void test_specialCaseInPathlistToTree(){
         BetterBitmap newBitmap = new DefaultBitmapSpiegelverkehrtesL();
-        potrace_path result = decompose.bm_to_pathlist(newBitmap,new potrace_param());
+        path result = decompose.bm_to_pathlist(newBitmap, new param());
 
         //check wether all three pathes are there
 
@@ -325,7 +324,7 @@ public class decomposeTest {
     @Test
     public void test_specialCaseInPathlistToTreeSecond(){
         BetterBitmap newBitmap = new DefaultBitmapSpiegelverkehrtesLExtended();
-        potrace_path result = decompose.bm_to_pathlist(newBitmap,new potrace_param());
+        path result = decompose.bm_to_pathlist(newBitmap, new param());
 
         //check wether all three pathes are there
         assertEquals(4,result.area);

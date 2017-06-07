@@ -1,14 +1,14 @@
 package Tools;
 
-import potrace.potrace_path;
+import potrace.path;
 
 /**
  * Created by andreydelany on 11/04/2017.
  */
 public class PathCounter {
-    potrace_path currentPaht;
+    path currentPaht;
 
-    public PathCounter(potrace_path path) {
+    public PathCounter(path path) {
         this.currentPaht = path;
     }
 
@@ -16,7 +16,7 @@ public class PathCounter {
         return currentPaht.next != null;
     }
 
-    public potrace_path getCurrentPaht() {
+    public path getCurrentPath() {
         return currentPaht;
     }
 

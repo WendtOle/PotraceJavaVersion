@@ -27,7 +27,7 @@ public class TestTestPicture {
     boolean[][] expectedChildsAndSiblings;
     double[][][][] expectedPointsOfCurve;
     int[][] expectedPrivInformations;
-    potrace_path path;
+    potrace.path path;
     String testPictureFolderName = "testPictures";
 
     @Parameterized.Parameters(name = "Testing {index}. Bitmap")
@@ -50,8 +50,8 @@ public class TestTestPicture {
                            double[][][][] expectedPointsOfCurve,
                            int[][] expectedPrivInformations) {
 
-        potrace_bitmap bitmap = BitmapImporter.importBitmap(nameOfTestPicture,testPictureFolderName);
-        this.path = PotraceLib.potrace_trace(new potrace_param(),bitmap);
+        bitmap bitmap = BitmapImporter.importBitmap(nameOfTestPicture,testPictureFolderName);
+        this.path = potraceLib.potrace_trace(new param(),bitmap);
         this.expectedAmountOfPahtes = amountOfPathes;
         this.areasOfPathes = areasOfPathes;
         this.signsOfPathes = signsOfPathes;
@@ -78,8 +78,8 @@ public class TestTestPicture {
         PathCounter pathIterator = new PathCounter(path);
         int counter = 0;
         while (pathIterator.hasNext()) {
-            if (areasOfPathes[counter] != pathIterator.getCurrentPaht().area) {
-                System.out.println("was: " + pathIterator.getCurrentPaht().area +
+            if (areasOfPathes[counter] != pathIterator.getCurrentPath().area) {
+                System.out.println("was: " + pathIterator.getCurrentPath().area +
                         " but should be: " + areasOfPathes[counter] + " at index: " + counter);
                 assertTrue(false);
             }
@@ -94,8 +94,8 @@ public class TestTestPicture {
         PathCounter pathIterator = new PathCounter(path);
         int counter = 0;
         while (pathIterator.hasNext()) {
-            if (signsOfPathes[counter] != pathIterator.getCurrentPaht().sign) {
-                System.out.println("was: " + pathIterator.getCurrentPaht().sign +
+            if (signsOfPathes[counter] != pathIterator.getCurrentPath().sign) {
+                System.out.println("was: " + pathIterator.getCurrentPath().sign +
                         " but should be: " + signsOfPathes[counter] + " at index: " + counter);
                 assertTrue(false);
             }
@@ -110,8 +110,8 @@ public class TestTestPicture {
         PathCounter pathIterator = new PathCounter(path);
         int counter = 0;
         while (pathIterator.hasNext()) {
-            if (lengthOfCurve[counter] != pathIterator.getCurrentPaht().curve.n) {
-                System.out.println("was: " + pathIterator.getCurrentPaht().curve.n +
+            if (lengthOfCurve[counter] != pathIterator.getCurrentPath().curve.n) {
+                System.out.println("was: " + pathIterator.getCurrentPath().curve.n +
                         " but should be: " + lengthOfCurve[counter] + " at index: " + counter);
                 assertTrue(false);
             }
@@ -127,7 +127,7 @@ public class TestTestPicture {
         int counter = 0;
         while (pathIterator.hasNext()) {
             int[] expectedTagsForCurrentCurve = expectedTagsOfCurve[counter];
-            int[] actualTagsForCurrentcurve = pathIterator.getCurrentPaht().curve.tag;
+            int[] actualTagsForCurrentcurve = pathIterator.getCurrentPath().curve.tag;
             for (int i = 0; i < expectedTagsForCurrentCurve.length; i++) {
                 if (expectedTagsForCurrentCurve[i] != actualTagsForCurrentcurve[i]) {
                     System.out.println("was: " + actualTagsForCurrentcurve[i] + " but should be: " + expectedTagsForCurrentCurve[i] + " at index: [" + counter + "]["+i+"]");
@@ -146,14 +146,14 @@ public class TestTestPicture {
         int counter = 0;
         while (pathIterator.hasNext()) {
             double[][][] expectedPointsOfCurrentCurve = expectedPointsOfCurve[counter];
-            potrace_dpoint[][] actualPointsForCurrentcurve = pathIterator.getCurrentPaht().curve.c;
+            dpoint[][] actualPointsForCurrentcurve = pathIterator.getCurrentPath().curve.c;
 
             for (int currentBezierIndex = 0; currentBezierIndex < expectedPointsOfCurrentCurve.length; currentBezierIndex++) {
                 double [][] expectedPointsOfCurrentBezierCurve = expectedPointsOfCurrentCurve [currentBezierIndex];
-                potrace_dpoint[] actualPointsOfCurrentBezierCurve = actualPointsForCurrentcurve[currentBezierIndex];
+                dpoint[] actualPointsOfCurrentBezierCurve = actualPointsForCurrentcurve[currentBezierIndex];
                 for (int i = 0; i < 3; i++) {
                     double[] expectedPoint = expectedPointsOfCurrentBezierCurve[i];
-                    potrace_dpoint actualPoint = actualPointsOfCurrentBezierCurve[i];
+                    dpoint actualPoint = actualPointsOfCurrentBezierCurve[i];
                     assertEquals("XCoordinate -> curve: " + counter +
                             " bezierCurve number: " + currentBezierIndex +
                             " and there the: " + i + ". Point",
@@ -175,8 +175,8 @@ public class TestTestPicture {
         PathCounter pathIterator = new PathCounter(path);
         int counter = 0;
         while (pathIterator.hasNext()) {
-            assertEquals("Child in Path: " + counter,(expectedChildsAndSiblings[counter][0]),(pathIterator.getCurrentPaht().childlist != null));
-            assertEquals("Sibling in Path: " + counter,(expectedChildsAndSiblings[counter][1]),(pathIterator.getCurrentPaht().sibling != null));
+            assertEquals("Child in Path: " + counter,(expectedChildsAndSiblings[counter][0]),(pathIterator.getCurrentPath().childlist != null));
+            assertEquals("Sibling in Path: " + counter,(expectedChildsAndSiblings[counter][1]),(pathIterator.getCurrentPath().sibling != null));
             counter ++;
             pathIterator.goToNextPath();
         }
@@ -187,10 +187,10 @@ public class TestTestPicture {
         PathCounter pathIterator = new PathCounter(path);
         int counter = 0;
         while (pathIterator.hasNext()) {
-            assertEquals("LengthOf PrivPath Nummer: " + counter,(expectedPrivInformations[counter][0]),(pathIterator.getCurrentPaht().priv.len));
-            assertEquals("XCoordinate PrivPath Nummer: " + counter,(expectedPrivInformations[counter][1]),(pathIterator.getCurrentPaht().priv.x0));
-            assertEquals("YCoordinate PrivPath Nummer: " + counter,(expectedPrivInformations[counter][2]),(pathIterator.getCurrentPaht().priv.y0));
-            assertEquals("M PrivPath Nummer: " + counter,(expectedPrivInformations[counter][3]),(pathIterator.getCurrentPaht().priv.m));
+            assertEquals("LengthOf PrivPath Nummer: " + counter,(expectedPrivInformations[counter][0]),(pathIterator.getCurrentPath().priv.len));
+            assertEquals("XCoordinate PrivPath Nummer: " + counter,(expectedPrivInformations[counter][1]),(pathIterator.getCurrentPath().priv.x0));
+            assertEquals("YCoordinate PrivPath Nummer: " + counter,(expectedPrivInformations[counter][2]),(pathIterator.getCurrentPath().priv.y0));
+            assertEquals("M PrivPath Nummer: " + counter,(expectedPrivInformations[counter][3]),(pathIterator.getCurrentPath().priv.m));
             counter ++;
             pathIterator.goToNextPath();
         }

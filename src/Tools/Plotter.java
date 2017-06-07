@@ -1,7 +1,7 @@
 package Tools;
 
-import potrace.potrace_bitmap;
-import potrace.potrace_path;
+import potrace.bitmap;
+import potrace.path;
 
 import javax.swing.*;
 
@@ -26,19 +26,19 @@ public class Plotter {
         jFrame.setSize(width,height);
     };
 
-    public void showPath(potrace_path path) {
+    public void showPath(path path) {
         Drawer drawer = new Drawer(path,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
-    public void showBitmap(potrace_bitmap bitmap) {
+    public void showBitmap(bitmap bitmap) {
         Drawer drawer = new Drawer(bitmap,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
-    public void showPathAndBitmap(potrace_path path, potrace_bitmap bitmap) {
+    public void showPathAndBitmap(path path, bitmap bitmap) {
         Drawer drawer = new Drawer(path,bitmap,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);

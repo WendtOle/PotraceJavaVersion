@@ -1,15 +1,15 @@
 package Tools;
 
-import potrace.potrace_path;
+import potrace.path;
 
 /**
  * Created by andreydelany on 21/03/2017.
  */
 public class PolygonArchitecturePrinter {
 
-    potrace_path origin;
+    path origin;
 
-    public PolygonArchitecturePrinter (potrace_path path) {
+    public PolygonArchitecturePrinter (path path) {
         this.origin = path;
     }
 
@@ -36,13 +36,13 @@ public class PolygonArchitecturePrinter {
         }
     }
 
-    public void recursiveCallToPrintNextPolygon(potrace_path current, int ebene, boolean isTheSame, Follower follower) {
+    public void recursiveCallToPrintNextPolygon(path current, int ebene, boolean isTheSame, Follower follower) {
         printIntroduction(follower);
         printActualPathData(current);
         callFollowingPolygon(current,ebene, isTheSame,follower);
     }
 
-    private void callFollowingPolygon(potrace_path path, int ebene, boolean isTheSame, Follower follower) {
+    private void callFollowingPolygon(path path, int ebene, boolean isTheSame, Follower follower) {
         if (isTheSame) {
             printReferenceToPreviousePolygon(path);
         } else {
@@ -64,14 +64,14 @@ public class PolygonArchitecturePrinter {
         }
     }
 
-    private void printReferenceToPreviousePolygon (potrace_path path) {
+    private void printReferenceToPreviousePolygon (path path) {
         if (hasAtMinimumOneFollower(path)) {
             System.out.print(" siehe oben");
         }
         System.out.print("\n");
     }
 
-    private void printActualPathData (potrace_path path) {
+    private void printActualPathData (path path) {
         System.out.print(path.area + "-(" +  path.priv.pt[0].x + " " + path.priv.pt[0].y + ")");
     }
 
@@ -81,19 +81,19 @@ public class PolygonArchitecturePrinter {
         printFiller(level);
     }
 
-    private boolean hasAtMinimumOneFollower(potrace_path path) {
+    private boolean hasAtMinimumOneFollower(path path) {
         return (path.next != null || path.childlist != null || path.sibling != null);
     }
 
-    private boolean hasNext(potrace_path path) {
+    private boolean hasNext(path path) {
         return path.next != null;
     }
 
-    private boolean hasChild(potrace_path path) {
+    private boolean hasChild(path path) {
         return path.childlist != null;
     }
 
-    private boolean hasSibling(potrace_path path) {
+    private boolean hasSibling(path path) {
         return path.sibling != null;
     }
 

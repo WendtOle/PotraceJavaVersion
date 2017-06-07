@@ -1,8 +1,5 @@
 package Tools;
 
-import potrace.potrace_bitmap;
-import potrace.potrace_path;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,22 +8,22 @@ import java.awt.*;
  */
 public class Drawer extends JPanel {
 
-    potrace_path path;
-    potrace_bitmap bitmap;
+    potrace.path path;
+    potrace.bitmap bitmap;
     int scale, height;
 
-    public Drawer(potrace_path path, potrace_bitmap bitmap, int scale, int height) {
+    public Drawer(potrace.path path, potrace.bitmap bitmap, int scale, int height) {
         this.path = path;
         this.bitmap = bitmap;
         this.scale = scale;
         this.height = height;
     }
 
-    public Drawer(potrace_path path, int scale, int height) {
+    public Drawer(potrace.path path, int scale, int height) {
         this(path,null,scale,height);
     }
 
-    public Drawer(potrace_bitmap bitmap, int scale, int height) {
+    public Drawer(potrace.bitmap bitmap, int scale, int height) {
         this(null,bitmap,scale,height);
     }
 
