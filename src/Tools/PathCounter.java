@@ -6,26 +6,39 @@ import potrace.path;
  * Created by andreydelany on 11/04/2017.
  */
 public class PathCounter {
-    path currentPaht;
+    path list;
+    path currentPath;
 
     public PathCounter(path path) {
-        this.currentPaht = path;
+        this.list = path;
+        this.currentPath = path;
     }
 
-    public boolean hasNext(){
-        return currentPaht.next != null;
+    private boolean hasNext(){
+        return currentPath.next != null;
     }
 
-    public path getCurrentPath() {
-        return currentPaht;
+    private  void goToNextPath() {
+        currentPath = currentPath.next;
     }
 
-    public boolean goToNextPath() {
-        if(hasNext()) {
-            currentPaht = currentPaht.next;
-            return true;
-        } else
-            return false;
+    public int getAmountOfPathes() {
+        int amount = 1;
+        while (hasNext()){
+            amount ++;
+            goToNextPath();
+        }
+        currentPath = list;
+        return amount;
+    }
 
+    public path getPathAtIndex(int index) {
+        currentPath = list;
+        int currentIndex = 0;
+        while (index != currentIndex) {
+            currentIndex ++;
+            goToNextPath();
+        }
+        return currentPath;
     }
 }

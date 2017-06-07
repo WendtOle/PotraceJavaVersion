@@ -3,7 +3,7 @@ package potrace;
 /**
  * Created by andreydelany on 13/04/2017.
  */
-public abstract class TestData{
+public abstract class AbstractTestData {
 
     public Object[] getTestParameters(){
         return new Object[] {
@@ -14,7 +14,7 @@ public abstract class TestData{
                 getArrayWithLengthOfPathes(),
                 getArrayTagsOfCurvesOfPathes(),
                 getArrayOfChildSiblingRelationOfPathes(),
-                getPointsOfCurvesOfPahtes(),
+                getPointsOfCurvesOfPathes(),
                 getInformationsAboutPrivePath()
         };
     }
@@ -33,7 +33,7 @@ public abstract class TestData{
 
     abstract boolean[][] getArrayOfChildSiblingRelationOfPathes();
 
-    abstract double[][][][] getPointsOfCurvesOfPahtes();
+    abstract double[][][][] getPointsOfCurvesOfPathes();
 
     abstract int[][] getInformationsAboutPrivePath();
 }

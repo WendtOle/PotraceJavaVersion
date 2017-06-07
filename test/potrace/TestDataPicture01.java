@@ -3,7 +3,7 @@ package potrace;
 /**
  * Created by andreydelany on 14/04/2017.
  */
-public class TestDataPicture01 extends TestData{
+public class TestDataPicture01 extends AbstractTestData {
 
     String getName() {
         return "01.bmp";
@@ -52,7 +52,7 @@ public class TestDataPicture01 extends TestData{
         };
     }
 
-    double [][][][] getPointsOfCurvesOfPahtes () {
+    double [][][][] getPointsOfCurvesOfPathes() {
         return new double[][][][]{
                 {
                         {{1.437500, 13.056319}, {2.000000, 12.394276}, {2.000000, 11.857650}},

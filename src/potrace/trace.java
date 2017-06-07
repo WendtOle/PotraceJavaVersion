@@ -679,7 +679,7 @@ public class trace {
         int i, j, k, l;
         dpoint s = new dpoint();
 
-        pp.curve = new privcurve(m);    //Fixme: check wether it works correct
+        pp.curve = new privcurve(m);
 
         //calculate "optimal" point-slope representation for each line segment
         for (i=0; i<m; i++) {
