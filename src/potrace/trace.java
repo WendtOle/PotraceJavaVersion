@@ -237,11 +237,6 @@ public class trace {
     }
 
 /* ---------------------------------------------------------------------- */
-    //Ole:
-    /* Dieser Schritt gehört meiner Meinung nach in die Klasse privePath, oder in die Klasse sums (ähnlich wie eine initialisierung)
-    da es sich um eine Art von Initiliasierung handelt */
-
-    //Entwickler:
     /* Preparation: fill in the sum* fields of a path (used for later
     rapid summing). Return 0 on success, 1 with errno set on
     failure. */
