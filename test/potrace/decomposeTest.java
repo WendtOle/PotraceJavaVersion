@@ -1,12 +1,7 @@
 package potrace;
 
-import BitmapLibrary.*;
-import Tools.*;
 import org.junit.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
-
 import static org.junit.Assert.*;
 
 public class decomposeTest {
