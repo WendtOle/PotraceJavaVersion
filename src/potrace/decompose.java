@@ -93,16 +93,12 @@ public class decompose {
     /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
     must be a multiple of BM_WORDBITS. */
 
-
-    /*Ich musste hier den Code etwas verändern. In C wurde einfach ^= verwendet, was mir nicht möglich war,
-    ich musste zuerst mir den Wert holen, ihn verunden und dann überschreiben, im wesendtlichen aber gleich */
-
     static void xor_to_ref(bitmap bm, int x, int y, int xa) {
         int xhi = x & - bitmap.PIXELINWORD;
         int xlo = x & (bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
         int i;
 
-        if (xhi<xa) {           //Todo find case in which this line is run for testing
+        if (xhi<xa) {
             for (i = xhi; i < xa; i+= bitmap.PIXELINWORD) {
                 int accessIndex = (bm.dy * y) + (i / bitmap.PIXELINWORD);
                 bm.map[accessIndex] = bm.map[accessIndex]  ^ bitmap.BM_ALLBITS; //Todo check
@@ -135,7 +131,7 @@ public class decompose {
         int xa, x, y, k, y1;
 
         if (p.priv.len <= 0) {  /* a path of length 0 is silly, but legal */
-            return; //TODO Find way to run this line for Code Coverage
+            return;
         }
 
         y1 = p.priv.pt[p.priv.len-1].y;

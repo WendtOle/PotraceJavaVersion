@@ -100,4 +100,16 @@ public class bitmap {
         }
         return bm1;
     }
+
+    public static void bm_clearexcess(bitmap bm) {
+        long mask;
+        int y;
+
+        if (bm.w % PIXELINWORD != 0) {
+            mask = BM_ALLBITS << (PIXELINWORD - (bm.w % PIXELINWORD));
+            for (y=0; y<bm.h; y++) {
+                bm.map[y * bm.dy + bm.dy - 1] = bm_index(bm,bm.w, y) & mask;
+            }
+        }
+    }
 }
