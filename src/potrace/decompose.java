@@ -79,7 +79,7 @@ public class decompose {
                 ct += bitmap.BM_GET(bm,x-i, y+a) ? 1 : -1;
             }
             if (ct>0) {
-                return true; //TODO is 1 true and 0 false? really?
+                return true;
             } else if (ct<0) {
                 return false;
             }

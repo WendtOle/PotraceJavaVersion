@@ -2,62 +2,58 @@ package potrace;
 
 import BitmapLibrary.*;
 import Tools.*;
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
 public class decomposeTest {
 
     @Test
-    public void test_findnextWithNextPointInSameLine() throws Exception {
-        BetterBitmap testBitmap = new BetterBitmap(70,1);
-        testBitmap.addBlob(new Point(65,0),true);
+    public void test_findnextWithNextPointInSameLine() {
+        bitmap testBitmap = new bitmap(70,1);
+        bitmap.BM_PUT(testBitmap,65,0,true);
 
         Point point = new Point(0,0);
-        decompose.findnext(testBitmap,point);
-        assertEquals(new Point(65,0),point);
+        assertTrue("found sth: ",decompose.findnext(testBitmap,point));
+        assertEquals("found point: ",new Point(65,0),point);
     }
 
     @Test
-    public void test_findnextWithNextPointNotInSameLine() throws Exception {
-        BetterBitmap testBitmap = new BetterBitmap(128,2);
-        testBitmap.addBlob(new Point(97,1),true);
-        testBitmap.addBlob(new Point(99,1),true);
+    public void test_findnextWithNextPointNotInSameLine() {
+        bitmap testBitmap = new bitmap(128,2);
+        bitmap.BM_PUT(testBitmap,97,0,true);
+        bitmap.BM_PUT(testBitmap,99,0,true);
 
-        Point point = new Point(0,0);
-        assertEquals(false,decompose.findnext(testBitmap,point));
+        Point point = new Point(0,1);
+        assertTrue("found sth: ",decompose.findnext(testBitmap,point));
+        assertEquals("found point: ", new Point(97,0),point);
     }
 
     @Test
-    public void test_detrand() throws Exception {
+    public void test_detrand() {
         Assert.assertEquals(false, decompose.detrand(20,4));
     }
 
     @Test
-    public void test_majorityWhereIsActualMajority() throws Exception {
-        BetterBitmap testBitmap = new BetterBitmap(4,4);
-        testBitmap.fillCompleteBitMap(true);
-        testBitmap.addBlob(new Point(0,3),false);
-        testBitmap.addBlob(new Point(1,2),false);
-        testBitmap.addBlob(new Point(2,2),false);
-        testBitmap.addBlob(new Point(3,0),false);
+    public void testMajorityFunction() {
+        bitmap testBitmap = new bitmap(4,4);
+        Point observationPoint = new Point(testBitmap.w/2,testBitmap.h/2);
+        Point[] points = new Point[]{new Point(0,0),new Point(2,2),new Point(2,0),new Point(3,1),
+                new Point(1,0), new Point(2,1), new Point(3,3),new Point (2,3),
+                new Point(0,2), new Point(3,0), new Point(1,3), new Point(1,2),
+                new Point(3,2),new Point(1,1),new Point(0,3), new Point(0,1)};
 
-        BitmapPrinter bitmapPrinter = new BitmapPrinter(testBitmap);
-        bitmapPrinter.print();
-        Assert.assertEquals(true, decompose.majority(testBitmap,2,2));
-    }
+        Boolean[] expectedOutcomes = new Boolean[]{true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false};
 
-    @Test
-    public void test_majorityWhereIsNoMajority() throws Exception {
-        BetterBitmap testBitmap = new BetterBitmap(4,4);
-        testBitmap.addPolygon(new Point(2,3), new Point(3,2),true);
-        testBitmap.addPolygon(new Point(0,1), new Point(1,0),true);
-        BitmapPrinter bitmapPrinter = new BitmapPrinter(testBitmap);
-        bitmapPrinter.print();
-        Assert.assertEquals(false, decompose.majority(testBitmap,2,2));
+        bitmap.bm_clear(testBitmap,1);
+
+        for(int i = 0; i < 16; i++) {
+            bitmap.BM_PUT(testBitmap,points[i].x,points[i].y,false);
+            assertEquals("i: " + i,expectedOutcomes[i],decompose.majority(testBitmap, observationPoint.x, observationPoint.y));
+        }
     }
 
     private void comparePoints(Point should, Point actual) {
@@ -66,7 +62,7 @@ public class decomposeTest {
     }
 
     @Test
-    public void test_findPath_boundary() throws Exception {
+    public void test_findPath_boundary() {
         BetterBitmap testBitmap = new BetterBitmap(128,1);
         testBitmap.addPolygon(new Point(63,0), new Point(64,0),true);
 
