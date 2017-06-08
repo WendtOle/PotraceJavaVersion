@@ -2,6 +2,7 @@ package potrace;
 
 import Tools.BetterBitmap;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class bitmapTest {
 
+    @Ignore
     @Test
     public void test_bm_get() throws Exception {
         BetterBitmap testBitMap = new BetterBitmap(2,2);
@@ -33,6 +35,7 @@ public class bitmapTest {
         assertEquals(false, testBitMap.BM_GET(-1,-1));
     }
 
+    @Ignore
     @Test
     //TODO wie kann denn eine negatives dy entstehen?
     public void test_bm_size() throws Exception {
@@ -43,6 +46,7 @@ public class bitmapTest {
         assertEquals(128, (new bitmap(4,2)).bm_size());
     }
 
+    @Ignore
     @Test
     public void test_bm_clear() throws Exception {
         BetterBitmap testBitMap = new BetterBitmap(70,1);
@@ -57,6 +61,7 @@ public class bitmapTest {
         assertEquals(false, testBitMap.BM_GET(40,1));
     }
 
+    @Ignore
     @Test
     public void test_bm_dup() throws Exception {
         BetterBitmap originalBitmap = new BetterBitmap(70,2);
@@ -71,6 +76,7 @@ public class bitmapTest {
         assertEquals(originalBitmap.w, copiedBitmap.w);
     }
 
+    @Ignore
     @Test
     public void test_bm_put_negative() throws Exception {
         BetterBitmap bitMap = new BetterBitmap(2,2);

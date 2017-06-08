@@ -9,12 +9,12 @@ import java.awt.geom.AffineTransform;
  * Created by andreydelany on 08/04/2017.
  */
 public class BitmapDrawer{
-        potrace.path path;
+        path path;
         Graphics2D graphics;
         int scale, height;
 
         public BitmapDrawer(bitmap bitmap, int skalierung, int height)  { //Fixme: to use height, is not good
-            this.path = PathFinder.findOriginalBitmap(bitmap);
+            this.path = decompose.bm_to_pathlist(bitmap, new param());
             this.scale = skalierung;
             this.height = height;
         }
@@ -61,9 +61,7 @@ public class BitmapDrawer{
             graphics.drawLine(start.x,start.y,end.x,end.y);
         };
 
-
         private Point scalePoint(Point point){
             return new Point(point.x * scale, point.y * scale);
         }
-
 }

@@ -2,14 +2,11 @@ package Tools;
 
 import potrace.path;
 
-/**
- * Created by andreydelany on 11/04/2017.
- */
-public class PathCounter {
+public class PathIterator {
     path list;
     path currentPath;
 
-    public PathCounter(path path) {
+    public PathIterator(path path) {
         this.list = path;
         this.currentPath = path;
     }

@@ -456,7 +456,7 @@ public class decompose {
     in. Returns 0 on success with plistp set, or -1 on error with errno
     set. */
 
-    static path bm_to_pathlist(bitmap bm, param param) {
+    public static path bm_to_pathlist(bitmap bm, param param) {
         int x;
         int y;
         path p;

@@ -3,9 +3,6 @@ package Tools;
 import java.awt.*;
 import java.util.Random;
 
-/**
- * Created by andreydelany on 08/04/2017.
- */
 public class RandomBitmapGenerator {
     Random randomGenerator;
     int maxWidth;

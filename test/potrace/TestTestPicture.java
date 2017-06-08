@@ -1,7 +1,7 @@
 package potrace;
 
 import Tools.BitmapImporter;
-import Tools.PathCounter;
+import Tools.PathIterator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -27,7 +27,7 @@ public class TestTestPicture {
     boolean[][] expectedChildsAndSiblings;
     double[][][][] expectedPointsOfCurve;
     int[][] expectedPrivInformations;
-    PathCounter pathIterator;
+    PathIterator pathIterator;
     int amountOfPathesInList;
     String testPictureFolderName = "testPictures";
 
@@ -53,7 +53,7 @@ public class TestTestPicture {
 
         bitmap bitmap = BitmapImporter.importBitmap(nameOfTestPicture,testPictureFolderName);
         path path  = potraceLib.potrace_trace(new param(),bitmap);
-        pathIterator = new PathCounter(path);
+        pathIterator = new PathIterator(path);
         amountOfPathesInList = pathIterator.getAmountOfPathes();
         this.expectedAmountOfPahtes = amountOfPathes;
         this.areasOfPathes = areasOfPathes;

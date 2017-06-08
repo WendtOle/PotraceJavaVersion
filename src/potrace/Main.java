@@ -14,6 +14,7 @@ public class Main {
         curvePrinter.print();
 
         Plotter plotter = new Plotter();
+        plotter.showBitmap(bitmap);
         //plotter.showPathAndBitmap(path,bitmap);
         //plotter.showPath(path);
     }

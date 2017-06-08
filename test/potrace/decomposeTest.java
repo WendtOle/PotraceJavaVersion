@@ -9,9 +9,6 @@ import java.awt.*;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by andreydelany on 20/03/2017.
- */
 public class decomposeTest {
 
     @Test

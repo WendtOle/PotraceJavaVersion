@@ -5,9 +5,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by andreydelany on 23/03/2017.
- */
 public class traceTest {
 
     public boolean isSumsEqual(Double[] should ,sums actual) {
