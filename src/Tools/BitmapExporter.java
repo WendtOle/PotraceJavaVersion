@@ -44,7 +44,7 @@ public class BitmapExporter {
         BufferedImage image = new BufferedImage(bitmap.w,bitmap.h,BufferedImage.TYPE_BYTE_BINARY);
         for (int y = 0; y < bitmap.h; y ++)
             for (int x = 0; x < bitmap.w; x ++){
-                if (bitmap.BM_GET(x,y))
+                if (bitmap.BM_GET(bitmap,x,y))
                     image.setRGB(x,y,0xff000000);
                 else
                     image.setRGB(x,y,0xffffffff);

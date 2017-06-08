@@ -41,7 +41,7 @@ public class decompose {
         if (bm.w % bitmap.PIXELINWORD != 0) {
             mask = bitmap.BM_ALLBITS << (bitmap.PIXELINWORD - (bm.w % bitmap.PIXELINWORD));
             for (y=0; y<bm.h; y++) {
-                bm.map[y * bm.dy + bm.dy - 1] = bm.bm_index(bm.w, y) & mask;
+                bm.map[y * bm.dy + bm.dy - 1] = bitmap.bm_index(bm,bm.w, y) & mask;
             }
         }
     }
@@ -73,10 +73,10 @@ public class decompose {
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += bm.BM_GET(x+a, y+i-1) ? 1 : -1;
-                ct += bm.BM_GET(x+i-1, y+a-1) ? 1 : -1;
-                ct += bm.BM_GET(x+a-1, y-i) ? 1 : -1;
-                ct += bm.BM_GET(x-i, y+a) ? 1 : -1;
+                ct += bitmap.BM_GET(bm,x+a, y+i-1) ? 1 : -1;
+                ct += bitmap.BM_GET(bm,x+i-1, y+a-1) ? 1 : -1;
+                ct += bitmap.BM_GET(bm,x+a-1, y-i) ? 1 : -1;
+                ct += bitmap.BM_GET(bm,x-i, y+a) ? 1 : -1;
             }
             if (ct>0) {
                 return true; //TODO is 1 true and 0 false? really?
@@ -231,8 +231,8 @@ public class decompose {
             }
 
             /* determine next direction */
-            c = bm.BM_GET(x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
-            d = bm.BM_GET(x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
+            c = bitmap.BM_GET(bm,x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
+            d = bitmap.BM_GET(bm,x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
 
             if (c && !d) {               /* ambiguous turn */
                 if (turnpolicy == potraceLib.POTRACE_TURNPOLICY_RIGHT
@@ -353,7 +353,7 @@ public class decompose {
                     break;
 
                 }
-                if (bm.BM_GET(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
+                if (bitmap.BM_GET(bm,p.priv.pt[0].x, p.priv.pt[0].y-1)) {
                     head.childlist = list.elementInsertAtTheLastNextOfList(p,head.childlist);
 
                 } else {
@@ -434,8 +434,8 @@ public class decompose {
         for (int y=XY.y; y>=0; y--) {
             for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {
 
-                if (bm.bm_index(x, y) != 0) {
-                    while (!bm.BM_GET(x, y)) {
+                if (bitmap.bm_index(bm,x, y) != 0) {
+                    while (!bitmap.BM_GET(bm,x, y)) {
                         x++;
                     }
 	                /* found */
@@ -480,7 +480,7 @@ public class decompose {
         while ((findnext(bm1,xy))) {
             // calculate the sign by looking at the original bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
             // mit dem nachgucken nach dem sign in der original bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
-            sign = bm.BM_GET(xy.x, xy.y) ? '+' : '-';
+            sign = bitmap.BM_GET(bm,xy.x, xy.y) ? '+' : '-';
 
             // calculate the path
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);

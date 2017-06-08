@@ -15,7 +15,7 @@ public class BetterBitmap extends bitmap {
     private void fillArea(Point upperLeftCorner, Point downRightCorner, boolean filled){
         for (int y = downRightCorner.y; y <= upperLeftCorner.y; y ++)
             for (int x = upperLeftCorner.x ; x <= downRightCorner.x; x ++)
-                BM_PUT(x,y,filled);
+                BM_PUT(this,x,y,filled);
     }
 
     public void fillCompleteBitMap(boolean filled) {

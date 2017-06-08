@@ -1,92 +1,94 @@
 package potrace;
 
-import Tools.BetterBitmap;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import org.junit.*;
 import java.awt.*;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-/**
- * Created by andreydelany on 07/03/2017.
- */
 public class bitmapTest {
 
-    @Ignore
     @Test
-    public void test_bm_get() throws Exception {
-        BetterBitmap testBitMap = new BetterBitmap(2,2);
-        testBitMap.addBlob(new Point(1,1),true);
-
-        assertEquals(false, testBitMap.BM_GET(1,0));
-        assertEquals(false, testBitMap.BM_GET(0,0));
-        assertEquals(false, testBitMap.BM_GET(0,1));
-        assertEquals(true, testBitMap.BM_GET(1,1));
-
-        assertEquals(false, testBitMap.BM_GET(-1,0));
-        assertEquals(false, testBitMap.BM_GET(0,-1));
-        assertEquals(false, testBitMap.BM_GET(2,0));
-        assertEquals(false, testBitMap.BM_GET(0,2));
-        assertEquals(false, testBitMap.BM_GET(2,2));
-        assertEquals(false, testBitMap.BM_GET(-1,-1));
+    public void creatingBitmapWithEmptyConstructorTest() {
+        bitmap testBitmap = new bitmap();
+        assertEquals("width: ", 0,testBitmap.w);
+        assertEquals("height: ", 0,testBitmap.h);
+        assertEquals("dy: ", 0,testBitmap.dy);
+        assertEquals("map: ", null,testBitmap.map);
     }
 
-    @Ignore
     @Test
-    //TODO wie kann denn eine negatives dy entstehen?
-    public void test_bm_size() throws Exception {
-        bitmap testBitMap = new bitmap(-33,1);
-        System.out.println(testBitMap.bm_size());
-        assertEquals(64, (new bitmap(1,1)).bm_size());
-        assertEquals(128, (new bitmap(70,1)).bm_size());
-        assertEquals(128, (new bitmap(4,2)).bm_size());
+    public void creatingBitmapWithNormalConstructorTest() {
+        bitmap testBitmap = new bitmap(100,100);
+        assertEquals("width: ", 100,testBitmap.w);
+        assertEquals("height: ", 100,testBitmap.h);
+        assertEquals("dy: ", 2,testBitmap.dy);
+        assertEquals("map: ", 200,testBitmap.map.length);
     }
 
-    @Ignore
+    @Test
+    public void checkingThatConstantsAreCorrect() {
+        assertEquals("Pixel in Word: ",64,bitmap.PIXELINWORD);
+        assertEquals("All Bits: ", -1l, bitmap.BM_ALLBITS);
+        assertEquals("First Bit: ", 0x80000000, bitmap.BM_HIBIT);
+    }
+
+    @Test
+    public void testBmSafeAndBmRange() {
+        bitmap testBitmap = new bitmap(10,10);
+        assertTrue("first inside: ",bitmap.bm_safe(testBitmap,0,0));
+        assertTrue("second inside: ",bitmap.bm_safe(testBitmap,9,9));
+        assertFalse("first outside: ",bitmap.bm_safe(testBitmap,10,10));
+        assertFalse("second outside: ",bitmap.bm_safe(testBitmap,10,1));
+        assertFalse("third outside: ",bitmap.bm_safe(testBitmap,-1,1));
+    }
+
+    @Test
+    public void testMaskFuntion() {
+        assertEquals("at position 0: ",0x8000000000000000l,bitmap.bm_mask(0));
+        assertEquals("at position 1: ",0x4000000000000000l,bitmap.bm_mask(1));
+        assertEquals("at position 64 -> 0: ",0x8000000000000000l,bitmap.bm_mask(64));
+        assertEquals("at position 63: ",0x1,bitmap.bm_mask(63));
+    }
+
+    @Test
+    public void testBMPutAndBMGetFunction() {
+        bitmap smallTestBitmap = new bitmap(10,10);
+        bitmap.BM_PUT(smallTestBitmap,0,0,true);
+        assertEquals("with one potrace word in line: ",true,bitmap.BM_GET(smallTestBitmap,0,0));
+
+        bitmap bigTestBitmap = new bitmap(100,100);
+        bitmap.BM_PUT(bigTestBitmap,99,99,true);
+        assertEquals("with more than one potrace word in line: ",true,bitmap.BM_GET(bigTestBitmap,99,99));
+    }
+
+    @Test
+    public void testBMClearFuntion() {
+        bitmap smallTestBitmap = new bitmap(10,10);
+        bitmap.BM_PUT(smallTestBitmap,0,0,true);
+        bitmap.BM_PUT(smallTestBitmap,0,0,false);
+        assertEquals(false,bitmap.BM_GET(smallTestBitmap,0,0));
+    }
+
     @Test
     public void test_bm_clear() throws Exception {
-        BetterBitmap testBitMap = new BetterBitmap(70,1);
-        testBitMap.addPolygon(new Point(60,0),new Point(67,0),true);
-
-        bitmap.bm_clear(testBitMap,0);
-        assertEquals(false, testBitMap.BM_GET(0,0));
-        assertEquals(false, testBitMap.BM_GET(40,2));
+        bitmap testBitMap = new bitmap(10,10);
         bitmap.bm_clear(testBitMap,1);
-        assertEquals(true, testBitMap.BM_GET(0,0));
-        assertEquals(false, testBitMap.BM_GET(40,2));
-        assertEquals(false, testBitMap.BM_GET(40,1));
+        assertEquals(true, bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(true, bitmap.BM_GET(testBitMap,9,9));
+        bitmap.bm_clear(testBitMap,0);
+        assertEquals(false, bitmap.BM_GET(testBitMap,0,0));
+        assertEquals(false, bitmap.BM_GET(testBitMap,4,4));
     }
 
-    @Ignore
     @Test
     public void test_bm_dup() throws Exception {
-        BetterBitmap originalBitmap = new BetterBitmap(70,2);
-        originalBitmap.addPolygon(new Point(62,1), new Point(65,0),true);
+        bitmap originalBitmap = new bitmap(10,10);
         bitmap copiedBitmap = originalBitmap.bm_dup();
 
-        //check wether reference is difference
-        assertTrue(originalBitmap != copiedBitmap);
-        assertArrayEquals(originalBitmap.map,copiedBitmap.map);
-        assertEquals(originalBitmap.dy, copiedBitmap.dy);
-        assertEquals(originalBitmap.h, copiedBitmap.h);
-        assertEquals(originalBitmap.w, copiedBitmap.w);
-    }
-
-    @Ignore
-    @Test
-    public void test_bm_put_negative() throws Exception {
-        BetterBitmap bitMap = new BetterBitmap(2,2);
-        bitMap.addPolygon(new Point(0,1), new Point(1,0),true);
-        bitMap.addBlob(new Point(0,1),false);
-
-        assertEquals(false,bitMap.BM_GET(0,1));
-        assertEquals(true,bitMap.BM_GET(0,0));
-        assertEquals(true,bitMap.BM_GET(1,1));
-        assertEquals(true,bitMap.BM_GET(1,0));
+        assertFalse("reference: ", originalBitmap == copiedBitmap);
+        assertArrayEquals("map: ",originalBitmap.map,copiedBitmap.map);
+        assertEquals("dy: ",originalBitmap.dy, copiedBitmap.dy);
+        assertEquals("height: ",originalBitmap.h, copiedBitmap.h);
+        assertEquals("width: ",originalBitmap.w, copiedBitmap.w);
     }
 }
 

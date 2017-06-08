@@ -20,81 +20,56 @@ public class bitmap {
     }
 
     /* macros for accessing pixel at index (x,y). U* macros omit the bounds check. */
-    private boolean bm_range(int x, int a) {
+    private static boolean bm_range(int x, int a) {
         return (x) >= 0 && (x) < (a);
     }
 
-    private boolean bm_range(double x, double a) {
-        return bm_range((int)x,(int)a);
+    static boolean bm_safe(bitmap bm, int x, int y) {
+        return bm_range(x, bm.w) && bm_range(y, bm.h);
     }
 
-    private boolean bm_safe(int x, int y) {
-        return bm_range(x, this.w) && bm_range(y, this.h);
-    }
-
-    private long bm_mask(int x) {
+    static long bm_mask(int x) {
         return ((1L) << (PIXELINWORD-1-(x)));
     }
 
-    private boolean BM_UGET(int x, int y) {
-        return(bm_index(x, y) & bm_mask(x)) != 0;
+    private static boolean BM_UGET(bitmap bm, int x, int y) {
+        return(bm_index(bm, x, y) & bm_mask(x)) != 0;
     }
 
-    public boolean BM_GET(int x, int y) {
-        return bm_safe(x, y) ? BM_UGET(x, y) : false;
+    public static boolean BM_GET(bitmap bm, int x, int y) {
+        return bm_safe(bm, x, y) ? BM_UGET(bm, x, y) : false;
     }
 
-    private long[] bm_scanline(int y) {
-        long[] scanLine = new long[this.dy];
-        for (int i = 0; i < this.dy ; i ++) {
-            scanLine[i] = this.map[(y * this.dy) + i];
+    private static long[] bm_scanline(bitmap bm, int y) {
+        long[] scanLine = new long[bm.dy];
+        for (int i = 0; i < bm.dy ; i ++) {
+            scanLine[i] = bm.map[(y * bm.dy) + i];
         }
         return scanLine;
     }
 
-    public long bm_index(int x, int y) {
-        return bm_scanline(y)[x/PIXELINWORD];
+    public static long bm_index(bitmap bm, int x, int y) {
+        return bm_scanline(bm, y)[x/PIXELINWORD];
     }
 
-    private void BM_UCLR(int x, int y){
-        this.map[y * this.dy + (x / PIXELINWORD)] = this.map[y * this.dy + (x / PIXELINWORD)] & ~bm_mask(x);
+    private static void BM_UCLR(bitmap bm, int x, int y){
+        bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] & ~bm_mask(x);
     }
 
-    private void BM_USET(int x, int y) {
-        this.map[y * this.dy + (x / PIXELINWORD)] = this.map[y * this.dy + (x / PIXELINWORD)] | bm_mask(x);
+    private static void BM_USET(bitmap bm, int x, int y) {
+        bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] | bm_mask(x);
     }
 
-    private void BM_UPUT(int x, int y, boolean b) {
+    private static void BM_UPUT(bitmap bm, int x, int y, boolean b) {
         if (b)
-            BM_USET(x, y);
+            BM_USET(bm,x, y);
         else
-            BM_UCLR(x, y);
+            BM_UCLR(bm, x, y);
     }
 
-    public void BM_PUT(int x, int y, boolean b) {
-        if (bm_safe( x, y))
-            BM_UPUT(x, y, b);
-    }
-
-    private int getsize(int dy, int h) {
-        int size;
-
-        if (dy < 0) {
-            dy = -dy;
-        }
-
-        size = dy * h * bitmap.PIXELINWORD;
-
-        /* check for overflow error */
-        if (size < 0 || (h != 0 && dy != 0 && size / h / dy != bitmap.PIXELINWORD)) {
-            return -1;
-        }
-
-        return size;
-    }
-
-    public int bm_size() {
-        return getsize(this.dy, this.h);
+    public static void BM_PUT(bitmap bm, int x, int y, boolean b) {
+        if (bm_safe(bm, x, y))
+            BM_UPUT(bm, x, y, b);
     }
 
     /* clear the given bitmap. Set all bits to c. Assumes a well-formed
@@ -117,9 +92,6 @@ public class bitmap {
 
     public bitmap bm_dup() {
         bitmap bm1 = new bitmap(this.w, this.h);
-
-        if (this == null)
-            return null;
 
         for (int y=0; y < this.h; y++) {
             for (int dy = 0; dy < this.dy; dy ++) {
