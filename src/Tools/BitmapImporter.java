@@ -67,12 +67,12 @@ public class BitmapImporter {
         return null;
     }
 
-    private static BetterBitmap copyValues(BufferedImage image) {
-        BetterBitmap bitmap = new BetterBitmap(image.getWidth(),image.getHeight());
+    private static bitmap copyValues(BufferedImage image) {
+        bitmap bitmap = new bitmap(image.getWidth(),image.getHeight());
         for(int y = 0; y < image.getHeight(); y ++)
             for(int x = 0; x < image.getWidth(); x ++) {
                 if ((image.getRGB(x, y) & 0xff) == 0)
-                    bitmap.addBlob(new Point(x,image.getHeight() - y -1 ),true);
+                    bitmap.BM_PUT(bitmap,x, image.getHeight() - y -1,true);
             }
         return bitmap;
     }

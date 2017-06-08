@@ -462,8 +462,6 @@ public class decompose {
         int sign;
 
         bm1 = bm.bm_dup();
-        if (bm1 == null)
-            return null;
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
@@ -480,8 +478,6 @@ public class decompose {
 
             // calculate the path
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
-            if (p==null)
-                return null;
 
             // update buffered image
             xor_path(bm1, p);

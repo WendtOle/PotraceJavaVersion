@@ -1,5 +1,7 @@
 package Tools;
 
+import potrace.bitmap;
+
 import java.awt.*;
 import java.util.Random;
 
@@ -15,7 +17,7 @@ public class RandomBitmapGenerator {
         this.noiseRatio = noiseRatio;
     }
 
-    public BetterBitmap getRandomBitmap() {
+    public bitmap getRandomBitmap() {
         randomGenerator = new Random();
         Dimension dimension = generateRandomDimensions();
         return createRandomBitmap(dimension);
@@ -27,12 +29,12 @@ public class RandomBitmapGenerator {
         return new Dimension(width,height);
     }
 
-    private BetterBitmap createRandomBitmap(Dimension dimension) {
-        BetterBitmap bitmap = new BetterBitmap(dimension.width, dimension.height);
+    private bitmap createRandomBitmap(Dimension dimension) {
+        bitmap bitmap = new bitmap(dimension.width, dimension.height);
         for (int y = 0; y < dimension.height; y++)
             for(int x = 0; x < dimension.width; x++) {
                 if(isPixelFilled())
-                    bitmap.addBlob(new Point(x,y),true);
+                    bitmap.BM_PUT(bitmap,x,y,true);
             }
         return bitmap;
     }
