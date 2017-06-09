@@ -16,8 +16,8 @@ public class RandomBitmapGeneratorTest {
         for (int i = 0; i < 10; i ++){
             RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(maxWithHeight,maxWithHeight,0.1);
             bitmap bitmap = bitmapGenerator.getRandomBitmap();
-            assertTrue("problem With Width: ", bitmap.w < maxWithHeight);
-            assertTrue("problem With Height: ", bitmap.h < maxWithHeight);
+            assertTrue("problem With Width: ", bitmap.w <= maxWithHeight);
+            assertTrue("problem With Height: ", bitmap.h <= maxWithHeight);
         }
     }
 }

@@ -1,13 +1,18 @@
 package potrace;
 import java.awt.*;
 
+/* transform jaggy paths into smooth curves */
+
 public class trace {
 
     static int INFTY  = 10000000;	            //it suffices that this is longer than any path; it need not be really infinite
     static double COS179 = -0.999847695156;	    /* the cosine of 179 degrees */
 
-    /* return a direction that is 90 degrees counterclockwise from p2-p0,
-       but then restricted to one of the major wind directions (n, nw, w, etc) */
+/* ---------------------------------------------------------------------- */
+/* auxiliary functions */
+
+/* return a direction that is 90 degrees counterclockwise from p2-p0,
+but then restricted to one of the major wind directions (n, nw, w, etc) */
     static Point dorth_infty(dpoint p0, dpoint p2) {
         Point r = new Point();
 
@@ -189,7 +194,6 @@ public class trace {
         double s = 1-t;
         dpoint res = new dpoint();
 
-        //Entwickler:
         /* Note: a good optimizing compiler (such as gcc-3) reduces the
         following to 16 multiplications, using common subexpression
         elimination. */
@@ -241,7 +245,7 @@ public class trace {
     rapid summing). Return 0 on success, 1 with errno set on
     failure. */
 
-    static privepath calc_sums(privepath pp) {
+    static void calc_sums(privepath pp) {
         int i, x, y;
         int n = pp.len;
 
@@ -265,7 +269,6 @@ public class trace {
             pp.sums[i+1].xy = pp.sums[i].xy + x*y;
             pp.sums[i+1].y2 = pp.sums[i].y2 + y*y;
         }
-        return pp;
     }
 
 /* ---------------------------------------------------------------------- */
@@ -297,15 +300,8 @@ public class trace {
     algorithm by a factor of 1.78. In any case, the savings are
     substantial. */
 
-    //Ole:
-    /* Die gesamte Methode sucht, nach meinem bisherigen Wissensstand, einfach zu jeden Punkt einen sogenannten Pivotpoint herraus.
-    Das ist in dem Beispiel was ich jetzt durchgegangen bis einfach der gegenüber liegende Punkt im Pfad.
-    Vielleicht auch der Punkt der am weitesten Weg ist?
-    Da in dieser Methode massivst mit Jumpmarcs gearbeitet wurde musste ich ein bisschen umstrukturieren
-    und haben dafür continues und breaks für die loops verändert. der Flow sollte am Schluss der gleiche sein. */
-
     /* returns 0 on success, 1 on error with errno set */
-    static privepath calc_lon(privepath pp) {
+    static void calc_lon(privepath pp) {
         Point[] pt = pp.pt;
         int n = pp.len;
         int i, j, k, k1;
@@ -319,7 +315,6 @@ public class trace {
         Point dk = new Point();             //direction of k-k1
         int a, b, c, d;
 
-        //Entwickler:
         /*initialize the nc data structure. Point from each point to the
         furthest future point to which it is connected by a vertical or
         horizontal segment. We take advantage of the fact that there is
@@ -327,25 +322,6 @@ public class trace {
         algorithm). But even if this were not so, there is no harm, as
         in practice, correctness does not depend on the word "furthest"
         above. */
-
-        //Ole:
-        /*
-         von Line 943 bis 950
-         der Punkt pt[k] merkt sich immer die letzte ecke, also ich vermute dass es sich um eine Ecke handelt
-         angenommen, die schleife startet, dann spiegelt die pt[i] den letzten punkt wieder und pt[k] den ersten
-         rein nach der logik ist gesichert, das diese beiden Punkte nebeneinander liegen. In diesem Fall ist gerade pt[k],
-         wie auch schon vorher genannt, die Ecke, nun wird in dem IF Case überprüft ob der pt[i] und pt[k] ein gemeinsame koordinate haben,
-         also ob x oder y gleich ist, also ob sie beide auf einer waagerechten oder senkrechte liegen. Sollte das der fall sein, passiert nichts.
-         Und an die aktuelle Stelle i wird im array nc die letzte ecke geschrieben, also in diesem fall der anfangspunkt k = 0
-         Nun wird i kleiner, also i wandert gegen den urzeigersinn den pfad entlang. Und immer wird überprüft ob x oder y gleich sind ...
-         sollte nun der fall eintreten, dass sie nicht mehr gleich sind, bedeutet dies, dass der vorherige punkt noch gleich gewesen sein muss,
-         und der vorherige punkte der weitentfernteste punkt vom gemerkten punkt (pt[k], der die letzte ecke dargestellt hat) gewesen sein muss
-         Nun wird der vorherkige punkt den man sich mithilfe von "i+1" merkt in k festgehalten. Nun geht es weiter, bis i am Anfang angekommen ist.
-         Man erhält ein Array nc in welchem zum einen die indeces der ecken des pfades stehen,
-         aber andererseits erfährt man auch irgendwie zu wechler ecke ein punkt gehört.
-         Man erhält bzw. {2, 2, 4, 4, 6, 6, 0, 0}
-         Die Ecken sind also die punkte mit den indeces: 0, 2, 4, 6
-         */
 
         k = 0;
         for (i=n-1; i>=0; i--) {
@@ -367,18 +343,6 @@ public class trace {
 
             //keep track of "directions" that have occurred
 
-            //Ole:
-            /* Hier werden von hinten nach vorne immer paarweise die Punkte angeschaut und deren Richtung bestimmt.
-            von rechts nach links = 0
-            von links nach rechts = 3
-            von unten nach oben = 2
-            von oben nach unten = 1
-            Ich finde es merkwündig, das es zwei verschiedene Wege gibt, eine Richtung zu bestimmen (Zeile 979 und Zeile 990)
-            Ich würde vermuten das die Richtungsbestimmung in Zeile 979 speziell ist, das sie von einem beliebigen Punkt,
-            auf die nächste Ecke zeigt, und die Richtungsbestimmung in Zeile 990 springt dagegen immer nur von Ecke zu Ecke.
-            Ich bin mir allerdings trotzdem nicht sicher, ob das ausschlaggebend ist,
-            oder ob man nicht einfach auch die gleiche Bestimmung verwenden hätte können. */
-
             dir = (3+3*(pt[auxiliary.mod(i+1,n)].x-pt[i].x)+(pt[auxiliary.mod(i+1,n)].y-pt[i].y))/2;
             ct[dir]++;
 
@@ -399,18 +363,11 @@ public class trace {
                     continue outerloop;
                 }
 
-                //Ole:
-                /* der Punkt cur. beschreibt den Abstand vom derzeitigen Punkt bis zur aktuellen Ecke,
-                also von pt[i] zu pt[k] */
-
                 cur.x = pt[k].x - pt[i].x;
                 cur.y = pt[k].y - pt[i].y;
 
                 //see if current constraint is violated
                 if (xprod(constraint[0], cur) < 0 || xprod(constraint[1], cur) > 0) {
-
-                    //Ole:
-                    /* Genau hier wird der gegenüberliegende Punkt oder eben der PivotPoint ausfindig gemacht. */
 
                     //k1 was the last "corner" satisfying the current constraint, and
                     //k is the first one violating it. We now need to find the last
@@ -442,15 +399,9 @@ public class trace {
                 }
 
                 //else, update constraint
-                //TODO: Es ist sinnlos -> If Case verändern und sofort in else case springen lassen
                 if (auxiliary.abs(cur.x) <= 1 && auxiliary.abs(cur.y) <= 1) {
                     //constraint
                 } else {
-
-                    //Ole:
-                    /* Worum es sich bei den Constraints genau handelt, kann ich nicht mit Sicherheit sagen.
-                    Allerdings vermute ich, dass es sich dabei um den ungefähren Bereich handelt, in dem der PivotPoint liegt.
-                    Constraint heißt Beschränkung -> also Beschränkt es den ungefähren Bereich in dem der PivotPoint vorkommen kann */
 
                     off.x = cur.x + ((cur.y>=0 && (cur.y>0 || cur.x<0)) ? 1 : -1);
                     off.y = cur.y + ((cur.x<=0 && (cur.x<0 || cur.y<0)) ? 1 : -1);
@@ -486,8 +437,6 @@ public class trace {
         for (i=n-1; cyclic(auxiliary.mod(i+1,n),j,pp.lon[i]); i--) {
             pp.lon[i] = j;
         }
-
-        return pp;
     }
 
 /* ---------------------------------------------------------------------- */
@@ -545,19 +494,12 @@ public class trace {
         return Math.sqrt(s);
     }
 
-    //Entwickler:
     /*find the optimal polygon. Fill in the m and po components. Return 1
     on failure with errno set, else 0. Non-cyclic version: assumes i=0
     is in the polygon. Fixme: implement cyclic version. */
 
-    //Ole:
-    /* Mir ist noch etwas schleiehaft was clip0, clip1, seg0 und seg1 aussagen,
-    und was es mir bringt dauernd werte hin und her zu schreiben. Aber was man erhält, ist ein Array an Punkten,
-    welches in pp.po gespeichert wird, was die zukünftigen Eckpunkte der Kanten des Pfades enthält.
-    Wie man jetzt genau dazu kommt ist mir, wie schon gesagt, etwas schleierhaft. Aber anscheinend funktioniert es.
-     */
 
-    static privepath bestpolygon(privepath pp) {
+    static void bestpolygon(privepath pp) {
         int i, j, m, k;
         int n = pp.len;
         double[] pen = new double[n+1];     /* pen[n+1]: penalty vector */
@@ -637,23 +579,17 @@ public class trace {
             i = prev[i];
             pp.po[j] = i;
         }
-
-        return pp;
     }
 
 /* ---------------------------------------------------------------------- */
     /* Stage 3: vertex adjustment (Sec. 2.3.1). */
 
-    //Ole:
-    /* Aufgrund von JumpMarcs musste ich wieder improvisieren */
-
-    //Entwickler:
     /* Adjust vertices of optimal polygon: calculate the intersection of
     the two "optimal" line segments, then move it into the unit square
     if it lies outside. Return 1 with errno set on error; 0 on
     success. */
 
-    static privepath adjust_vertices(privepath pp) {
+    static void adjust_vertices(privepath pp) {
         int m = pp.m;
         int[] po = pp.po;
         int n = pp.len;
@@ -752,7 +688,7 @@ public class trace {
                 if (Q.content[0][0]>Q.content[1][1]) {
                     v[0] = -Q.content[0][1];
                     v[1] = Q.content[0][0];
-                } else if (Q.content[1][1] != 0) { //fixme: check wehter you really get only 1 and zero back
+                } else if (Q.content[1][1] != 0) {
                     v[0] = -Q.content[1][1];
                     v[1] = Q.content[1][0];
                 } else {
@@ -827,15 +763,13 @@ public class trace {
             pp.curve.vertex[i].y = ymin + y0;
             continue;
         }
-
-        return pp;
     }
 
 /* ---------------------------------------------------------------------- */
     /* Stage 4: smoothing and corner analysis (Sec. 2.3.3) */
 
     /* reverse orientation of a path */
-    static privcurve reverse(privcurve curve) {
+    static void reverse(privcurve curve) {
         int m = curve.n;
         int i, j;
         dpoint tmp;
@@ -845,11 +779,10 @@ public class trace {
             curve.vertex[i] = curve.vertex[j];
             curve.vertex[j] = tmp;
         }
-        return curve;
     }
 
     /* Always succeeds */
-    static privcurve smooth(privcurve curve, double alphamax) {
+    static void smooth(privcurve curve, double alphamax) {
         int m = curve.n;
 
         int i, j, k;
@@ -894,8 +827,6 @@ public class trace {
             curve.beta[j] = 0.5;
         }
         curve.alphacurve = 1;
-
-        return curve;
     }
 
 /* ---------------------------------------------------------------------- */
@@ -904,7 +835,7 @@ public class trace {
     /* calculate best fit from i+.5 to j+.5.  Assume i<j (cyclically).
     Return 0 and set badness and parameters (alpha, beta), if
     possible. Return 1 if impossible. */
-    static opti opti_penalty(privepath pp, int i, int j, opti res, double opttolerance, int[] convc, double[] areac) {
+    static boolean opti_penalty(privepath pp, int i, int j, opti res, double opttolerance, int[] convc, double[] areac) {
         int m = pp.curve.n;
         int conv;
         int k, k1, k2, i1;
@@ -916,7 +847,7 @@ public class trace {
         //check convexity, corner-freeness, and maximum bend < 179 degrees */
 
         if (i==j) {  /* sanity - a full loop can never be an opticurve */
-            return null;
+            return true;
         }
 
         k = i;
@@ -924,20 +855,20 @@ public class trace {
         k1 = auxiliary.mod(k+1, m);
         conv = convc[k1];
         if (conv == 0) {
-            return null;
+            return true;
         }
         d = ddist(pp.curve.vertex[i], pp.curve.vertex[i1]);
         for (k=k1; k!=j; k=k1) {
             k1 = auxiliary.mod(k+1, m);
             k2 = auxiliary.mod(k+2, m);
             if (convc[k1] != conv) {
-                return null;
+                return true;
             }
             if (auxiliary.sign(cprod(pp.curve.vertex[i], pp.curve.vertex[i1], pp.curve.vertex[k1], pp.curve.vertex[k2])) != conv) {
-                return null;
+                return true;
             }
             if (iprod1(pp.curve.vertex[i], pp.curve.vertex[i1], pp.curve.vertex[k1], pp.curve.vertex[k2]) < d * ddist(pp.curve.vertex[k1], pp.curve.vertex[k2]) * COS179) {
-                return null;
+                return true;
             }
         }
 
@@ -965,7 +896,7 @@ public class trace {
         A4 = A1+A3-A2;
 
         if (A2 == A1) {  //this should never happen
-            return null;
+            return true;
         }
 
         t = A3/(A3-A4);
@@ -973,7 +904,7 @@ public class trace {
         A = A2 * t / 2.0;
 
         if (A == 0.0) {  //this should never happen
-            return null;
+            return true;
         }
 
         R = area / A;	 //relative area
@@ -996,19 +927,19 @@ public class trace {
             k1 = auxiliary.mod(k+1,m);
             t = tangent(p0, p1, p2, p3, pp.curve.vertex[k], pp.curve.vertex[k1]);
             if (t<-.5) {
-                return null;
+                return true;
             }
             pt = bezier(t, p0, p1, p2, p3);
             d = ddist(pp.curve.vertex[k], pp.curve.vertex[k1]);
             if (d == 0.0) {  //this should never happen
-                return null;
+                return true;
             }
             d1 = dpara(pp.curve.vertex[k], pp.curve.vertex[k1], pt) / d;
             if (Math.abs(d1) > opttolerance) {
-                return null;
+                return true;
             }
             if (iprod(pp.curve.vertex[k], pp.curve.vertex[k1], pt) < 0 || iprod(pp.curve.vertex[k1], pp.curve.vertex[k], pt) < 0) {
-                return null;
+                return true;
             }
             res.pen += (d1)*(d1);
         }
@@ -1018,12 +949,12 @@ public class trace {
             k1 = auxiliary.mod(k+1,m);
             t = tangent(p0, p1, p2, p3, pp.curve.c[k][2], pp.curve.c[k1][2]);
             if (t<-.5) {
-                return null;
+                return true;
             }
             pt = bezier(t, p0, p1, p2, p3);
             d = ddist(pp.curve.c[k][2], pp.curve.c[k1][2]);
             if (d == 0.0) {  /* this should never happen */
-                return null;
+                return true;
             }
             d1 = dpara(pp.curve.c[k][2], pp.curve.c[k1][2], pt) / d;
             d2 = dpara(pp.curve.c[k][2], pp.curve.c[k1][2], pp.curve.vertex[k1]) / d;
@@ -1033,20 +964,20 @@ public class trace {
                 d2 = -d2;
             }
             if (d1 < d2 - opttolerance) {
-                return null;
+                return true;
             }
             if (d1 < d2) {
                 res.pen += (d1 - d2)*(d1 - d2);
             }
         }
 
-        return res;
+        return false;
     }
 
     /* optimize the path p, replacing sequences of Bezier segments by a
     single segment when possible. Return 0 on success, 1 with errno set
     on failure. */
-    static privepath opticurve(privepath pp, double opttolerance) {
+    static void opticurve(privepath pp, double opttolerance) {
         int m = pp.curve.n;
         int[] pt = new int[m+1];            //pt[m+1]
         double[]  pen = new double[m+1];       //pen[m+1]
@@ -1058,7 +989,7 @@ public class trace {
         }
 
         int om;
-        int i,j,r;
+        int i,j;
         opti o = new opti();
         dpoint p0;
         int i1;
@@ -1106,11 +1037,9 @@ public class trace {
             len[j] = len[j-1]+1;
 
             for (i=j-2; i>=0; i--) {
-                opti testO = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
-                if (testO == null) {
+                boolean  r = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
+                if (r) {
                     break;
-                } else {
-                    o = testO;
                 }
                 if (len[j] > len[i]+1 || (len[j] == len[i]+1 && pen[j] > pen[i] + o.pen)) {
                     pt[j] = i;
@@ -1158,7 +1087,6 @@ public class trace {
             pp.ocurve.beta[i] = s[i] / (s[i] + t[i1]);
         }
         pp.ocurve.alphacurve = 1;
-        return pp;
     }
 
     /* return 0 on success, 1 on error with errno set. */
@@ -1166,16 +1094,16 @@ public class trace {
         /* call downstream function with each path */
 
         for (path p = plist; p!=null; p=p.next) {
-            p.priv = calc_sums(p.priv);
-            p.priv = calc_lon(p.priv);
-            p.priv = bestpolygon(p.priv);
-            p.priv = adjust_vertices(p.priv);
+            calc_sums(p.priv);
+            calc_lon(p.priv);
+            bestpolygon(p.priv);
+            adjust_vertices(p.priv);
             if (p.sign == '-') {   /* reverse orientation of negative paths */
                 reverse(p.priv.curve);
             }
-            p.priv.curve= smooth(p.priv.curve, param.alphamax);
-            if (param.opticurve != 0) {
-                p.priv = opticurve(p.priv, param.opttolerance);
+            smooth(p.priv.curve, param.alphamax);
+            if (param.opticurve) {
+                opticurve(p.priv, param.opttolerance);
                 p.priv.fcurve = p.priv.ocurve;
             } else {
                 p.priv.fcurve = p.priv.curve;
