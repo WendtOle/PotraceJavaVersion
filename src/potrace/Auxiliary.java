@@ -1,11 +1,11 @@
 package potrace;
 
-public class auxiliary {
+public class Auxiliary {
 
     /* range over the straight line segment [a,b] when lambda ranges over [0,1] */
 
-    static dpoint interval(double lambda, dpoint a, dpoint b) {
-        dpoint res = new dpoint();
+    static DPoint interval(double lambda, DPoint a, DPoint b) {
+        DPoint res = new DPoint();
 
         res.x = a.x + lambda * (b.x - a.x);
         res.y = a.y + lambda * (b.y - a.y);

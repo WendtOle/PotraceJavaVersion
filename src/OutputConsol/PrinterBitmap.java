@@ -1,12 +1,16 @@
-package Output; /**
+package OutputConsol;
+
+import potrace.Bitmap;
+
+/**
  * Created by andreydelany on 21/03/2017.
  */
 
-public class BitmapPrinter {
+public class PrinterBitmap {
 
-    potrace.bitmap bitmap;
+    Bitmap bitmap;
 
-    public BitmapPrinter(potrace.bitmap bm) {
+    public PrinterBitmap(Bitmap bm) {
         this.bitmap = bm;
     }
 
@@ -39,7 +43,7 @@ public class BitmapPrinter {
     }
 
     private void fillUpPotraceWordWithZeros(String currentPotraceWord) {
-        int amountOfZeros = potrace.bitmap.PIXELINWORD - currentPotraceWord.length();
+        int amountOfZeros = Bitmap.PIXELINWORD - currentPotraceWord.length();
         printCertainAmountOfZeros(amountOfZeros);
     }
 

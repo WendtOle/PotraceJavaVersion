@@ -1,7 +1,7 @@
-package Output;
+package OutputGraphical;
 
-import potrace.bitmap;
-import potrace.path;
+import potrace.Bitmap;
+import potrace.Path;
 
 import javax.swing.*;
 
@@ -26,19 +26,19 @@ public class Plotter {
         jFrame.setSize(width,height);
     };
 
-    public void showPath(path path) {
+    public void showPath(Path path) {
         Drawer drawer = new Drawer(path,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
-    public void showBitmap(bitmap bitmap) {
+    public void showBitmap(Bitmap bitmap) {
         Drawer drawer = new Drawer(bitmap,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
 
-    public void showPathAndBitmap(path path, bitmap bitmap) {
+    public void showPathAndBitmap(Path path, Bitmap bitmap) {
         Drawer drawer = new Drawer(path,bitmap,scale, jFrame.getHeight());
         jFrame.add(drawer);
         jFrame.setVisible(true);

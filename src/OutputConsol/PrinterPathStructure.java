@@ -1,21 +1,21 @@
-package Output;
+package OutputConsol;
 
-import potrace.path;
+import potrace.Path;
 
 /**
  * Created by andreydelany on 21/03/2017.
  */
-public class PolygonArchitecturePrinter {
+public class PrinterPathStructure {
 
-    path origin;
+    Path origin;
 
-    public PolygonArchitecturePrinter (path path) {
+    public PrinterPathStructure(Path path) {
         this.origin = path;
     }
 
     public void print() {
         printHeader();
-        recursiveCallToPrintNextPolygon(origin,0,false, FollowerEnum.NULL);
+        recursiveCallToPrintNextPolygon(origin,0,false, BranchTypEnum.NULL);
         System.out.println();
     }
 
@@ -36,42 +36,42 @@ public class PolygonArchitecturePrinter {
         }
     }
 
-    public void recursiveCallToPrintNextPolygon(path current, int ebene, boolean isTheSame, FollowerEnum follower) {
+    public void recursiveCallToPrintNextPolygon(Path current, int ebene, boolean isTheSame, BranchTypEnum follower) {
         printIntroduction(follower);
         printActualPathData(current);
         callFollowingPolygon(current,ebene, isTheSame,follower);
     }
 
-    private void callFollowingPolygon(path path, int ebene, boolean isTheSame, FollowerEnum follower) {
+    private void callFollowingPolygon(Path path, int ebene, boolean isTheSame, BranchTypEnum follower) {
         if (isTheSame) {
             printReferenceToPreviousePolygon(path);
         } else {
             System.out.print("\n");
             if (hasNext(path)) {
                 printConnectionLineBetweenLevels(ebene);
-                recursiveCallToPrintNextPolygon(path.next, ebene + 1, false, FollowerEnum.NEXT);
+                recursiveCallToPrintNextPolygon(path.next, ebene + 1, false, BranchTypEnum.NEXT);
             }
             if (hasChild(path)) {
                 printConnectionLineBetweenLevels(ebene);
                 boolean isNextTheSame = path.next == path.childlist;
-                recursiveCallToPrintNextPolygon(path.childlist, ebene + 1, isNextTheSame, FollowerEnum.CHILD);
+                recursiveCallToPrintNextPolygon(path.childlist, ebene + 1, isNextTheSame, BranchTypEnum.CHILD);
             }
             if (hasSibling(path)) {
                 printConnectionLineBetweenLevels(ebene);
                 boolean isNextTheSame = path.next == path.sibling;
-                recursiveCallToPrintNextPolygon(path.sibling, ebene + 1, isNextTheSame, FollowerEnum.SIBLING);
+                recursiveCallToPrintNextPolygon(path.sibling, ebene + 1, isNextTheSame, BranchTypEnum.SIBLING);
             }
         }
     }
 
-    private void printReferenceToPreviousePolygon (path path) {
+    private void printReferenceToPreviousePolygon (Path path) {
         if (hasAtMinimumOneFollower(path)) {
             System.out.print(" siehe oben");
         }
         System.out.print("\n");
     }
 
-    private void printActualPathData (path path) {
+    private void printActualPathData (Path path) {
         System.out.print(path.area + "-(" +  path.priv.pt[0].x + " " + path.priv.pt[0].y + ")");
     }
 
@@ -81,23 +81,23 @@ public class PolygonArchitecturePrinter {
         printFiller(level);
     }
 
-    private boolean hasAtMinimumOneFollower(path path) {
+    private boolean hasAtMinimumOneFollower(Path path) {
         return (path.next != null || path.childlist != null || path.sibling != null);
     }
 
-    private boolean hasNext(path path) {
+    private boolean hasNext(Path path) {
         return path.next != null;
     }
 
-    private boolean hasChild(path path) {
+    private boolean hasChild(Path path) {
         return path.childlist != null;
     }
 
-    private boolean hasSibling(path path) {
+    private boolean hasSibling(Path path) {
         return path.sibling != null;
     }
 
-    private void printIntroduction(FollowerEnum follower) {
+    private void printIntroduction(BranchTypEnum follower) {
         String introduction = "";
         switch(follower) {
             case NEXT: introduction = "|-next-  ";

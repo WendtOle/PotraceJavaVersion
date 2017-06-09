@@ -1,4 +1,7 @@
-package Output;
+package OutputGraphical;
+
+import potrace.Bitmap;
+import potrace.Path;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,32 +11,32 @@ import java.awt.*;
  */
 public class Drawer extends JPanel {
 
-    potrace.path path;
-    potrace.bitmap bitmap;
+    Path path;
+    Bitmap bitmap;
     int scale, height;
 
-    public Drawer(potrace.path path, potrace.bitmap bitmap, int scale, int height) {
+    public Drawer(Path path, Bitmap bitmap, int scale, int height) {
         this.path = path;
         this.bitmap = bitmap;
         this.scale = scale;
         this.height = height;
     }
 
-    public Drawer(potrace.path path, int scale, int height) {
+    public Drawer(Path path, int scale, int height) {
         this(path,null,scale,height);
     }
 
-    public Drawer(potrace.bitmap bitmap, int scale, int height) {
+    public Drawer(Bitmap bitmap, int scale, int height) {
         this(null,bitmap,scale,height);
     }
 
     public void paintComponent(Graphics g) {
         if(path != null) {
-            PathDrawer drawedPath = new PathDrawer(path,scale, height);
+            DrawerPath drawedPath = new DrawerPath(path,scale, height);
             drawedPath.paintComponent(g);
         }
         if(bitmap != null) {
-            BitmapDrawer drawedBitmap = new BitmapDrawer(bitmap,scale,height);
+            DrawerBitmap drawedBitmap = new DrawerBitmap(bitmap,scale,height);
             drawedBitmap.paintComponent(g);
         }
     }

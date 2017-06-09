@@ -1,12 +1,12 @@
 package Tools;
 
-import potrace.path;
+import potrace.Path;
 
 public class PathIterator {
-    path list;
-    path currentPath;
+    Path list;
+    Path currentPath;
 
-    public PathIterator(path path) {
+    public PathIterator(Path path) {
         this.list = path;
         this.currentPath = path;
     }
@@ -29,7 +29,7 @@ public class PathIterator {
         return amount;
     }
 
-    public path getPathAtIndex(int index) {
+    public Path getPathAtIndex(int index) {
         currentPath = list;
         int currentIndex = 0;
         while (index != currentIndex) {

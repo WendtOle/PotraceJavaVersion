@@ -1,6 +1,6 @@
 package potrace;
 
-public class list {
+public class List {
 
     //Original Macro:
     /*
@@ -8,10 +8,10 @@ public class list {
     MACRO_BEGIN elt->next = *hook; *hook = elt; hook=&elt->next; MACRO_END
      */
 
-    public static path elementInsertAtTheLastNextOfList(path elementToAdd, path list) {
+    public static Path elementInsertAtTheLastNextOfList(Path elementToAdd, Path list) {
         if (elementToAdd != null) {
             if (list != null) {
-                path current = list;
+                Path current = list;
                 while (current.next != null) {
                     current = current.next;
                 }
@@ -26,10 +26,10 @@ public class list {
         return list;
     }
 
-    public static path listInsertAtTheLastNextOfList(path listToAdd, path list) {
+    public static Path listInsertAtTheLastNextOfList(Path listToAdd, Path list) {
         if (listToAdd != null) {
             if (list != null) {
-                path current = list;
+                Path current = list;
                 while (current.next != null) {
                     current = current.next;
                 }

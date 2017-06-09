@@ -51,8 +51,8 @@ public class TestTestPicture {
                            double[][][][] expectedPointsOfCurve,
                            int[][] expectedPrivInformations) {
 
-        bitmap bitmap = BitmapImporter.importBitmap(nameOfTestPicture,testPictureFolderName);
-        path path  = potraceLib.potrace_trace(new param(),bitmap);
+        Bitmap bitmap = BitmapImporter.importBitmap(nameOfTestPicture,testPictureFolderName);
+        Path path  = PotraceLib.potrace_trace(new Param(),bitmap);
         pathIterator = new PathIterator(path);
         amountOfPathesInList = pathIterator.getAmountOfPathes();
         this.expectedAmountOfPahtes = amountOfPathes;
@@ -141,19 +141,19 @@ public class TestTestPicture {
     public void testPointsOfCurves() {
         for (int counter = 0; counter < amountOfPathesInList; counter ++) {
             double[][][] expectedPointsOfCurrentCurve = expectedPointsOfCurve[counter];
-            dpoint[][] actualPointsForCurrentcurve = pathIterator.getPathAtIndex(counter).curve.c;
+            DPoint[][] actualPointsForCurrentcurve = pathIterator.getPathAtIndex(counter).curve.c;
 
             for (int currentBezierIndex = 0; currentBezierIndex < expectedPointsOfCurrentCurve.length; currentBezierIndex++) {
                 double [][] expectedPointsOfCurrentBezierCurve = expectedPointsOfCurrentCurve [currentBezierIndex];
-                dpoint[] actualPointsOfCurrentBezierCurve = actualPointsForCurrentcurve[currentBezierIndex];
+                DPoint[] actualPointsOfCurrentBezierCurve = actualPointsForCurrentcurve[currentBezierIndex];
                 for (int i = 0; i < 3; i++) {
                     double[] expectedPoint = expectedPointsOfCurrentBezierCurve[i];
-                    dpoint actualPoint = actualPointsOfCurrentBezierCurve[i];
-                    assertEquals("XCoordinate -> curve: " + counter +
+                    DPoint actualPoint = actualPointsOfCurrentBezierCurve[i];
+                    assertEquals("XCoordinate -> Curve: " + counter +
                             " bezierCurve number: " + currentBezierIndex +
                             " and there the: " + i + ". Point",
                             expectedPoint[0], actualPoint.x, 0.001);
-                    assertEquals("YCoordinate -> curve: " + counter +
+                    assertEquals("YCoordinate -> Curve: " + counter +
                             " bezierCurve number: " + currentBezierIndex +
                             " and there the: " + i + ". Point",
                             expectedPoint[1], actualPoint.y, 0.001);

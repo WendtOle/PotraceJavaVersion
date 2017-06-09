@@ -6,71 +6,71 @@ import static org.junit.Assert.assertEquals;
 public class auxiliaryTest {
     @Test
     public void testMethod_Mod_withPositivInput() {
-        assertEquals(4,auxiliary.mod(4,9));
-        assertEquals(7,auxiliary.mod(57,10));
+        assertEquals(4, Auxiliary.mod(4,9));
+        assertEquals(7, Auxiliary.mod(57,10));
     }
 
     @Test
     public void testMethod_Mod_withNegativInput() {
-        assertEquals(5,auxiliary.mod(-4,9));
-        assertEquals(3,auxiliary.mod(-57,10));
+        assertEquals(5, Auxiliary.mod(-4,9));
+        assertEquals(3, Auxiliary.mod(-57,10));
     }
 
     @Test
     public void testMethod_Sign_withPostivInput() {
-        assertEquals(1,auxiliary.sign(4));
-        assertEquals(1,auxiliary.sign(4.4));
-        assertEquals(1,auxiliary.sign(0.1));
+        assertEquals(1, Auxiliary.sign(4));
+        assertEquals(1, Auxiliary.sign(4.4));
+        assertEquals(1, Auxiliary.sign(0.1));
     }
 
     @Test
     public void testMethod_Sign_withNegativInput() {
-        assertEquals(-1,auxiliary.sign(-4));
-        assertEquals(-1,auxiliary.sign(-4.3));
-        assertEquals(-1,auxiliary.sign(-0.1));
+        assertEquals(-1, Auxiliary.sign(-4));
+        assertEquals(-1, Auxiliary.sign(-4.3));
+        assertEquals(-1, Auxiliary.sign(-0.1));
     }
 
     @Test
     public void testMethod_Sign_withZeroAsInput() {
-        assertEquals(0,auxiliary.sign(0));
-        assertEquals(0,auxiliary.sign(0.0));
+        assertEquals(0, Auxiliary.sign(0));
+        assertEquals(0, Auxiliary.sign(0.0));
     }
 
     @Test
     public void testMethod_Abs() {
-        assertEquals(5637,auxiliary.abs(5637));
-        assertEquals(5637,auxiliary.abs(-5637));
+        assertEquals(5637, Auxiliary.abs(5637));
+        assertEquals(5637, Auxiliary.abs(-5637));
     }
 
     @Test
     public void testMethod_Floordiv_withPositivInput() {
-        assertEquals(0,auxiliary.floordiv(5,6));
-        assertEquals(1,auxiliary.floordiv(8,5));
+        assertEquals(0, Auxiliary.floordiv(5,6));
+        assertEquals(1, Auxiliary.floordiv(8,5));
     }
 
     @Test
     public void testMethod_Floordiv_withNegativInput() {
-        assertEquals(-1,auxiliary.floordiv(-5,6));
-        assertEquals(-2,auxiliary.floordiv(-8,5));
+        assertEquals(-1, Auxiliary.floordiv(-5,6));
+        assertEquals(-2, Auxiliary.floordiv(-8,5));
     }
 
     @Test
     public void testMethod_Min() {
-        assertEquals(5,auxiliary.min(5,6));
-        assertEquals(5,auxiliary.min(8,5));
-        assertEquals(5,auxiliary.min(5,5));
-        assertEquals(-8,auxiliary.min(-8,5));
-        assertEquals(-5,auxiliary.min(8,-5));
+        assertEquals(5, Auxiliary.min(5,6));
+        assertEquals(5, Auxiliary.min(8,5));
+        assertEquals(5, Auxiliary.min(5,5));
+        assertEquals(-8, Auxiliary.min(-8,5));
+        assertEquals(-5, Auxiliary.min(8,-5));
     }
 
     @Test
     public void testMethod_Interval()  {
-        dpoint firstPoint = new dpoint(1.2,3.4);
-        dpoint secondPoint = new dpoint(3.5,8.1);
+        DPoint firstPoint = new DPoint(1.2,3.4);
+        DPoint secondPoint = new DPoint(3.5,8.1);
         double lampda = 0.5;
 
-        dpoint expected = new dpoint(2.3499999999999996,5.75);
-        dpoint actual = auxiliary.interval(lampda,firstPoint,secondPoint);
+        DPoint expected = new DPoint(2.3499999999999996,5.75);
+        DPoint actual = Auxiliary.interval(lampda,firstPoint,secondPoint);
 
         assertEquals(expected.x, actual.x,0);
         assertEquals(expected.y, actual.y,0);

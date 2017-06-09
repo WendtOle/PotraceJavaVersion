@@ -1,17 +1,15 @@
 package Input;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import potrace.*;
 
 public class BitmapImporter {
 
-    public static bitmap importBitmap(String filename, String folderName){
+    public static Bitmap importBitmap(String filename, String folderName){
         try {
             File file = new File(System.getProperty("user.dir") + File.separator + folderName + File.separator + filename);
             BufferedImage image = ImageIO.read(file);
@@ -22,8 +20,8 @@ public class BitmapImporter {
         return null;
     }
 
-    private static bitmap copyValues(BufferedImage image) {
-        bitmap bitmap = new bitmap(image.getWidth(), image.getHeight());
+    private static Bitmap copyValues(BufferedImage image) {
+        Bitmap bitmap = new Bitmap(image.getWidth(), image.getHeight());
         for (int y = 0; y < image.getHeight(); y++)
             for (int x = 0; x < image.getWidth(); x++) {
                 if ((image.getRGB(x, y) & 0xff) == 0)

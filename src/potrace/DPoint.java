@@ -1,11 +1,11 @@
 package potrace;
 
-public class dpoint {
+public class DPoint {
     public double x,y;
 
-    public dpoint(double x, double y) {
+    public DPoint(double x, double y) {
         this.x = x;
         this.y = y;
     }
-    public dpoint() {}
+    public DPoint() {}
 }

@@ -1,6 +1,6 @@
 package potrace;
 
-public class sums {
+public class Sums {
     double x;
     double y;
     double x2;

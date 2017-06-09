@@ -1,4 +1,4 @@
-package Output;
+package OutputGraphical;
 
 import potrace.*;
 
@@ -8,13 +8,13 @@ import java.awt.geom.AffineTransform;
 /**
  * Created by andreydelany on 08/04/2017.
  */
-public class BitmapDrawer{
-        path path;
+public class DrawerBitmap {
+        Path path;
         Graphics2D graphics;
         int scale, height;
 
-        public BitmapDrawer(bitmap bitmap, int skalierung, int height)  { //Fixme: to use height, is not good
-            this.path = decompose.bm_to_pathlist(bitmap, new param());
+        public DrawerBitmap(Bitmap bitmap, int skalierung, int height)  { //Fixme: to use height, is not good
+            this.path = Decompose.bm_to_pathlist(bitmap, new Param());
             this.scale = skalierung;
             this.height = height;
         }
@@ -32,15 +32,15 @@ public class BitmapDrawer{
             graphics.setTransform(flipVertically);
         }
 
-        private void drawPathes(potrace.path startPath){
-            potrace.path currentPath = startPath;
+        private void drawPathes(Path startPath){
+            Path currentPath = startPath;
             while (currentPath != null) {
                 drawPath(currentPath);
                 currentPath = currentPath.next;
             }
         }
 
-        private void drawPath(potrace.path path) {
+        private void drawPath(Path path) {
             Point startPoint = path.priv.pt[path.priv.len - 1];
             for (int i = 0; i < path.priv.len; i++) {
                 Point currentPoint = path.priv.pt[i];
@@ -49,9 +49,9 @@ public class BitmapDrawer{
             }
         }
 
-        private dpoint getStartPointOfCurrentCurve(dpoint[][] curvesOfPath){
+        private DPoint getStartPointOfCurrentCurve(DPoint[][] curvesOfPath){
             int indexOfLastCurve = curvesOfPath.length - 1;
-            dpoint startPoint = curvesOfPath[indexOfLastCurve][2];
+            DPoint startPoint = curvesOfPath[indexOfLastCurve][2];
             return startPoint;
         }
 

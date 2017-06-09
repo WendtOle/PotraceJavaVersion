@@ -1,6 +1,5 @@
 package potrace;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -11,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 public class privcurveTest {
     @Test
     public void testPriveCurveInitialization() throws Exception {
-        privcurve testPrivCurve = new privcurve(10);
+        PrivCurve testPrivCurve = new PrivCurve(10);
         assertEquals(10,testPrivCurve.n);
         assertEquals(10,testPrivCurve.tag.length);
         assertEquals(10,testPrivCurve.alpha.length);

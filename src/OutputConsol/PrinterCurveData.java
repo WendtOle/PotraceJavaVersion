@@ -1,13 +1,15 @@
-package Output;
+package OutputConsol;
+
+import potrace.Path;
 
 /**
  * Created by andreydelany on 21/03/2017.
  */
-public class CurvePrinter {
+public class PrinterCurveData {
 
-    potrace.path path;
+    Path path;
 
-    public CurvePrinter (potrace.path path) {
+    public PrinterCurveData(Path path) {
         this.path = path;
     }
 
@@ -16,21 +18,21 @@ public class CurvePrinter {
         recursiveCallToPrintNextCurve(path);
     }
 
-    private void recursiveCallToPrintNextCurve(potrace.path path) {
+    private void recursiveCallToPrintNextCurve(Path path) {
         printCurrentCurve(path);
         if (hasNext(path)) {
             recursiveCallToPrintNextCurve(path.next);
         }
     }
 
-    private void printCurrentCurve(potrace.path path) {
+    private void printCurrentCurve(Path path) {
         for(int i = 0; i < path.curve.n;i++) {
             printCurrentBezierCurve(path, i);
         }
         newLine();
     }
 
-    private void printCurrentBezierCurve(potrace.path path, int i) {
+    private void printCurrentBezierCurve(Path path, int i) {
         System.out.print(i + ": ");
         for(int j = 0; j < 3; j ++) {
             printCurrentCurvePoint(path, i,j);
@@ -38,12 +40,12 @@ public class CurvePrinter {
         newLine();
     }
 
-    private void printCurrentCurvePoint(potrace.path path, int i, int j){
+    private void printCurrentCurvePoint(Path path, int i, int j){
         System.out.printf("( %.6f,", path.curve.c[i][j].x);
         System.out.printf("%.6f), ", path.curve.c[i][j].y );
     }
 
-    private boolean hasNext(potrace.path path) {
+    private boolean hasNext(Path path) {
         return path.next != null;
     }
 

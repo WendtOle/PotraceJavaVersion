@@ -1,6 +1,6 @@
 package Input;
 
-import potrace.bitmap;
+import potrace.Bitmap;
 
 import java.awt.*;
 import java.util.Random;
@@ -17,7 +17,7 @@ public class RandomBitmapGenerator {
         this.noiseRatio = noiseRatio;
     }
 
-    public bitmap getRandomBitmap() {
+    public Bitmap getRandomBitmap() {
         randomGenerator = new Random();
         Dimension dimension = generateRandomDimensions();
         return createRandomBitmap(dimension);
@@ -29,8 +29,8 @@ public class RandomBitmapGenerator {
         return new Dimension(width,height);
     }
 
-    private bitmap createRandomBitmap(Dimension dimension) {
-        bitmap bitmap = new bitmap(dimension.width, dimension.height);
+    private Bitmap createRandomBitmap(Dimension dimension) {
+        Bitmap bitmap = new Bitmap(dimension.width, dimension.height);
         for (int y = 0; y < dimension.height; y++)
             for(int x = 0; x < dimension.width; x++) {
                 if(isPixelFilled())

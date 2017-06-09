@@ -3,27 +3,27 @@ import java.awt.*;
 
 /* transform jaggy paths into smooth curves */
 
-public class trace {
+public class Trace {
 
-    static int INFTY  = 10000000;	            //it suffices that this is longer than any path; it need not be really infinite
+    static int INFTY  = 10000000;	            //it suffices that this is longer than any Path; it need not be really infinite
     static double COS179 = -0.999847695156;	    /* the cosine of 179 degrees */
 
 /* ---------------------------------------------------------------------- */
-/* auxiliary functions */
+/* Auxiliary functions */
 
 /* return a direction that is 90 degrees counterclockwise from p2-p0,
 but then restricted to one of the major wind directions (n, nw, w, etc) */
-    static Point dorth_infty(dpoint p0, dpoint p2) {
+    static Point dorth_infty(DPoint p0, DPoint p2) {
         Point r = new Point();
 
-        r.y = auxiliary.sign(p2.x-p0.x);
-        r.x = -auxiliary.sign(p2.y-p0.y);
+        r.y = Auxiliary.sign(p2.x-p0.x);
+        r.x = -Auxiliary.sign(p2.y-p0.y);
 
         return r;
     }
 
     /* return (p1-p0)x(p2-p0), the area of the parallelogram */
-    static double dpara(dpoint p0, dpoint p1, dpoint p2) {
+    static double dpara(DPoint p0, DPoint p1, DPoint p2) {
         double x1, y1, x2, y2;
 
         x1 = p1.x-p0.x;
@@ -36,7 +36,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
     /* ddenom/dpara have the property that the square of radius 1 centered
     at p1 intersects the line p0p2 iff |dpara(p0,p1,p2)| <= ddenom(p0,p2) */
-    static double ddenom(dpoint p0, dpoint p2) {
+    static double ddenom(DPoint p0, DPoint p2) {
         Point r = dorth_infty(p0, p2);
 
         return r.y*(p2.x-p0.x) - r.x*(p2.y-p0.y);
@@ -53,14 +53,14 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
     //determine the center and slope of the line i..j. Assume i<j. Needs
     //"sum" components of p to be set.
-    static dpoint[] pointslope(privepath pp, int i, int j) {
+    static DPoint[] pointslope(PrivePath pp, int i, int j) {
         //assume i<j
 
-        dpoint ctr = new dpoint();
-        dpoint dir = new dpoint();
+        DPoint ctr = new DPoint();
+        DPoint dir = new DPoint();
 
         int n = pp.len;
-        sums[] sums = pp.sums;
+        Sums[] sums = pp.sums;
 
         double x, y, x2, xy, y2;
         double k;
@@ -120,12 +120,12 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         if (l==0) {
             dir.x = dir.y = 0;   //sometimes this can happen when k=4: the two eigenvalues coincide
         }
-        dpoint[] output = {ctr,dir};
+        DPoint[] output = {ctr,dir};
         return output;
     }
 
     //Apply quadratic form Q to vector w = (w.x,w.y)
-    static double quadform(quadform Q, dpoint w) {
+    static double quadform(Quadform Q, DPoint w) {
         double[] v = new double[3];
         int i, j;
         double sum;
@@ -149,7 +149,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     }
 
     /* calculate (p1-p0)x(p3-p2) */
-    static double cprod(dpoint p0, dpoint p1, dpoint p2, dpoint p3) {
+    static double cprod(DPoint p0, DPoint p1, DPoint p2, DPoint p3) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -161,7 +161,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     }
 
     /* calculate (p1-p0)*(p2-p0) */
-    static double iprod(dpoint p0, dpoint p1, dpoint p2) {
+    static double iprod(DPoint p0, DPoint p1, DPoint p2) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -173,7 +173,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     }
 
     /* calculate (p1-p0)*(p3-p2) */
-    static double iprod1(dpoint p0, dpoint p1, dpoint p2, dpoint p3) {
+    static double iprod1(DPoint p0, DPoint p1, DPoint p2, DPoint p3) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -185,14 +185,14 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     }
 
     /* calculate distance between two points */
-    static double ddist(dpoint p, dpoint q) {
+    static double ddist(DPoint p, DPoint q) {
         return Math.sqrt((p.x-q.x)*(p.x-q.x)+(p.y-q.y)*(p.y-q.y));
     }
 
-    /* calculate point of a bezier curve */
-    static dpoint bezier(double t, dpoint p0, dpoint p1, dpoint p2, dpoint p3) {
+    /* calculate point of a bezier Curve */
+    static DPoint bezier(double t, DPoint p0, DPoint p1, DPoint p2, DPoint p3) {
         double s = 1-t;
-        dpoint res = new dpoint();
+        DPoint res = new DPoint();
 
         /* Note: a good optimizing compiler (such as gcc-3) reduces the
         following to 16 multiplications, using common subexpression
@@ -204,10 +204,10 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         return res;
     }
 
-    /* calculate the point t in [0..1] on the (convex) bezier curve
+    /* calculate the point t in [0..1] on the (convex) bezier Curve
     (p0,p1,p2,p3) which is tangent to q1-q0. Return -1.0 if there is no
     solution in [0..1]. */
-    static double tangent(dpoint p0, dpoint p1, dpoint p2, dpoint p3, dpoint q0, dpoint q1) {
+    static double tangent(DPoint p0, DPoint p1, DPoint p2, DPoint p3, DPoint q0, DPoint q1) {
         double A, B, C;   /* (1-t)^2 A + 2(1-t)t B + t^2 C = 0 */
         double a, b, c;   /* a t^2 + b t + c = 0 */
         double d, s, r1, r2;
@@ -241,26 +241,26 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     }
 
 /* ---------------------------------------------------------------------- */
-    /* Preparation: fill in the sum* fields of a path (used for later
+    /* Preparation: fill in the sum* fields of a Path (used for later
     rapid summing). Return 0 on success, 1 with errno set on
     failure. */
 
-    static void calc_sums(privepath pp) {
+    static void calc_sums(PrivePath pp) {
         int i, x, y;
         int n = pp.len;
 
-        pp.sums = new sums[pp.len+1];
+        pp.sums = new Sums[pp.len+1];
 
         //origin
         pp.x0 = pp.pt[0].x;
         pp.y0 = pp.pt[0].y;
 
         //preparatory computation for later fast summing
-        sums startSum = new sums();
+        Sums startSum = new Sums();
         startSum.x2 = startSum.xy = startSum.y2 = startSum.x = startSum.y = 0;
         pp.sums[0] = startSum;
         for (i=0; i<n; i++) {
-            pp.sums[i+1] = new sums();
+            pp.sums[i+1] = new Sums();
             x = pp.pt[i].x - pp.x0;
             y = pp.pt[i].y - pp.y0;
             pp.sums[i+1].x = pp.sums[i].x + x;
@@ -273,7 +273,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
 /* ---------------------------------------------------------------------- */
     /* Stage 1: determine the straight subpaths (Sec. 2.2.1). Fill in the
-    "lon" component of a path object (based on pt/len).	For each i,
+    "lon" component of a Path object (based on pt/len).	For each i,
     lon[i] is the furthest index such that a straight line can be drawn
     from i to lon[i]. Return 1 on error with errno set, else 0. */
 
@@ -301,7 +301,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     substantial. */
 
     /* returns 0 on success, 1 on error with errno set */
-    static void calc_lon(privepath pp) {
+    static void calc_lon(PrivePath pp) {
         Point[] pt = pp.pt;
         int n = pp.len;
         int i, j, k, k1;
@@ -318,7 +318,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         /*initialize the nc data structure. Point from each point to the
         furthest future point to which it is connected by a vertical or
         horizontal segment. We take advantage of the fact that there is
-        always a direction change at 0 (due to the path decomposition
+        always a direction change at 0 (due to the Path decomposition
         algorithm). But even if this were not so, there is no harm, as
         in practice, correctness does not depend on the word "furthest"
         above. */
@@ -343,7 +343,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
             //keep track of "directions" that have occurred
 
-            dir = (3+3*(pt[auxiliary.mod(i+1,n)].x-pt[i].x)+(pt[auxiliary.mod(i+1,n)].y-pt[i].y))/2;
+            dir = (3+3*(pt[Auxiliary.mod(i+1,n)].x-pt[i].x)+(pt[Auxiliary.mod(i+1,n)].y-pt[i].y))/2;
             ct[dir]++;
 
             constraint[0] = new Point(0,0);
@@ -354,10 +354,10 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             k1 = i;
             while (true) {
 
-                dir = (3+3*auxiliary.sign(pt[k].x-pt[k1].x)+auxiliary.sign(pt[k].y-pt[k1].y))/2;
+                dir = (3+3* Auxiliary.sign(pt[k].x-pt[k1].x)+ Auxiliary.sign(pt[k].y-pt[k1].y))/2;
                 ct[dir]++;
 
-                //if all four "directions" have occurred, cut this path
+                //if all four "directions" have occurred, cut this Path
                 if (ct[0]!=0 && ct[1]!=0 && ct[2]!=0 && ct[3]!=0) {
                     pivk[i] = k1;
                     continue outerloop;
@@ -372,8 +372,8 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
                     //k1 was the last "corner" satisfying the current constraint, and
                     //k is the first one violating it. We now need to find the last
                     //point along k1..k which satisfied the constraint. */
-                    dk.x = auxiliary.sign(pt[k].x-pt[k1].x);
-                    dk.y = auxiliary.sign(pt[k].y-pt[k1].y);
+                    dk.x = Auxiliary.sign(pt[k].x-pt[k1].x);
+                    dk.y = Auxiliary.sign(pt[k].y-pt[k1].y);
                     cur.x = pt[k1].x - pt[i].x;
                     cur.y = pt[k1].y - pt[i].y;
 
@@ -389,17 +389,17 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
                     //can be solved with integer arithmetic. */
                     j = INFTY;
                     if (b<0) {
-                        j = auxiliary.floordiv(a,-b);
+                        j = Auxiliary.floordiv(a,-b);
                     }
                     if (d>0) {
-                        j = auxiliary.min(j, auxiliary.floordiv(-c,d));
+                        j = Auxiliary.min(j, Auxiliary.floordiv(-c,d));
                     }
-                    pivk[i] = auxiliary.mod(k1+j,n);
+                    pivk[i] = Auxiliary.mod(k1+j,n);
                     continue outerloop;
                 }
 
                 //else, update constraint
-                if (auxiliary.abs(cur.x) <= 1 && auxiliary.abs(cur.y) <= 1) {
+                if (Auxiliary.abs(cur.x) <= 1 && Auxiliary.abs(cur.y) <= 1) {
                     //constraint
                 } else {
 
@@ -434,7 +434,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             pp.lon[i]=j;
         }
 
-        for (i=n-1; cyclic(auxiliary.mod(i+1,n),j,pp.lon[i]); i--) {
+        for (i=n-1; cyclic(Auxiliary.mod(i+1,n),j,pp.lon[i]); i--) {
             pp.lon[i] = j;
         }
     }
@@ -443,12 +443,12 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     /* Stage 2: calculate the optimal polygon (Sec. 2.2.2-2.2.4). */
 
     /* Auxiliary function: calculate the penalty of an edge from i to j in
-    the given path. This needs the "lon" and "sum*" data. */
+    the given Path. This needs the "lon" and "sum*" data. */
 
-    static double penalty3(privepath pp, int i, int j) {
+    static double penalty3(PrivePath pp, int i, int j) {
         int n = pp.len;
         Point[] pt = pp.pt;
-        sums[] sums = pp.sums;
+        Sums[] sums = pp.sums;
 
         //assume 0<=i<j<=n
         double x, y, x2, xy, y2;
@@ -499,11 +499,11 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     is in the polygon. Fixme: implement cyclic version. */
 
 
-    static void bestpolygon(privepath pp) {
+    static void bestpolygon(PrivePath pp) {
         int i, j, m, k;
         int n = pp.len;
         double[] pen = new double[n+1];     /* pen[n+1]: penalty vector */
-        int[] prev = new int[n+1];          /* prev[n+1]: best path pointer vector */
+        int[] prev = new int[n+1];          /* prev[n+1]: best Path pointer vector */
         int[] clip0 = new int[n];           /* clip0[n]: longest segment pointer, non-cyclic */
         int[] clip1 = new int[n+1];         /* clip1[n+1]: backwards segment pointer, non-cyclic */
         int[] seg0 = new int[n+1];          /* seg0[m+1]: forward segment bounds, m<=n */
@@ -514,9 +514,9 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
         //calculate clipped paths
         for (i=0; i<n; i++) {
-            c = auxiliary.mod(pp.lon[auxiliary.mod(i-1,n)]-1,n);
+            c = Auxiliary.mod(pp.lon[Auxiliary.mod(i-1,n)]-1,n);
             if (c == i) {
-                c = auxiliary.mod(i+1,n);
+                c = Auxiliary.mod(i+1,n);
             }
             if (c < i) {
                 clip0[i] = n;
@@ -525,7 +525,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             }
         }
 
-        //calculate backwards path clipping, non-cyclic. j <= clip0[i] iff
+        //calculate backwards Path clipping, non-cyclic. j <= clip0[i] iff
         //clip1[j] <= i, for i,j=0..n.
         j = 1;
         for (i=0; i<n; i++) {
@@ -535,7 +535,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             }
         }
 
-        //calculate seg0[j] = longest path from 0 with j segments
+        //calculate seg0[j] = longest Path from 0 with j segments
         i = 0;
         for (j=0; i<n; j++) {
             seg0[j] = i;
@@ -544,7 +544,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         seg0[j] = n;
         m = j;
 
-        //calculate seg1[j] = longest path to n with m-j segments
+        //calculate seg1[j] = longest Path to n with m-j segments
         i = n;
         for (j=m; j>0; j--) {
             seg1[j] = i;
@@ -552,7 +552,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         }
         seg1[0] = 0;
 
-        //now find the shortest path with m segments, based on penalty3
+        //now find the shortest Path with m segments, based on penalty3
         //note: the outer 2 loops jointly have at most n iterations, thus
         //the worst-case behavior here is quadratic. In practice, it is
         //close to linear since the inner loop tends to be short.
@@ -574,7 +574,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         pp.m = m;
         pp.po = new int[m];
 
-        /* read off shortest path */
+        /* read off shortest Path */
         for (i=n, j=m-1; i>0; j--) {
             i = prev[i];
             pp.po[j] = i;
@@ -589,7 +589,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     if it lies outside. Return 1 with errno set on error; 0 on
     success. */
 
-    static void adjust_vertices(privepath pp) {
+    static void adjust_vertices(PrivePath pp) {
         int m = pp.m;
         int[] po = pp.po;
         int n = pp.len;
@@ -597,26 +597,26 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         int x0 = pp.x0;
         int y0 = pp.y0;
 
-        dpoint[] ctr = new dpoint[m];      /* ctr[m] */
-        dpoint[] dir = new dpoint[m];      /* dir[m] */
-        quadform[] q = new quadform[m];     /* q[m] */
+        DPoint[] ctr = new DPoint[m];      /* ctr[m] */
+        DPoint[] dir = new DPoint[m];      /* dir[m] */
+        Quadform[] q = new Quadform[m];     /* q[m] */
 
         for(int i = 0; i < q.length; i++) {
-            q[i] = new quadform();
+            q[i] = new Quadform();
         }
 
         double[] v = new double[3];
         double d;
         int i, j, k, l;
-        dpoint s = new dpoint();
+        DPoint s = new DPoint();
 
-        pp.curve = new privcurve(m);
+        pp.curve = new PrivCurve(m);
 
         //calculate "optimal" point-slope representation for each line segment
         for (i=0; i<m; i++) {
-            j = po[auxiliary.mod(i+1,m)];
-            j = auxiliary.mod(j-po[i],n)+po[i];
-            dpoint[] output = pointslope(pp, po[i], j);
+            j = po[Auxiliary.mod(i+1,m)];
+            j = Auxiliary.mod(j-po[i],n)+po[i];
+            DPoint[] output = pointslope(pp, po[i], j);
             ctr[i] = output[0];
             dir[i] = output[1];
         }
@@ -649,8 +649,8 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         //within a given unit square which minimizes the square distance to
         //the two lines.
         for (i=0; i<m; i++) {
-            quadform Q = new quadform();
-            dpoint w = new dpoint();
+            Quadform Q = new Quadform();
+            DPoint w = new DPoint();
             double dx, dy;
             double det;
             double min, cand;   //minimum and candidate for minimum of quad. form */
@@ -663,7 +663,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
             //intersect segments i-1 and i */
 
-            j = auxiliary.mod(i-1,m);
+            j = Auxiliary.mod(i-1,m);
 
             //add quadratic forms */
             for (l=0; l<3; l++) {
@@ -768,11 +768,11 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 /* ---------------------------------------------------------------------- */
     /* Stage 4: smoothing and corner analysis (Sec. 2.3.3) */
 
-    /* reverse orientation of a path */
-    static void reverse(privcurve curve) {
+    /* reverse orientation of a Path */
+    static void reverse(PrivCurve curve) {
         int m = curve.n;
         int i, j;
-        dpoint tmp;
+        DPoint tmp;
 
         for (i=0, j=m-1; i<j; i++, j--) {
             tmp = curve.vertex[i];
@@ -782,18 +782,18 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     }
 
     /* Always succeeds */
-    static void smooth(privcurve curve, double alphamax) {
+    static void smooth(PrivCurve curve, double alphamax) {
         int m = curve.n;
 
         int i, j, k;
         double dd, denom, alpha;
-        dpoint p2, p3, p4;
+        DPoint p2, p3, p4;
 
         //examine each vertex and find its best fit
         for (i=0; i<m; i++) {
-            j = auxiliary.mod(i+1, m);
-            k = auxiliary.mod(i+2, m);
-            p4 = auxiliary.interval(1/2.0, curve.vertex[k], curve.vertex[j]);
+            j = Auxiliary.mod(i+1, m);
+            k = Auxiliary.mod(i+2, m);
+            p4 = Auxiliary.interval(1/2.0, curve.vertex[k], curve.vertex[j]);
 
             denom = ddenom(curve.vertex[i], curve.vertex[k]);
             if (denom != 0.0) {
@@ -807,7 +807,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             curve.alpha0[j] = alpha;	 /* remember "original" value of alpha */
 
             if (alpha >= alphamax) {  /* pointed corner */
-                curve.tag[j] = potraceLib.POTRACE_CORNER;
+                curve.tag[j] = PotraceLib.POTRACE_CORNER;
                 curve.c[j][1] = curve.vertex[j];
                 curve.c[j][2] = p4;
             } else {
@@ -816,9 +816,9 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
                 } else if (alpha > 1) {
                     alpha = 1;
                 }
-                p2 = auxiliary.interval(.5+.5*alpha, curve.vertex[i], curve.vertex[j]);
-                p3 = auxiliary.interval(.5+.5*alpha, curve.vertex[k], curve.vertex[j]);
-                curve.tag[j] = potraceLib.POTRACE_CURVETO;
+                p2 = Auxiliary.interval(.5+.5*alpha, curve.vertex[i], curve.vertex[j]);
+                p3 = Auxiliary.interval(.5+.5*alpha, curve.vertex[k], curve.vertex[j]);
+                curve.tag[j] = PotraceLib.POTRACE_CURVETO;
                 curve.c[j][0] = p2;
                 curve.c[j][1] = p3;
                 curve.c[j][2] = p4;
@@ -835,12 +835,12 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
     /* calculate best fit from i+.5 to j+.5.  Assume i<j (cyclically).
     Return 0 and set badness and parameters (alpha, beta), if
     possible. Return 1 if impossible. */
-    static boolean opti_penalty(privepath pp, int i, int j, opti res, double opttolerance, int[] convc, double[] areac) {
+    static boolean opti_penalty(PrivePath pp, int i, int j, Opti res, double opttolerance, int[] convc, double[] areac) {
         int m = pp.curve.n;
         int conv;
         int k, k1, k2, i1;
         double area, alpha, d, d1, d2;
-        dpoint p0, p1, p2, p3, pt;
+        DPoint p0, p1, p2, p3, pt;
         double A, R, A1, A2, A3, A4;
         double s, t;
 
@@ -851,20 +851,20 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         }
 
         k = i;
-        i1 = auxiliary.mod(i+1, m);
-        k1 = auxiliary.mod(k+1, m);
+        i1 = Auxiliary.mod(i+1, m);
+        k1 = Auxiliary.mod(k+1, m);
         conv = convc[k1];
         if (conv == 0) {
             return true;
         }
         d = ddist(pp.curve.vertex[i], pp.curve.vertex[i1]);
         for (k=k1; k!=j; k=k1) {
-            k1 = auxiliary.mod(k+1, m);
-            k2 = auxiliary.mod(k+2, m);
+            k1 = Auxiliary.mod(k+1, m);
+            k2 = Auxiliary.mod(k+2, m);
             if (convc[k1] != conv) {
                 return true;
             }
-            if (auxiliary.sign(cprod(pp.curve.vertex[i], pp.curve.vertex[i1], pp.curve.vertex[k1], pp.curve.vertex[k2])) != conv) {
+            if (Auxiliary.sign(cprod(pp.curve.vertex[i], pp.curve.vertex[i1], pp.curve.vertex[k1], pp.curve.vertex[k2])) != conv) {
                 return true;
             }
             if (iprod1(pp.curve.vertex[i], pp.curve.vertex[i1], pp.curve.vertex[k1], pp.curve.vertex[k2]) < d * ddist(pp.curve.vertex[k1], pp.curve.vertex[k2]) * COS179) {
@@ -872,11 +872,11 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             }
         }
 
-        //the curve we're working in:
-        p0 = pp.curve.c[auxiliary.mod(i,m)][2];
-        p1 = pp.curve.vertex[auxiliary.mod(i+1,m)];
-        p2 = pp.curve.vertex[auxiliary.mod(j,m)];
-        p3 = pp.curve.c[auxiliary.mod(j,m)][2];
+        //the Curve we're working in:
+        p0 = pp.curve.c[Auxiliary.mod(i,m)][2];
+        p1 = pp.curve.vertex[Auxiliary.mod(i+1,m)];
+        p2 = pp.curve.vertex[Auxiliary.mod(j,m)];
+        p3 = pp.curve.c[Auxiliary.mod(j,m)][2];
 
         //determine its area
         area = areac[j] - areac[i];
@@ -908,23 +908,23 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         }
 
         R = area / A;	 //relative area
-        alpha = 2 - Math.sqrt(4 - R / 0.3);  // overall alpha for p0-o-p3 curve
+        alpha = 2 - Math.sqrt(4 - R / 0.3);  // overall alpha for p0-o-p3 Curve
 
-        res.c[0] = auxiliary.interval(t * alpha, p0, p1);
-        res.c[1] = auxiliary.interval(s * alpha, p3, p2);
+        res.c[0] = Auxiliary.interval(t * alpha, p0, p1);
+        res.c[1] = Auxiliary.interval(s * alpha, p3, p2);
         res.alpha = alpha;
         res.t = t;
         res.s = s;
 
         p1 = res.c[0];
-        p2 = res.c[1];  // the proposed curve is now (p0,p1,p2,p3)
+        p2 = res.c[1];  // the proposed Curve is now (p0,p1,p2,p3)
 
         res.pen = 0;
 
         //calculate penalty
         //check tangency with edges
-        for (k=auxiliary.mod(i+1,m); k!=j; k=k1) {
-            k1 = auxiliary.mod(k+1,m);
+        for (k= Auxiliary.mod(i+1,m); k!=j; k=k1) {
+            k1 = Auxiliary.mod(k+1,m);
             t = tangent(p0, p1, p2, p3, pp.curve.vertex[k], pp.curve.vertex[k1]);
             if (t<-.5) {
                 return true;
@@ -946,7 +946,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
         //check corners
         for (k=i; k!=j; k=k1) {
-            k1 = auxiliary.mod(k+1,m);
+            k1 = Auxiliary.mod(k+1,m);
             t = tangent(p0, p1, p2, p3, pp.curve.c[k][2], pp.curve.c[k1][2]);
             if (t<-.5) {
                 return true;
@@ -974,24 +974,24 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         return false;
     }
 
-    /* optimize the path p, replacing sequences of Bezier segments by a
+    /* optimize the Path p, replacing sequences of Bezier segments by a
     single segment when possible. Return 0 on success, 1 with errno set
     on failure. */
-    static void opticurve(privepath pp, double opttolerance) {
+    static void opticurve(PrivePath pp, double opttolerance) {
         int m = pp.curve.n;
         int[] pt = new int[m+1];            //pt[m+1]
         double[]  pen = new double[m+1];       //pen[m+1]
         int[] len = new int [m+1];           //len[m+1]
-        opti[]  opt = new opti[m+1];    //opt[m+1]
+        Opti[]  opt = new Opti[m+1];    //opt[m+1]
 
         for (int i = 0; i < opt.length; i++) {
-            opt[i] = new opti();
+            opt[i] = new Opti();
         }
 
         int om;
         int i,j;
-        opti o = new opti();
-        dpoint p0;
+        Opti o = new Opti();
+        DPoint p0;
         int i1;
         double area;
         double alpha;
@@ -1003,8 +1003,8 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
         /* pre-calculate convexity: +1 = right turn, -1 = left turn, 0 = corner */
         for (i=0; i<m; i++) {
-            if (pp.curve.tag[i] == potraceLib.POTRACE_CURVETO) {
-                convc[i] = auxiliary.sign(dpara(pp.curve.vertex[auxiliary.mod(i-1,m)], pp.curve.vertex[i], pp.curve.vertex[auxiliary.mod(i+1,m)]));
+            if (pp.curve.tag[i] == PotraceLib.POTRACE_CURVETO) {
+                convc[i] = Auxiliary.sign(dpara(pp.curve.vertex[Auxiliary.mod(i-1,m)], pp.curve.vertex[i], pp.curve.vertex[Auxiliary.mod(i+1,m)]));
             } else {
                 convc[i] = 0;
             }
@@ -1015,8 +1015,8 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         areac[0] = 0.0;
         p0 = pp.curve.vertex[0];
         for (i=0; i<m; i++) {
-            i1 = auxiliary.mod(i+1, m);
-            if (pp.curve.tag[i1] == potraceLib.POTRACE_CURVETO) {
+            i1 = Auxiliary.mod(i+1, m);
+            if (pp.curve.tag[i1] == PotraceLib.POTRACE_CURVETO) {
                 alpha = pp.curve.alpha[i1];
                 area += 0.3*alpha*(4-alpha)*dpara(pp.curve.c[i][2], pp.curve.vertex[i1], pp.curve.c[i1][2])/2;
                 area += dpara(p0, pp.curve.c[i][2], pp.curve.c[i1][2])/2;
@@ -1028,16 +1028,16 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         pen[0] = 0;
         len[0] = 0;
 
-        /* Fixme: we always start from a fixed point -- should find the best curve cyclically */
+        /* Fixme: we always start from a fixed point -- should find the best Curve cyclically */
 
         for (j=1; j<=m; j++) {
-            /* calculate best path from 0 to j */
+            /* calculate best Path from 0 to j */
             pt[j] = j-1;
             pen[j] = pen[j-1];
             len[j] = len[j-1]+1;
 
             for (i=j-2; i>=0; i--) {
-                boolean  r = opti_penalty(pp, i, auxiliary.mod(j,m), o, opttolerance, convc, areac);
+                boolean  r = opti_penalty(pp, i, Auxiliary.mod(j,m), o, opttolerance, convc, areac);
                 if (r) {
                     break;
                 }
@@ -1045,12 +1045,12 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
                     pt[j] = i;
                     pen[j] = pen[i] + o.pen;
                     len[j] = len[i] + 1;
-                    opt[j] = opti.copy(o);
+                    opt[j] = Opti.copy(o);
                 }
             }
         }
         om = len[m];
-        pp.ocurve = new privcurve(om);
+        pp.ocurve = new PrivCurve(om);
 
         s = new double[om];
         t = new double[om];
@@ -1058,21 +1058,21 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         j = m;
         for (i=om-1; i>=0; i--) {
             if (pt[j]==j-1) {
-                pp.ocurve.tag[i]     = pp.curve.tag[auxiliary.mod(j,m)];
-                pp.ocurve.c[i][0]    = pp.curve.c[auxiliary.mod(j,m)][0];
-                pp.ocurve.c[i][1]    = pp.curve.c[auxiliary.mod(j,m)][1];
-                pp.ocurve.c[i][2]    = pp.curve.c[auxiliary.mod(j,m)][2];
-                pp.ocurve.vertex[i]  = pp.curve.vertex[auxiliary.mod(j,m)];
-                pp.ocurve.alpha[i]   = pp.curve.alpha[auxiliary.mod(j,m)];
-                pp.ocurve.alpha0[i]  = pp.curve.alpha0[auxiliary.mod(j,m)];
-                pp.ocurve.beta[i]    = pp.curve.beta[auxiliary.mod(j,m)];
+                pp.ocurve.tag[i]     = pp.curve.tag[Auxiliary.mod(j,m)];
+                pp.ocurve.c[i][0]    = pp.curve.c[Auxiliary.mod(j,m)][0];
+                pp.ocurve.c[i][1]    = pp.curve.c[Auxiliary.mod(j,m)][1];
+                pp.ocurve.c[i][2]    = pp.curve.c[Auxiliary.mod(j,m)][2];
+                pp.ocurve.vertex[i]  = pp.curve.vertex[Auxiliary.mod(j,m)];
+                pp.ocurve.alpha[i]   = pp.curve.alpha[Auxiliary.mod(j,m)];
+                pp.ocurve.alpha0[i]  = pp.curve.alpha0[Auxiliary.mod(j,m)];
+                pp.ocurve.beta[i]    = pp.curve.beta[Auxiliary.mod(j,m)];
                 s[i] = t[i] = 1.0;
             } else {
-                pp.ocurve.tag[i] = potraceLib.POTRACE_CURVETO;
+                pp.ocurve.tag[i] = PotraceLib.POTRACE_CURVETO;
                 pp.ocurve.c[i][0] = opt[j].c[0];
                 pp.ocurve.c[i][1] = opt[j].c[1];
-                pp.ocurve.c[i][2] = pp.curve.c[auxiliary.mod(j,m)][2];
-                pp.ocurve.vertex[i] = auxiliary.interval(opt[j].s, pp.curve.c[auxiliary.mod(j,m)][2], pp.curve.vertex[auxiliary.mod(j,m)]);
+                pp.ocurve.c[i][2] = pp.curve.c[Auxiliary.mod(j,m)][2];
+                pp.ocurve.vertex[i] = Auxiliary.interval(opt[j].s, pp.curve.c[Auxiliary.mod(j,m)][2], pp.curve.vertex[Auxiliary.mod(j,m)]);
                 pp.ocurve.alpha[i] = opt[j].alpha;
                 pp.ocurve.alpha0[i] = opt[j].alpha;
                 s[i] = opt[j].s;
@@ -1083,17 +1083,17 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
 
         /* calculate beta parameters */
         for (i=0; i<om; i++) {
-            i1 = auxiliary.mod(i+1,om);
+            i1 = Auxiliary.mod(i+1,om);
             pp.ocurve.beta[i] = s[i] / (s[i] + t[i1]);
         }
         pp.ocurve.alphacurve = 1;
     }
 
     /* return 0 on success, 1 on error with errno set. */
-    static path process_path(path plist, param param) {
-        /* call downstream function with each path */
+    static Path process_path(Path plist, Param param) {
+        /* call downstream function with each Path */
 
-        for (path p = plist; p!=null; p=p.next) {
+        for (Path p = plist; p!=null; p=p.next) {
             calc_sums(p.priv);
             calc_lon(p.priv);
             bestpolygon(p.priv);
@@ -1108,7 +1108,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
             } else {
                 p.priv.fcurve = p.priv.curve;
             }
-            p.curve = curve.privcurve_to_curve(p.priv.fcurve);
+            p.curve = Curve.privcurve_to_curve(p.priv.fcurve);
         }
         return plist;
 

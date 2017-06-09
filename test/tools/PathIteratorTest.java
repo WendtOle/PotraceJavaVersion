@@ -3,25 +3,25 @@ package tools;
 import Tools.PathIterator;
 import org.junit.Before;
 import org.junit.Test;
-import potrace.list;
-import potrace.path;
+import potrace.List;
+import potrace.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class PathIteratorTest {
     PathIterator pathIterator;
-    path first = new path();
-    path second = new path();
-    path third = new path();
-    path fourth = new path();
+    Path first = new Path();
+    Path second = new Path();
+    Path third = new Path();
+    Path fourth = new Path();
 
     @Before
     public void initializePathes() {
-        path listOfPathes;
-        listOfPathes = list.elementInsertAtTheLastNextOfList(second, first);
-        listOfPathes = list.elementInsertAtTheLastNextOfList(third, listOfPathes);
-        listOfPathes = list.elementInsertAtTheLastNextOfList(fourth, listOfPathes);
+        Path listOfPathes;
+        listOfPathes = List.elementInsertAtTheLastNextOfList(second, first);
+        listOfPathes = List.elementInsertAtTheLastNextOfList(third, listOfPathes);
+        listOfPathes = List.elementInsertAtTheLastNextOfList(fourth, listOfPathes);
         pathIterator = new PathIterator(listOfPathes);
     }
 

@@ -1,6 +1,6 @@
 package potrace;
 
-public class bitmap {
+public class Bitmap {
 
     public static int PIXELINWORD = 64;
     static long BM_ALLBITS = (~0);
@@ -11,8 +11,8 @@ public class bitmap {
     public long[] map;             /* raw data, dy*h words */
 
 
-    public bitmap() {};
-    public bitmap(int w, int h) {
+    public Bitmap() {};
+    public Bitmap(int w, int h) {
         this.w = w;
         this.h = h;
         this.dy = (w - 1) / PIXELINWORD + 1;
@@ -24,7 +24,7 @@ public class bitmap {
         return (x) >= 0 && (x) < (a);
     }
 
-    static boolean bm_safe(bitmap bm, int x, int y) {
+    static boolean bm_safe(Bitmap bm, int x, int y) {
         return bm_range(x, bm.w) && bm_range(y, bm.h);
     }
 
@@ -32,15 +32,15 @@ public class bitmap {
         return ((1L) << (PIXELINWORD-1-(x)));
     }
 
-    private static boolean BM_UGET(bitmap bm, int x, int y) {
+    private static boolean BM_UGET(Bitmap bm, int x, int y) {
         return(bm_index(bm, x, y) & bm_mask(x)) != 0;
     }
 
-    public static boolean BM_GET(bitmap bm, int x, int y) {
+    public static boolean BM_GET(Bitmap bm, int x, int y) {
         return bm_safe(bm, x, y) ? BM_UGET(bm, x, y) : false;
     }
 
-    private static long[] bm_scanline(bitmap bm, int y) {
+    private static long[] bm_scanline(Bitmap bm, int y) {
         long[] scanLine = new long[bm.dy];
         for (int i = 0; i < bm.dy ; i ++) {
             scanLine[i] = bm.map[(y * bm.dy) + i];
@@ -48,34 +48,34 @@ public class bitmap {
         return scanLine;
     }
 
-    public static long bm_index(bitmap bm, int x, int y) {
+    public static long bm_index(Bitmap bm, int x, int y) {
         return bm_scanline(bm, y)[x/PIXELINWORD];
     }
 
-    private static void BM_UCLR(bitmap bm, int x, int y){
+    private static void BM_UCLR(Bitmap bm, int x, int y){
         bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] & ~bm_mask(x);
     }
 
-    private static void BM_USET(bitmap bm, int x, int y) {
+    private static void BM_USET(Bitmap bm, int x, int y) {
         bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] | bm_mask(x);
     }
 
-    private static void BM_UPUT(bitmap bm, int x, int y, boolean b) {
+    private static void BM_UPUT(Bitmap bm, int x, int y, boolean b) {
         if (b)
             BM_USET(bm,x, y);
         else
             BM_UCLR(bm, x, y);
     }
 
-    public static void BM_PUT(bitmap bm, int x, int y, boolean b) {
+    public static void BM_PUT(Bitmap bm, int x, int y, boolean b) {
         if (bm_safe(bm, x, y))
             BM_UPUT(bm, x, y, b);
     }
 
-    /* clear the given bitmap. Set all bits to c. Assumes a well-formed
-    bitmap. */
+    /* clear the given Bitmap. Set all bits to c. Assumes a well-formed
+    Bitmap. */
 
-    static bitmap bm_clear(bitmap bm, int c) {
+    static Bitmap bm_clear(Bitmap bm, int c) {
         for (int y = 0; y < bm.h; y ++) {
             for (int dy = 0; dy < bm.dy; dy ++) {
                 int clearedValue = (c == 1 ? -1 : 0);
@@ -88,10 +88,10 @@ public class bitmap {
         return bm;
     }
 
-    /* duplicate the given bitmap. Return NULL on error with errno set. Assumes a well-formed bitmap. */
+    /* duplicate the given Bitmap. Return NULL on error with errno set. Assumes a well-formed Bitmap. */
 
-    public bitmap bm_dup() {
-        bitmap bm1 = new bitmap(this.w, this.h);
+    public Bitmap bm_dup() {
+        Bitmap bm1 = new Bitmap(this.w, this.h);
 
         for (int y=0; y < this.h; y++) {
             for (int dy = 0; dy < this.dy; dy ++) {
@@ -101,7 +101,7 @@ public class bitmap {
         return bm1;
     }
 
-    public static void bm_clearexcess(bitmap bm) {
+    public static void bm_clearexcess(Bitmap bm) {
         long mask;
         int y;
 

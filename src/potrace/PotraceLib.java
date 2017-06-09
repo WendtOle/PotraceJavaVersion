@@ -1,6 +1,6 @@
 package potrace;
 
-public class potraceLib {
+public class PotraceLib {
 
     static int POTRACE_TURNPOLICY_BLACK = 0;
     static int  POTRACE_TURNPOLICY_WHITE = 1;
@@ -20,9 +20,9 @@ public class potraceLib {
     set). Complete or incomplete Potrace state can be freed with
     potrace_state_free(). */
 
-    public static path potrace_trace(param param, bitmap bm) {
-        path plist = decompose.bm_to_pathlist(bm, param);
-        plist = trace.process_path(plist, param);
+    public static Path potrace_trace(Param param, Bitmap bm) {
+        Path plist = Decompose.bm_to_pathlist(bm, param);
+        plist = Trace.process_path(plist, param);
         return plist;
     }
 }
