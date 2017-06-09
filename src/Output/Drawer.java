@@ -1,4 +1,4 @@
-package Tools;
+package Output;
 
 import javax.swing.*;
 import java.awt.*;

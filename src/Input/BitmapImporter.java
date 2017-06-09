@@ -1,4 +1,4 @@
-package Tools;
+package Input;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,9 +9,6 @@ import java.util.ArrayList;
 
 import potrace.*;
 
-/**
- * Created by andreydelany on 06/04/2017.
- */
 public class BitmapImporter {
 
     String folderName;

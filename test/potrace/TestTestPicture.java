@@ -1,6 +1,6 @@
 package potrace;
 
-import Tools.BitmapImporter;
+import Input.BitmapImporter;
 import Tools.PathIterator;
 import org.junit.Test;
 import org.junit.runner.RunWith;

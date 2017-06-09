@@ -1,6 +1,6 @@
-package tools;
+package Input;
 
-import Tools.RandomBitmapGenerator;
+import Input.RandomBitmapGenerator;
 import org.junit.Test;
 import potrace.bitmap;
 

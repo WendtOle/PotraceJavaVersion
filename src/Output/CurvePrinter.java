@@ -1,4 +1,4 @@
-package Tools;
+package Output;
 
 /**
  * Created by andreydelany on 21/03/2017.

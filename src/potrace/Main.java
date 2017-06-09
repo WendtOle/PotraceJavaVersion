@@ -1,5 +1,5 @@
 package potrace;
-import Tools.*;
+import Input.BitmapImporter;
 
 public class Main {
     public static void main(String [] args){

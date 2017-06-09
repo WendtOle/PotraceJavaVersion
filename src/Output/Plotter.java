@@ -1,4 +1,4 @@
-package Tools;
+package Output;
 
 import potrace.bitmap;
 import potrace.path;
