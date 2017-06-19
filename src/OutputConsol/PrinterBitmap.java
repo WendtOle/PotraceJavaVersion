@@ -1,6 +1,6 @@
 package OutputConsol;
 
-import potrace.Bitmap;
+import potraceOriginal.Bitmap;
 
 /**
  * Created by andreydelany on 21/03/2017.

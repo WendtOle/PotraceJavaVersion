@@ -2,20 +2,16 @@ import Input.BitmapImporter;
 import OutputConsol.PrinterCurveData;
 import OutputConsol.PrinterPathStructure;
 import OutputGraphical.Plotter;
-import potrace.Bitmap;
-import potrace.Param;
-import potrace.Path;
-import potrace.PotraceLib;
-
-import java.util.ArrayList;
-
-import static java.lang.System.currentTimeMillis;
+import potraceOriginal.Bitmap;
+import potraceOriginal.Param;
+import potraceOriginal.Path;
+import potraceOriginal.PotraceLib;
 
 public class Main {
 
     static String folderName = "testPictures";
     static String fileName = "01.bmp";
-    static int amountOfRuns = 100000;
+    static int amountOfRuns = 1000000;
     static Bitmap bitmap;
     static double[] msPerRun = new double[100];
 

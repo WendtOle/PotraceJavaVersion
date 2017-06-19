@@ -3,8 +3,8 @@ package tools;
 import Tools.PathIterator;
 import org.junit.Before;
 import org.junit.Test;
-import potrace.List;
-import potrace.Path;
+import potraceOriginal.List;
+import potraceOriginal.Path;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

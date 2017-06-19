@@ -1,6 +1,6 @@
 package OutputConsol;
 
-import potrace.Path;
+import potraceOriginal.Path;
 
 /**
  * Created by andreydelany on 21/03/2017.

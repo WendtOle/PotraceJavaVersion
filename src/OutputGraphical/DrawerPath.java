@@ -1,7 +1,7 @@
 package OutputGraphical;
 
-import potrace.DPoint;
-import potrace.Path;
+import potraceOriginal.DPoint;
+import potraceOriginal.Path;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

@@ -1,7 +1,7 @@
 package OutputGraphical;
 
-import potrace.Bitmap;
-import potrace.Path;
+import potraceOriginal.Bitmap;
+import potraceOriginal.Path;
 
 import javax.swing.*;
 

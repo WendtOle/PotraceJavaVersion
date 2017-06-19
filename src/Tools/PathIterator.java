@@ -1,6 +1,6 @@
 package Tools;
 
-import potrace.Path;
+import potraceOriginal.Path;
 
 public class PathIterator {
     Path list;
