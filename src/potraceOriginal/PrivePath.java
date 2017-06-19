@@ -12,7 +12,7 @@ public class PrivePath {
     public int len;
     public Point[] pt;
     int[] lon;
-    int x0,y0;
+    public int x0,y0;
 
     Sums[] sums;
 

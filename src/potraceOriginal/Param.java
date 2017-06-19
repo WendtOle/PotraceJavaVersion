@@ -13,7 +13,7 @@ public class Param {
     }
 
     void param_default() {
-            this.turdsize = 1;                                  //TODO normal value was 2 but i use small pictures so 1 is okay
+            this.turdsize = 2;                                  //TODO normal value was 2 but i use small pictures so 1 is okay
             this.turnpolicy = PotraceLib.POTRACE_TURNPOLICY_MINORITY;      /* turnpolicy */
             this.alphamax = 1.0;                                /* alphamax */
             this.opticurve= true;                                  /* opticurve */
