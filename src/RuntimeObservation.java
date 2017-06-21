@@ -1,27 +1,25 @@
-import Input.BitmapImporter;
-import OutputConsol.PrinterCurveData;
-import OutputConsol.PrinterPathStructure;
-import OutputGraphical.Plotter;
+import Input.JSONDeEncoder;
+import org.json.simple.parser.ParseException;
 import potraceOriginal.Bitmap;
 import potraceOriginal.Param;
 import potraceOriginal.Path;
 import potraceOriginal.PotraceLib;
 
-public class Main {
+import java.io.IOException;
 
-    static String folderName = "testPictures";
-    static String fileName = "01.bmp";
+/**
+ * Created by andreydelany on 21.06.17.
+ */
+public class RuntimeObservation {
+
     static int amountOfRuns = 1000000;
+    static String bitmapFileName = "01.txt";
+    static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static double[] msPerRun = new double[100];
 
-    public static void main(String [] args){
-        bitmap = BitmapImporter.importBitmap(fileName,folderName);
-        //runWithFocusOnOutput();
-        runWithTimeObservation();
-    }
-
-    public static void runWithTimeObservation() {
+    public static void main(String args[]){
+        loadBitmap();
         long totalRunTime = 0;
         printGeneralInformationAboutRun();
         for (int i = 0; i < amountOfRuns; i++) {
@@ -30,6 +28,16 @@ public class Main {
             showProgress(i);
         }
         showResults();
+    }
+
+    public static void loadBitmap(){
+        try {
+            bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFileName, bitMapFileFolder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void printGeneralInformationAboutRun() {
@@ -58,21 +66,5 @@ public class Main {
     private static void showResults() {
         System.out.println("\n Average Amount of MS Needed for One Run: " + msPerRun[99] + " ms");
         PlotterRunTime.plot(amountOfRuns/100,msPerRun);
-    }
-
-    public static void runWithFocusOnOutput() {
-        Bitmap bitmap = BitmapImporter.importBitmap(fileName,folderName);
-        Path path = PotraceLib.potrace_trace(new Param(),bitmap);
-
-        PrinterPathStructure printer = new PrinterPathStructure(path);
-        printer.print();
-
-        PrinterCurveData curvePrinter = new PrinterCurveData(path);
-        curvePrinter.print();
-
-        Plotter plotter = new Plotter();
-        plotter.showBitmap(bitmap);
-        //plotter.showPathAndBitmap(path,bitmap);
-        //plotter.showPath(path);
     }
 }

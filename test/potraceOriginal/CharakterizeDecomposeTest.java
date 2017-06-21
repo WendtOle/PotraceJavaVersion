@@ -1,11 +1,15 @@
-package CharacterizationTests;
+package potraceOriginal;
 
+import Input.JSONDeEncoder;
+import Input.MockupPath;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import potraceOriginal.*;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -16,23 +20,42 @@ import static org.junit.Assert.assertEquals;
  */
 
 @RunWith(Parameterized.class)
-public class TestTestPicture {
+public class CharakterizeDecomposeTest {
 
     MockupPath[] arrayOfPathes;
     Path actualFirstPath;
 
     @Parameterized.Parameters(name = "Testing {index}. Bitmap")
     public static Collection testData() {
-        Object[][] testParameters = new Object[][]{
-                (new Example01()).getTestParameters(),
-                (new Example02()).getTestParameters()
-
-        };
-        return Arrays.asList(testParameters);
+        return Arrays.asList(getTestParameters("testPictures"));
     }
 
-    public TestTestPicture(Bitmap bitmap,
-                           MockupPath[] arrayOfPathes) {
+    private static Object[][] getTestParameters(String folderNameOfTestPictures) {
+        Object [][] testParameters = null;
+        try {
+            File[] bitmapFiles = new File(folderNameOfTestPictures).listFiles((dir, name) -> {
+                        return name.toLowerCase().endsWith(".txt");
+                    }
+            );
+
+            testParameters = new Object[bitmapFiles.length][];
+            for (int i = 0; i < bitmapFiles.length; i++) {
+                try {
+                    Bitmap bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]);
+                    MockupPath[] pathes = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
+                    testParameters[i] = new Object[]{bitmap,pathes};
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return testParameters;
+    }
+
+    public CharakterizeDecomposeTest(Bitmap bitmap,
+                                     MockupPath[] arrayOfPathes) {
 
         this.arrayOfPathes = arrayOfPathes;
         this.actualFirstPath  = Decompose.bm_to_pathlist(bitmap,new Param());

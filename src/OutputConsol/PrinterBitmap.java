@@ -56,4 +56,20 @@ public class PrinterBitmap {
         System.out.print(currentPotraceWord);
     }
 
+    public void printBitmapArchitectureForCUnderstandable() {
+        System.out.println("bm = bm_newCopied("+bitmap.w+","+bitmap.h+");");
+
+        for(int i = 0; i < bitmap.map.length; i++) {
+            System.out.println("bm->map["+i+"] = 0x"+ Long.toHexString(bitmap.map[i]) + "l;");
+        }
+    }
+
+    public void printBitmapArchitectureForJavaUnderstandable() {
+        System.out.println("Bitmap bitmap = new Bitmap("+bitmap.w+","+bitmap.h+");");
+
+        for(int i = 0; i < bitmap.map.length; i++) {
+            System.out.println("bitmap.map["+i+"] = 0x"+ Long.toHexString(bitmap.map[i]) + "l;");
+        }
+    }
+
 }
