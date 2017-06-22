@@ -4,42 +4,51 @@ import potraceOriginal.Bitmap;
 import potraceOriginal.Path;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by andreydelany on 08/04/2017.
  */
 public class Plotter {
     JFrame jFrame;
-    int scale;
-    static final int standartScale = 40;
-    static final int standartWidth = 1000;
-    static final int standartHeight = 800;
+    Path path;
+    PlotterOptionsEnum option;
+    double scale;
 
-    public Plotter() {
-        this("Plotter", standartWidth, standartHeight,standartScale);
-    }
+    static Dimension dimensionsOfWindow = new Dimension(1000,800);
+    static int boarderHorizontally = 1;
+    static int boarderVertically = 23;
 
-    public Plotter(String name, int width, int height,int scale){
-        this.scale = scale;
-        jFrame = new JFrame(name);
+
+    public Plotter(Bitmap bitmap, Path path,PlotterOptionsEnum option){
+        this.path = path;
+        this.option = option;
+        setOptimalScale(bitmap);
+        updateDimensionOfWindow(bitmap);
+
+        jFrame = new JFrame(option.toString());
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setSize(width,height);
+        jFrame.setSize(dimensionsOfWindow);
     };
 
-    public void showPath(Path path) {
-        Drawer drawer = new Drawer(path,scale, jFrame.getHeight());
-        jFrame.add(drawer);
-        jFrame.setVisible(true);
+    private void setOptimalScale(Bitmap bitmap) {
+        double scaleWidth = dimensionsOfWindow.width / bitmap.w;
+        double scaleHeight = dimensionsOfWindow.height / bitmap.h;
+
+        if (scaleHeight < scaleWidth) {
+            this.scale = scaleHeight;
+        } else {
+            this.scale = scaleWidth;
+        }
     }
 
-    public void showBitmap(Bitmap bitmap) {
-        Drawer drawer = new Drawer(bitmap,scale, jFrame.getHeight());
-        jFrame.add(drawer);
-        jFrame.setVisible(true);
+    private void updateDimensionOfWindow(Bitmap bitmap) {
+        dimensionsOfWindow.width = (int)(bitmap.w * scale) + boarderHorizontally;
+        dimensionsOfWindow.height = (int)(bitmap.h * scale) + boarderVertically;
     }
 
-    public void showPathAndBitmap(Path path, Bitmap bitmap) {
-        Drawer drawer = new Drawer(path,bitmap,scale, jFrame.getHeight());
+    public void plot() {
+        Drawer drawer = new Drawer(option,path,scale);
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }

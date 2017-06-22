@@ -34,7 +34,7 @@ public class CharakterizeDecomposeTest {
         Object [][] testParameters = null;
         try {
             File[] bitmapFiles = new File(folderNameOfTestPictures).listFiles((dir, name) -> {
-                        return name.toLowerCase().endsWith(".txt");
+                        return name.toLowerCase().endsWith(".json");
                     }
             );
 

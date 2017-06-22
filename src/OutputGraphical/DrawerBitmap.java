@@ -3,7 +3,6 @@ package OutputGraphical;
 import potraceOriginal.*;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 /**
  * Created by andreydelany on 08/04/2017.
@@ -11,31 +10,25 @@ import java.awt.geom.AffineTransform;
 public class DrawerBitmap {
         Path path;
         Graphics2D graphics;
-        int scale, height;
+        double scale;
+        PlotterOptionsEnum option;
 
-        public DrawerBitmap(Bitmap bitmap, int skalierung, int height)  { //Fixme: to use height, is not good
-            this.path = Decompose.bm_to_pathlist(bitmap, new Param());
-            this.scale = skalierung;
-            this.height = height;
+        public DrawerBitmap(Path path, double scale, PlotterOptionsEnum option)  {
+            this.path = path;
+            this.scale = scale;
+            this.option = option;
         }
 
         public void paintComponent(Graphics g){
             graphics = (Graphics2D) g;
-            flipImageOnYAxis();
             drawPathes(path);
-        }
-
-        public void flipImageOnYAxis() {
-            AffineTransform flipVertically = new AffineTransform();
-            flipVertically.scale(1,-1);
-            flipVertically.translate(0,-height);
-            graphics.setTransform(flipVertically);
         }
 
         private void drawPathes(Path startPath){
             Path currentPath = startPath;
             while (currentPath != null) {
-                drawPath(currentPath);
+                //drawPath(currentPath);
+                drawPathAsPolygon(currentPath);
                 currentPath = currentPath.next;
             }
         }
@@ -49,10 +42,30 @@ public class DrawerBitmap {
             }
         }
 
-        private DPoint getStartPointOfCurrentCurve(DPoint[][] curvesOfPath){
-            int indexOfLastCurve = curvesOfPath.length - 1;
-            DPoint startPoint = curvesOfPath[indexOfLastCurve][2];
-            return startPoint;
+        private void drawPathAsPolygon(Path path) {
+            int amountOfPoints = path.priv.len;
+            int xpoints[] = new int[amountOfPoints];
+            int ypoints[] = new int[amountOfPoints];
+            for (int i = 0; i < amountOfPoints; i++) {
+                Point currentPoint = path.priv.pt[i];
+                xpoints[i] = scaleCoordinate(currentPoint.x);
+                ypoints[i] = scaleCoordinate(currentPoint.y);
+            }
+            Color black;
+            if(option == PlotterOptionsEnum.BOTH) {
+                black = new Color(50,50,50);
+            } else {
+                black = Color.BLACK;
+            }
+
+            if (path.sign == 43) {
+                graphics.setColor(black);
+                graphics.fillPolygon(xpoints,ypoints,amountOfPoints);
+            } else {
+                Color transparentWhite = new Color(238,238,238);
+                graphics.setColor(transparentWhite);
+                graphics.fillPolygon(xpoints,ypoints,amountOfPoints);
+            }
         }
 
         private void drawLine(Point startIn, Point endIn){
@@ -62,6 +75,8 @@ public class DrawerBitmap {
         };
 
         private Point scalePoint(Point point){
-            return new Point(point.x * scale, point.y * scale);
+            return new Point((int)(point.x * scale), (int)(point.y * scale));
         }
+
+        private int scaleCoordinate(int coordinate) {return (int)(coordinate * scale);}
 }

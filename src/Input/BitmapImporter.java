@@ -32,23 +32,7 @@ public class BitmapImporter {
 
     public static Bitmap importBitmapAndSaveAsJson(String fileName, String folderName) throws IOException{
         Bitmap bitmap = importBitmap(fileName,folderName);
-
-        File[] listOfFiles = new File(folderName).listFiles((dir, name) -> {
-                    return name.toLowerCase().endsWith(".txt");
-                });
-        int amountOfFiles = listOfFiles.length;
-        String name;
-        if (amountOfFiles < 10)
-            name = "0"+amountOfFiles;
-        else {
-            name = amountOfFiles + "";
-        }
-
-        JSONDeEncoder.bitmapToJSon(bitmap,folderName, name);
+        JSONDeEncoder.bitmapToJSon(bitmap,folderName);
         return bitmap;
-    }
-
-    public static void importBitmapForJSon(String fileName, String folderName){
-
     }
 }

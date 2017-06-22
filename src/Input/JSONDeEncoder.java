@@ -7,8 +7,10 @@ import org.json.simple.parser.ParseException;
 import potraceOriginal.Bitmap;
 
 import java.awt.*;
-import java.io.*;
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 
 /**
@@ -16,11 +18,17 @@ import java.util.Arrays;
  */
 public class JSONDeEncoder {
 
-    public static void bitmapToJSon(Bitmap bitmap,String folderName,String name) throws IOException {
+    public static void bitmapToJSon(Bitmap bitmap,String folderName) throws IOException {
+        String name = getNameForNewBitmap(folderName);
+
         JSONObject bitmapObject = new JSONObject();
         bitmapObject.put("width",bitmap.w);
         bitmapObject.put("height",bitmap.h);
-        bitmapObject.put("map", Arrays.toString(bitmap.map));
+        JSONArray map = new JSONArray();
+        for(int i = 0; i < bitmap.map.length; i++) {
+            map.add(bitmap.map[i]);
+        }
+        bitmapObject.put("map", map);
 
         JSONArray testDataObject = new JSONArray();
 
@@ -28,9 +36,23 @@ public class JSONDeEncoder {
         obj.put("bitmap",bitmapObject);
         obj.put("testData",testDataObject);
 
-        try (FileWriter file = new FileWriter(folderName + "/"+name + ".txt")) {
+        try (FileWriter file = new FileWriter(folderName + "/"+name + ".json")) {
             file.write(obj.toJSONString());
         }
+    }
+
+    private static String getNameForNewBitmap(String folderName) {
+        File[] listOfFiles = new File(folderName).listFiles((dir, name) -> {
+            return name.toLowerCase().endsWith(".json");
+        });
+        int newFileIndex = listOfFiles.length + 1;
+        String name;
+        if (newFileIndex < 10)
+            name = "0"+newFileIndex;
+        else {
+            name = newFileIndex + "";
+        }
+        return name;
     }
 
     public static Bitmap readBitmapFromJSon(File file) throws IOException, ParseException {
@@ -39,8 +61,8 @@ public class JSONDeEncoder {
 
         JSONObject jsonObject = (JSONObject) object;
         JSONObject bitmapObject = (JSONObject) jsonObject.get("bitmap");
-        int width = objectToInt(bitmapObject.get("width"));
-        int height = objectToInt(bitmapObject.get("height"));
+        int width = (int)(long)bitmapObject.get("width");
+        int height = (int)(long)bitmapObject.get("height");
         long[] map = objectToLongArray(bitmapObject.get("map"));
         Bitmap bitmap = new Bitmap(width,height);
         bitmap.map = map;
@@ -62,16 +84,16 @@ public class JSONDeEncoder {
         MockupPath[] recoveredPath = new MockupPath[lengthOfPath];
         for (int i = 0; i < lengthOfPath; i ++) {
             JSONObject currentPath = (JSONObject) testDataObject.get(i);
-            int area = objectToInt(currentPath.get("area"));
-            int sign = objectToInt(currentPath.get("sign"));
-            int length = objectToInt(currentPath.get("length"));
-            boolean hasChild = objectToBoolean(currentPath.get("hasChild"));
-            boolean hasSibling = objectToBoolean(currentPath.get("hasSibling"));
+            int area = (int)(long)currentPath.get("area");
+            int sign = (int)(long)currentPath.get("sign");
+            int length = (int)(long)currentPath.get("length");
+            boolean hasChild = (boolean)currentPath.get("hasChild");
+            boolean hasSibling = (boolean)currentPath.get("hasSibling");
             JSONArray pointsJSon = (JSONArray) currentPath.get("pt");
             Point[] points = new Point[pointsJSon.size()];
             for (int j = 0; j < pointsJSon.size(); j++) {
                 JSONObject currentPoint = (JSONObject) pointsJSon.get(j);
-                points[j] = new Point(objectToInt(currentPoint.get("x")),objectToInt(currentPoint.get("y")));
+                points[j] = new Point((int)(long)currentPoint.get("x"),(int)(long)currentPoint.get("y"));
             }
             recoveredPath[i] = new MockupPath(area,sign,length,hasChild,hasSibling,points);
         }
@@ -83,27 +105,12 @@ public class JSONDeEncoder {
         return readTestDataFromJSon(file);
     }
 
-    public static int objectToInt(Object object){
-        return Integer.valueOf(object.toString());
-    }
-
-    public static boolean objectToBoolean(Object object){
-        if(object.toString().equals("true"))
-            return true;
-        else
-            return false;
-    }
-
     public static long[] objectToLongArray(Object object) {
-        String arr = object.toString();
-        String[] items = arr.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll("\\s", "").split(",");
-
-        long[] results = new long[items.length];
-
-        for (int i = 0; i < items.length; i++) {
-            results[i] = Long.parseLong(items[i]);
-
+        JSONArray array = (JSONArray) object;
+        long[] resultArray = new long[array.size()];
+        for( int i = 0; i < resultArray.length; i++) {
+            resultArray[i] = (long)array.get(i);
         }
-        return results;
+        return resultArray;
     }
 }

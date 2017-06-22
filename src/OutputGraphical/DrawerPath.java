@@ -4,8 +4,8 @@ import potraceOriginal.DPoint;
 import potraceOriginal.Path;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.CubicCurve2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 
 /**
@@ -15,32 +15,25 @@ public class DrawerPath {
 
     Path path;
     Graphics2D graphics;
-    int scale, height;
+    double scale;
+    PlotterOptionsEnum option;
 
-    public DrawerPath(Path path, int skalierung, int height) { //Fixme: to use height, is not good
-
+    public DrawerPath(Path path, double scale, PlotterOptionsEnum option) {
         this.path = path;
-        this.scale = skalierung;
-        this.height = height;
+        this.scale = scale;
+        this.option = option;
     }
 
     public void paintComponent(Graphics g){
         graphics = (Graphics2D) g;
-        flipImageOnYAxis();
         drawPathes(path);
-    }
-
-    public void flipImageOnYAxis() {
-        AffineTransform flipVertically = new AffineTransform();
-        flipVertically.scale(1,-1);
-        flipVertically.translate(0,-height);
-        graphics.setTransform(flipVertically);
     }
 
     private void drawPathes(Path startPath){
         Path currentPath = startPath;
         while (currentPath != null) {
-            drawPath(currentPath);
+            //drawPath(currentPath);
+            drawShape(currentPath);
             currentPath = currentPath.next;
         }
     }
@@ -75,12 +68,26 @@ public class DrawerPath {
         return A;
     }
 
+    private void drawStraightCorner(DPoint[] pointsOfCorner,GeneralPath path){ //Angle ABC -> clockwise
+        DPoint B = pointsOfCorner[1];
+        DPoint A = pointsOfCorner[2];
+        path.lineTo(scaleCoordinate(B.x),scaleCoordinate(B.y));
+        path.lineTo(scaleCoordinate(A.x),scaleCoordinate(A.y));
+    }
+
     private DPoint drawRoundCorner(DPoint P0, DPoint[] pointsOfCorner) { //PO startPoint, P3 endPoint, P1 & P2 ControllPoint -> clockwise
         DPoint P1 = pointsOfCorner[0];
         DPoint P2 = pointsOfCorner[1];
         DPoint P3 = pointsOfCorner[2];
         drawBezierCurve(P0,P1,P2,P3);
         return P3;
+    }
+
+    private void drawRoundCorner(DPoint[] pointsOfCorner,GeneralPath shape) { //PO startPoint, P3 endPoint, P1 & P2 ControllPoint -> clockwise
+        DPoint P1 = pointsOfCorner[0];
+        DPoint P2 = pointsOfCorner[1];
+        DPoint P3 = pointsOfCorner[2];
+        shape.curveTo(scaleCoordinate(P1.x),scaleCoordinate(P1.y),scaleCoordinate(P2.x),scaleCoordinate(P2.y),scaleCoordinate(P3.x),scaleCoordinate(P3.y));
     }
 
     private void drawLine(DPoint startIn, DPoint endIn){
@@ -103,8 +110,40 @@ public class DrawerPath {
         return new DPoint(point.x * scale, point.y * scale);
     }
 
+    private double scaleCoordinate(double coordinate){
+        return coordinate * scale;
+    }
+
+    private void drawShape(Path path) {
+        DPoint startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
+        GeneralPath shape = new GeneralPath();
+        shape.moveTo(scaleCoordinate(startPointForNextCorner.x),scaleCoordinate(startPointForNextCorner.y));
+        for (int i = 0; i < path.curve.n; i++) {
+            DPoint[] pointsOfCurrentCorner = path.curve.c[i];
+            if (isStraightCorner(path.curve.tag[i]))
+                drawStraightCorner(pointsOfCurrentCorner,shape);
+            else
+                drawRoundCorner(pointsOfCurrentCorner,shape);
+        }
+        shape.closePath();
+
+        if(option == PlotterOptionsEnum.BOTH) {
+            graphics.setColor(Color.red);
+            graphics.setStroke(new BasicStroke(2));
+            graphics.draw(shape);
+        } else {
+            if (path.sign == 43) {
+                graphics.setColor(Color.red);
+                graphics.fill(shape);
+            } else {
+                Color transparentWhite = new Color(238,238,238);
+                graphics.setColor(transparentWhite);
+                graphics.fill(shape);
+            }
+            graphics.setColor(Color.black);
+            graphics.draw(shape);
+        }
 
 
-
-
+    }
 }

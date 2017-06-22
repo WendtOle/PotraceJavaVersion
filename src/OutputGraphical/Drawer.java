@@ -1,6 +1,5 @@
 package OutputGraphical;
 
-import potraceOriginal.Bitmap;
 import potraceOriginal.Path;
 
 import javax.swing.*;
@@ -12,32 +11,31 @@ import java.awt.*;
 public class Drawer extends JPanel {
 
     Path path;
-    Bitmap bitmap;
-    int scale, height;
 
-    public Drawer(Path path, Bitmap bitmap, int scale, int height) {
+    double scale;
+    PlotterOptionsEnum option;
+
+    public Drawer(PlotterOptionsEnum option, Path path, double scale) {
         this.path = path;
-        this.bitmap = bitmap;
+        this.option = option;
         this.scale = scale;
-        this.height = height;
-    }
-
-    public Drawer(Path path, int scale, int height) {
-        this(path,null,scale,height);
-    }
-
-    public Drawer(Bitmap bitmap, int scale, int height) {
-        this(null,bitmap,scale,height);
     }
 
     public void paintComponent(Graphics g) {
-        if(path != null) {
-            DrawerPath drawedPath = new DrawerPath(path,scale, height);
+        if(option == PlotterOptionsEnum.BITMAP) {
+            DrawerBitmap drawedBitmap = new DrawerBitmap(path,scale,option);
+            drawedBitmap.paintComponent(g);
+        }
+        if(option == PlotterOptionsEnum.PATH) {
+            DrawerPath drawedPath = new DrawerPath(path,scale,option);
             drawedPath.paintComponent(g);
         }
-        if(bitmap != null) {
-            DrawerBitmap drawedBitmap = new DrawerBitmap(bitmap,scale,height);
+        if (option == PlotterOptionsEnum.BOTH) {
+            DrawerBitmap drawedBitmap = new DrawerBitmap(path,scale,option);
             drawedBitmap.paintComponent(g);
+
+            DrawerPath drawedPath = new DrawerPath(path,scale,option);
+            drawedPath.paintComponent(g);
         }
     }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class RuntimeObservation {
 
     static int amountOfRuns = 1000000;
-    static String bitmapFileName = "01.txt";
+    static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static double[] msPerRun = new double[100];
