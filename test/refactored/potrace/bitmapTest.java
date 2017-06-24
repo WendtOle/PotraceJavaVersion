@@ -36,11 +36,11 @@ public class bitmapTest {
     @Test
     public void testBmSafeAndBmRange() {
         Bitmap testBitmap = new Bitmap(10,10);
-        assertTrue("first inside: ", Bitmap.bm_safe(testBitmap,0,0));
-        assertTrue("second inside: ", Bitmap.bm_safe(testBitmap,9,9));
-        assertFalse("first outside: ", Bitmap.bm_safe(testBitmap,10,10));
-        assertFalse("second outside: ", Bitmap.bm_safe(testBitmap,10,1));
-        assertFalse("third outside: ", Bitmap.bm_safe(testBitmap,-1,1));
+        assertTrue("first inside: ", testBitmap.bm_safe(0,0));
+        assertTrue("second inside: ", testBitmap.bm_safe(9,9));
+        assertFalse("first outside: ", testBitmap.bm_safe(10,10));
+        assertFalse("second outside: ", testBitmap.bm_safe(10,1));
+        assertFalse("third outside: ", testBitmap.bm_safe(-1,1));
     }
 
     @Test

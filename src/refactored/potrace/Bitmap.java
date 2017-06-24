@@ -24,8 +24,8 @@ public class Bitmap {
         return (x) >= 0 && (x) < (a);
     }
 
-    static boolean bm_safe(Bitmap bm, int x, int y) {
-        return bm_range(x, bm.w) && bm_range(y, bm.h);
+    boolean bm_safe(int x, int y) {
+        return bm_range(x, w) && bm_range(y, h);
     }
 
     static long bm_mask(int x) {
@@ -37,7 +37,7 @@ public class Bitmap {
     }
 
     boolean BM_GET(int x, int y) {
-        return bm_safe(this, x, y) ? BM_UGET(x, y) : false;
+        return bm_safe(x, y) ? BM_UGET(x, y) : false;
     }
 
     long[] bm_scanline(int y) {
@@ -68,7 +68,7 @@ public class Bitmap {
     }
 
     void BM_PUT(int x, int y, boolean b) {
-        if (bm_safe(this, x, y))
+        if (bm_safe(x, y))
             BM_UPUT(x, y, b);
     }
 
