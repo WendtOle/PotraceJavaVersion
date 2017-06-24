@@ -36,8 +36,8 @@ public class Bitmap {
         return(bm_index(bm, x, y) & bm_mask(x)) != 0;
     }
 
-    public static boolean BM_GET(Bitmap bm, int x, int y) {
-        return bm_safe(bm, x, y) ? BM_UGET(bm, x, y) : false;
+    boolean BM_GET(int x, int y) {
+        return bm_safe(this, x, y) ? BM_UGET(this, x, y) : false;
     }
 
     private static long[] bm_scanline(Bitmap bm, int y) {
@@ -133,10 +133,10 @@ public class Bitmap {
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += Bitmap.BM_GET(this,x+a, y+i-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(this,x+i-1, y+a-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(this,x+a-1, y-i) ? 1 : -1;
-                ct += Bitmap.BM_GET(this,x-i, y+a) ? 1 : -1;
+                ct += BM_GET(x+a, y+i-1) ? 1 : -1;
+                ct += BM_GET(x+i-1, y+a-1) ? 1 : -1;
+                ct += BM_GET(x+a-1, y-i) ? 1 : -1;
+                ct += BM_GET(x-i, y+a) ? 1 : -1;
             }
             if (ct>0) {
                 return true;

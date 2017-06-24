@@ -62,8 +62,8 @@ public class decomposeTest {
         testBitmap.BM_PUT(0,0,true);
         testBitmap.BM_PUT(1,0,true);
         Decompose.xor_to_ref(testBitmap,0,0,1);
-        assertEquals("firstPixel: ", false, Bitmap.BM_GET(testBitmap,0,0));
-        assertEquals("secondPixel: ", false, Bitmap.BM_GET(testBitmap,1,0));
+        assertEquals("firstPixel: ", false, testBitmap.BM_GET(0,0));
+        assertEquals("secondPixel: ", false, testBitmap.BM_GET(1,0));
     }
 
     @Test
@@ -73,12 +73,12 @@ public class decomposeTest {
         testBitmap.BM_PUT(69,0,true);
         Decompose.xor_to_ref(testBitmap,70,0,0);
         assertEquals(-1l,testBitmap.map[0]);
-        assertEquals("64: ", true, Bitmap.BM_GET(testBitmap,64,0));
-        assertEquals("65: ", true, Bitmap.BM_GET(testBitmap,65,0));
-        assertEquals("66: ", true, Bitmap.BM_GET(testBitmap,66,0));
-        assertEquals("67: ", true, Bitmap.BM_GET(testBitmap,67,0));
-        assertEquals("68: ", false, Bitmap.BM_GET(testBitmap,68,0));
-        assertEquals("69: ", false, Bitmap.BM_GET(testBitmap,69,0));
+        assertEquals("64: ", true, testBitmap.BM_GET(64,0));
+        assertEquals("65: ", true, testBitmap.BM_GET(65,0));
+        assertEquals("66: ", true, testBitmap.BM_GET(66,0));
+        assertEquals("67: ", true, testBitmap.BM_GET(67,0));
+        assertEquals("68: ", false, testBitmap.BM_GET(68,0));
+        assertEquals("69: ", false, testBitmap.BM_GET(69,0));
     }
 
     @Test
@@ -87,8 +87,8 @@ public class decomposeTest {
         testBitmap.BM_PUT(0,0,true);
         testBitmap.BM_PUT(1,0,true);
         Decompose.xor_to_ref(testBitmap,2,0,0);
-        assertEquals("firstPixel: ", false, Bitmap.BM_GET(testBitmap,0,0));
-        assertEquals("secondPixel: ", false, Bitmap.BM_GET(testBitmap,1,0));
+        assertEquals("firstPixel: ", false, testBitmap.BM_GET(0,0));
+        assertEquals("secondPixel: ", false, testBitmap.BM_GET(1,0));
     }
 
     @Test
@@ -101,14 +101,14 @@ public class decomposeTest {
         Path path = Decompose.findpath(testBitmap,0,3,43,4);
         Decompose.xor_path(testBitmap,path);
 
-        assertEquals(false, Bitmap.BM_GET(testBitmap,0,0));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,1,0));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,2,0));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,0,1));
-        assertEquals(true, Bitmap.BM_GET(testBitmap,1,1));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,2,1));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,0,2));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,1,3));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,2,3));
+        assertEquals(false, testBitmap.BM_GET(0,0));
+        assertEquals(false, testBitmap.BM_GET(1,0));
+        assertEquals(false, testBitmap.BM_GET(2,0));
+        assertEquals(false, testBitmap.BM_GET(0,1));
+        assertEquals(true, testBitmap.BM_GET(1,1));
+        assertEquals(false, testBitmap.BM_GET(2,1));
+        assertEquals(false, testBitmap.BM_GET(0,2));
+        assertEquals(false, testBitmap.BM_GET(1,3));
+        assertEquals(false, testBitmap.BM_GET(2,3));
     }
 }

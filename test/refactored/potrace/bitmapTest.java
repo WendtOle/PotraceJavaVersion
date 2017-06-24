@@ -55,11 +55,11 @@ public class bitmapTest {
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
         smallTestBitmap.BM_PUT(0,0,true);
-        assertEquals("with one original word in line: ",true, Bitmap.BM_GET(smallTestBitmap,0,0));
+        assertEquals("with one original word in line: ",true, smallTestBitmap.BM_GET(0,0));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
         bigTestBitmap.BM_PUT(99,99,true);
-        assertEquals("with more than one original word in line: ",true, Bitmap.BM_GET(bigTestBitmap,99,99));
+        assertEquals("with more than one original word in line: ",true,bigTestBitmap.BM_GET(99,99));
     }
 
     @Test
@@ -67,18 +67,18 @@ public class bitmapTest {
         Bitmap smallTestBitmap = new Bitmap(10,10);
         smallTestBitmap.BM_PUT(0,0,true);
         smallTestBitmap.BM_PUT(0,0,false);
-        assertEquals(false, Bitmap.BM_GET(smallTestBitmap,0,0));
+        assertEquals(false, smallTestBitmap.BM_GET(0,0));
     }
 
     @Test
     public void test_bm_clear() throws Exception {
         Bitmap testBitMap = new Bitmap(10,10);
         testBitMap.bm_clear(1);
-        assertEquals(true, Bitmap.BM_GET(testBitMap,0,0));
-        assertEquals(true, Bitmap.BM_GET(testBitMap,9,9));
+        assertEquals(true, testBitMap.BM_GET(0,0));
+        assertEquals(true, testBitMap.BM_GET(9,9));
         testBitMap.bm_clear(0);
-        assertEquals(false, Bitmap.BM_GET(testBitMap,0,0));
-        assertEquals(false, Bitmap.BM_GET(testBitMap,4,4));
+        assertEquals(false, testBitMap.BM_GET(0,0));
+        assertEquals(false, testBitMap.BM_GET(4,4));
     }
 
     @Test
