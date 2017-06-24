@@ -20,7 +20,7 @@ public class Bitmap {
     }
 
     /* macros for accessing pixel at index (x,y). U* macros omit the bounds check. */
-    boolean bm_range(int x, int a) {
+    private boolean bm_range(int x, int a) {
         return (x) >= 0 && (x) < (a);
     }
 
@@ -32,7 +32,7 @@ public class Bitmap {
         return ((1L) << (PIXELINWORD-1-(x)));
     }
 
-    boolean BM_UGET(int x, int y) {
+    private boolean BM_UGET(int x, int y) {
         return(bm_index( x, y) & bm_mask(x)) != 0;
     }
 
@@ -40,7 +40,7 @@ public class Bitmap {
         return bm_safe(x, y) ? BM_UGET(x, y) : false;
     }
 
-    long[] bm_scanline(int y) {
+    private long[] bm_scanline(int y) {
         long[] scanLine = new long[dy];
         for (int i = 0; i < dy ; i ++) {
             scanLine[i] = map[(y * dy) + i];
@@ -52,15 +52,15 @@ public class Bitmap {
         return bm_scanline(y)[x/PIXELINWORD];
     }
 
-    void BM_UCLR(int x, int y){
+    private void BM_UCLR(int x, int y){
         map[y * dy + (x / PIXELINWORD)] = map[y * dy + (x / PIXELINWORD)] & ~bm_mask(x);
     }
 
-    void BM_USET(int x, int y) {
+    private void BM_USET(int x, int y) {
         map[y * dy + (x / PIXELINWORD)] = map[y * dy + (x / PIXELINWORD)] | bm_mask(x);
     }
 
-    void BM_UPUT(int x, int y, boolean b) {
+    private void BM_UPUT(int x, int y, boolean b) {
         if (b)
             BM_USET(x, y);
         else
