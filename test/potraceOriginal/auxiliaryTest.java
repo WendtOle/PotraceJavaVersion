@@ -1,6 +1,9 @@
 package potraceOriginal;
 
 import org.junit.Test;
+
+import java.awt.geom.Point2D;
+
 import static org.junit.Assert.assertEquals;
 
 public class auxiliaryTest {
@@ -65,12 +68,12 @@ public class auxiliaryTest {
 
     @Test
     public void testMethod_Interval()  {
-        DPoint firstPoint = new DPoint(1.2,3.4);
-        DPoint secondPoint = new DPoint(3.5,8.1);
+        Point2D.Double firstPoint = new Point2D.Double(1.2,3.4);
+        Point2D.Double secondPoint = new Point2D.Double(3.5,8.1);
         double lampda = 0.5;
 
-        DPoint expected = new DPoint(2.3499999999999996,5.75);
-        DPoint actual = Auxiliary.interval(lampda,firstPoint,secondPoint);
+        Point2D.Double expected = new Point2D.Double(2.3499999999999996,5.75);
+        Point2D.Double actual = Auxiliary.interval(lampda,firstPoint,secondPoint);
 
         assertEquals(expected.x, actual.x,0);
         assertEquals(expected.y, actual.y,0);

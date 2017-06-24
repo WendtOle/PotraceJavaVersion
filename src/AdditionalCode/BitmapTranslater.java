@@ -5,7 +5,7 @@ package AdditionalCode;
  */
 public class BitmapTranslater {
 
-    public static potraceOriginal.Bitmap translatBitmapForOriginalCode(Bitmap bitmap){
+    public static potraceOriginal.Bitmap translateBitmapForOriginalCode(Bitmap bitmap){
         potraceOriginal.Bitmap translatedBitmap = new potraceOriginal.Bitmap(bitmap.width,bitmap.height);
         translatedBitmap.map = bitmap.potraceWords;
         return translatedBitmap;

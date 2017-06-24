@@ -1,5 +1,6 @@
 package potraceOriginal;
 import java.awt.*;
+import java.awt.geom.Point2D;
 
 /* transform jaggy paths into smooth curves */
 
@@ -13,7 +14,7 @@ public class Trace {
 
 /* return a direction that is 90 degrees counterclockwise from p2-p0,
 but then restricted to one of the major wind directions (n, nw, width, etc) */
-    static Point dorth_infty(DPoint p0, DPoint p2) {
+    static Point dorth_infty(Point2D.Double p0, Point2D.Double p2) {
         Point r = new Point();
 
         r.y = Auxiliary.sign(p2.x-p0.x);
@@ -23,7 +24,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     }
 
     /* return (p1-p0)x(p2-p0), the area of the parallelogram */
-    static double dpara(DPoint p0, DPoint p1, DPoint p2) {
+    static double dpara(Point2D.Double p0, Point2D.Double p1, Point2D.Double p2) {
         double x1, y1, x2, y2;
 
         x1 = p1.x-p0.x;
@@ -36,7 +37,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
 
     /* ddenom/dpara have the property that the square of radius 1 centered
     at p1 intersects the line p0p2 iff |dpara(p0,p1,p2)| <= ddenom(p0,p2) */
-    static double ddenom(DPoint p0, DPoint p2) {
+    static double ddenom(Point2D.Double p0, Point2D.Double p2) {
         Point r = dorth_infty(p0, p2);
 
         return r.y*(p2.x-p0.x) - r.x*(p2.y-p0.y);
@@ -53,11 +54,11 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
 
     //determine the center and slope of the line i..j. Assume i<j. Needs
     //"sum" components of p to be set.
-    static DPoint[] pointslope(PrivePath pp, int i, int j) {
+    static Point2D.Double[] pointslope(PrivePath pp, int i, int j) {
         //assume i<j
 
-        DPoint ctr = new DPoint();
-        DPoint dir = new DPoint();
+        Point2D.Double ctr = new Point2D.Double();
+        Point2D.Double dir = new Point2D.Double();
 
         int n = pp.len;
         Sums[] sums = pp.sums;
@@ -120,12 +121,12 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         if (l==0) {
             dir.x = dir.y = 0;   //sometimes this can happen when k=4: the two eigenvalues coincide
         }
-        DPoint[] output = {ctr,dir};
+        Point2D.Double[] output = {ctr,dir};
         return output;
     }
 
     //Apply quadratic form Q to vector width = (width.x,width.y)
-    static double quadform(Quadform Q, DPoint w) {
+    static double quadform(Quadform Q, Point2D.Double w) {
         double[] v = new double[3];
         int i, j;
         double sum;
@@ -149,7 +150,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     }
 
     /* calculate (p1-p0)x(p3-p2) */
-    static double cprod(DPoint p0, DPoint p1, DPoint p2, DPoint p3) {
+    static double cprod(Point2D.Double p0, Point2D.Double p1, Point2D.Double p2, Point2D.Double p3) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -161,7 +162,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     }
 
     /* calculate (p1-p0)*(p2-p0) */
-    static double iprod(DPoint p0, DPoint p1, DPoint p2) {
+    static double iprod(Point2D.Double p0, Point2D.Double p1, Point2D.Double p2) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -173,7 +174,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     }
 
     /* calculate (p1-p0)*(p3-p2) */
-    static double iprod1(DPoint p0, DPoint p1, DPoint p2, DPoint p3) {
+    static double iprod1(Point2D.Double p0, Point2D.Double p1, Point2D.Double p2, Point2D.Double p3) {
         double x1, y1, x2, y2;
 
         x1 = p1.x - p0.x;
@@ -185,14 +186,14 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     }
 
     /* calculate distance between two points */
-    static double ddist(DPoint p, DPoint q) {
+    static double ddist(Point2D.Double p, Point2D.Double q) {
         return Math.sqrt((p.x-q.x)*(p.x-q.x)+(p.y-q.y)*(p.y-q.y));
     }
 
     /* calculate point of a bezier Curve */
-    static DPoint bezier(double t, DPoint p0, DPoint p1, DPoint p2, DPoint p3) {
+    static Point2D.Double bezier(double t, Point2D.Double p0, Point2D.Double p1, Point2D.Double p2, Point2D.Double p3) {
         double s = 1-t;
-        DPoint res = new DPoint();
+        Point2D.Double res = new Point2D.Double();
 
         /* Note: a good optimizing compiler (such as gcc-3) reduces the
         following to 16 multiplications, using common subexpression
@@ -207,7 +208,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     /* calculate the point t in [0..1] on the (convex) bezier Curve
     (p0,p1,p2,p3) which is tangent to q1-q0. Return -1.0 if there is no
     solution in [0..1]. */
-    static double tangent(DPoint p0, DPoint p1, DPoint p2, DPoint p3, DPoint q0, DPoint q1) {
+    static double tangent(Point2D.Double p0, Point2D.Double p1, Point2D.Double p2, Point2D.Double p3, Point2D.Double q0, Point2D.Double q1) {
         double A, B, C;   /* (1-t)^2 A + 2(1-t)t B + t^2 C = 0 */
         double a, b, c;   /* a t^2 + b t + c = 0 */
         double d, s, r1, r2;
@@ -597,8 +598,8 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         int x0 = pp.x0;
         int y0 = pp.y0;
 
-        DPoint[] ctr = new DPoint[m];      /* ctr[m] */
-        DPoint[] dir = new DPoint[m];      /* dir[m] */
+        Point2D.Double[] ctr = new Point2D.Double[m];      /* ctr[m] */
+        Point2D.Double[] dir = new Point2D.Double[m];      /* dir[m] */
         Quadform[] q = new Quadform[m];     /* q[m] */
 
         for(int i = 0; i < q.length; i++) {
@@ -608,7 +609,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         double[] v = new double[3];
         double d;
         int i, j, k, l;
-        DPoint s = new DPoint();
+        Point2D.Double s = new Point2D.Double();
 
         pp.curve = new PrivCurve(m);
 
@@ -616,7 +617,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         for (i=0; i<m; i++) {
             j = po[Auxiliary.mod(i+1,m)];
             j = Auxiliary.mod(j-po[i],n)+po[i];
-            DPoint[] output = pointslope(pp, po[i], j);
+            Point2D.Double[] output = pointslope(pp, po[i], j);
             ctr[i] = output[0];
             dir[i] = output[1];
         }
@@ -650,7 +651,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         //the two lines.
         for (i=0; i<m; i++) {
             Quadform Q = new Quadform();
-            DPoint w = new DPoint();
+            Point2D.Double w = new Point2D.Double();
             double dx, dy;
             double det;
             double min, cand;   //minimum and candidate for minimum of quad. form */
@@ -772,7 +773,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     static void reverse(PrivCurve curve) {
         int m = curve.n;
         int i, j;
-        DPoint tmp;
+        Point2D.Double tmp;
 
         for (i=0, j=m-1; i<j; i++, j--) {
             tmp = curve.vertex[i];
@@ -787,7 +788,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
 
         int i, j, k;
         double dd, denom, alpha;
-        DPoint p2, p3, p4;
+        Point2D.Double p2, p3, p4;
 
         //examine each vertex and find its best fit
         for (i=0; i<m; i++) {
@@ -840,7 +841,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         int conv;
         int k, k1, k2, i1;
         double area, alpha, d, d1, d2;
-        DPoint p0, p1, p2, p3, pt;
+        Point2D.Double p0, p1, p2, p3, pt;
         double A, R, A1, A2, A3, A4;
         double s, t;
 
@@ -991,7 +992,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         int om;
         int i,j;
         Opti o = new Opti();
-        DPoint p0;
+        Point2D.Double p0;
         int i1;
         double area;
         double alpha;

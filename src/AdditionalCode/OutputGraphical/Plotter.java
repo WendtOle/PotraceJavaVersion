@@ -1,7 +1,7 @@
 package AdditionalCode.OutputGraphical;
 
 import AdditionalCode.Bitmap;
-import potraceOriginal.Path;
+import AdditionalCode.Path;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,5 @@
 package AdditionalCode.Input;
 
-
 import AdditionalCode.Bitmap;
 
 import javax.imageio.ImageIO;

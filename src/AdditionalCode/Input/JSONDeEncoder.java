@@ -1,6 +1,7 @@
 package AdditionalCode.Input;
 
 import AdditionalCode.Bitmap;
+import AdditionalCode.Path;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -74,33 +75,38 @@ public class JSONDeEncoder {
         return readBitmapFromJSon(file);
     }
 
-    public static MockupPath[] readTestDataFromJSon(File file) throws IOException, ParseException {
+    public static Path readTestDataFromJSon(File file) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object object = parser.parse(new FileReader(file));
 
         JSONObject jsonObject = (JSONObject) object;
         JSONArray testDataObject = (JSONArray) jsonObject.get("testData");
         int lengthOfPath = testDataObject.size();
-        MockupPath[] recoveredPath = new MockupPath[lengthOfPath];
-        for (int i = 0; i < lengthOfPath; i ++) {
-            JSONObject currentPath = (JSONObject) testDataObject.get(i);
-            int area = (int)(long)currentPath.get("area");
-            int sign = (int)(long)currentPath.get("sign");
-            int length = (int)(long)currentPath.get("length");
-            boolean hasChild = (boolean)currentPath.get("hasChild");
-            boolean hasSibling = (boolean)currentPath.get("hasSibling");
-            JSONArray pointsJSon = (JSONArray) currentPath.get("pt");
-            Point[] points = new Point[pointsJSon.size()];
-            for (int j = 0; j < pointsJSon.size(); j++) {
-                JSONObject currentPoint = (JSONObject) pointsJSon.get(j);
-                points[j] = new Point((int)(long)currentPoint.get("x"),(int)(long)currentPoint.get("y"));
-            }
-            recoveredPath[i] = new MockupPath(area,sign,length,hasChild,hasSibling,points);
-        }
+
+        Path recoveredPath = recoverPath(testDataObject,0,lengthOfPath);
         return recoveredPath;
     }
 
-    public static MockupPath[] readTestDataFromJSon(String fileName, String folderName) throws IOException, ParseException {
+    private static Path recoverPath(JSONArray testDataObject, int i, int lengthOfPath) {
+        JSONObject currentPath = (JSONObject) testDataObject.get(i);
+        int area = (int)(long)currentPath.get("area");
+        int sign = (int)(long)currentPath.get("sign");
+        int length = (int)(long)currentPath.get("length");
+        boolean hasChild = (boolean)currentPath.get("hasChild");
+        boolean hasSibling = (boolean)currentPath.get("hasSibling");
+        JSONArray pointsJSon = (JSONArray) currentPath.get("pt");
+        Point[] points = new Point[pointsJSon.size()];
+        for (int j = 0; j < pointsJSon.size(); j++) {
+            JSONObject currentPoint = (JSONObject) pointsJSon.get(j);
+            points[j] = new Point((int)(long)currentPoint.get("x"),(int)(long)currentPoint.get("y"));
+        }
+        Path next = null;
+        if(i + 1 < lengthOfPath)
+            next = recoverPath(testDataObject,i + 1,lengthOfPath);
+        return new Path(area,sign,length,hasChild,hasSibling,points,next);
+    }
+
+    public static Path readTestDataFromJSon(String fileName, String folderName) throws IOException, ParseException {
         File file = new File(folderName+"/"+fileName);
         return readTestDataFromJSon(file);
     }

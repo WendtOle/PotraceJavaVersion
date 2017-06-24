@@ -1,11 +1,13 @@
 package potraceOriginal;
 
+import java.awt.geom.Point2D;
+
 public class Auxiliary {
 
     /* range over the straight line segment [a,b] when lambda ranges over [0,1] */
 
-    static DPoint interval(double lambda, DPoint a, DPoint b) {
-        DPoint res = new DPoint();
+    static Point2D.Double interval(double lambda, Point2D.Double a, Point2D.Double b) {
+        Point2D.Double res = new Point2D.Double();
 
         res.x = a.x + lambda * (b.x - a.x);
         res.y = a.y + lambda * (b.y - a.y);

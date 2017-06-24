@@ -1,12 +1,12 @@
 package AdditionalCode.OutputGraphical;
 
-import potraceOriginal.DPoint;
-import potraceOriginal.Path;
+import AdditionalCode.Path;
 
 import java.awt.*;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 
 /**
  * Created by andreydelany on 06/04/2017.
@@ -39,9 +39,9 @@ public class DrawerPath {
     }
 
     private void drawPath(Path path) {
-        DPoint startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
+        Point2D.Double startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
         for (int i = 0; i < path.curve.n; i++) {
-            DPoint[] pointsOfCurrentCorner = path.curve.c[i];
+            Point2D.Double[] pointsOfCurrentCorner = path.curve.c[i];
             if (isStraightCorner(path.curve.tag[i]))
                 startPointForNextCorner = drawStraightCorner(startPointForNextCorner, pointsOfCurrentCorner);
             else
@@ -49,9 +49,9 @@ public class DrawerPath {
         }
     }
 
-    private DPoint getStartPointOfCurrentCurve(DPoint[][] curvesOfPath){
+    private Point2D.Double getStartPointOfCurrentCurve(Point2D.Double[][] curvesOfPath){
         int indexOfLastCurve = curvesOfPath.length - 1;
-        DPoint startPoint = curvesOfPath[indexOfLastCurve][2];
+        Point2D.Double startPoint = curvesOfPath[indexOfLastCurve][2];
         return startPoint;
     }
 
@@ -60,54 +60,54 @@ public class DrawerPath {
         return identifier == 2 ? true : false; //2 straight, 1 round
     }
 
-    private DPoint drawStraightCorner(DPoint C, DPoint[] pointsOfCorner){ //Angle ABC -> clockwise
-        DPoint B = pointsOfCorner[1];
-        DPoint A = pointsOfCorner[2];
+    private Point2D.Double drawStraightCorner(Point2D.Double C, Point2D.Double[] pointsOfCorner){ //Angle ABC -> clockwise
+        Point2D.Double B = pointsOfCorner[1];
+        Point2D.Double A = pointsOfCorner[2];
         drawLine(C,B);
         drawLine(B,A);
         return A;
     }
 
-    private void drawStraightCorner(DPoint[] pointsOfCorner,GeneralPath path){ //Angle ABC -> clockwise
-        DPoint B = pointsOfCorner[1];
-        DPoint A = pointsOfCorner[2];
+    private void drawStraightCorner(Point2D.Double[] pointsOfCorner,GeneralPath path){ //Angle ABC -> clockwise
+        Point2D.Double B = pointsOfCorner[1];
+        Point2D.Double A = pointsOfCorner[2];
         path.lineTo(scaleCoordinate(B.x),scaleCoordinate(B.y));
         path.lineTo(scaleCoordinate(A.x),scaleCoordinate(A.y));
     }
 
-    private DPoint drawRoundCorner(DPoint P0, DPoint[] pointsOfCorner) { //PO startPoint, P3 endPoint, P1 & P2 ControllPoint -> clockwise
-        DPoint P1 = pointsOfCorner[0];
-        DPoint P2 = pointsOfCorner[1];
-        DPoint P3 = pointsOfCorner[2];
+    private Point2D.Double drawRoundCorner(Point2D.Double P0, Point2D.Double[] pointsOfCorner) { //PO startPoint, P3 enPoint2D.Double, P1 & P2 ControllPoint -> clockwise
+        Point2D.Double P1 = pointsOfCorner[0];
+        Point2D.Double P2 = pointsOfCorner[1];
+        Point2D.Double P3 = pointsOfCorner[2];
         drawBezierCurve(P0,P1,P2,P3);
         return P3;
     }
 
-    private void drawRoundCorner(DPoint[] pointsOfCorner,GeneralPath shape) { //PO startPoint, P3 endPoint, P1 & P2 ControllPoint -> clockwise
-        DPoint P1 = pointsOfCorner[0];
-        DPoint P2 = pointsOfCorner[1];
-        DPoint P3 = pointsOfCorner[2];
+    private void drawRoundCorner(Point2D.Double[] pointsOfCorner,GeneralPath shape) { //PO startPoint, P3 enPoint2D.Double, P1 & P2 ControllPoint -> clockwise
+        Point2D.Double P1 = pointsOfCorner[0];
+        Point2D.Double P2 = pointsOfCorner[1];
+        Point2D.Double P3 = pointsOfCorner[2];
         shape.curveTo(scaleCoordinate(P1.x),scaleCoordinate(P1.y),scaleCoordinate(P2.x),scaleCoordinate(P2.y),scaleCoordinate(P3.x),scaleCoordinate(P3.y));
     }
 
-    private void drawLine(DPoint startIn, DPoint endIn){
-        DPoint start = scalePoint(startIn);
-        DPoint end = scalePoint(endIn);
+    private void drawLine(Point2D.Double startIn, Point2D.Double endIn){
+        Point2D.Double start = scalePoint(startIn);
+        Point2D.Double end = scalePoint(endIn);
         Shape line = new Line2D.Double(start.x,start.y,end.x,end.y);
         graphics.draw(line);
     };
 
-    private void drawBezierCurve(DPoint p0In, DPoint p1In, DPoint p2In, DPoint p3In) {
-        DPoint p0 = scalePoint(p0In);
-        DPoint p1 = scalePoint(p1In);
-        DPoint p2 = scalePoint(p2In);
-        DPoint p3 = scalePoint(p3In);
+    private void drawBezierCurve(Point2D.Double p0In, Point2D.Double p1In, Point2D.Double p2In, Point2D.Double p3In) {
+        Point2D.Double p0 = scalePoint(p0In);
+        Point2D.Double p1 = scalePoint(p1In);
+        Point2D.Double p2 = scalePoint(p2In);
+        Point2D.Double p3 = scalePoint(p3In);
         CubicCurve2D.Double bezierCurve = new CubicCurve2D.Double(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
         graphics.draw(bezierCurve);
     }
 
-    private DPoint scalePoint(DPoint point){
-        return new DPoint(point.x * scale, point.y * scale);
+    private Point2D.Double scalePoint(Point2D.Double point){
+        return new Point2D.Double(point.x * scale, point.y * scale);
     }
 
     private double scaleCoordinate(double coordinate){
@@ -115,11 +115,11 @@ public class DrawerPath {
     }
 
     private void drawShape(Path path) {
-        DPoint startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
+        Point2D.Double startPointForNextCorner = getStartPointOfCurrentCurve(path.curve.c);
         GeneralPath shape = new GeneralPath();
         shape.moveTo(scaleCoordinate(startPointForNextCorner.x),scaleCoordinate(startPointForNextCorner.y));
         for (int i = 0; i < path.curve.n; i++) {
-            DPoint[] pointsOfCurrentCorner = path.curve.c[i];
+            Point2D.Double[] pointsOfCurrentCorner = path.curve.c[i];
             if (isStraightCorner(path.curve.tag[i]))
                 drawStraightCorner(pointsOfCurrentCorner,shape);
             else

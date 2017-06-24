@@ -1,6 +1,6 @@
 package AdditionalCode.OutputGraphical;
 
-import potraceOriginal.*;
+import AdditionalCode.Path;
 
 import java.awt.*;
 
@@ -34,20 +34,20 @@ public class DrawerBitmap {
         }
 
         private void drawPath(Path path) {
-            Point startPoint = path.priv.pt[path.priv.len - 1];
-            for (int i = 0; i < path.priv.len; i++) {
-                Point currentPoint = path.priv.pt[i];
+            Point startPoint = path.pt[path.length - 1];
+            for (int i = 0; i < path.length; i++) {
+                Point currentPoint = path.pt[i];
                 drawLine(startPoint,currentPoint);
                 startPoint = currentPoint;
             }
         }
 
         private void drawPathAsPolygon(Path path) {
-            int amountOfPoints = path.priv.len;
+            int amountOfPoints = path.length;
             int xpoints[] = new int[amountOfPoints];
             int ypoints[] = new int[amountOfPoints];
             for (int i = 0; i < amountOfPoints; i++) {
-                Point currentPoint = path.priv.pt[i];
+                Point currentPoint = path.pt[i];
                 xpoints[i] = scaleCoordinate(currentPoint.x);
                 ypoints[i] = scaleCoordinate(currentPoint.y);
             }

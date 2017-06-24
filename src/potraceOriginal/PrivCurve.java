@@ -1,15 +1,17 @@
 package potraceOriginal;
 
+import java.awt.geom.Point2D;
+
 public class PrivCurve {
     int n;                                          //number of segments
     int[] tag;                                      //tag[n]: POTRACE_CORNER or POTRACE_CURVETO
-    DPoint[][] c;                                   //c[n][i]: control points.
+    Point2D.Double[][] c;                                   //c[n][i]: control points.
                                                     //[n][0] is unused for tag[n]=POTRACE_CORNER
                                                     //the remainder of this structure is special to potraceOriginal.PrivCurve, and is
                                                     //used in EPS debug output and special EPS "short coding". These
                                                     //fields are valid only if "alphacurve" is set.
     int alphacurve;                                 //have the following fields been initialized?
-    DPoint[] vertex;                                //for POTRACE_CORNER, this equals c[1]
+    Point2D.Double[] vertex;                                //for POTRACE_CORNER, this equals c[1]
     double[] alpha;                                 //only for POTRACE_CURVETO
     double[] alpha0;                                //"uncropped" alpha parameter - for debug output only
     double[] beta;
@@ -19,15 +21,15 @@ public class PrivCurve {
 
         tag = new int[n];
 
-        vertex = new DPoint[n];
+        vertex = new Point2D.Double[n];
         for (int i = 0; i < vertex.length; i++) {
-            vertex[i] = new DPoint();
+            vertex[i] = new Point2D.Double();
         }
 
-        c = new DPoint[n][3];
+        c = new Point2D.Double[n][3];
         for (int i = 0; i < n; i++)
             for (int j = 0; j < 3; j ++)
-                c[i][j] = new DPoint();
+                c[i][j] = new Point2D.Double();
 
         alpha = new double[n];
         alpha0 = new double[n];

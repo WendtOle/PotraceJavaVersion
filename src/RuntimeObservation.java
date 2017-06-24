@@ -3,7 +3,6 @@ import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
 import org.json.simple.parser.ParseException;
 import potraceOriginal.Param;
-import potraceOriginal.Path;
 import potraceOriginal.PotraceLib;
 
 import java.io.IOException;
@@ -47,8 +46,9 @@ public class RuntimeObservation {
     }
 
     private static long getTimeForOneRun() {
+        potraceOriginal.Bitmap translatedBitmap = BitmapTranslater.translateBitmapForOriginalCode(bitmap);
         long startTime = System.nanoTime();
-        Path path = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translatBitmapForOriginalCode(bitmap));
+        PotraceLib.potrace_trace(new Param(), translatedBitmap);
         long endTime = System.nanoTime();
         return (endTime - startTime);
     }

@@ -1,12 +1,12 @@
 import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
-import AdditionalCode.OutputConsol.PrinterPathStructure;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
+import AdditionalCode.Path;
+import AdditionalCode.PathTranslator;
 import org.json.simple.parser.ParseException;
 import potraceOriginal.Param;
-import potraceOriginal.Path;
 import potraceOriginal.PotraceLib;
 
 import java.io.IOException;
@@ -23,39 +23,30 @@ public class DemoRun {
     public static void main(String args[]) {
         loadBitmap();
 
-        path = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translatBitmapForOriginalCode(bitmap));
+        potraceOriginal.Path originalPath = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translateBitmapForOriginalCode(bitmap));
+        path = PathTranslator.originalPathToGeneralPath(originalPath);
 
-        //printPathStructurToConsole();
-        //printCurveDataToConsole();
         drawBitmap();
         drawPath();
         drawBoth();
     }
 
-   private static void printPathStructurToConsole(){
-       PrinterPathStructure printer = new PrinterPathStructure(path);
-       printer.print();
-   }
-
-   private static void printCurveDataToConsole() {
-       PrinterCurveData curvePrinter = new PrinterCurveData(path);
-       curvePrinter.print();
-   }
-
    private static void drawBitmap(){
        Plotter plotter = new Plotter(bitmap,path,PlotterOptionsEnum.BITMAP);
        plotter.plot();
    }
+
    private static void drawPath(){
        Plotter plotter = new Plotter(bitmap,path,PlotterOptionsEnum.PATH);
        plotter.plot();
-    }
-    private static void drawBoth(){
+   }
+
+   private static void drawBoth(){
         Plotter plotter = new Plotter(bitmap,path,PlotterOptionsEnum.BOTH);
         plotter.plot();
-    }
+   }
 
-    public static void loadBitmap() {
+   public static void loadBitmap() {
         try {
             bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFileName, bitMapFileFolder);
         } catch (IOException e) {
@@ -63,5 +54,5 @@ public class DemoRun {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    }
+   }
 }

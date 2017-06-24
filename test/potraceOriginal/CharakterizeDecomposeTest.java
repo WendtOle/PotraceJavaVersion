@@ -2,7 +2,8 @@ package potraceOriginal;
 
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
-import AdditionalCode.Input.MockupPath;
+import AdditionalCode.Path;
+import AdditionalCode.PathTranslator;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class CharakterizeDecomposeTest {
 
-    MockupPath[] arrayOfPathes;
+    Path arrayOfPathes;
     Path actualFirstPath;
 
     @Parameterized.Parameters(name = "Testing {index}. Bitmap")
@@ -42,9 +43,9 @@ public class CharakterizeDecomposeTest {
             testParameters = new Object[bitmapFiles.length][];
             for (int i = 0; i < bitmapFiles.length; i++) {
                 try {
-                    Bitmap bitmap = BitmapTranslater.translatBitmapForOriginalCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
-                    MockupPath[] pathes = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
-                    testParameters[i] = new Object[]{bitmap,pathes};
+                    Bitmap bitmap = BitmapTranslater.translateBitmapForOriginalCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
+                    Path path = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
+                    testParameters[i] = new Object[]{bitmap,path};
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -56,59 +57,64 @@ public class CharakterizeDecomposeTest {
     }
 
     public CharakterizeDecomposeTest(Bitmap bitmap,
-                                     MockupPath[] arrayOfPathes) {
+                                     Path expectedPath) {
 
-        this.arrayOfPathes = arrayOfPathes;
-        this.actualFirstPath = PotraceLib.potrace_trace(new Param(),bitmap);
-        //this.actualFirstPath  = Decompose.bm_to_pathlist(bitmap,new Param());
+        this.arrayOfPathes = expectedPath;
+        this.actualFirstPath = PathTranslator.originalPathToGeneralPath(PotraceLib.potrace_trace(new Param(),bitmap));
     }
 
     @Test
     public void checkThatAllPathesAreTheSame() {
         checkThatThereAreSameNumberOfPathes();
-        Path currentPath = actualFirstPath;
-        for (int indexOfCurrentPaht = 0; indexOfCurrentPaht < arrayOfPathes.length; indexOfCurrentPaht ++) {
-            MockupPath expectedPath = arrayOfPathes[indexOfCurrentPaht];
-            Path actualPath = currentPath;
-            comparePathes(indexOfCurrentPaht,expectedPath,actualPath);
-            currentPath = currentPath.next;
+
+        int index = 0;
+        Path currentExpectedPath = arrayOfPathes;
+        Path currentActualPath = actualFirstPath;
+        comparePathes(index,currentExpectedPath,currentActualPath);
+
+        while(currentExpectedPath.next != null) {
+            currentExpectedPath = currentExpectedPath.next;
+            currentActualPath = currentActualPath.next;
+            index ++;
+            comparePathes(index,currentExpectedPath,currentActualPath);
         }
     }
 
     private void checkThatThereAreSameNumberOfPathes() {
+        assertEquals("Number of Pathes", countPathes(arrayOfPathes),countPathes(actualFirstPath));
+    }
+
+    private int countPathes(Path path) {
         int actualAmountOfPathes = 1;
-        Path currentPath = actualFirstPath;
+        Path currentPath = path;
         while (currentPath.next != null) {
             actualAmountOfPathes ++;
             currentPath = currentPath.next;
         }
-        assertEquals("Number of Pathes", arrayOfPathes.length,actualAmountOfPathes);
+        return actualAmountOfPathes;
     }
 
-    private void comparePathes(int indexOfPath, MockupPath expectedPath, Path actualPath){
+    private void comparePathes(int indexOfPath, Path expectedPath, Path actualPath){
         compareSiblingChildStructure(indexOfPath,expectedPath,actualPath);
         compareGeneralPathInformations(indexOfPath,expectedPath,actualPath);
         comparePointsOfPath(indexOfPath,expectedPath,actualPath);
     }
 
-    private void compareSiblingChildStructure(int indexOfPath, MockupPath expectedPath, Path actualPath){
-        boolean actualHasChild = actualPath.childlist != null;
-        assertEquals("Childlist (" + indexOfPath+")", expectedPath.hasChild,actualHasChild);
-
-        boolean actualHasSibling = actualPath.sibling != null;
-        assertEquals("Sibling (" + indexOfPath+")", expectedPath.hasSibling,actualHasSibling);
+    private void compareSiblingChildStructure(int indexOfPath, Path expectedPath, Path actualPath){
+        assertEquals("Childlist (" + indexOfPath+")", expectedPath.hasChild,actualPath.hasChild);
+        assertEquals("Sibling (" + indexOfPath+")", expectedPath.hasSibling,actualPath.hasSibling);
     }
 
-    private void compareGeneralPathInformations(int indexOfPath, MockupPath expectedPath, Path actualPath){
+    private void compareGeneralPathInformations(int indexOfPath, Path expectedPath, Path actualPath){
         assertEquals("Area ("+indexOfPath+")",expectedPath.area,actualPath.area);
         assertEquals("Sign ("+indexOfPath+")",expectedPath.sign,actualPath.sign);
-        assertEquals("Length ("+indexOfPath+")",expectedPath.length,actualPath.priv.len);
+        assertEquals("Length ("+indexOfPath+")",expectedPath.length,actualPath.length);
     }
 
-    private void comparePointsOfPath(int indexOfPath, MockupPath expectedPath, Path actualPath){
+    private void comparePointsOfPath(int indexOfPath, Path expectedPath, Path actualPath){
         for(int indexOfCurrentPoint = 0; indexOfCurrentPoint < expectedPath.pt.length; indexOfCurrentPoint ++){
             Point expectedCurrentPoint = expectedPath.pt[indexOfCurrentPoint];
-            Point acutalCurrentPoint = actualPath.priv.pt[indexOfCurrentPoint];
+            Point acutalCurrentPoint = actualPath.pt[indexOfCurrentPoint];
             assertEquals("Point - " + indexOfCurrentPoint + " ("+indexOfPath + ")",expectedCurrentPoint,acutalCurrentPoint);
         }
     }

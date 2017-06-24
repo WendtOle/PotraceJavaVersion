@@ -1,6 +1,5 @@
 package AdditionalCode.OutputConsol;
 
-
 import AdditionalCode.Bitmap;
 
 /**

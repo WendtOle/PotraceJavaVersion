@@ -10,7 +10,7 @@ import java.io.IOException;
 public class TestDataGenerator {
 
     static Dimension dimesionsOfRandomBitmap = new Dimension(200,200);
-    static double noiseRatioOfRandomBitmap = 0.2;
+    static double noiseRatioOfRandomBitmap = 0.4;
     static String bitMapFileFolder = "testPictures";
 
     public static void main(String [] args) throws IOException, ParseException {
