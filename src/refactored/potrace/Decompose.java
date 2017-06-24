@@ -30,21 +30,7 @@ public class Decompose {
     }
 
 
-    /* ---------------------------------------------------------------------- */
-    /* Auxiliary Bitmap manipulations */
 
-    /* set the excess padding to 0 */
-    public static void bm_clearexcess(Bitmap bm) {
-        long mask;
-        int y;
-
-        if (bm.w % Bitmap.PIXELINWORD != 0) {
-            mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - (bm.w % Bitmap.PIXELINWORD));
-            for (y=0; y<bm.h; y++) {
-                bm.map[y * bm.dy + bm.dy - 1] = Bitmap.bm_index(bm,bm.w, y) & mask;
-            }
-        }
-    }
 
     /* clear the bm, assuming the bounding box is set correctly (faster
     than clearing the whole Bitmap) */
@@ -465,7 +451,7 @@ public class Decompose {
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
-        bm_clearexcess(bm1);
+        Bitmap.bm_clearexcess(bm1);
 
         // iterate through components
         x = 0;
