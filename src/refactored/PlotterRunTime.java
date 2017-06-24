@@ -1,4 +1,4 @@
-package original;
+package refactored;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

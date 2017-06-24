@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class TestDataGenerator {
 
-    static Dimension dimesionsOfRandomBitmap = new Dimension(200,200);
+    static Dimension dimesionsOfRandomBitmap = new Dimension(400,400);
     static double noiseRatioOfRandomBitmap = 0.4;
     static String bitMapFileFolder = "testPictures";
 

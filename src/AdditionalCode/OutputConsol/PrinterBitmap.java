@@ -60,7 +60,7 @@ public class PrinterBitmap {
         System.out.println("bm = bm_newCopied("+bitmap.width+","+bitmap.height+");");
 
         for(int i = 0; i < bitmap.potraceWords.length; i++) {
-            System.out.println("bm->potraceWords["+i+"] = 0x"+ Long.toHexString(bitmap.potraceWords[i]) + "l;");
+            System.out.println("bm->map["+i+"] = 0x"+ Long.toHexString(bitmap.potraceWords[i]) + "l;");
         }
     }
 

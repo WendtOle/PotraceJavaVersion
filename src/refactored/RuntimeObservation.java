@@ -1,4 +1,4 @@
-package original;
+package refactored;
 
 import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;

@@ -1,4 +1,4 @@
-package original.potrace;
+package refactored.potrace;
 
 import java.awt.*;
 
