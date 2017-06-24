@@ -72,10 +72,7 @@ public class Bitmap {
             BM_UPUT(x, y, b);
     }
 
-    /* clear the given Bitmap. Set all bits to c. Assumes a well-formed
-    Bitmap. */
-
-     void bm_clear(int c) {
+     void bm_clear_andSetToC(int c) {
         for (int y = 0; y < h; y ++) {
             for (int dyIndex = 0; dyIndex < dy; dyIndex ++) {
                 int clearedValue = (c == 1 ? -1 : 0);
@@ -86,8 +83,6 @@ public class Bitmap {
             }
         }
     }
-
-    /* duplicate the given Bitmap. Return NULL on error with errno set. Assumes a well-formed Bitmap. */
 
     public Bitmap bm_dup() {
         Bitmap bm1 = new Bitmap(this.w, this.h);

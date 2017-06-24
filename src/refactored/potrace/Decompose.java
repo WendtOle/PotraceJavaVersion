@@ -207,7 +207,7 @@ public class Decompose {
         Path hook_in, hook_out;         // for fast appending to linked original.potrace.List
         BBox bbox;
 
-        bm.bm_clear(0);
+        bm.bm_clear_andSetToC(0);
 
         // save original "next" pointers
 
