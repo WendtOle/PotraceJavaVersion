@@ -16,7 +16,8 @@ import java.util.Locale;
  */
 public class RuntimeObservation {
 
-    static int amountOfRuns = 100000;
+    static String type = "Refactored";
+    static int amountOfRuns = 10000000;
     static String bitmapFileName = "02.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
@@ -73,7 +74,8 @@ public class RuntimeObservation {
     }
 
     private static void showResults() {
+        System.out.println("\n" + type);
         System.out.println("\n Average Amount of MS Needed for One Run: " + msPerRun[99] + " ms");
-        PlotterRunTime.plot(amountOfRuns/100,msPerRun);
+        PlotterRunTime.plot(amountOfRuns/100,msPerRun, type);
     }
 }

@@ -9,14 +9,15 @@ import javafx.stage.Stage;
 
 public class PlotterRunTime extends Application {
 
-        public static final String title = "Line Chart";
+        public static String title = "Line Chart";
         public static final String xAxisLabel = "AmountOfRuns";
         public static String yAxisLabel = "MS per Run";
         public static int stepss;
 
         private static double[] dataY;
 
-        public static void plot(int steps, double[] yValues) {
+        public static void plot(int steps, double[] yValues, String name) {
+            title = name;
             dataY = yValues;
             stepss = steps;
             Application.launch(new String[0]);
