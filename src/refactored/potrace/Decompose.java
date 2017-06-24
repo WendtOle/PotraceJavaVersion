@@ -30,32 +30,6 @@ public class Decompose {
     }
 
     /* ---------------------------------------------------------------------- */
-    /* Auxiliary functions */
-
-    /* return the "majority" value of Bitmap bm at intersection (x,y). We
-    assume that the Bitmap is balanced at "radius" 1.  */
-
-    static boolean majority(Bitmap bm, int x, int y) {
-        int i, a, ct;
-
-        for (i=2; i<5; i++) { /* check at "radius" i */
-            ct = 0;
-            for (a=-i+1; a<=i-1; a++) {
-                ct += Bitmap.BM_GET(bm,x+a, y+i-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x+i-1, y+a-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x+a-1, y-i) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x-i, y+a) ? 1 : -1;
-            }
-            if (ct>0) {
-                return true;
-            } else if (ct<0) {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    /* ---------------------------------------------------------------------- */
     /* Decompose image into paths */
 
     /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
@@ -174,8 +148,8 @@ public class Decompose {
                         || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
                         || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
                         || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && detrand(x,y))
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && majority(bm, x, y))
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !majority(bm, x, y))) {
+                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && Bitmap.majority(bm, x, y))
+                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !Bitmap.majority(bm, x, y))) {
                     tmp = dirx;              /* right turn */
                     dirx = diry;
                     diry = -tmp;
