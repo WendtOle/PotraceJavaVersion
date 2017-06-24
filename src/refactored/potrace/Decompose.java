@@ -273,7 +273,7 @@ public class Decompose {
             }
 
             // clear bm
-            Bitmap.clear_bm_with_bbox(bm, bbox);
+            bm.clear_bm_with_bbox(bbox);
 
             // now schedule head->childlist and head->next for further
            // processing

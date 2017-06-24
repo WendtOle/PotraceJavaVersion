@@ -113,14 +113,14 @@ public class Bitmap {
         }
     }
 
-    static void clear_bm_with_bbox(Bitmap bm, BBox bbox) {
+    void clear_bm_with_bbox(BBox bbox) {
         int imin = (bbox.x0 / Bitmap.PIXELINWORD);
         int imax = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
         int i, y;
 
         for (y=bbox.y0; y<bbox.y1; y++) {
             for (i=imin; i<imax; i++) {
-                bm.map[y * bm.dy + i] = 0;
+                map[y * dy + i] = 0;
             }
         }
     }
