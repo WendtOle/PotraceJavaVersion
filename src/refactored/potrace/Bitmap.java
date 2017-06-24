@@ -128,16 +128,16 @@ public class Bitmap {
     /* return the "majority" value of Bitmap bm at intersection (x,y). We
     assume that the Bitmap is balanced at "radius" 1.  */
 
-    static boolean majority(Bitmap bm, int x, int y) {
+    boolean majority(int x, int y) {
         int i, a, ct;
 
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += Bitmap.BM_GET(bm,x+a, y+i-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x+i-1, y+a-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x+a-1, y-i) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x-i, y+a) ? 1 : -1;
+                ct += Bitmap.BM_GET(this,x+a, y+i-1) ? 1 : -1;
+                ct += Bitmap.BM_GET(this,x+i-1, y+a-1) ? 1 : -1;
+                ct += Bitmap.BM_GET(this,x+a-1, y-i) ? 1 : -1;
+                ct += Bitmap.BM_GET(this,x-i, y+a) ? 1 : -1;
             }
             if (ct>0) {
                 return true;

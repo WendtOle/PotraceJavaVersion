@@ -126,7 +126,7 @@ public class bitmapTest {
 
         for(int i = 0; i < 16; i++) {
             Bitmap.BM_PUT(testBitmap,points[i].x,points[i].y,false);
-            assertEquals("i: " + i,expectedOutcomes[i], Bitmap.majority(testBitmap, observationPoint.x, observationPoint.y));
+            assertEquals("i: " + i,expectedOutcomes[i], testBitmap.majority(observationPoint.x, observationPoint.y));
         }
     }
 }
