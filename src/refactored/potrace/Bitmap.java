@@ -60,16 +60,16 @@ public class Bitmap {
         bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] | bm_mask(x);
     }
 
-    private static void BM_UPUT(Bitmap bm, int x, int y, boolean b) {
+    void BM_UPUT(int x, int y, boolean b) {
         if (b)
-            BM_USET(bm,x, y);
+            BM_USET(this,x, y);
         else
-            BM_UCLR(bm, x, y);
+            BM_UCLR(this, x, y);
     }
 
     void BM_PUT(int x, int y, boolean b) {
         if (bm_safe(this, x, y))
-            BM_UPUT(this, x, y, b);
+            BM_UPUT(x, y, b);
     }
 
     /* clear the given Bitmap. Set all bits to c. Assumes a well-formed
