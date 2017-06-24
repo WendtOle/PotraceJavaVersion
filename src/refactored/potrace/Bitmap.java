@@ -32,12 +32,12 @@ public class Bitmap {
         return ((1L) << (PIXELINWORD-1-(x)));
     }
 
-    private static boolean BM_UGET(Bitmap bm, int x, int y) {
-        return(bm_index(bm, x, y) & bm_mask(x)) != 0;
+    boolean BM_UGET(int x, int y) {
+        return(bm_index(this, x, y) & bm_mask(x)) != 0;
     }
 
     boolean BM_GET(int x, int y) {
-        return bm_safe(this, x, y) ? BM_UGET(this, x, y) : false;
+        return bm_safe(this, x, y) ? BM_UGET(x, y) : false;
     }
 
     private static long[] bm_scanline(Bitmap bm, int y) {
