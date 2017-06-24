@@ -73,10 +73,10 @@ public class bitmapTest {
     @Test
     public void test_bm_clear() throws Exception {
         Bitmap testBitMap = new Bitmap(10,10);
-        Bitmap.bm_clear(testBitMap,1);
+        testBitMap.bm_clear(1);
         assertEquals(true, Bitmap.BM_GET(testBitMap,0,0));
         assertEquals(true, Bitmap.BM_GET(testBitMap,9,9));
-        Bitmap.bm_clear(testBitMap,0);
+        testBitMap.bm_clear(0);
         assertEquals(false, Bitmap.BM_GET(testBitMap,0,0));
         assertEquals(false, Bitmap.BM_GET(testBitMap,4,4));
     }
@@ -122,7 +122,7 @@ public class bitmapTest {
 
         Boolean[] expectedOutcomes = new Boolean[]{true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false};
 
-        Bitmap.bm_clear(testBitmap,1);
+        testBitmap.bm_clear(1);
 
         for(int i = 0; i < 16; i++) {
             Bitmap.BM_PUT(testBitmap,points[i].x,points[i].y,false);

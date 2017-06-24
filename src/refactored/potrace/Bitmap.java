@@ -75,17 +75,16 @@ public class Bitmap {
     /* clear the given Bitmap. Set all bits to c. Assumes a well-formed
     Bitmap. */
 
-    static Bitmap bm_clear(Bitmap bm, int c) {
-        for (int y = 0; y < bm.h; y ++) {
-            for (int dy = 0; dy < bm.dy; dy ++) {
+     void bm_clear(int c) {
+        for (int y = 0; y < h; y ++) {
+            for (int dyIndex = 0; dyIndex < dy; dyIndex ++) {
                 int clearedValue = (c == 1 ? -1 : 0);
-                if (dy == bm.dy -1) {
-                    clearedValue =  clearedValue << (PIXELINWORD - (bm.w % PIXELINWORD));
+                if (dyIndex == dy -1) {
+                    clearedValue =  clearedValue << (PIXELINWORD - (w % PIXELINWORD));
                 }
-                bm.map[bm.dy * y + dy] = clearedValue;
+                map[dy * y + dyIndex] = clearedValue;
             }
         }
-        return bm;
     }
 
     /* duplicate the given Bitmap. Return NULL on error with errno set. Assumes a well-formed Bitmap. */

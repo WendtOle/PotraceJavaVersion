@@ -207,7 +207,7 @@ public class Decompose {
         Path hook_in, hook_out;         // for fast appending to linked original.potrace.List
         BBox bbox;
 
-        bm = Bitmap.bm_clear(bm, 0);
+        bm.bm_clear(0);
 
         // save original "next" pointers
 

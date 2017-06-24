@@ -94,7 +94,7 @@ public class decomposeTest {
     @Test
     public void test_xor_path() {
         Bitmap testBitmap = new Bitmap(3,3);
-        Bitmap.bm_clear(testBitmap,1);
+        testBitmap.bm_clear(1);
         testBitmap.bm_clearexcess();
         Bitmap.BM_PUT(testBitmap,1,1,false);
 
