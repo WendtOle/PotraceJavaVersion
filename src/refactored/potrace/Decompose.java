@@ -378,7 +378,7 @@ public class Decompose {
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
-        Bitmap.bm_clearexcess(bm1);
+        bm1.bm_clearexcess();
 
         // iterate through components
         x = 0;
