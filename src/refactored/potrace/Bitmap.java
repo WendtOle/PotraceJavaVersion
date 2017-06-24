@@ -52,8 +52,8 @@ public class Bitmap {
         return bm_scanline(bm, y)[x/PIXELINWORD];
     }
 
-    private static void BM_UCLR(Bitmap bm, int x, int y){
-        bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] & ~bm_mask(x);
+    void BM_UCLR(int x, int y){
+        map[y * dy + (x / PIXELINWORD)] = map[y * dy + (x / PIXELINWORD)] & ~bm_mask(x);
     }
 
     void BM_USET(int x, int y) {
@@ -64,7 +64,7 @@ public class Bitmap {
         if (b)
             BM_USET(x, y);
         else
-            BM_UCLR(this, x, y);
+            BM_UCLR(x, y);
     }
 
     void BM_PUT(int x, int y, boolean b) {
