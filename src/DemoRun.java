@@ -1,7 +1,6 @@
 import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
-import AdditionalCode.OutputConsol.PrinterCurveData;
 import AdditionalCode.OutputConsol.PrinterPathStructure;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
