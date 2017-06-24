@@ -1,4 +1,4 @@
-package potraceOriginal;
+package original.potrace;
 
 /* the type of (affine) quadratic forms, represented as symmetric 3x3
    matrices.  The value of the quadratic form at a vector (x,y) is v^t

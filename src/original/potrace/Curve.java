@@ -1,4 +1,4 @@
-package potraceOriginal;
+package original.potrace;
 
 import java.awt.geom.Point2D;
 

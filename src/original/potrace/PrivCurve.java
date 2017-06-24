@@ -1,4 +1,4 @@
-package potraceOriginal;
+package original.potrace;
 
 import java.awt.geom.Point2D;
 
@@ -7,7 +7,7 @@ public class PrivCurve {
     int[] tag;                                      //tag[n]: POTRACE_CORNER or POTRACE_CURVETO
     Point2D.Double[][] c;                                   //c[n][i]: control points.
                                                     //[n][0] is unused for tag[n]=POTRACE_CORNER
-                                                    //the remainder of this structure is special to potraceOriginal.PrivCurve, and is
+                                                    //the remainder of this structure is special to original.potrace.PrivCurve, and is
                                                     //used in EPS debug output and special EPS "short coding". These
                                                     //fields are valid only if "alphacurve" is set.
     int alphacurve;                                 //have the following fields been initialized?

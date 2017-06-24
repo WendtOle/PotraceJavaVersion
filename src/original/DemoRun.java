@@ -1,3 +1,5 @@
+package original;
+
 import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
@@ -6,8 +8,8 @@ import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
 import AdditionalCode.Path;
 import AdditionalCode.PathTranslator;
 import org.json.simple.parser.ParseException;
-import potraceOriginal.Param;
-import potraceOriginal.PotraceLib;
+import original.potrace.Param;
+import original.potrace.PotraceLib;
 
 import java.io.IOException;
 
@@ -23,7 +25,7 @@ public class DemoRun {
     public static void main(String args[]) {
         loadBitmap();
 
-        potraceOriginal.Path originalPath = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translateBitmapForOriginalCode(bitmap));
+        original.potrace.Path originalPath = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translateBitmapForOriginalCode(bitmap));
         path = PathTranslator.originalPathToGeneralPath(originalPath);
 
         drawBitmap();

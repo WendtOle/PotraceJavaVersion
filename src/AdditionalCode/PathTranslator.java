@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class PathTranslator {
 
-    public static Path originalPathToGeneralPath(potraceOriginal.Path path) {
+    public static Path originalPathToGeneralPath(original.potrace.Path path) {
         int area = path.area;
         int sign = path.sign;
         int length = path.priv.len;

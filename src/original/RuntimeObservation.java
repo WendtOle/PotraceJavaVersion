@@ -1,9 +1,11 @@
+package original;
+
 import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
 import org.json.simple.parser.ParseException;
-import potraceOriginal.Param;
-import potraceOriginal.PotraceLib;
+import original.potrace.Param;
+import original.potrace.PotraceLib;
 
 import java.io.IOException;
 
@@ -46,7 +48,7 @@ public class RuntimeObservation {
     }
 
     private static long getTimeForOneRun() {
-        potraceOriginal.Bitmap translatedBitmap = BitmapTranslater.translateBitmapForOriginalCode(bitmap);
+        original.potrace.Bitmap translatedBitmap = BitmapTranslater.translateBitmapForOriginalCode(bitmap);
         long startTime = System.nanoTime();
         PotraceLib.potrace_trace(new Param(), translatedBitmap);
         long endTime = System.nanoTime();

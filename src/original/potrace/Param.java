@@ -1,4 +1,4 @@
-package potraceOriginal;
+package original.potrace;
 
 public class Param {
 
