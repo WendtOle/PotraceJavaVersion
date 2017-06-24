@@ -343,7 +343,7 @@ public class Decompose {
         for (int y=XY.y; y>=0; y--) {
             for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {
 
-                if (bm.bm_index(bm,x, y) != 0) {
+                if (bm.bm_index(x, y) != 0) {
                     while (!bm.BM_GET(x, y)) {
                         x++;
                     }

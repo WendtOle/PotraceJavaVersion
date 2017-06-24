@@ -33,7 +33,7 @@ public class Bitmap {
     }
 
     boolean BM_UGET(int x, int y) {
-        return(bm_index(this, x, y) & bm_mask(x)) != 0;
+        return(bm_index( x, y) & bm_mask(x)) != 0;
     }
 
     boolean BM_GET(int x, int y) {
@@ -48,7 +48,7 @@ public class Bitmap {
         return scanLine;
     }
 
-    long bm_index(Bitmap bm, int x, int y) {
+    long bm_index(int x, int y) {
         return bm_scanline(y)[x/PIXELINWORD];
     }
 
@@ -107,7 +107,7 @@ public class Bitmap {
         if (w % PIXELINWORD != 0) {
             mask = BM_ALLBITS << (PIXELINWORD - (w % PIXELINWORD));
             for (y=0; y<h; y++) {
-                map[y * dy + dy - 1] = bm_index(this,w, y) & mask;
+                map[y * dy + dy - 1] = bm_index(w, y) & mask;
             }
         }
     }
