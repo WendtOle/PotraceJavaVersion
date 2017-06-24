@@ -54,19 +54,19 @@ public class bitmapTest {
     @Test
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        Bitmap.BM_PUT(smallTestBitmap,0,0,true);
+        smallTestBitmap.BM_PUT(0,0,true);
         assertEquals("with one original word in line: ",true, Bitmap.BM_GET(smallTestBitmap,0,0));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
-        Bitmap.BM_PUT(bigTestBitmap,99,99,true);
+        bigTestBitmap.BM_PUT(99,99,true);
         assertEquals("with more than one original word in line: ",true, Bitmap.BM_GET(bigTestBitmap,99,99));
     }
 
     @Test
     public void testBMClearFuntion() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        Bitmap.BM_PUT(smallTestBitmap,0,0,true);
-        Bitmap.BM_PUT(smallTestBitmap,0,0,false);
+        smallTestBitmap.BM_PUT(0,0,true);
+        smallTestBitmap.BM_PUT(0,0,false);
         assertEquals(false, Bitmap.BM_GET(smallTestBitmap,0,0));
     }
 
@@ -101,8 +101,8 @@ public class bitmapTest {
         box.y0 = 1;
         box.y1 = 2;
         Bitmap testBitmap = new Bitmap(3,3);
-        Bitmap.BM_PUT(testBitmap,0,2,true);
-        Bitmap.BM_PUT(testBitmap,1,1,true);
+        testBitmap.BM_PUT(0,2,true);
+        testBitmap.BM_PUT(1,1,true);
 
         testBitmap.clear_bm_with_bbox(box);
 
@@ -125,7 +125,7 @@ public class bitmapTest {
         testBitmap.bm_clear(1);
 
         for(int i = 0; i < 16; i++) {
-            Bitmap.BM_PUT(testBitmap,points[i].x,points[i].y,false);
+            testBitmap.BM_PUT(points[i].x,points[i].y,false);
             assertEquals("i: " + i,expectedOutcomes[i], testBitmap.majority(observationPoint.x, observationPoint.y));
         }
     }

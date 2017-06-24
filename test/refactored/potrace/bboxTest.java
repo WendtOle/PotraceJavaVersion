@@ -12,7 +12,7 @@ public class bboxTest {
     public void test_setbbox_path() {
         BBox box;
         Bitmap testBitmap = new Bitmap(3,3);
-        Bitmap.BM_PUT(testBitmap,1,1,true);
+        testBitmap.BM_PUT(1,1,true);
 
         Path path = Decompose.findpath(testBitmap,2,2,43,4);
 

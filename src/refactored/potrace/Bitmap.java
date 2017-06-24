@@ -67,9 +67,9 @@ public class Bitmap {
             BM_UCLR(bm, x, y);
     }
 
-    public static void BM_PUT(Bitmap bm, int x, int y, boolean b) {
-        if (bm_safe(bm, x, y))
-            BM_UPUT(bm, x, y, b);
+    void BM_PUT(int x, int y, boolean b) {
+        if (bm_safe(this, x, y))
+            BM_UPUT(this, x, y, b);
     }
 
     /* clear the given Bitmap. Set all bits to c. Assumes a well-formed

@@ -13,7 +13,7 @@ public class decomposeTest {
     @Test
     public void test_findnextWithNextPointInSameLine() {
         Bitmap testBitmap = new Bitmap(70,1);
-        Bitmap.BM_PUT(testBitmap,65,0,true);
+        testBitmap.BM_PUT(65,0,true);
 
         Point point = new Point(0,0);
         assertTrue("found sth: ", Decompose.findnext(testBitmap,point));
@@ -23,8 +23,8 @@ public class decomposeTest {
     @Test
     public void test_findnextWithNextPointNotInSameLine() {
         Bitmap testBitmap = new Bitmap(128,2);
-        Bitmap.BM_PUT(testBitmap,97,0,true);
-        Bitmap.BM_PUT(testBitmap,99,0,true);
+        testBitmap.BM_PUT(97,0,true);
+        testBitmap.BM_PUT(99,0,true);
 
         Point point = new Point(0,1);
         assertTrue("found sth: ", Decompose.findnext(testBitmap,point));
@@ -39,8 +39,8 @@ public class decomposeTest {
     @Test
     public void test_findPath_boundary() {
         Bitmap testBitmap = new Bitmap(128,1);
-        Bitmap.BM_PUT(testBitmap,63,0,true);
-        Bitmap.BM_PUT(testBitmap,64,0,true);
+        testBitmap.BM_PUT(63,0,true);
+        testBitmap.BM_PUT(64,0,true);
 
         Point[] expectedPath = new Point[]{ new Point(63,1), new Point(63,0),
                 new Point(64,0),new Point(65,0),new Point(65,1),
@@ -59,8 +59,8 @@ public class decomposeTest {
     @Test
     public void testXorToRefFirstIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        Bitmap.BM_PUT(testBitmap,0,0,true);
-        Bitmap.BM_PUT(testBitmap,1,0,true);
+        testBitmap.BM_PUT(0,0,true);
+        testBitmap.BM_PUT(1,0,true);
         Decompose.xor_to_ref(testBitmap,0,0,1);
         assertEquals("firstPixel: ", false, Bitmap.BM_GET(testBitmap,0,0));
         assertEquals("secondPixel: ", false, Bitmap.BM_GET(testBitmap,1,0));
@@ -69,8 +69,8 @@ public class decomposeTest {
     @Test
     public void testXorToRefHorizontalSecondIF() {
         Bitmap testBitmap = new Bitmap(70,1);
-        Bitmap.BM_PUT(testBitmap,68,0,true);
-        Bitmap.BM_PUT(testBitmap,69,0,true);
+        testBitmap.BM_PUT(68,0,true);
+        testBitmap.BM_PUT(69,0,true);
         Decompose.xor_to_ref(testBitmap,70,0,0);
         assertEquals(-1l,testBitmap.map[0]);
         assertEquals("64: ", true, Bitmap.BM_GET(testBitmap,64,0));
@@ -84,8 +84,8 @@ public class decomposeTest {
     @Test
     public void testXorToRefHorizontalThirdIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        Bitmap.BM_PUT(testBitmap,0,0,true);
-        Bitmap.BM_PUT(testBitmap,1,0,true);
+        testBitmap.BM_PUT(0,0,true);
+        testBitmap.BM_PUT(1,0,true);
         Decompose.xor_to_ref(testBitmap,2,0,0);
         assertEquals("firstPixel: ", false, Bitmap.BM_GET(testBitmap,0,0));
         assertEquals("secondPixel: ", false, Bitmap.BM_GET(testBitmap,1,0));
@@ -96,7 +96,7 @@ public class decomposeTest {
         Bitmap testBitmap = new Bitmap(3,3);
         testBitmap.bm_clear(1);
         testBitmap.bm_clearexcess();
-        Bitmap.BM_PUT(testBitmap,1,1,false);
+        testBitmap.BM_PUT(1,1,false);
 
         Path path = Decompose.findpath(testBitmap,0,3,43,4);
         Decompose.xor_path(testBitmap,path);
