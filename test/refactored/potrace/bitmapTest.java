@@ -109,4 +109,3 @@ public class bitmapTest {
         assertTrue("thirdline: ",testBitmap.map[2] == 0x8000000000000000l);
     }
 }
-

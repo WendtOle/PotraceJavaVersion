@@ -29,11 +29,6 @@ public class Decompose {
         return z == 1 ? true : false;
     }
 
-
-
-
-
-
     /* ---------------------------------------------------------------------- */
     /* Auxiliary functions */
 
@@ -122,36 +117,7 @@ public class Decompose {
         }
     }
 
-    /* Find the bounding box of a given Path. Path is assumed to be of
-    non-zero length. */
 
-    static void setbbox_path(BBox bbox, Path p) {
-        int x, y;
-        int k;
-
-        bbox.y0 = Integer.MAX_VALUE;
-        bbox.y1 = 0;
-        bbox.x0 = Integer.MAX_VALUE;
-        bbox.x1 = 0;
-
-        for (k=0; k<p.priv.len; k++) {
-            x = p.priv.pt[k].x;
-            y = p.priv.pt[k].y;
-
-            if (x < bbox.x0) {
-                bbox.x0 = x;
-            }
-            if (x > bbox.x1) {
-                bbox.x1 = x;
-            }
-            if (y < bbox.y0) {
-                bbox.y0 = y;
-            }
-            if (y > bbox.y1) {
-                bbox.y1 = y;
-            }
-        }
-    }
 
     /* compute a Path in the given pixmap, separating black from white.
     Start Path at the point (x0,x1), which must be an upper left corner
@@ -299,7 +265,7 @@ public class Decompose {
 
             // render Path
             xor_path(bm, head);
-            setbbox_path(bbox, head);
+            BBox.setbbox_path(bbox, head);
 
             /* now do insideness test for each element of cur; append it to
             head->childlist if it's inside head, else append it to
