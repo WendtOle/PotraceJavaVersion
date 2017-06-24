@@ -56,13 +56,13 @@ public class Bitmap {
         bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] & ~bm_mask(x);
     }
 
-    private static void BM_USET(Bitmap bm, int x, int y) {
-        bm.map[y * bm.dy + (x / PIXELINWORD)] = bm.map[y * bm.dy + (x / PIXELINWORD)] | bm_mask(x);
+    void BM_USET(int x, int y) {
+        map[y * dy + (x / PIXELINWORD)] = map[y * dy + (x / PIXELINWORD)] | bm_mask(x);
     }
 
     void BM_UPUT(int x, int y, boolean b) {
         if (b)
-            BM_USET(this,x, y);
+            BM_USET(x, y);
         else
             BM_UCLR(this, x, y);
     }
