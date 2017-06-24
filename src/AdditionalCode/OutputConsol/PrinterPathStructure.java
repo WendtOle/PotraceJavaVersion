@@ -1,4 +1,4 @@
-package OutputConsol;
+package AdditionalCode.OutputConsol;
 
 import potraceOriginal.Path;
 
@@ -36,7 +36,7 @@ public class PrinterPathStructure {
         }
     }
 
-    public void recursiveCallToPrintNextPolygon(Path current, int ebene, boolean isTheSame, BranchTypEnum follower) {
+    private void recursiveCallToPrintNextPolygon(Path current, int ebene, boolean isTheSame, BranchTypEnum follower) {
         printIntroduction(follower);
         printActualPathData(current);
         callFollowingPolygon(current,ebene, isTheSame,follower);

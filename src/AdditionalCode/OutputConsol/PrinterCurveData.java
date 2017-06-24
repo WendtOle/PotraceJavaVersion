@@ -1,4 +1,4 @@
-package OutputConsol;
+package AdditionalCode.OutputConsol;
 
 import potraceOriginal.Path;
 

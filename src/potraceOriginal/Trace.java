@@ -12,7 +12,7 @@ public class Trace {
 /* Auxiliary functions */
 
 /* return a direction that is 90 degrees counterclockwise from p2-p0,
-but then restricted to one of the major wind directions (n, nw, w, etc) */
+but then restricted to one of the major wind directions (n, nw, width, etc) */
     static Point dorth_infty(DPoint p0, DPoint p2) {
         Point r = new Point();
 
@@ -124,7 +124,7 @@ but then restricted to one of the major wind directions (n, nw, w, etc) */
         return output;
     }
 
-    //Apply quadratic form Q to vector w = (w.x,w.y)
+    //Apply quadratic form Q to vector width = (width.x,width.y)
     static double quadform(Quadform Q, DPoint w) {
         double[] v = new double[3];
         int i, j;

@@ -1,6 +1,7 @@
-package OutputConsol;
+package AdditionalCode.OutputConsol;
 
-import potraceOriginal.Bitmap;
+
+import AdditionalCode.Bitmap;
 
 /**
  * Created by andreydelany on 21/03/2017.
@@ -24,14 +25,14 @@ public class PrinterBitmap {
     }
 
     private void printLinesOfBitmap() {
-        for(int y = bitmap.h-1; y >=0; y --) {
+        for(int y = bitmap.height-1; y >=0; y --) {
             printPotraceWordsInCurrentLine(y);
             printBoundary();
         }
     }
 
     private void printPotraceWordsInCurrentLine(int currentLine) {
-        for(int dy = 0; dy < bitmap.dy; dy ++) {
+        for(int dy = 0; dy < bitmap.potraceWordsInOneLine; dy ++) {
             String currentPotraceWord = getCurrentPotraceWord(currentLine,dy);
             fillUpPotraceWordWithZeros(currentPotraceWord);
             printPotraceWord(currentPotraceWord);
@@ -39,7 +40,7 @@ public class PrinterBitmap {
     }
 
     private String getCurrentPotraceWord(int currentLine, int currentPotraceWord) {
-        return Long.toBinaryString(bitmap.map[currentLine*bitmap.dy + currentPotraceWord]);
+        return Long.toBinaryString(bitmap.potraceWords[currentLine*bitmap.potraceWordsInOneLine + currentPotraceWord]);
     }
 
     private void fillUpPotraceWordWithZeros(String currentPotraceWord) {
@@ -57,18 +58,18 @@ public class PrinterBitmap {
     }
 
     public void printBitmapArchitectureForCUnderstandable() {
-        System.out.println("bm = bm_newCopied("+bitmap.w+","+bitmap.h+");");
+        System.out.println("bm = bm_newCopied("+bitmap.width+","+bitmap.height+");");
 
-        for(int i = 0; i < bitmap.map.length; i++) {
-            System.out.println("bm->map["+i+"] = 0x"+ Long.toHexString(bitmap.map[i]) + "l;");
+        for(int i = 0; i < bitmap.potraceWords.length; i++) {
+            System.out.println("bm->potraceWords["+i+"] = 0x"+ Long.toHexString(bitmap.potraceWords[i]) + "l;");
         }
     }
 
     public void printBitmapArchitectureForJavaUnderstandable() {
-        System.out.println("Bitmap bitmap = new Bitmap("+bitmap.w+","+bitmap.h+");");
+        System.out.println("Bitmap bitmap = new Bitmap("+bitmap.width+","+bitmap.height+");");
 
-        for(int i = 0; i < bitmap.map.length; i++) {
-            System.out.println("bitmap.map["+i+"] = 0x"+ Long.toHexString(bitmap.map[i]) + "l;");
+        for(int i = 0; i < bitmap.potraceWords.length; i++) {
+            System.out.println("bitmap.potraceWords["+i+"] = 0x"+ Long.toHexString(bitmap.potraceWords[i]) + "l;");
         }
     }
 

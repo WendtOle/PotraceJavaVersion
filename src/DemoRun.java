@@ -1,10 +1,11 @@
-import Input.JSONDeEncoder;
-import OutputConsol.PrinterCurveData;
-import OutputConsol.PrinterPathStructure;
-import OutputGraphical.Plotter;
-import OutputGraphical.PlotterOptionsEnum;
+import AdditionalCode.Bitmap;
+import AdditionalCode.BitmapTranslater;
+import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.OutputConsol.PrinterCurveData;
+import AdditionalCode.OutputConsol.PrinterPathStructure;
+import AdditionalCode.OutputGraphical.Plotter;
+import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
 import org.json.simple.parser.ParseException;
-import potraceOriginal.Bitmap;
 import potraceOriginal.Param;
 import potraceOriginal.Path;
 import potraceOriginal.PotraceLib;
@@ -15,7 +16,7 @@ import java.io.IOException;
  * Created by andreydelany on 21.06.17.
  */
 public class DemoRun {
-    static String bitmapFileName = "01.json";
+    static String bitmapFileName = "10.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static Path path;
@@ -23,7 +24,7 @@ public class DemoRun {
     public static void main(String args[]) {
         loadBitmap();
 
-        path = PotraceLib.potrace_trace(new Param(),bitmap);
+        path = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translatBitmapForOriginalCode(bitmap));
 
         //printPathStructurToConsole();
         //printCurveDataToConsole();

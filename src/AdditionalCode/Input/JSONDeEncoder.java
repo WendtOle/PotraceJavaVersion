@@ -1,10 +1,10 @@
-package Input;
+package AdditionalCode.Input;
 
+import AdditionalCode.Bitmap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import potraceOriginal.Bitmap;
 
 import java.awt.*;
 import java.io.File;
@@ -18,15 +18,15 @@ import java.io.IOException;
  */
 public class JSONDeEncoder {
 
-    public static void bitmapToJSon(Bitmap bitmap,String folderName) throws IOException {
+    public static void bitmapToJSon(Bitmap bitmap, String folderName) throws IOException {
         String name = getNameForNewBitmap(folderName);
 
         JSONObject bitmapObject = new JSONObject();
-        bitmapObject.put("width",bitmap.w);
-        bitmapObject.put("height",bitmap.h);
+        bitmapObject.put("width",bitmap.width);
+        bitmapObject.put("height",bitmap.height);
         JSONArray map = new JSONArray();
-        for(int i = 0; i < bitmap.map.length; i++) {
-            map.add(bitmap.map[i]);
+        for(int i = 0; i < bitmap.potraceWords.length; i++) {
+            map.add(bitmap.potraceWords[i]);
         }
         bitmapObject.put("map", map);
 
@@ -65,7 +65,7 @@ public class JSONDeEncoder {
         int height = (int)(long)bitmapObject.get("height");
         long[] map = objectToLongArray(bitmapObject.get("map"));
         Bitmap bitmap = new Bitmap(width,height);
-        bitmap.map = map;
+        bitmap.potraceWords = map;
         return bitmap;
     }
 

@@ -1,7 +1,8 @@
 package potraceOriginal;
 
-import Input.JSONDeEncoder;
-import Input.MockupPath;
+import AdditionalCode.BitmapTranslater;
+import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.Input.MockupPath;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +42,7 @@ public class CharakterizeDecomposeTest {
             testParameters = new Object[bitmapFiles.length][];
             for (int i = 0; i < bitmapFiles.length; i++) {
                 try {
-                    Bitmap bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]);
+                    Bitmap bitmap = BitmapTranslater.translatBitmapForOriginalCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
                     MockupPath[] pathes = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
                     testParameters[i] = new Object[]{bitmap,pathes};
                 } catch (ParseException e) {
@@ -58,7 +59,8 @@ public class CharakterizeDecomposeTest {
                                      MockupPath[] arrayOfPathes) {
 
         this.arrayOfPathes = arrayOfPathes;
-        this.actualFirstPath  = Decompose.bm_to_pathlist(bitmap,new Param());
+        this.actualFirstPath = PotraceLib.potrace_trace(new Param(),bitmap);
+        //this.actualFirstPath  = Decompose.bm_to_pathlist(bitmap,new Param());
     }
 
     @Test

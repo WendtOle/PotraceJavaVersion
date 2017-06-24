@@ -1,4 +1,4 @@
-package OutputConsol;
+package AdditionalCode.OutputConsol;
 
 /**
  * Created by andreydelany on 21/03/2017.

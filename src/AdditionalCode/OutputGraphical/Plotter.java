@@ -1,6 +1,6 @@
-package OutputGraphical;
+package AdditionalCode.OutputGraphical;
 
-import potraceOriginal.Bitmap;
+import AdditionalCode.Bitmap;
 import potraceOriginal.Path;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class Plotter {
     static int boarderVertically = 23;
 
 
-    public Plotter(Bitmap bitmap, Path path,PlotterOptionsEnum option){
+    public Plotter(Bitmap bitmap, Path path, PlotterOptionsEnum option){
         this.path = path;
         this.option = option;
         setOptimalScale(bitmap);
@@ -32,8 +32,8 @@ public class Plotter {
     };
 
     private void setOptimalScale(Bitmap bitmap) {
-        double scaleWidth = dimensionsOfWindow.width / bitmap.w;
-        double scaleHeight = dimensionsOfWindow.height / bitmap.h;
+        double scaleWidth = dimensionsOfWindow.width / bitmap.width;
+        double scaleHeight = dimensionsOfWindow.height / bitmap.height;
 
         if (scaleHeight < scaleWidth) {
             this.scale = scaleHeight;
@@ -43,8 +43,8 @@ public class Plotter {
     }
 
     private void updateDimensionOfWindow(Bitmap bitmap) {
-        dimensionsOfWindow.width = (int)(bitmap.w * scale) + boarderHorizontally;
-        dimensionsOfWindow.height = (int)(bitmap.h * scale) + boarderVertically;
+        dimensionsOfWindow.width = (int)(bitmap.width * scale) + boarderHorizontally;
+        dimensionsOfWindow.height = (int)(bitmap.height * scale) + boarderVertically;
     }
 
     public void plot() {

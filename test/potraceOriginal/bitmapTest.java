@@ -11,8 +11,8 @@ public class bitmapTest {
         Bitmap testBitmap = new Bitmap();
         assertEquals("width: ", 0,testBitmap.w);
         assertEquals("height: ", 0,testBitmap.h);
-        assertEquals("dy: ", 0,testBitmap.dy);
-        assertEquals("map: ", null,testBitmap.map);
+        assertEquals("potraceWordsInOneLine: ", 0,testBitmap.dy);
+        assertEquals("potraceWords: ", null,testBitmap.map);
     }
 
     @Test
@@ -20,8 +20,8 @@ public class bitmapTest {
         Bitmap testBitmap = new Bitmap(100,100);
         assertEquals("width: ", 100,testBitmap.w);
         assertEquals("height: ", 100,testBitmap.h);
-        assertEquals("dy: ", 2,testBitmap.dy);
-        assertEquals("map: ", 200,testBitmap.map.length);
+        assertEquals("potraceWordsInOneLine: ", 2,testBitmap.dy);
+        assertEquals("potraceWords: ", 200,testBitmap.map.length);
     }
 
     @Test
@@ -85,8 +85,8 @@ public class bitmapTest {
         Bitmap copiedBitmap = originalBitmap.bm_dup();
 
         assertFalse("reference: ", originalBitmap == copiedBitmap);
-        assertArrayEquals("map: ",originalBitmap.map,copiedBitmap.map);
-        assertEquals("dy: ",originalBitmap.dy, copiedBitmap.dy);
+        assertArrayEquals("potraceWords: ",originalBitmap.map,copiedBitmap.map);
+        assertEquals("potraceWordsInOneLine: ",originalBitmap.dy, copiedBitmap.dy);
         assertEquals("height: ",originalBitmap.h, copiedBitmap.h);
         assertEquals("width: ",originalBitmap.w, copiedBitmap.w);
     }

@@ -1,4 +1,4 @@
-package OutputGraphical;
+package AdditionalCode.OutputGraphical;
 
 /**
  * Created by andreydelany on 22.06.17.

@@ -1,6 +1,7 @@
-import Input.JSONDeEncoder;
+import AdditionalCode.Bitmap;
+import AdditionalCode.BitmapTranslater;
+import AdditionalCode.Input.JSONDeEncoder;
 import org.json.simple.parser.ParseException;
-import potraceOriginal.Bitmap;
 import potraceOriginal.Param;
 import potraceOriginal.Path;
 import potraceOriginal.PotraceLib;
@@ -47,7 +48,7 @@ public class RuntimeObservation {
 
     private static long getTimeForOneRun() {
         long startTime = System.nanoTime();
-        Path path = PotraceLib.potrace_trace(new Param(),bitmap);
+        Path path = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translatBitmapForOriginalCode(bitmap));
         long endTime = System.nanoTime();
         return (endTime - startTime);
     }

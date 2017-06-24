@@ -1,4 +1,4 @@
-package OutputGraphical;
+package AdditionalCode.OutputGraphical;
 
 import potraceOriginal.DPoint;
 import potraceOriginal.Path;

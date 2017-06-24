@@ -8,7 +8,7 @@ public class Bitmap {
 
     public int w, h;              /* width and height, in pixels */
     public int dy;                /* words per scanline (not bytes) */
-    public long[] map;             /* raw data, dy*h words */
+    public long[] map;             /* raw data, potraceWordsInOneLine*height words */
 
 
     public Bitmap() {};
