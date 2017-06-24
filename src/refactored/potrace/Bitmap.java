@@ -20,7 +20,7 @@ public class Bitmap {
     }
 
     /* macros for accessing pixel at index (x,y). U* macros omit the bounds check. */
-    private static boolean bm_range(int x, int a) {
+    boolean bm_range(int x, int a) {
         return (x) >= 0 && (x) < (a);
     }
 
@@ -28,7 +28,7 @@ public class Bitmap {
         return bm_range(x, w) && bm_range(y, h);
     }
 
-    static long bm_mask(int x) {
+    long bm_mask(int x) {
         return ((1L) << (PIXELINWORD-1-(x)));
     }
 

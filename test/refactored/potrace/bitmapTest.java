@@ -45,10 +45,11 @@ public class bitmapTest {
 
     @Test
     public void testMaskFuntion() {
-        assertEquals("at position 0: ",0x8000000000000000l, Bitmap.bm_mask(0));
-        assertEquals("at position 1: ",0x4000000000000000l, Bitmap.bm_mask(1));
-        assertEquals("at position 64 -> 0: ",0x8000000000000000l, Bitmap.bm_mask(64));
-        assertEquals("at position 63: ",0x1, Bitmap.bm_mask(63));
+        Bitmap bitmap = new Bitmap();
+        assertEquals("at position 0: ",0x8000000000000000l, bitmap.bm_mask(0));
+        assertEquals("at position 1: ",0x4000000000000000l, bitmap.bm_mask(1));
+        assertEquals("at position 64 -> 0: ",0x8000000000000000l, bitmap.bm_mask(64));
+        assertEquals("at position 63: ",0x1, bitmap.bm_mask(63));
     }
 
     @Test
