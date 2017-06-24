@@ -32,20 +32,7 @@ public class Decompose {
 
 
 
-    /* clear the bm, assuming the bounding box is set correctly (faster
-    than clearing the whole Bitmap) */
 
-    static void clear_bm_with_bbox(Bitmap bm, BBox bbox) {
-        int imin = (bbox.x0 / Bitmap.PIXELINWORD);
-        int imax = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
-        int i, y;
-
-        for (y=bbox.y0; y<bbox.y1; y++) {
-            for (i=imin; i<imax; i++) {
-                bm.map[y * bm.dy + i] = 0;
-            }
-        }
-    }
 
     /* ---------------------------------------------------------------------- */
     /* Auxiliary functions */
@@ -346,7 +333,7 @@ public class Decompose {
             }
 
             // clear bm
-            clear_bm_with_bbox(bm, bbox);
+            Bitmap.clear_bm_with_bbox(bm, bbox);
 
             // now schedule head->childlist and head->next for further
            // processing

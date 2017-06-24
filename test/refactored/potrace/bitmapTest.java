@@ -90,5 +90,23 @@ public class bitmapTest {
         assertEquals("height: ",originalBitmap.h, copiedBitmap.h);
         assertEquals("width: ",originalBitmap.w, copiedBitmap.w);
     }
+
+    @Test
+    public void test_clear_bm_with_bbox() {
+        BBox box = new BBox();
+        box.x0 = 2;
+        box.x1 = 3;
+        box.y0 = 1;
+        box.y1 = 2;
+        Bitmap testBitmap = new Bitmap(3,3);
+        Bitmap.BM_PUT(testBitmap,0,2,true);
+        Bitmap.BM_PUT(testBitmap,1,1,true);
+
+        Bitmap.clear_bm_with_bbox(testBitmap,box);
+
+        assertTrue("firstline: ",testBitmap.map[0] == 0);
+        assertTrue("secondline: ",testBitmap.map[1] == 0);
+        assertTrue("thirdline: ",testBitmap.map[2] == 0x8000000000000000l);
+    }
 }
 
