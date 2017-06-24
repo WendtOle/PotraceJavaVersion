@@ -40,16 +40,16 @@ public class Bitmap {
         return bm_safe(this, x, y) ? BM_UGET(x, y) : false;
     }
 
-    private static long[] bm_scanline(Bitmap bm, int y) {
-        long[] scanLine = new long[bm.dy];
-        for (int i = 0; i < bm.dy ; i ++) {
-            scanLine[i] = bm.map[(y * bm.dy) + i];
+    long[] bm_scanline(int y) {
+        long[] scanLine = new long[dy];
+        for (int i = 0; i < dy ; i ++) {
+            scanLine[i] = map[(y * dy) + i];
         }
         return scanLine;
     }
 
-    public static long bm_index(Bitmap bm, int x, int y) {
-        return bm_scanline(bm, y)[x/PIXELINWORD];
+    long bm_index(Bitmap bm, int x, int y) {
+        return bm_scanline(y)[x/PIXELINWORD];
     }
 
     void BM_UCLR(int x, int y){
