@@ -5,18 +5,15 @@ public class BBox {
 
     public BBox(){};
 
-    /* Find the bounding box of a given Path. Path is assumed to be of
-    non-zero length. */
-
-    public void setToBoundingBoxOfPath(Path p) {
+    public void setToBoundingBoxOfPath(Path path) {
         y0 = Integer.MAX_VALUE;
         y1 = 0;
         x0 = Integer.MAX_VALUE;
         x1 = 0;
 
-        for (int k=0; k<p.priv.len; k++) {
-            int x = p.priv.pt[k].x;
-            int y = p.priv.pt[k].y;
+        for (int k = 0; k < path.priv.len; k ++) {
+            int x = path.priv.pt[k].x;
+            int y = path.priv.pt[k].y;
 
             if (x < x0) {
                 x0 = x;
