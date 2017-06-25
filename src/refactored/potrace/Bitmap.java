@@ -108,7 +108,7 @@ public class Bitmap {
         }
     }
 
-    void clear_bm_with_bbox(BBox bbox) {
+    void clearBitmapWithBBox(BBox bbox) {
         int imin = (bbox.x0 / Bitmap.PIXELINWORD);
         int imax = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
         int i, y;

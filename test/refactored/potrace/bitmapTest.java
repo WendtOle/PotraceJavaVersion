@@ -105,7 +105,7 @@ public class bitmapTest {
         testBitmap.BM_PUT(0,2,true);
         testBitmap.BM_PUT(1,1,true);
 
-        testBitmap.clear_bm_with_bbox(box);
+        testBitmap.clearBitmapWithBBox(box);
 
         assertTrue("firstline: ",testBitmap.words[0] == 0);
         assertTrue("secondline: ",testBitmap.words[1] == 0);
