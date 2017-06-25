@@ -35,7 +35,8 @@ public class Bitmap {
     }
 
     private boolean getPixelValueWithoutBoundChecking(int x, int y) {
-        return(getWordWherePixelIsContained( x, y) & getMaskForPosition(x)) != 0;
+        long pixelValue = getWordWherePixelIsContained( x, y) & getMaskForPosition(x);
+        return(pixelValue != 0);
     }
 
     boolean getPixelValue(int x, int y) {
