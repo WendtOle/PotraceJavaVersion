@@ -170,28 +170,20 @@ public class Bitmap {
         }
     }
 
-    /* a Path is represented as an array of points, which are thought to
-    lie on the corners of pixels (not on their centers). The Path point
-    (x,y) is the lower left corner of the pixel (x,y). Paths are
-    represented by the len/pt components of a path_t object (which
-    also stores other information about the Path) */
-
     /* xor the given pixmap with the interior of the given Path. Note: the
     Path must be within the dimensions of the pixmap. */
 
-    public void xor_path(Path p) {
-        int xa, x, y, k, y1;
-
-        if (p.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
+    public void xor_path(Path path) {
+        if (path.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
             return;
         }
 
-        y1 = p.priv.pt[p.priv.len-1].y;
-        xa = p.priv.pt[0].x & - Bitmap.PIXELINWORD;
+        int y1 = path.priv.pt[path.priv.len-1].y;
+        int xa = path.priv.pt[0].x & - Bitmap.PIXELINWORD;
 
-        for (k=0; k<p.priv.len; k++) {
-            x = p.priv.pt[k].x;
-            y = p.priv.pt[k].y;
+        for (int k = 0; k < path.priv.len; k ++) {
+            int x = path.priv.pt[k].x;
+            int y = path.priv.pt[k].y;
 
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
