@@ -6,9 +6,9 @@ public class Bitmap {
     static long BM_ALLBITS = (~0);
     static long BM_HIBIT = 1 << PIXELINWORD -1;
 
-    public int width, height;              /* width and height, in pixels */
-    public int wordsPerScanLine;                /* words per scanline (not bytes) */
-    public long[] words;             /* raw data, potraceWordsInOneLine*height words */
+    public int width, height;
+    public int wordsPerScanLine;
+    public long[] words;
 
 
     public Bitmap() {};
