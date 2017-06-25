@@ -39,7 +39,10 @@ public class Bitmap {
     }
 
     boolean getPixelValue(int x, int y) {
-        return isPixelInRange(x, y) ? getPixelValueWithoutBoundChecking(x, y) : false;
+        if (isPixelInRange(x,y))
+            return getPixelValueWithoutBoundChecking(x,y);
+        else
+            return false;
     }
 
     private long[] getLineWherePixelIsContained(int y) {
