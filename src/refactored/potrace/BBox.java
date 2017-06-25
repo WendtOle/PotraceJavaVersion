@@ -9,17 +9,14 @@ public class BBox {
     public BBox(){};
 
     public BBox(Path p) {
-        int x, y;
-        int k;
-
         y0 = Integer.MAX_VALUE;
         y1 = 0;
         x0 = Integer.MAX_VALUE;
         x1 = 0;
 
-        for (k=0; k<p.priv.len; k++) {
-            x = p.priv.pt[k].x;
-            y = p.priv.pt[k].y;
+        for (int k=0; k<p.priv.len; k++) {
+            int x = p.priv.pt[k].x;
+            int y = p.priv.pt[k].y;
 
             if (x < x0) {
                 x0 = x;
