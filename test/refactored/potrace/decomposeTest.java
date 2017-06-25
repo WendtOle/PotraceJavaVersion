@@ -61,7 +61,7 @@ public class decomposeTest {
         Bitmap testBitmap = new Bitmap(2,1);
         testBitmap.setPixelToValue(0,0,true);
         testBitmap.setPixelToValue(1,0,true);
-        Bitmap.xor_to_ref(testBitmap,0,0,1);
+        testBitmap.xor_to_ref(0,0,1);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
     }
@@ -71,7 +71,7 @@ public class decomposeTest {
         Bitmap testBitmap = new Bitmap(70,1);
         testBitmap.setPixelToValue(68,0,true);
         testBitmap.setPixelToValue(69,0,true);
-        Bitmap.xor_to_ref(testBitmap,70,0,0);
+        testBitmap.xor_to_ref(70,0,0);
         assertEquals(-1l,testBitmap.words[0]);
         assertEquals("64: ", true, testBitmap.getPixelValue(64,0));
         assertEquals("65: ", true, testBitmap.getPixelValue(65,0));
@@ -86,7 +86,7 @@ public class decomposeTest {
         Bitmap testBitmap = new Bitmap(2,1);
         testBitmap.setPixelToValue(0,0,true);
         testBitmap.setPixelToValue(1,0,true);
-        Bitmap.xor_to_ref(testBitmap,2,0,0);
+        testBitmap.xor_to_ref(2,0,0);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
     }

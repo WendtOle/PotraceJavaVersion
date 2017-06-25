@@ -145,28 +145,28 @@ public class Bitmap {
     /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
     must be a multiple of BM_WORDBITS. */
 
-    static void xor_to_ref(Bitmap bm, int x, int y, int xa) {
+    void xor_to_ref(int x, int y, int xa) {
         int xhi = x & - Bitmap.PIXELINWORD;
         int xlo = x & (Bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
         int i;
 
         if (xhi<xa) {
             for (i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (bm.wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
-                bm.words[accessIndex] = bm.words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                int accessIndex = (wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
+                words[accessIndex] = words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
             }
         } else {
             for (i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (bm.wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
-                bm.words[accessIndex] = bm.words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                int accessIndex = (wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
+                words[accessIndex] = words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
             }
         }
 
         // note: the following "if" is needed because x86 treats a<<b as
         //a<<(b&31). I spent hours looking for this bug.
         if (xlo > 0) {
-            int accessIndex = (bm.wordsPerScanLine * y) + (xhi / Bitmap.PIXELINWORD);
-            bm.words[accessIndex] = bm.words[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
+            int accessIndex = (wordsPerScanLine * y) + (xhi / Bitmap.PIXELINWORD);
+            words[accessIndex] = words[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
         }
     }
 
@@ -195,7 +195,7 @@ public class Bitmap {
 
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                xor_to_ref(this, x, Auxiliary.min(y,y1), xa);
+                xor_to_ref( x, Auxiliary.min(y,y1), xa);
                 y1 = y;
             }
         }
