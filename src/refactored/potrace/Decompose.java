@@ -254,20 +254,20 @@ public class Decompose {
 
                 if (p.priv.pt[0].y <= bbox.y0) {
                 //Todo find out what that if condition is for
-                    head.next = List.insertElementAtTheEndOfList(p,head.next);
+                    head.next = Path.insertElementAtTheEndOfList(p,head.next);
 	                // append the remainder of the original.potrace.List to hook_out
-                    head.next = List.insertListAtTheEndOfList(cur,head.next);
-                    //head.next = List.insertListAtTheEndOfList(cur,head.next);
+                    head.next = Path.insertListAtTheEndOfList(cur,head.next);
+                    //head.next = Path.insertListAtTheEndOfList(cur,head.next);
 
                     break;
 
                 }
                 if (bm.getPixelValue(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
-                    head.childlist = List.insertElementAtTheEndOfList(p,head.childlist);
+                    head.childlist = Path.insertElementAtTheEndOfList(p,head.childlist);
 
                 } else {
 
-                    head.next = List.insertElementAtTheEndOfList(p,head.next);
+                    head.next = Path.insertElementAtTheEndOfList(p,head.next);
 
                 }
             }
@@ -312,16 +312,16 @@ public class Decompose {
             for (p=heap; p != null; p=p.sibling) {
                 // p is a positive Path
                 // append to linked original.potrace.List
-                plist = List.insertElementAtTheEndOfList(p, plist);
+                plist = Path.insertElementAtTheEndOfList(p, plist);
 
                 // go through its children
                 for (p1=p.childlist; p1 != null; p1=p1.sibling) {
 	                // append to linked original.potrace.List
-                    plist = List.insertElementAtTheEndOfList(p1, plist);
+                    plist = Path.insertElementAtTheEndOfList(p1, plist);
 	                // append its childlist to heap, if non-empty
 
                     if (p1.childlist != null) {
-                        heap1 = List.insertElementAtTheEndOfList(p1.childlist,heap1);
+                        heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
                     }
                 }
             }
@@ -399,7 +399,7 @@ public class Decompose {
             if (p.area > param.turdsize) {
 
                 //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
-                plist = List.insertElementAtTheEndOfList(p,plist);
+                plist = Path.insertElementAtTheEndOfList(p,plist);
             }
         }
 
