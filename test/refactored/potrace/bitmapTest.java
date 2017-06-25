@@ -36,50 +36,50 @@ public class bitmapTest {
     @Test
     public void testBmSafeAndBmRange() {
         Bitmap testBitmap = new Bitmap(10,10);
-        assertTrue("first inside: ", testBitmap.bm_safe(0,0));
-        assertTrue("second inside: ", testBitmap.bm_safe(9,9));
-        assertFalse("first outside: ", testBitmap.bm_safe(10,10));
-        assertFalse("second outside: ", testBitmap.bm_safe(10,1));
-        assertFalse("third outside: ", testBitmap.bm_safe(-1,1));
+        assertTrue("first inside: ", testBitmap.isPixelInRange(0,0));
+        assertTrue("second inside: ", testBitmap.isPixelInRange(9,9));
+        assertFalse("first outside: ", testBitmap.isPixelInRange(10,10));
+        assertFalse("second outside: ", testBitmap.isPixelInRange(10,1));
+        assertFalse("third outside: ", testBitmap.isPixelInRange(-1,1));
     }
 
     @Test
     public void testMaskFuntion() {
         Bitmap bitmap = new Bitmap();
-        assertEquals("at position 0: ",0x8000000000000000l, bitmap.bm_mask(0));
-        assertEquals("at position 1: ",0x4000000000000000l, bitmap.bm_mask(1));
-        assertEquals("at position 64 -> 0: ",0x8000000000000000l, bitmap.bm_mask(64));
-        assertEquals("at position 63: ",0x1, bitmap.bm_mask(63));
+        assertEquals("at position 0: ",0x8000000000000000l, bitmap.getMaskForPosition(0));
+        assertEquals("at position 1: ",0x4000000000000000l, bitmap.getMaskForPosition(1));
+        assertEquals("at position 64 -> 0: ",0x8000000000000000l, bitmap.getMaskForPosition(64));
+        assertEquals("at position 63: ",0x1, bitmap.getMaskForPosition(63));
     }
 
     @Test
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        smallTestBitmap.BM_PUT(0,0,true);
-        assertEquals("with one original word in line: ",true, smallTestBitmap.BM_GET(0,0));
+        smallTestBitmap.setPixelToValue(0,0,true);
+        assertEquals("with one original word in line: ",true, smallTestBitmap.getPixelValue(0,0));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
-        bigTestBitmap.BM_PUT(99,99,true);
-        assertEquals("with more than one original word in line: ",true,bigTestBitmap.BM_GET(99,99));
+        bigTestBitmap.setPixelToValue(99,99,true);
+        assertEquals("with more than one original word in line: ",true,bigTestBitmap.getPixelValue(99,99));
     }
 
     @Test
     public void testBMClearFuntion() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        smallTestBitmap.BM_PUT(0,0,true);
-        smallTestBitmap.BM_PUT(0,0,false);
-        assertEquals(false, smallTestBitmap.BM_GET(0,0));
+        smallTestBitmap.setPixelToValue(0,0,true);
+        smallTestBitmap.setPixelToValue(0,0,false);
+        assertEquals(false, smallTestBitmap.getPixelValue(0,0));
     }
 
     @Test
     public void test_bm_clear() throws Exception {
         Bitmap testBitMap = new Bitmap(10,10);
         testBitMap.setWholeBitmapToSpecificValue(1);
-        assertEquals(true, testBitMap.BM_GET(0,0));
-        assertEquals(true, testBitMap.BM_GET(9,9));
+        assertEquals(true, testBitMap.getPixelValue(0,0));
+        assertEquals(true, testBitMap.getPixelValue(9,9));
         testBitMap.setWholeBitmapToSpecificValue(0);
-        assertEquals(false, testBitMap.BM_GET(0,0));
-        assertEquals(false, testBitMap.BM_GET(4,4));
+        assertEquals(false, testBitMap.getPixelValue(0,0));
+        assertEquals(false, testBitMap.getPixelValue(4,4));
     }
 
     @Test
@@ -102,8 +102,8 @@ public class bitmapTest {
         box.y0 = 1;
         box.y1 = 2;
         Bitmap testBitmap = new Bitmap(3,3);
-        testBitmap.BM_PUT(0,2,true);
-        testBitmap.BM_PUT(1,1,true);
+        testBitmap.setPixelToValue(0,2,true);
+        testBitmap.setPixelToValue(1,1,true);
 
         testBitmap.clearBitmapWithBBox(box);
 
@@ -126,7 +126,7 @@ public class bitmapTest {
         testBitmap.setWholeBitmapToSpecificValue(1);
 
         for(int i = 0; i < 16; i++) {
-            testBitmap.BM_PUT(points[i].x,points[i].y,false);
+            testBitmap.setPixelToValue(points[i].x,points[i].y,false);
             assertEquals("i: " + i,expectedOutcomes[i], testBitmap.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y));
         }
     }

@@ -19,29 +19,28 @@ public class Bitmap {
         this.wordsPerScanLine = (width - 1) / PIXELINWORD + 1;
         this.words = new long[this.wordsPerScanLine * this.height];
     }
-
-    /* macros for accessing pixel at index (x,y). U* macros omit the bounds check. */
-    private boolean bm_range(int x, int a) {
-        return (x) >= 0 && (x) < (a);
+    
+    private boolean isCoordinateInRange(int coordinate, int upperBound) {
+        return (coordinate) >= 0 && (coordinate) < (upperBound);
     }
 
-    boolean bm_safe(int x, int y) {
-        return bm_range(x, width) && bm_range(y, height);
+    boolean isPixelInRange(int x, int y) {
+        return isCoordinateInRange(x, width) && isCoordinateInRange(y, height);
     }
 
-    long bm_mask(int x) {
-        return ((1L) << (PIXELINWORD-1-(x)));
+    long getMaskForPosition(int position) {
+        return ((1L) << (PIXELINWORD-1-(position)));
     }
 
-    private boolean BM_UGET(int x, int y) {
-        return(bm_index( x, y) & bm_mask(x)) != 0;
+    private boolean getPixelValueWithoutBoundChecking(int x, int y) {
+        return(getWordWherePixelIsContained( x, y) & getMaskForPosition(x)) != 0;
     }
 
-    boolean BM_GET(int x, int y) {
-        return bm_safe(x, y) ? BM_UGET(x, y) : false;
+    boolean getPixelValue(int x, int y) {
+        return isPixelInRange(x, y) ? getPixelValueWithoutBoundChecking(x, y) : false;
     }
 
-    private long[] bm_scanline(int y) {
+    private long[] getLineWherePixelIsContained(int y) {
         long[] scanLine = new long[wordsPerScanLine];
         for (int i = 0; i < wordsPerScanLine; i ++) {
             scanLine[i] = words[(y * wordsPerScanLine) + i];
@@ -49,28 +48,28 @@ public class Bitmap {
         return scanLine;
     }
 
-    long bm_index(int x, int y) {
-        return bm_scanline(y)[x/PIXELINWORD];
+    long getWordWherePixelIsContained(int x, int y) {
+        return getLineWherePixelIsContained(y)[x/PIXELINWORD];
     }
 
-    private void BM_UCLR(int x, int y){
-        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] & ~bm_mask(x);
+    private void clearPixel(int x, int y){
+        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] & ~getMaskForPosition(x);
     }
 
-    private void BM_USET(int x, int y) {
-        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] | bm_mask(x);
+    private void fillPixel(int x, int y) {
+        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] | getMaskForPosition(x);
     }
 
-    private void BM_UPUT(int x, int y, boolean b) {
-        if (b)
-            BM_USET(x, y);
+    private void setPixelToValueWithoutBoundChecking(int x, int y, boolean shallPixelFilled) {
+        if (shallPixelFilled)
+            fillPixel(x, y);
         else
-            BM_UCLR(x, y);
+            clearPixel(x, y);
     }
 
-    void BM_PUT(int x, int y, boolean b) {
-        if (bm_safe(x, y))
-            BM_UPUT(x, y, b);
+    void setPixelToValue(int x, int y, boolean b) {
+        if (isPixelInRange(x, y))
+            setPixelToValueWithoutBoundChecking(x, y, b);
     }
 
      void setWholeBitmapToSpecificValue(int c) {
@@ -102,7 +101,7 @@ public class Bitmap {
         if (width % PIXELINWORD != 0) {
             mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
             for (int y = 0; y < height; y ++) {
-                words[y * wordsPerScanLine + wordsPerScanLine - 1] = bm_index(width, y) & mask;
+                words[y * wordsPerScanLine + wordsPerScanLine - 1] = getWordWherePixelIsContained(width, y) & mask;
             }
         }
     }
@@ -126,10 +125,10 @@ public class Bitmap {
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += BM_GET(x+a, y+i-1) ? 1 : -1;
-                ct += BM_GET(x+i-1, y+a-1) ? 1 : -1;
-                ct += BM_GET(x+a-1, y-i) ? 1 : -1;
-                ct += BM_GET(x-i, y+a) ? 1 : -1;
+                ct += getPixelValue(x+a, y+i-1) ? 1 : -1;
+                ct += getPixelValue(x+i-1, y+a-1) ? 1 : -1;
+                ct += getPixelValue(x+a-1, y-i) ? 1 : -1;
+                ct += getPixelValue(x-i, y+a) ? 1 : -1;
             }
             if (ct>0) {
                 return true;

@@ -140,8 +140,8 @@ public class Decompose {
             }
 
             /* determine next direction */
-            c = bm.BM_GET(x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
-            d = bm.BM_GET(x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
+            c = bm.getPixelValue(x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
+            d = bm.getPixelValue(x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
 
             if (c && !d) {               /* ambiguous turn */
                 if (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
@@ -262,7 +262,7 @@ public class Decompose {
                     break;
 
                 }
-                if (bm.BM_GET(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
+                if (bm.getPixelValue(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
                     head.childlist = List.elementInsertAtTheLastNextOfList(p,head.childlist);
 
                 } else {
@@ -343,8 +343,8 @@ public class Decompose {
         for (int y=XY.y; y>=0; y--) {
             for (int x = x0; x<bm.width && x>=0; x+=bm.PIXELINWORD) {
 
-                if (bm.bm_index(x, y) != 0) {
-                    while (!bm.BM_GET(x, y)) {
+                if (bm.getWordWherePixelIsContained(x, y) != 0) {
+                    while (!bm.getPixelValue(x, y)) {
                         x++;
                     }
 	                /* found */
@@ -387,7 +387,7 @@ public class Decompose {
         while ((findnext(bm1,xy))) {
             // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
             // mit dem nachgucken nach dem sign in der original Bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
-            sign = bm.BM_GET(xy.x, xy.y) ? '+' : '-';
+            sign = bm.getPixelValue(xy.x, xy.y) ? '+' : '-';
 
             // calculate the Path
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
