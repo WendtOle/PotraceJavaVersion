@@ -29,70 +29,6 @@ public class Decompose {
         return z == 1 ? true : false;
     }
 
-    /* ---------------------------------------------------------------------- */
-    /* Decompose image into paths */
-
-    /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
-    must be a multiple of BM_WORDBITS. */
-
-    static void xor_to_ref(Bitmap bm, int x, int y, int xa) {
-        int xhi = x & - Bitmap.PIXELINWORD;
-        int xlo = x & (Bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
-        int i;
-
-        if (xhi<xa) {
-            for (i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (bm.wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
-                bm.words[accessIndex] = bm.words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
-            }
-        } else {
-            for (i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (bm.wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
-                bm.words[accessIndex] = bm.words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
-            }
-        }
-
-        // note: the following "if" is needed because x86 treats a<<b as
-        //a<<(b&31). I spent hours looking for this bug.
-        if (xlo > 0) {
-            int accessIndex = (bm.wordsPerScanLine * y) + (xhi / Bitmap.PIXELINWORD);
-            bm.words[accessIndex] = bm.words[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
-        }
-    }
-
-    /* a Path is represented as an array of points, which are thought to
-    lie on the corners of pixels (not on their centers). The Path point
-    (x,y) is the lower left corner of the pixel (x,y). Paths are
-    represented by the len/pt components of a path_t object (which
-    also stores other information about the Path) */
-
-    /* xor the given pixmap with the interior of the given Path. Note: the
-    Path must be within the dimensions of the pixmap. */
-
-    public static void xor_path(Bitmap bm, Path p) {
-        int xa, x, y, k, y1;
-
-        if (p.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
-            return;
-        }
-
-        y1 = p.priv.pt[p.priv.len-1].y;
-        xa = p.priv.pt[0].x & - Bitmap.PIXELINWORD;
-
-        for (k=0; k<p.priv.len; k++) {
-            x = p.priv.pt[k].x;
-            y = p.priv.pt[k].y;
-
-            if (y != y1) {
-                /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                xor_to_ref(bm, x, Auxiliary.min(y,y1), xa);
-                y1 = y;
-            }
-        }
-    }
-
-
-
     /* compute a Path in the given pixmap, separating black from white.
     Start Path at the point (x0,x1), which must be an upper left corner
     of the Path. Also compute the area enclosed by the Path. Return a
@@ -238,7 +174,7 @@ public class Decompose {
             head.next = null;
 
             // render Path
-            xor_path(bm, head);
+            Bitmap.xor_path(bm, head);
             bbox.setToBoundingBoxOfPath(head);
 
             /* now do insideness test for each element of cur; append it to
@@ -393,7 +329,7 @@ public class Decompose {
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
 
             // update buffered image
-            xor_path(bm1, p);
+            Bitmap.xor_path(bm1, p);
 
             // if it' a turd, eliminate it, else append it to the original.potrace.List
             if (p.area > param.turdsize) {
