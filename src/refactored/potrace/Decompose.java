@@ -371,10 +371,10 @@ public class Decompose {
         Path p;
         Path plist = null;
         //original.potrace.Path plist_hook = null;  // used to speed up appending to linked original.potrace.List
-        Bitmap bm1 = bm.bm_dup();
+        Bitmap bm1 = bm.duplicate();
         int sign;
 
-        bm1 = bm.bm_dup();
+        bm1 = bm.duplicate();
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it

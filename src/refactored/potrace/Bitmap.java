@@ -19,7 +19,7 @@ public class Bitmap {
         this.wordsPerScanLine = (width - 1) / PIXELINWORD + 1;
         this.words = new long[this.wordsPerScanLine * this.height];
     }
-    
+
     private boolean isCoordinateInRange(int coordinate, int upperBound) {
         return (coordinate) >= 0 && (coordinate) < (upperBound);
     }
@@ -84,15 +84,15 @@ public class Bitmap {
         }
     }
 
-    public Bitmap bm_dup() {
-        Bitmap bm1 = new Bitmap(this.width, this.height);
+    public Bitmap duplicate() {
+        Bitmap duplicatedBitmap = new Bitmap(this.width, this.height);
 
         for (int y = 0; y < this.height; y++) {
             for (int dy = 0; dy < this.wordsPerScanLine; dy ++) {
-                bm1.words[y * this.wordsPerScanLine + dy] = this.words[y * this.wordsPerScanLine + dy];
+                duplicatedBitmap.words[y * this.wordsPerScanLine + dy] = this.words[y * this.wordsPerScanLine + dy];
             }
         }
-        return bm1;
+        return duplicatedBitmap;
     }
 
     void deleteExcessPixelsOfBitmap() {

@@ -85,7 +85,7 @@ public class bitmapTest {
     @Test
     public void test_bm_dup() throws Exception {
         Bitmap originalBitmap = new Bitmap(10,10);
-        Bitmap copiedBitmap = originalBitmap.bm_dup();
+        Bitmap copiedBitmap = originalBitmap.duplicate();
 
         assertFalse("reference: ", originalBitmap == copiedBitmap);
         assertArrayEquals("potraceWords: ",originalBitmap.words,copiedBitmap.words);
