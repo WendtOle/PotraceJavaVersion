@@ -73,7 +73,7 @@ public class Bitmap {
             BM_UPUT(x, y, b);
     }
 
-     void bm_clear_andSetToC(int c) {
+     void setWholeBitmapToSpecificValue(int c) {
         for (int y = 0; y < height; y ++) {
             for (int dyIndex = 0; dyIndex < wordsPerScanLine; dyIndex ++) {
                 int clearedValue = (c == 1 ? -1 : 0);
