@@ -62,7 +62,7 @@ public class decomposeTest {
     public void test_xor_path() {
         Bitmap testBitmap = new Bitmap(3,3);
         testBitmap.setWholeBitmapToSpecificValue(1);
-        testBitmap.deleteExcessPixelsOfBitmap();
+        testBitmap.clearExcessPixelsOfBitmap();
         testBitmap.setPixelToValue(1,1,false);
 
         Path path = Decompose.findpath(testBitmap,0,3,43,4);

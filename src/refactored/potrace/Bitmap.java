@@ -103,11 +103,9 @@ public class Bitmap {
         return duplicatedBitmap;
     }
 
-    void deleteExcessPixelsOfBitmap() {
-        long mask;
-
+    void clearExcessPixelsOfBitmap() {
         if (width % PIXELINWORD != 0) {
-            mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
+            long mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
             for (int y = 0; y < height; y ++) {
                 words[y * wordsPerScanLine + wordsPerScanLine - 1] = getWordWherePixelIsContained(width, y) & mask;
             }
