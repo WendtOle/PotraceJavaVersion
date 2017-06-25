@@ -98,11 +98,10 @@ public class Bitmap {
 
     void deleteExcessPixelsOfBitmap() {
         long mask;
-        int y;
 
         if (width % PIXELINWORD != 0) {
             mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
-            for (y=0; y< height; y++) {
+            for (int y = 0; y < height; y ++) {
                 words[y * wordsPerScanLine + wordsPerScanLine - 1] = bm_index(width, y) & mask;
             }
         }
@@ -111,10 +110,9 @@ public class Bitmap {
     void clearBitmapWithBBox(BBox bbox) {
         int imin = (bbox.x0 / Bitmap.PIXELINWORD);
         int imax = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
-        int i, y;
 
-        for (y=bbox.y0; y<bbox.y1; y++) {
-            for (i=imin; i<imax; i++) {
+        for (int y = bbox.y0; y < bbox.y1; y ++) {
+            for (int i = imin; i<imax; i++) {
                 words[y * wordsPerScanLine + i] = 0;
             }
         }
