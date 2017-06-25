@@ -150,24 +150,11 @@ public class Bitmap {
     /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
     must be a multiple of BM_WORDBITS. */
 
-    void flipAllBitsInWord(int x, int y) {
-        int indexOfWord = (wordsPerScanLine * y) + (x / Bitmap.PIXELINWORD);
-        words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS; //Todo check
-    }
-
     void xor_to_ref(int x, int y, int xa) {
         int xhi = x & - Bitmap.PIXELINWORD; // (x / Bitmap.PixelInWord) * Bitmap.PixelInWord -> x gerundet auf die Pixel anzahl in einem Wort
         int xlo = x & (Bitmap.PIXELINWORD-1);  // = x % BM_WORDBITS -> Rest der mehr als die Pixel in einem Wort sind
 
-        if (xhi<xa) {
-            for (int i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
-                flipAllBitsInWord(i,y);
-            }
-        } else {
-            for (int i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
-                flipAllBitsInWord(i,y);
-            }
-        }
+        flipAllContainedWordsInLineBetweenToValues(xa,xhi,y);
 
         // note: the following "if" is needed because x86 treats a<<b as
         //a<<(b&31). I spent hours looking for this bug.
@@ -175,6 +162,26 @@ public class Bitmap {
             int accessIndex = (wordsPerScanLine * y) + (xhi / Bitmap.PIXELINWORD);
             words[accessIndex] = words[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
         }
+    }
+
+    private void flipAllContainedWordsInLineBetweenToValues(int firstValue, int secondValue, int y) {
+        int startX = firstValue;
+        int endX = secondValue;
+
+        if (endX < startX) {
+            int temp = startX;
+            startX = endX;
+            endX = temp;
+        }
+
+        for(int i = startX; i < endX; i += Bitmap.PIXELINWORD) {
+            flipAllBitsInWord(i, y);
+        }
+    }
+
+    private void flipAllBitsInWord(int x, int y) {
+        int indexOfWord = (wordsPerScanLine * y) + (x / Bitmap.PIXELINWORD);
+        words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS; //Todo check
     }
 
     /* xor the given pixmap with the interior of the given Path. Note: the
