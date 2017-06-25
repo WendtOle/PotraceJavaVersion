@@ -148,15 +148,14 @@ public class Bitmap {
     void xor_to_ref(int x, int y, int xa) {
         int xhi = x & - Bitmap.PIXELINWORD;
         int xlo = x & (Bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
-        int i;
 
         if (xhi<xa) {
-            for (i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
+            for (int i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
                 int accessIndex = (wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
                 words[accessIndex] = words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
             }
         } else {
-            for (i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
+            for (int i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
                 int accessIndex = (wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
                 words[accessIndex] = words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
             }
