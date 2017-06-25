@@ -265,37 +265,6 @@ public class Decompose {
         }
     }
 
-    /* find the next set pixel in a row <= y. Pixels are searched first
-    left-to-right, then top-down. In other words, (x,y)<(x',y') if y>y'
-    or y=y' and x<x'. If found, return 0 and store pixel in
-    (*xp,*yp). Else return 1. Note that this function assumes that
-    excess bytes have been cleared with deleteExcessPixelsOfBitmap. */
-
-    public static boolean findnext(Bitmap bm, Point XY) { //TODO check it its working correct
-        int x0;
-
-        x0 = (XY.x) & ~(Bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
-
-        for (int y=XY.y; y>=0; y--) {
-            for (int x = x0; x<bm.width && x>=0; x+=bm.PIXELINWORD) {
-
-                if (bm.getWordWherePixelIsContained(x, y) != 0) {
-                    while (!bm.getPixelValue(x, y)) {
-                        x++;
-                    }
-	                /* found */
-	                XY.x = x;
-                    XY.y = y;
-                    return true;
-                }
-            }
-            x0 = 0;
-        }
-        /* not found */
-        return false;
-    }
-
-    //Entwickler:
     /* Decompose the given Bitmap into paths. Returns a linked List of
     path_t objects with the fields len, pt, area, sign filled
     in. Returns 0 on success with plistp set, or -1 on error with errno
@@ -320,7 +289,7 @@ public class Decompose {
         x = 0;
         y = bm1.height - 1;
         Point xy = new Point(x,y);
-        while ((findnext(bm1,xy))) {
+        while ((Bitmap.findNextFilledPixel(bm1,xy))) {
             // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
             // mit dem nachgucken nach dem sign in der original Bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
             sign = bm.getPixelValue(xy.x, xy.y) ? '+' : '-';

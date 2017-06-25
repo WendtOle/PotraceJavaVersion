@@ -1,5 +1,7 @@
 package refactored.potrace;
 
+import java.awt.*;
+
 public class Bitmap {
 
     public static int PIXELINWORD = 64;
@@ -139,9 +141,6 @@ public class Bitmap {
         return false;
     }
 
-     /* ---------------------------------------------------------------------- */
-    /* Decompose image into paths */
-
     /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
     must be a multiple of BM_WORDBITS. */
 
@@ -190,5 +189,34 @@ public class Bitmap {
                 y1 = y;
             }
         }
+    }
+
+    /* find the next set pixel in a row <= y. Pixels are searched first
+    left-to-right, then top-down. In other words, (x,y)<(x',y') if y>y'
+    or y=y' and x<x'. If found, return 0 and store pixel in
+    (*xp,*yp). Else return 1. Note that this function assumes that
+    excess bytes have been cleared with deleteExcessPixelsOfBitmap. */
+
+    public static boolean findNextFilledPixel(Bitmap bm, Point XY) { //TODO check it its working correct
+        int x0;
+
+        x0 = (XY.x) & ~(Bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
+
+        for (int y=XY.y; y>=0; y--) {
+            for (int x = x0; x<bm.width && x>=0; x+=bm.PIXELINWORD) {
+
+                if (bm.getWordWherePixelIsContained(x, y) != 0) {
+                    while (!bm.getPixelValue(x, y)) {
+                        x++;
+                    }
+	                /* found */
+                    XY.x = x;
+                    XY.y = y;
+                    return true;
+                }
+            }
+            x0 = 0;
+        }
+        return false;
     }
 }

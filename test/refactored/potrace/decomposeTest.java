@@ -16,7 +16,7 @@ public class decomposeTest {
         testBitmap.setPixelToValue(65,0,true);
 
         Point point = new Point(0,0);
-        assertTrue("found sth: ", Decompose.findnext(testBitmap,point));
+        assertTrue("found sth: ", Bitmap.findNextFilledPixel(testBitmap,point));
         assertEquals("found point: ",new Point(65,0),point);
     }
 
@@ -27,7 +27,7 @@ public class decomposeTest {
         testBitmap.setPixelToValue(99,0,true);
 
         Point point = new Point(0,1);
-        assertTrue("found sth: ", Decompose.findnext(testBitmap,point));
+        assertTrue("found sth: ", Bitmap.findNextFilledPixel(testBitmap,point));
         assertEquals("found point: ", new Point(97,0),point);
     }
 
