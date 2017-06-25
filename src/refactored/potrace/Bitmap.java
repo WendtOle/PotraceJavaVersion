@@ -190,13 +190,7 @@ public class Bitmap {
             }
         }
     }
-
-    /* find the next set pixel in a row <= y. Pixels are searched first
-    left-to-right, then top-down. In other words, (x,y)<(x',y') if y>y'
-    or y=y' and x<x'. If found, return 0 and store pixel in
-    (*xp,*yp). Else return 1. Note that this function assumes that
-    excess bytes have been cleared with deleteExcessPixelsOfBitmap. */
-
+    
     public Point findNextPositionOfFilledPixel(Point startPointforSearch) {
         int x0 = (startPointforSearch.x) & ~(Bitmap.PIXELINWORD-1);
 
