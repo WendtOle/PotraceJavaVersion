@@ -165,4 +165,9 @@ public class bitmapTest {
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
     }
+
+    @Test
+    public void underStandabilityTest() {
+        int result = 6 ^-1;
+    }
 }

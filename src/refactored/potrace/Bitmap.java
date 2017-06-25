@@ -150,19 +150,22 @@ public class Bitmap {
     /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
     must be a multiple of BM_WORDBITS. */
 
+    void flipAllBitsInWord(int x, int y) {
+        int indexOfWord = (wordsPerScanLine * y) + (x / Bitmap.PIXELINWORD);
+        words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS; //Todo check
+    }
+
     void xor_to_ref(int x, int y, int xa) {
-        int xhi = x & - Bitmap.PIXELINWORD;
-        int xlo = x & (Bitmap.PIXELINWORD-1);  /* = x % BM_WORDBITS */
+        int xhi = x & - Bitmap.PIXELINWORD; // (x / Bitmap.PixelInWord) * Bitmap.PixelInWord -> x gerundet auf die Pixel anzahl in einem Wort
+        int xlo = x & (Bitmap.PIXELINWORD-1);  // = x % BM_WORDBITS -> Rest der mehr als die Pixel in einem Wort sind
 
         if (xhi<xa) {
             for (int i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
-                words[accessIndex] = words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                flipAllBitsInWord(i,y);
             }
         } else {
             for (int i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
-                words[accessIndex] = words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                flipAllBitsInWord(i,y);
             }
         }
 
