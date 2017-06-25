@@ -148,8 +148,8 @@ public class Decompose {
                         || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
                         || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
                         || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && detrand(x,y))
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bm.majority(x, y))
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bm.majority(x, y))) {
+                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bm.getMajorityValueAtIntersection(x, y))
+                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bm.getMajorityValueAtIntersection(x, y))) {
                     tmp = dirx;              /* right turn */
                     dirx = diry;
                     diry = -tmp;

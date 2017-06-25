@@ -12,6 +12,7 @@ public class Bitmap {
 
 
     public Bitmap() {};
+
     public Bitmap(int width, int height) {
         this.width = width;
         this.height = height;
@@ -119,10 +120,9 @@ public class Bitmap {
         }
     }
 
-    /* return the "majority" value of Bitmap bm at intersection (x,y). We
-    assume that the Bitmap is balanced at "radius" 1.  */
+    /* We assume that the Bitmap is balanced at "radius" 1.  */
 
-    boolean majority(int x, int y) {
+    boolean getMajorityValueAtIntersection(int x, int y) {
         int i, a, ct;
 
         for (i=2; i<5; i++) { /* check at "radius" i */
