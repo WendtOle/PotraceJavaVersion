@@ -333,7 +333,7 @@ public class Decompose {
     left-to-right, then top-down. In other words, (x,y)<(x',y') if y>y'
     or y=y' and x<x'. If found, return 0 and store pixel in
     (*xp,*yp). Else return 1. Note that this function assumes that
-    excess bytes have been cleared with bm_clearexcess. */
+    excess bytes have been cleared with deleteExcessPixelsOfBitmap. */
 
     public static boolean findnext(Bitmap bm, Point XY) { //TODO check it its working correct
         int x0;
@@ -378,7 +378,7 @@ public class Decompose {
 
         //be sure the byte padding on the right is set to 0, as the fast
         //pixel search below relies on it
-        bm1.bm_clearexcess();
+        bm1.deleteExcessPixelsOfBitmap();
 
         // iterate through components
         x = 0;

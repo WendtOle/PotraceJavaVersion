@@ -96,7 +96,7 @@ public class Bitmap {
         return bm1;
     }
 
-    void bm_clearexcess() {
+    void deleteExcessPixelsOfBitmap() {
         long mask;
         int y;
 
