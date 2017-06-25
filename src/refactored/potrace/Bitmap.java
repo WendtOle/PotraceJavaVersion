@@ -197,26 +197,21 @@ public class Bitmap {
     (*xp,*yp). Else return 1. Note that this function assumes that
     excess bytes have been cleared with deleteExcessPixelsOfBitmap. */
 
-    public static boolean findNextFilledPixel(Bitmap bm, Point XY) { //TODO check it its working correct
-        int x0;
+    public Point findNextPositionOfFilledPixel(Point startPointforSearch) {
+        int x0 = (startPointforSearch.x) & ~(Bitmap.PIXELINWORD-1);
 
-        x0 = (XY.x) & ~(Bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
+        for (int y=startPointforSearch.y; y>=0; y--) {
+            for (int x = x0; x<width && x>=0; x+=PIXELINWORD) {
 
-        for (int y=XY.y; y>=0; y--) {
-            for (int x = x0; x<bm.width && x>=0; x+=bm.PIXELINWORD) {
-
-                if (bm.getWordWherePixelIsContained(x, y) != 0) {
-                    while (!bm.getPixelValue(x, y)) {
+                if (getWordWherePixelIsContained(x, y) != 0) {
+                    while (!getPixelValue(x, y)) {
                         x++;
                     }
-	                /* found */
-                    XY.x = x;
-                    XY.y = y;
-                    return true;
+                    return new Point(x,y);
                 }
             }
             x0 = 0;
         }
-        return false;
+        return null;
     }
 }

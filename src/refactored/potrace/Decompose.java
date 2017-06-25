@@ -289,7 +289,7 @@ public class Decompose {
         x = 0;
         y = bm1.height - 1;
         Point xy = new Point(x,y);
-        while ((Bitmap.findNextFilledPixel(bm1,xy))) {
+        while ((xy = bm1.findNextPositionOfFilledPixel(xy)) != null ) {
             // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
             // mit dem nachgucken nach dem sign in der original Bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
             sign = bm.getPixelValue(xy.x, xy.y) ? '+' : '-';
