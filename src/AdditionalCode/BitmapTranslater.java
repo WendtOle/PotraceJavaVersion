@@ -10,4 +10,10 @@ public class BitmapTranslater {
         translatedBitmap.map = bitmap.potraceWords;
         return translatedBitmap;
     }
+
+    public static refactored.potrace.Bitmap translateBitmapForRefactoredCode(Bitmap bitmap){
+        refactored.potrace.Bitmap translatedBitmap = new refactored.potrace.Bitmap(bitmap.width,bitmap.height);
+        translatedBitmap.words = bitmap.potraceWords;
+        return translatedBitmap;
+    }
 }

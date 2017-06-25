@@ -5,11 +5,11 @@ import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
-import AdditionalCode.Path;
 import AdditionalCode.PathTranslator;
 import org.json.simple.parser.ParseException;
-import original.potrace.Param;
-import original.potrace.PotraceLib;
+import refactored.potrace.Param;
+import refactored.potrace.Path;
+import refactored.potrace.PotraceLib;
 
 import java.io.IOException;
 
@@ -20,13 +20,13 @@ public class DemoRun {
     static String bitmapFileName = "10.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
-    static Path path;
+    static AdditionalCode.Path path;
 
     public static void main(String args[]) {
         loadBitmap();
 
-        original.potrace.Path originalPath = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translateBitmapForOriginalCode(bitmap));
-        path = PathTranslator.originalPathToGeneralPath(originalPath);
+        Path originalPath = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translateBitmapForRefactoredCode(bitmap));
+        path = PathTranslator.refactoredPathToGeneralPath(originalPath);
 
         drawBitmap();
         drawPath();

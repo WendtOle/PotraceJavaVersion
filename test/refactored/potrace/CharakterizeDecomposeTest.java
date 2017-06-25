@@ -8,9 +8,6 @@ import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import original.potrace.Bitmap;
-import original.potrace.Param;
-import original.potrace.PotraceLib;
 
 import java.awt.*;
 import java.io.File;
@@ -46,7 +43,7 @@ public class CharakterizeDecomposeTest {
             testParameters = new Object[bitmapFiles.length][];
             for (int i = 0; i < bitmapFiles.length; i++) {
                 try {
-                    original.potrace.Bitmap bitmap = BitmapTranslater.translateBitmapForOriginalCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
+                    Bitmap bitmap = BitmapTranslater.translateBitmapForRefactoredCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
                     Path path = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
                     testParameters[i] = new Object[]{bitmap,path};
                 } catch (ParseException e) {
@@ -63,7 +60,7 @@ public class CharakterizeDecomposeTest {
                                      Path expectedPath) {
 
         this.arrayOfPathes = expectedPath;
-        this.actualFirstPath = PathTranslator.originalPathToGeneralPath(PotraceLib.potrace_trace(new Param(),bitmap));
+        this.actualFirstPath = PathTranslator.refactoredPathToGeneralPath(PotraceLib.potrace_trace(new Param(),bitmap));
     }
 
     @Test

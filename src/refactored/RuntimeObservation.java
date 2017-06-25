@@ -4,8 +4,8 @@ import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
 import org.json.simple.parser.ParseException;
-import original.potrace.Param;
-import original.potrace.PotraceLib;
+import refactored.potrace.Param;
+import refactored.potrace.PotraceLib;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -17,7 +17,7 @@ import java.util.Locale;
 public class RuntimeObservation {
 
     static String type = "Refactored";
-    static int amountOfRuns = 2000000;
+    static int amountOfRuns = 100;
     static String bitmapFileName = "02.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
@@ -55,7 +55,7 @@ public class RuntimeObservation {
     }
 
     private static long getTimeForOneRun() {
-        original.potrace.Bitmap translatedBitmap = BitmapTranslater.translateBitmapForOriginalCode(bitmap);
+        refactored.potrace.Bitmap translatedBitmap = BitmapTranslater.translateBitmapForRefactoredCode(bitmap);
         long startTime = System.nanoTime();
         PotraceLib.potrace_trace(new Param(), translatedBitmap);
         long endTime = System.nanoTime();

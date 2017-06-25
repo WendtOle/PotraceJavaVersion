@@ -2,12 +2,6 @@ package refactored.potrace;
 
 public class List {
 
-    //Original Macro:
-    /*
-    #define elementInsertAtTheLastNextOfList(elt, hook) \
-    MACRO_BEGIN elt->next = *hook; *hook = elt; hook=&elt->next; MACRO_END
-     */
-
     public static Path elementInsertAtTheLastNextOfList(Path elementToAdd, Path list) {
         if (elementToAdd != null) {
             if (list != null) {

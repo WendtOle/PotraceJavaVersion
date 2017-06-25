@@ -2,10 +2,6 @@ package refactored.potrace;
 
 import org.junit.Before;
 import org.junit.Test;
-import original.potrace.Bitmap;
-import original.potrace.Decompose;
-import original.potrace.Path;
-
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -13,18 +9,18 @@ import static org.junit.Assert.assertEquals;
  */
 public class turnpolicyTest {
 
-    original.potrace.Bitmap simpleDiagonalBitmap, biggerDiagonalBitmap;
+    Bitmap simpleDiagonalBitmap, biggerDiagonalBitmap;
 
     @Before
     public void prepareBitmaps() {
-        simpleDiagonalBitmap = new original.potrace.Bitmap(2,2);
-        original.potrace.Bitmap.BM_PUT(simpleDiagonalBitmap,0,0,true);
-        original.potrace.Bitmap.BM_PUT(simpleDiagonalBitmap,1,1,true);
+        simpleDiagonalBitmap = new Bitmap(2,2);
+        simpleDiagonalBitmap.setPixelToValue(0,0,true);
+        simpleDiagonalBitmap.setPixelToValue(1,1,true);
 
-        biggerDiagonalBitmap = new original.potrace.Bitmap(3,3);
-        original.potrace.Bitmap.BM_PUT(biggerDiagonalBitmap,0,0,true);
-        original.potrace.Bitmap.BM_PUT(biggerDiagonalBitmap,1,1,true);
-        Bitmap.BM_PUT(biggerDiagonalBitmap,2,2,true);
+        biggerDiagonalBitmap = new Bitmap(3,3);
+        biggerDiagonalBitmap.setPixelToValue(0,0,true);
+        biggerDiagonalBitmap.setPixelToValue(1,1,true);
+        biggerDiagonalBitmap.setPixelToValue(2,2,true);
 
     }
 

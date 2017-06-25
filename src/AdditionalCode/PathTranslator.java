@@ -22,4 +22,20 @@ public class PathTranslator {
         Path translatedPath = new Path(area,sign,length,hasChild,hasSibling,pt,curve,next);
         return translatedPath;
     }
+
+    public static Path refactoredPathToGeneralPath(refactored.potrace.Path path) {
+        int area = path.area;
+        int sign = path.sign;
+        int length = path.priv.len;
+        boolean hasChild = (path.childlist != null);
+        boolean hasSibling = (path.sibling != null);
+        Point[] pt = path.priv.pt;
+        Curve curve = new Curve(path.curve.n,path.curve.tag,path.curve.c);
+        Path next = null;
+        if (path.next != null) {
+            next = refactoredPathToGeneralPath(path.next);
+        }
+        Path translatedPath = new Path(area,sign,length,hasChild,hasSibling,pt,curve,next);
+        return translatedPath;
+    }
 }

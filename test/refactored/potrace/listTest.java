@@ -2,8 +2,6 @@ package refactored.potrace;
 
 import org.junit.Before;
 import org.junit.Test;
-import original.potrace.List;
-import original.potrace.Path;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,14 +9,14 @@ import static org.junit.Assert.assertEquals;
  * Created by andreydelany on 07/03/2017.
  */
 public class listTest {
-    original.potrace.Path first, second, third, fourth;
+    Path first, second, third, fourth;
 
     @Before
     public void initializePathes() {
-        first = new original.potrace.Path();
-        second = new original.potrace.Path();
-        third = new original.potrace.Path();
-        fourth = new original.potrace.Path();
+        first = new Path();
+        second = new Path();
+        third = new Path();
+        fourth = new Path();
     }
 
     @Test
@@ -43,7 +41,7 @@ public class listTest {
 
     @Test
     public void testMethod_elementInsertAtTheLastNextOfList_WithInsertingAListOfPathesAtTheEnd_ShouldFail(){
-        original.potrace.Path listOfSecondToFourht = second;
+        Path listOfSecondToFourht = second;
         listOfSecondToFourht = List.elementInsertAtTheLastNextOfList(third,listOfSecondToFourht);
         listOfSecondToFourht = List.elementInsertAtTheLastNextOfList(fourth,listOfSecondToFourht);
 
