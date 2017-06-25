@@ -11,19 +11,19 @@ public class bitmapTest {
     @Test
     public void creatingBitmapWithEmptyConstructorTest() {
         Bitmap testBitmap = new Bitmap();
-        assertEquals("width: ", 0,testBitmap.w);
-        assertEquals("height: ", 0,testBitmap.h);
-        assertEquals("potraceWordsInOneLine: ", 0,testBitmap.dy);
-        assertEquals("potraceWords: ", null,testBitmap.map);
+        assertEquals("width: ", 0,testBitmap.width);
+        assertEquals("height: ", 0,testBitmap.height);
+        assertEquals("potraceWordsInOneLine: ", 0,testBitmap.wordsPerScanLine);
+        assertEquals("potraceWords: ", null,testBitmap.words);
     }
 
     @Test
     public void creatingBitmapWithNormalConstructorTest() {
         Bitmap testBitmap = new Bitmap(100,100);
-        assertEquals("width: ", 100,testBitmap.w);
-        assertEquals("height: ", 100,testBitmap.h);
-        assertEquals("potraceWordsInOneLine: ", 2,testBitmap.dy);
-        assertEquals("potraceWords: ", 200,testBitmap.map.length);
+        assertEquals("width: ", 100,testBitmap.width);
+        assertEquals("height: ", 100,testBitmap.height);
+        assertEquals("potraceWordsInOneLine: ", 2,testBitmap.wordsPerScanLine);
+        assertEquals("potraceWords: ", 200,testBitmap.words.length);
     }
 
     @Test
@@ -88,10 +88,10 @@ public class bitmapTest {
         Bitmap copiedBitmap = originalBitmap.bm_dup();
 
         assertFalse("reference: ", originalBitmap == copiedBitmap);
-        assertArrayEquals("potraceWords: ",originalBitmap.map,copiedBitmap.map);
-        assertEquals("potraceWordsInOneLine: ",originalBitmap.dy, copiedBitmap.dy);
-        assertEquals("height: ",originalBitmap.h, copiedBitmap.h);
-        assertEquals("width: ",originalBitmap.w, copiedBitmap.w);
+        assertArrayEquals("potraceWords: ",originalBitmap.words,copiedBitmap.words);
+        assertEquals("potraceWordsInOneLine: ",originalBitmap.wordsPerScanLine, copiedBitmap.wordsPerScanLine);
+        assertEquals("height: ",originalBitmap.height, copiedBitmap.height);
+        assertEquals("width: ",originalBitmap.width, copiedBitmap.width);
     }
 
     @Test
@@ -107,15 +107,15 @@ public class bitmapTest {
 
         testBitmap.clear_bm_with_bbox(box);
 
-        assertTrue("firstline: ",testBitmap.map[0] == 0);
-        assertTrue("secondline: ",testBitmap.map[1] == 0);
-        assertTrue("thirdline: ",testBitmap.map[2] == 0x8000000000000000l);
+        assertTrue("firstline: ",testBitmap.words[0] == 0);
+        assertTrue("secondline: ",testBitmap.words[1] == 0);
+        assertTrue("thirdline: ",testBitmap.words[2] == 0x8000000000000000l);
     }
 
     @Test
     public void testMajorityFunction() {
         Bitmap testBitmap = new Bitmap(4,4);
-        Point observationPoint = new Point(testBitmap.w/2,testBitmap.h/2);
+        Point observationPoint = new Point(testBitmap.width /2,testBitmap.height /2);
         Point[] points = new Point[]{new Point(0,0),new Point(2,2),new Point(2,0),new Point(3,1),
                 new Point(1,0), new Point(2,1), new Point(3,3),new Point (2,3),
                 new Point(0,2), new Point(3,0), new Point(1,3), new Point(1,2),

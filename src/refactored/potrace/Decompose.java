@@ -42,21 +42,21 @@ public class Decompose {
 
         if (xhi<xa) {
             for (i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (bm.dy * y) + (i / Bitmap.PIXELINWORD);
-                bm.map[accessIndex] = bm.map[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                int accessIndex = (bm.wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
+                bm.words[accessIndex] = bm.words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
             }
         } else {
             for (i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
-                int accessIndex = (bm.dy * y) + (i / Bitmap.PIXELINWORD);
-                bm.map[accessIndex] = bm.map[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                int accessIndex = (bm.wordsPerScanLine * y) + (i / Bitmap.PIXELINWORD);
+                bm.words[accessIndex] = bm.words[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
             }
         }
 
         // note: the following "if" is needed because x86 treats a<<b as
         //a<<(b&31). I spent hours looking for this bug.
         if (xlo > 0) {
-            int accessIndex = (bm.dy * y) + (xhi / Bitmap.PIXELINWORD);
-            bm.map[accessIndex] = bm.map[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
+            int accessIndex = (bm.wordsPerScanLine * y) + (xhi / Bitmap.PIXELINWORD);
+            bm.words[accessIndex] = bm.words[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
         }
     }
 
@@ -341,7 +341,7 @@ public class Decompose {
         x0 = (XY.x) & ~(Bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
 
         for (int y=XY.y; y>=0; y--) {
-            for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {
+            for (int x = x0; x<bm.width && x>=0; x+=bm.PIXELINWORD) {
 
                 if (bm.bm_index(x, y) != 0) {
                     while (!bm.BM_GET(x, y)) {
@@ -382,7 +382,7 @@ public class Decompose {
 
         // iterate through components
         x = 0;
-        y = bm1.h - 1;
+        y = bm1.height - 1;
         Point xy = new Point(x,y);
         while ((findnext(bm1,xy))) {
             // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.

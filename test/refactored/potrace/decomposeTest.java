@@ -72,7 +72,7 @@ public class decomposeTest {
         testBitmap.BM_PUT(68,0,true);
         testBitmap.BM_PUT(69,0,true);
         Decompose.xor_to_ref(testBitmap,70,0,0);
-        assertEquals(-1l,testBitmap.map[0]);
+        assertEquals(-1l,testBitmap.words[0]);
         assertEquals("64: ", true, testBitmap.BM_GET(64,0));
         assertEquals("65: ", true, testBitmap.BM_GET(65,0));
         assertEquals("66: ", true, testBitmap.BM_GET(66,0));

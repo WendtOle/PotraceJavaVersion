@@ -6,17 +6,17 @@ public class Bitmap {
     static long BM_ALLBITS = (~0);
     static long BM_HIBIT = 1 << PIXELINWORD -1;
 
-    public int w, h;              /* width and height, in pixels */
-    public int dy;                /* words per scanline (not bytes) */
-    public long[] map;             /* raw data, potraceWordsInOneLine*height words */
+    public int width, height;              /* width and height, in pixels */
+    public int wordsPerScanLine;                /* words per scanline (not bytes) */
+    public long[] words;             /* raw data, potraceWordsInOneLine*height words */
 
 
     public Bitmap() {};
-    public Bitmap(int w, int h) {
-        this.w = w;
-        this.h = h;
-        this.dy = (w - 1) / PIXELINWORD + 1;
-        this.map = new long[this.dy * this.h];
+    public Bitmap(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.wordsPerScanLine = (width - 1) / PIXELINWORD + 1;
+        this.words = new long[this.wordsPerScanLine * this.height];
     }
 
     /* macros for accessing pixel at index (x,y). U* macros omit the bounds check. */
@@ -25,7 +25,7 @@ public class Bitmap {
     }
 
     boolean bm_safe(int x, int y) {
-        return bm_range(x, w) && bm_range(y, h);
+        return bm_range(x, width) && bm_range(y, height);
     }
 
     long bm_mask(int x) {
@@ -41,9 +41,9 @@ public class Bitmap {
     }
 
     private long[] bm_scanline(int y) {
-        long[] scanLine = new long[dy];
-        for (int i = 0; i < dy ; i ++) {
-            scanLine[i] = map[(y * dy) + i];
+        long[] scanLine = new long[wordsPerScanLine];
+        for (int i = 0; i < wordsPerScanLine; i ++) {
+            scanLine[i] = words[(y * wordsPerScanLine) + i];
         }
         return scanLine;
     }
@@ -53,11 +53,11 @@ public class Bitmap {
     }
 
     private void BM_UCLR(int x, int y){
-        map[y * dy + (x / PIXELINWORD)] = map[y * dy + (x / PIXELINWORD)] & ~bm_mask(x);
+        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] & ~bm_mask(x);
     }
 
     private void BM_USET(int x, int y) {
-        map[y * dy + (x / PIXELINWORD)] = map[y * dy + (x / PIXELINWORD)] | bm_mask(x);
+        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] | bm_mask(x);
     }
 
     private void BM_UPUT(int x, int y, boolean b) {
@@ -73,23 +73,23 @@ public class Bitmap {
     }
 
      void bm_clear_andSetToC(int c) {
-        for (int y = 0; y < h; y ++) {
-            for (int dyIndex = 0; dyIndex < dy; dyIndex ++) {
+        for (int y = 0; y < height; y ++) {
+            for (int dyIndex = 0; dyIndex < wordsPerScanLine; dyIndex ++) {
                 int clearedValue = (c == 1 ? -1 : 0);
-                if (dyIndex == dy -1) {
-                    clearedValue =  clearedValue << (PIXELINWORD - (w % PIXELINWORD));
+                if (dyIndex == wordsPerScanLine -1) {
+                    clearedValue =  clearedValue << (PIXELINWORD - (width % PIXELINWORD));
                 }
-                map[dy * y + dyIndex] = clearedValue;
+                words[wordsPerScanLine * y + dyIndex] = clearedValue;
             }
         }
     }
 
     public Bitmap bm_dup() {
-        Bitmap bm1 = new Bitmap(this.w, this.h);
+        Bitmap bm1 = new Bitmap(this.width, this.height);
 
-        for (int y=0; y < this.h; y++) {
-            for (int dy = 0; dy < this.dy; dy ++) {
-                bm1.map[y * this.dy + dy] = this.map[y * this.dy + dy];
+        for (int y = 0; y < this.height; y++) {
+            for (int dy = 0; dy < this.wordsPerScanLine; dy ++) {
+                bm1.words[y * this.wordsPerScanLine + dy] = this.words[y * this.wordsPerScanLine + dy];
             }
         }
         return bm1;
@@ -99,10 +99,10 @@ public class Bitmap {
         long mask;
         int y;
 
-        if (w % PIXELINWORD != 0) {
-            mask = BM_ALLBITS << (PIXELINWORD - (w % PIXELINWORD));
-            for (y=0; y<h; y++) {
-                map[y * dy + dy - 1] = bm_index(w, y) & mask;
+        if (width % PIXELINWORD != 0) {
+            mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
+            for (y=0; y< height; y++) {
+                words[y * wordsPerScanLine + wordsPerScanLine - 1] = bm_index(width, y) & mask;
             }
         }
     }
@@ -114,7 +114,7 @@ public class Bitmap {
 
         for (y=bbox.y0; y<bbox.y1; y++) {
             for (i=imin; i<imax; i++) {
-                map[y * dy + i] = 0;
+                words[y * wordsPerScanLine + i] = 0;
             }
         }
     }
