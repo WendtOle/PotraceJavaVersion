@@ -179,7 +179,7 @@ public class Bitmap {
     /* xor the given pixmap with the interior of the given Path. Note: the
     Path must be within the dimensions of the pixmap. */
 
-    public static void xor_path(Bitmap bm, Path p) {
+    public void xor_path(Path p) {
         int xa, x, y, k, y1;
 
         if (p.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
@@ -195,7 +195,7 @@ public class Bitmap {
 
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                xor_to_ref(bm, x, Auxiliary.min(y,y1), xa);
+                xor_to_ref(this, x, Auxiliary.min(y,y1), xa);
                 y1 = y;
             }
         }

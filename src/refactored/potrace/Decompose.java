@@ -174,7 +174,7 @@ public class Decompose {
             head.next = null;
 
             // render Path
-            Bitmap.xor_path(bm, head);
+            bm.xor_path(head);
             bbox.setToBoundingBoxOfPath(head);
 
             /* now do insideness test for each element of cur; append it to
@@ -329,7 +329,7 @@ public class Decompose {
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
 
             // update buffered image
-            Bitmap.xor_path(bm1, p);
+            bm1.xor_path(p);
 
             // if it' a turd, eliminate it, else append it to the original.potrace.List
             if (p.area > param.turdsize) {
