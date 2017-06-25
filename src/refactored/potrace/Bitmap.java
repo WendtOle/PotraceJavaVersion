@@ -55,11 +55,13 @@ public class Bitmap {
     }
 
     private void clearPixel(int x, int y){
-        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] & ~getMaskForPosition(x);
+        int accessIndex = y * wordsPerScanLine + (x / PIXELINWORD);
+        words[accessIndex] = words[accessIndex] & ~getMaskForPosition(x);
     }
 
     private void fillPixel(int x, int y) {
-        words[y * wordsPerScanLine + (x / PIXELINWORD)] = words[y * wordsPerScanLine + (x / PIXELINWORD)] | getMaskForPosition(x);
+        int accessIndex = y * wordsPerScanLine + (x / PIXELINWORD);
+        words[accessIndex] = words[accessIndex] | getMaskForPosition(x);
     }
 
     private void setPixelToValueWithoutBoundChecking(int x, int y, boolean shallPixelFilled) {
@@ -190,7 +192,7 @@ public class Bitmap {
             }
         }
     }
-    
+
     public Point findNextPositionOfFilledPixel(Point startPointforSearch) {
         int x0 = (startPointforSearch.x) & ~(Bitmap.PIXELINWORD-1);
 
