@@ -205,7 +205,7 @@ public class Decompose {
         Path head = new Path();
         Path plist_hook;                // for fast appending to linked original.potrace.List
         Path hook_in, hook_out;         // for fast appending to linked original.potrace.List
-        BBox bbox;
+        BBox bbox = new BBox();
 
         bm.setWholeBitmapToSpecificValue(0);
 
@@ -239,7 +239,7 @@ public class Decompose {
 
             // render Path
             xor_path(bm, head);
-            bbox = new BBox(head);
+            bbox.setToBoundingBoxOfPath(head);
 
             /* now do insideness test for each element of cur; append it to
             head->childlist if it's inside head, else append it to

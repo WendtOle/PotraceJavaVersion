@@ -10,13 +10,13 @@ import static org.junit.Assert.assertEquals;
 public class bboxTest {
     @Test
     public void test_setbbox_path() {
-        BBox box;
+        BBox box = new BBox();
         Bitmap testBitmap = new Bitmap(3,3);
         testBitmap.setPixelToValue(1,1,true);
 
         Path path = Decompose.findpath(testBitmap,2,2,43,4);
 
-        box = new BBox(path);
+        box.setToBoundingBoxOfPath(path);
         assertEquals(2,box.x0);
         assertEquals(3,box.x1);
         assertEquals(1,box.y0);

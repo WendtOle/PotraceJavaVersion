@@ -3,12 +3,12 @@ package refactored.potrace;
 public class BBox {
     int x0, x1, y0, y1;
 
+    public BBox(){};
+
     /* Find the bounding box of a given Path. Path is assumed to be of
     non-zero length. */
 
-    public BBox(){};
-
-    public BBox(Path p) {
+    public void setToBoundingBoxOfPath(Path p) {
         y0 = Integer.MAX_VALUE;
         y1 = 0;
         x0 = Integer.MAX_VALUE;
