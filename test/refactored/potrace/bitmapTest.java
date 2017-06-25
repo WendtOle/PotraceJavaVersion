@@ -136,7 +136,7 @@ public class bitmapTest {
         Bitmap testBitmap = new Bitmap(2,1);
         testBitmap.setPixelToValue(0,0,true);
         testBitmap.setPixelToValue(1,0,true);
-        testBitmap.xor_to_ref(0,0,1);
+        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(0,0,1);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
     }
@@ -146,7 +146,7 @@ public class bitmapTest {
         Bitmap testBitmap = new Bitmap(70,1);
         testBitmap.setPixelToValue(68,0,true);
         testBitmap.setPixelToValue(69,0,true);
-        testBitmap.xor_to_ref(70,0,0);
+        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(70,0,0);
         assertEquals(-1l,testBitmap.words[0]);
         assertEquals("64: ", true, testBitmap.getPixelValue(64,0));
         assertEquals("65: ", true, testBitmap.getPixelValue(65,0));
@@ -161,13 +161,16 @@ public class bitmapTest {
         Bitmap testBitmap = new Bitmap(2,1);
         testBitmap.setPixelToValue(0,0,true);
         testBitmap.setPixelToValue(1,0,true);
-        testBitmap.xor_to_ref(2,0,0);
+        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(2,0,0);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
     }
 
     @Test
-    public void underStandabilityTest() {
-        int result = 6 ^-1;
+    public void xor_to_ref() {
+        Bitmap testBitmap = new Bitmap(128,1);
+        testBitmap.setPixelToValue(68,0,true);
+        testBitmap.setPixelToValue(70,0,true);
+        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(5,0,65);
     }
 }

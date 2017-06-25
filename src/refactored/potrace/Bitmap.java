@@ -147,20 +147,21 @@ public class Bitmap {
         return false;
     }
 
-    /* efficiently invert bits [x,infty) and [xa,infty) in line y. Here xa
-    must be a multiple of BM_WORDBITS. */
+    /* Here xa must be a multiple of BM_WORDBITS. */
 
-    void xor_to_ref(int x, int y, int xa) {
-        int xhi = x & - Bitmap.PIXELINWORD; // (x / Bitmap.PixelInWord) * Bitmap.PixelInWord -> x gerundet auf die Pixel anzahl in einem Wort
-        int xlo = x & (Bitmap.PIXELINWORD-1);  // = x % BM_WORDBITS -> Rest der mehr als die Pixel in einem Wort sind
+    void invertBitsInWordsWhichAreInRangeFromXToXAInLine(int x, int y, int xa) {
+        int beginningIndexOfStartWord = x & - Bitmap.PIXELINWORD;
+        int indexOfXInStartWord = x & (Bitmap.PIXELINWORD-1);
 
-        flipAllContainedWordsInLineBetweenToValues(xa,xhi,y);
+        flipAllContainedWordsInLineBetweenToValues(xa,beginningIndexOfStartWord,y);
+        flipBitsUnitStartPositionOfStartWord(y, beginningIndexOfStartWord, indexOfXInStartWord);
+    }
 
-        // note: the following "if" is needed because x86 treats a<<b as
-        //a<<(b&31). I spent hours looking for this bug.
-        if (xlo > 0) {
-            int accessIndex = (wordsPerScanLine * y) + (xhi / Bitmap.PIXELINWORD);
-            words[accessIndex] = words[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
+    private void flipBitsUnitStartPositionOfStartWord(int y, int beginningPositionOfStartWord, int indexOfXInStartWord) {
+        if (indexOfXInStartWord > 0) {
+            int accessIndex = (wordsPerScanLine * y) + (beginningPositionOfStartWord / Bitmap.PIXELINWORD);
+            long mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - indexOfXInStartWord);
+            words[accessIndex] = words[accessIndex]  ^ mask;
         }
     }
 
@@ -181,7 +182,7 @@ public class Bitmap {
 
     private void flipAllBitsInWord(int x, int y) {
         int indexOfWord = (wordsPerScanLine * y) + (x / Bitmap.PIXELINWORD);
-        words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS; //Todo check
+        words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS;
     }
 
     /* xor the given pixmap with the interior of the given Path. Note: the
@@ -201,7 +202,7 @@ public class Bitmap {
 
             if (y != y1) {
                 /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                xor_to_ref( x, Auxiliary.min(y,y1), xa);
+                invertBitsInWordsWhichAreInRangeFromXToXAInLine( x, Auxiliary.min(y,y1), xa);
                 y1 = y;
             }
         }
