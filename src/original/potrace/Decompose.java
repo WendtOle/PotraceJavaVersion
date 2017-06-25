@@ -344,7 +344,7 @@ public class Decompose {
                     head.next = List.elementInsertAtTheLastNextOfList(p,head.next);
 	                // append the remainder of the original.potrace.List to hook_out
                     head.next = List.listInsertAtTheLastNextOfList(cur,head.next);
-                    //head.next = List.listInsertAtTheLastNextOfList(cur,head.next);
+                    //head.next = List.insertListAtTheEndOfList(cur,head.next);
 
                     break;
 

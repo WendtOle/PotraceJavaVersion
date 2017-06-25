@@ -21,61 +21,61 @@ public class listTest {
 
     @Test
     public void testMethod_elementInsertAtTheLastNextOfList_WithInsertingNullAdTheEnd() {
-        first = List.elementInsertAtTheLastNextOfList(first, null);
+        first = List.insertElementAtTheEndOfList(first, null);
         assertEquals(null, first.next);
     }
 
     @Test
     public void testMethod_elementInsertAtTheLastNextOfList_WithInsertOnPathAtTheEnd() {
-        first = List.elementInsertAtTheLastNextOfList(second,first);
+        first = List.insertElementAtTheEndOfList(second,first);
         assertEquals(second,first.next);
     }
 
     @Test
     public void testMethod_elementInsertAtTheLastNextOfList_WithInsertingABuchOfPathes(){
-        first = List.elementInsertAtTheLastNextOfList(second,first);
-        first = List.elementInsertAtTheLastNextOfList(third,first);
-        first = List.elementInsertAtTheLastNextOfList(fourth,first);
+        first = List.insertElementAtTheEndOfList(second,first);
+        first = List.insertElementAtTheEndOfList(third,first);
+        first = List.insertElementAtTheEndOfList(fourth,first);
         assertEquals(fourth, first.next.next.next);
     }
 
     @Test
     public void testMethod_elementInsertAtTheLastNextOfList_WithInsertingAListOfPathesAtTheEnd_ShouldFail(){
         Path listOfSecondToFourht = second;
-        listOfSecondToFourht = List.elementInsertAtTheLastNextOfList(third,listOfSecondToFourht);
-        listOfSecondToFourht = List.elementInsertAtTheLastNextOfList(fourth,listOfSecondToFourht);
+        listOfSecondToFourht = List.insertElementAtTheEndOfList(third,listOfSecondToFourht);
+        listOfSecondToFourht = List.insertElementAtTheEndOfList(fourth,listOfSecondToFourht);
 
-        first = List.elementInsertAtTheLastNextOfList(listOfSecondToFourht,first);
+        first = List.insertElementAtTheEndOfList(listOfSecondToFourht,first);
         assertEquals(null, first.next.next);
     }
 
     @Test
     public void testMethod_listInsertAtTheLastNextOfList_WithInsertingNullAdTheEnd() {
-        first = List.listInsertAtTheLastNextOfList(first, null);
+        first = List.insertListAtTheEndOfList(first, null);
         assertEquals(null, first.next);
     }
 
     @Test
     public void testMethod_listInsertAtTheLastNextOfList_WithInsertOnPathAtTheEnd() {
-        first = List.listInsertAtTheLastNextOfList(second,first);
+        first = List.insertListAtTheEndOfList(second,first);
         assertEquals(second,first.next);
     }
 
     @Test
     public void testMethod_listInsertAtTheLastNextOfList_WithInsertingABuchOfPathes(){
-        first = List.listInsertAtTheLastNextOfList(second,first);
-        first = List.elementInsertAtTheLastNextOfList(third,first);
-        first = List.listInsertAtTheLastNextOfList(fourth,first);
+        first = List.insertListAtTheEndOfList(second,first);
+        first = List.insertElementAtTheEndOfList(third,first);
+        first = List.insertListAtTheEndOfList(fourth,first);
         assertEquals(fourth, first.next.next.next);
     }
 
     @Test
     public void testMethod_listInsertAtTheLastNextOfList_WithInsertingAListOfPathesAtTheEnd(){
         Path listOfSecondToFourht = second;
-        listOfSecondToFourht = List.listInsertAtTheLastNextOfList(third,listOfSecondToFourht);
-        listOfSecondToFourht = List.listInsertAtTheLastNextOfList(fourth,listOfSecondToFourht);
+        listOfSecondToFourht = List.insertListAtTheEndOfList(third,listOfSecondToFourht);
+        listOfSecondToFourht = List.insertListAtTheEndOfList(fourth,listOfSecondToFourht);
 
-        first = List.listInsertAtTheLastNextOfList(listOfSecondToFourht,first);
+        first = List.insertListAtTheEndOfList(listOfSecondToFourht,first);
         assertEquals(fourth, first.next.next.next);
     }
 

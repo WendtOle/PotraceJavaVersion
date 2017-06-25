@@ -4,7 +4,7 @@ public class List {
 
     //Original Macro:
     /*
-    #define elementInsertAtTheLastNextOfList(elt, hook) \
+    #define insertElementAtTheEndOfList(elt, hook) \
     MACRO_BEGIN elt->next = *hook; *hook = elt; hook=&elt->next; MACRO_END
      */
 

@@ -2,37 +2,37 @@ package refactored.potrace;
 
 public class List {
 
-    public static Path elementInsertAtTheLastNextOfList(Path elementToAdd, Path list) {
-        if (elementToAdd != null) {
+    public static Path insertElementAtTheEndOfList(Path element, Path list) {
+        if (element != null) {
             if (list != null) {
-                Path current = list;
-                while (current.next != null) {
-                    current = current.next;
+                Path currentElement = list;
+                while (currentElement.next != null) {
+                    currentElement = currentElement.next;
                 }
-                elementToAdd.next = null;
-                current.next = elementToAdd;
+                element.next = null;
+                currentElement.next = element;
                 return list;
             } else {
-                elementToAdd.next = null;
-                return elementToAdd;
+                element.next = null;
+                return element;
             }
         }
         return list;
     }
 
-    public static Path listInsertAtTheLastNextOfList(Path listToAdd, Path list) {
-        if (listToAdd != null) {
-            if (list != null) {
-                Path current = list;
-                while (current.next != null) {
-                    current = current.next;
+    public static Path insertListAtTheEndOfList(Path list, Path unmodifiedList) {
+        if (list != null) {
+            if (unmodifiedList != null) {
+                Path currentElement = unmodifiedList;
+                while (currentElement.next != null) {
+                    currentElement = currentElement.next;
                 }
-                current.next = listToAdd;
-                return list;
+                currentElement.next = list;
+                return unmodifiedList;
             } else {
-                return listToAdd;
+                return list;
             }
         }
-        return list;
+        return unmodifiedList;
     }
 }
