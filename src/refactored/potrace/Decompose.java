@@ -44,8 +44,7 @@ public class Decompose {
 
         int x = startPointOfPath.x;
         int y = startPointOfPath.y;
-        int dirx = 0;
-        int diry = -1;
+        Point direction = new Point(0,-1);
 
         int len = 0, size = 0;
         int area = 0;
@@ -64,9 +63,9 @@ public class Decompose {
             len++;
 
             /* move to next point */
-            x += dirx;
-            y += diry;
-            area += x*diry;
+            x += direction.x;
+            y += direction.y;
+            area += x*direction.y;
 
             /* Path complete? */
             if (x==startPointOfPath.x && y==startPointOfPath.y) {
@@ -74,27 +73,27 @@ public class Decompose {
             }
 
             /* determine next direction */
-            c = bm.getPixelValue(x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
-            d = bm.getPixelValue(x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
+            c = bm.getPixelValue(x + (direction.x+direction.y-1)/2, y + (direction.y-direction.x-1)/2);
+            d = bm.getPixelValue(x + (direction.x-direction.y-1)/2, y + (direction.y+direction.x-1)/2);
 
             if (isAmbiguousSituation(c, d)) {               /* ambiguous turn */
                 if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, x, y)) {
-                    tmp = dirx;              /* right turn */
-                    dirx = diry;
-                    diry = -tmp;
+                    tmp = direction.x;              /* right turn */
+                    direction.x = direction.y;
+                    direction.y = -tmp;
                 } else {
-                    tmp = dirx;              /* left turn */
-                    dirx = -diry;
-                    diry = tmp;
+                    tmp = direction.x;              /* left turn */
+                    direction.x = -direction.y;
+                    direction.y = tmp;
                 }
             } else if (c) {              /* right turn */
-                tmp = dirx;
-                dirx = diry;
-                diry = -tmp;
+                tmp = direction.x;
+                direction.x = direction.y;
+                direction.y = -tmp;
             } else if (!d) {             /* left turn */
-                tmp = dirx;
-                dirx = -diry;
-                diry = tmp;
+                tmp = direction.x;
+                direction.x = -direction.y;
+                direction.y = tmp;
             }
         } /* while this Path */
 
