@@ -76,28 +76,28 @@ public class Decompose {
             c = bm.getPixelValue(x + (direction.x+direction.y-1)/2, y + (direction.y-direction.x-1)/2);
             d = bm.getPixelValue(x + (direction.x-direction.y-1)/2, y + (direction.y+direction.x-1)/2);
 
-            if (isAmbiguousSituation(c, d)) {               /* ambiguous turn */
+            if (isAmbiguousSituation(c, d)) {
                 if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, x, y)) {
-                    tmp = direction.x;              /* right turn */
-                    direction.x = direction.y;
-                    direction.y = -tmp;
+                    direction = performRightTurn(direction);
                 } else {
-                    tmp = direction.x;              /* left turn */
-                    direction.x = -direction.y;
-                    direction.y = tmp;
+                    direction = performLeftTurn(direction);
                 }
-            } else if (c) {              /* right turn */
-                tmp = direction.x;
-                direction.x = direction.y;
-                direction.y = -tmp;
-            } else if (!d) {             /* left turn */
-                tmp = direction.x;
-                direction.x = -direction.y;
-                direction.y = tmp;
+            } else if (c) {
+                direction = performRightTurn(direction);
+            } else if (!d) {
+                direction = performLeftTurn(direction);
             }
         } /* while this Path */
 
         return new Path(area,sign,len,pt);
+    }
+
+    private static Point performLeftTurn(Point direction) {
+        return new Point(- direction.y,direction.x);
+    }
+
+    private static Point performRightTurn(Point direction) {
+        return new Point(direction.y,-direction.x);
     }
 
     private static boolean isAmbiguousSituation(boolean c, boolean d) {
