@@ -72,27 +72,31 @@ public class Decompose {
                 break;
             }
 
-            /* determine next direction */
-            
-            Point rightPixelPosition = new Point(x + (direction.x+direction.y-1)/2, y + (direction.y-direction.x-1)/2);
-            Point leftPixelPosition = new Point(x + (direction.x-direction.y-1)/2, y + (direction.y+direction.x-1)/2);
-            isRightPixelFilled = bm.getPixelValue(rightPixelPosition.x,rightPixelPosition.y);
-            isLeftPixelFilled = bm.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
-
-            if (isAmbiguousSituation(isRightPixelFilled, isLeftPixelFilled)) {
-                if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, x, y)) {
-                    direction = performRightTurn(direction);
-                } else {
-                    direction = performLeftTurn(direction);
-                }
-            } else if (isRightPixelFilled) {
-                direction = performRightTurn(direction);
-            } else if (!isLeftPixelFilled) {
-                direction = performLeftTurn(direction);
-            }
+            direction = determineNextDirection(bm, sign, turnpolicy, new Point(x, y), direction);
         } /* while this Path */
 
         return new Path(area,sign,len,pt);
+    }
+
+    private static Point determineNextDirection(Bitmap bm, int sign, int turnpolicy, Point currentPoint, Point direction) {
+        Point rightPixelPosition = new Point(currentPoint.x + (direction.x+direction.y-1)/2, currentPoint.y + (direction.y-direction.x-1)/2);
+        Point leftPixelPosition = new Point(currentPoint.x + (direction.x-direction.y-1)/2, currentPoint.y + (direction.y+direction.x-1)/2);
+
+        boolean isRightPixelFilled = bm.getPixelValue(rightPixelPosition.x,rightPixelPosition.y);
+        boolean isLeftPixelFilled = bm.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
+
+        if (isAmbiguousSituation(isRightPixelFilled, isLeftPixelFilled)) {
+            if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, currentPoint.x, currentPoint.y)) {
+                direction = performRightTurn(direction);
+            } else {
+                direction = performLeftTurn(direction);
+            }
+        } else if (isRightPixelFilled) {
+            direction = performRightTurn(direction);
+        } else if (!isLeftPixelFilled) {
+            direction = performLeftTurn(direction);
+        }
+        return direction;
     }
 
     private static Point performLeftTurn(Point direction) {
