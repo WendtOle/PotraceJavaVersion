@@ -37,16 +37,13 @@ public class Decompose {
     of turnpolicies. */
 
     public static Path findpath(Bitmap bm, Point startPointOfPath, int sign, int turnpolicy) {
-        int tmp;
-        boolean isRightPixelFilled,isLeftPixelFilled;
         Point[] pt = new Point[1];
-        Point[] pt1 = new Point[1];
 
         int x = startPointOfPath.x;
         int y = startPointOfPath.y;
         Point direction = new Point(0,-1);
 
-        int len = 0, size = 0;
+        int len = 0;
         int area = 0;
 
         while (true) {
@@ -62,8 +59,7 @@ public class Decompose {
             y += direction.y;
             area += x*direction.y;
 
-            /* Path complete? */
-            if (x==startPointOfPath.x && y==startPointOfPath.y) {
+            if (isPathComplete(startPointOfPath, new Point(x, y))) {
                 break;
             }
 
@@ -71,6 +67,10 @@ public class Decompose {
         } /* while this Path */
 
         return new Path(area,sign,len,pt);
+    }
+
+    private static boolean isPathComplete(Point startPointOfPath, Point currentPoint) {
+        return currentPoint.x==startPointOfPath.x && currentPoint.y==startPointOfPath.y;
     }
 
     private static Point[] expendPointArrayCapacity(Point[] pt) {
