@@ -77,13 +77,8 @@ public class Decompose {
             c = bm.getPixelValue(x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
             d = bm.getPixelValue(x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
 
-            if (c && !d) {               /* ambiguous turn */
-                if (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && detrand(x,y))
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bm.getMajorityValueAtIntersection(x, y))
-                        || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bm.getMajorityValueAtIntersection(x, y))) {
+            if (isAmbiguousSituation(c, d)) {               /* ambiguous turn */
+                if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, x, y)) {
                     tmp = dirx;              /* right turn */
                     dirx = diry;
                     diry = -tmp;
@@ -104,6 +99,19 @@ public class Decompose {
         } /* while this Path */
 
         return new Path(area,sign,len,pt);
+    }
+
+    private static boolean isAmbiguousSituation(boolean c, boolean d) {
+        return c && !d;
+    }
+
+    private static boolean shouldGoRightInAmbiguousSituation(Bitmap bm, int sign, int turnpolicy, int x, int y) {
+        return turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
+                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
+                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
+                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && detrand(x,y))
+                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bm.getMajorityValueAtIntersection(x, y))
+                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bm.getMajorityValueAtIntersection(x, y));
     }
 
     /* Give a tree structure to the given Path original.potrace.List, based on "insideness"
