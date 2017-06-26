@@ -277,16 +277,14 @@ public class Decompose {
         bm1.clearExcessPixelsOfBitmap();
 
         // iterate through components
-        int x = 0;
-        int y = bm1.height - 1;
-        Point xy = new Point(x,y);
+        Point currentPoint = new Point(0,bm1.height-1);
 
-        while ((xy = bm1.findNextPositionOfFilledPixel(xy)) != null ) {
+        while ((currentPoint = bm1.findNextPositionOfFilledPixel(currentPoint)) != null ) {
             // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
-            int sign = bm.getPixelValue(xy.x, xy.y) ? '+' : '-';
+            int sign = bm.getPixelValue(currentPoint.x, currentPoint.y) ? '+' : '-';
 
             // calculate the Path
-            Path p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
+            Path p = findpath(bm1, currentPoint.x, currentPoint.y+1, sign, param.turnpolicy);
 
             // update buffered image
             bm1.xor_path(p);
