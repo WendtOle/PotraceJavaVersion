@@ -38,7 +38,7 @@ public class Decompose {
 
     public static Path findpath(Bitmap bm, Point startPointOfPath, int sign, int turnpolicy) {
         int tmp;
-        boolean c,d;
+        boolean isRightPixelFilled,isLeftPixelFilled;
         Point[] pt = new Point[1];
         Point[] pt1 = new Point[1];
 
@@ -73,18 +73,21 @@ public class Decompose {
             }
 
             /* determine next direction */
-            c = bm.getPixelValue(x + (direction.x+direction.y-1)/2, y + (direction.y-direction.x-1)/2);
-            d = bm.getPixelValue(x + (direction.x-direction.y-1)/2, y + (direction.y+direction.x-1)/2);
+            
+            Point rightPixelPosition = new Point(x + (direction.x+direction.y-1)/2, y + (direction.y-direction.x-1)/2);
+            Point leftPixelPosition = new Point(x + (direction.x-direction.y-1)/2, y + (direction.y+direction.x-1)/2);
+            isRightPixelFilled = bm.getPixelValue(rightPixelPosition.x,rightPixelPosition.y);
+            isLeftPixelFilled = bm.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
 
-            if (isAmbiguousSituation(c, d)) {
+            if (isAmbiguousSituation(isRightPixelFilled, isLeftPixelFilled)) {
                 if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, x, y)) {
                     direction = performRightTurn(direction);
                 } else {
                     direction = performLeftTurn(direction);
                 }
-            } else if (c) {
+            } else if (isRightPixelFilled) {
                 direction = performRightTurn(direction);
-            } else if (!d) {
+            } else if (!isLeftPixelFilled) {
                 direction = performLeftTurn(direction);
             }
         } /* while this Path */
