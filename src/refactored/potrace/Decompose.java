@@ -270,32 +270,31 @@ public class Decompose {
     in. Returns 0 on success with plistp set, or -1 on error with errno
     set. */
 
-    public static Path bm_to_pathlist(Bitmap bm, Param param) {
-        Path plist = null;
-        Bitmap bm1 = bm.duplicate();
-
-        bm1.clearExcessPixelsOfBitmap();
+    public static Path bm_to_pathlist(Bitmap bitmap, Param param) {
+        Path pathList = null;
+        Bitmap workCopy = bitmap.duplicate();
+        workCopy.clearExcessPixelsOfBitmap();
 
         // iterate through components
-        Point currentPoint = new Point(0,bm1.height-1);
+        Point startPointOfPath = new Point(0,workCopy.height-1);
 
-        while ((currentPoint = bm1.findNextPositionOfFilledPixel(currentPoint)) != null ) {
+        while ((startPointOfPath = workCopy.findNextFilledPixel(startPointOfPath)) != null ) {
 
-            int sign = getSignOfPathFromOriginalBitmap(bm,currentPoint);
+            int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,startPointOfPath);
 
             // calculate the Path
-            Path p = findpath(bm1, currentPoint.x, currentPoint.y+1, sign, param.turnpolicy);
+            Path currentPath = findpath(workCopy, startPointOfPath.x, startPointOfPath.y+1, signOfPath, param.turnpolicy);
 
             // update buffered image
-            bm1.removePathFromBitmap(p);
+            workCopy.removePathFromBitmap(currentPath);
 
-            if (isPathBigEnough(p.area,param.turdsize)) {
-                plist = Path.insertElementAtTheEndOfList(p,plist);
+            if (isPathBigEnough(currentPath.area,param.turdsize)) {
+                pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
             }
         }
 
-        pathlist_to_tree(plist, bm1);
-        return plist;
+        pathlist_to_tree(pathList, workCopy);
+        return pathList;
     }
 
     private static boolean isPathBigEnough(int actualArea, int areaOfTurd) {

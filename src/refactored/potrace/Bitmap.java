@@ -205,7 +205,7 @@ public class Bitmap {
         }
     }
 
-    public Point findNextPositionOfFilledPixel(Point startPointforSearch) {
+    public Point findNextFilledPixel(Point startPointforSearch) {
         int x0 = (startPointforSearch.x) & ~(Bitmap.PIXELINWORD-1);
 
         for (int y=startPointforSearch.y; y>=0; y--) {
