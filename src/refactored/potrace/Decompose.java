@@ -36,16 +36,16 @@ public class Decompose {
     cannot have length 0). Sign is required for correct interpretation
     of turnpolicies. */
 
-    public static Path findpath(Bitmap bm, int x0, int y0, int sign, int turnpolicy) {
-        int x, y, dirx, diry, len, size, area;
+    public static Path findpath(Bitmap bm, Point startPointOfPath, int sign, int turnpolicy) {
+        int dirx, diry, len, size, area;
         int tmp;
         boolean c,d;
         Point[] pt = new Point[1];
         Point[] pt1 = new Point[1];
         Path p = null;
 
-        x = x0;
-        y = y0;
+        int x = startPointOfPath.x;
+        int y = startPointOfPath.y;
         dirx = 0;
         diry = -1;
 
@@ -71,7 +71,7 @@ public class Decompose {
             area += x*diry;
 
             /* Path complete? */
-            if (x==x0 && y==y0) {
+            if (x==startPointOfPath.x && y==startPointOfPath.y) {
                 break;
             }
 
@@ -283,7 +283,7 @@ public class Decompose {
             int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,startPointOfPath);
 
             // calculate the Path
-            Path currentPath = findpath(workCopy, startPointOfPath.x, startPointOfPath.y+1, signOfPath, param.turnpolicy);
+            Path currentPath = findpath(workCopy, new Point(startPointOfPath.x, startPointOfPath.y+1), signOfPath, param.turnpolicy);
 
             // update buffered image
             workCopy.removePathFromBitmap(currentPath);
