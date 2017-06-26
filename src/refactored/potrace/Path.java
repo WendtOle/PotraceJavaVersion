@@ -2,6 +2,8 @@ package refactored.potrace;
 
     /* Linked List of signed Curve segments. Also carries a tree structure. */
 
+import java.awt.*;
+
 public class Path {
     public int area;                //area of the Bitmap Path
     public int sign;                //+ or -, depending on orientation
@@ -11,8 +13,14 @@ public class Path {
     public Path sibling;    //tree structure
     public PrivePath priv;  /* private state */
 
-    public Path() {
+    public Path(){};
+
+    public Path(int area, int sign, int len, Point[] pointsOfPath) {
+        this.area = area;
+        this.sign = sign;
         this.priv = new PrivePath();
+        this.priv.len = len;
+        this.priv.pt = pointsOfPath;
     }
 
     public static Path insertElementAtTheEndOfList(Path element, Path list) {

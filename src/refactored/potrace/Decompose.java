@@ -37,20 +37,18 @@ public class Decompose {
     of turnpolicies. */
 
     public static Path findpath(Bitmap bm, Point startPointOfPath, int sign, int turnpolicy) {
-        int dirx, diry, len, size, area;
         int tmp;
         boolean c,d;
         Point[] pt = new Point[1];
         Point[] pt1 = new Point[1];
-        Path p = null;
 
         int x = startPointOfPath.x;
         int y = startPointOfPath.y;
-        dirx = 0;
-        diry = -1;
+        int dirx = 0;
+        int diry = -1;
 
-        len = size = 0;
-        area = 0;
+        int len = 0, size = 0;
+        int area = 0;
 
         while (true) {
             /* add point to Path */
@@ -105,15 +103,7 @@ public class Decompose {
             }
         } /* while this Path */
 
-        /* allocate new Path object */
-        p = new Path();
-
-        p.priv.pt = pt;
-        p.priv.len = len;
-        p.area = area;
-        p.sign = sign;
-
-        return p;
+        return new Path(area,sign,len,pt);
     }
 
     /* Give a tree structure to the given Path original.potrace.List, based on "insideness"
@@ -282,10 +272,8 @@ public class Decompose {
 
             int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,startPointOfPath);
 
-            // calculate the Path
             Path currentPath = findpath(workCopy, new Point(startPointOfPath.x, startPointOfPath.y+1), signOfPath, param.turnpolicy);
 
-            // update buffered image
             workCopy.removePathFromBitmap(currentPath);
 
             if (isPathBigEnough(currentPath.area,param.turdsize)) {
