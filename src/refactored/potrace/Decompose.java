@@ -51,13 +51,8 @@ public class Decompose {
 
         while (true) {
             /* add point to Path */
-            if (len>=size) {
-                size += 100;
-                size = (int)(1.3 * size);
-                Point[] newSizedPointArray = new Point[size];
-                System.arraycopy(pt,0,newSizedPointArray,0,pt.length);
-                pt1 = newSizedPointArray;
-                pt = pt1;
+            if (len>=pt.length) {
+                pt = expendPointArrayCapacity(pt);
             }
             pt[len] = new Point(x,y);
             len++;
@@ -76,6 +71,13 @@ public class Decompose {
         } /* while this Path */
 
         return new Path(area,sign,len,pt);
+    }
+
+    private static Point[] expendPointArrayCapacity(Point[] pt) {
+        int newSize = (int)(1.3 * (pt.length+100));
+        Point[] newSizedPointArray = new Point[newSize];
+        System.arraycopy(pt,0,newSizedPointArray,0,pt.length);
+        return newSizedPointArray;
     }
 
     private static Point determineNextDirection(Bitmap bm, int sign, int turnpolicy, Point currentPoint, Point direction) {
