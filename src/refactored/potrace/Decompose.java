@@ -271,44 +271,36 @@ public class Decompose {
     set. */
 
     public static Path bm_to_pathlist(Bitmap bm, Param param) {
-        int x;
-        int y;
-        Path p;
         Path plist = null;
-        //original.potrace.Path plist_hook = null;  // used to speed up appending to linked original.potrace.List
         Bitmap bm1 = bm.duplicate();
-        int sign;
 
-        bm1 = bm.duplicate();
-
-        //be sure the byte padding on the right is set to 0, as the fast
-        //pixel search below relies on it
         bm1.clearExcessPixelsOfBitmap();
 
         // iterate through components
-        x = 0;
-        y = bm1.height - 1;
+        int x = 0;
+        int y = bm1.height - 1;
         Point xy = new Point(x,y);
+
         while ((xy = bm1.findNextPositionOfFilledPixel(xy)) != null ) {
             // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
-            // mit dem nachgucken nach dem sign in der original Bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
-            sign = bm.getPixelValue(xy.x, xy.y) ? '+' : '-';
+            int sign = bm.getPixelValue(xy.x, xy.y) ? '+' : '-';
 
             // calculate the Path
-            p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
+            Path p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
 
             // update buffered image
             bm1.xor_path(p);
 
-            // if it' a turd, eliminate it, else append it to the original.potrace.List
-            if (p.area > param.turdsize) {
-
-                //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
+            if (isPathBigEnough(p.area,param.turdsize)) {
                 plist = Path.insertElementAtTheEndOfList(p,plist);
             }
         }
 
         pathlist_to_tree(plist, bm1);
         return plist;
+    }
+
+    private static boolean isPathBigEnough(int actualArea, int areaOfTurd) {
+        return actualArea > areaOfTurd;
     }
 }
