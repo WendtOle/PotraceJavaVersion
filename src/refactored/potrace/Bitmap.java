@@ -183,10 +183,9 @@ public class Bitmap {
         words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS;
     }
 
-    /* xor the given pixmap with the interior of the given Path. Note: the
-    Path must be within the dimensions of the pixmap. */
+    /* Note: the Path must be within the dimensions of the pixmap. */
 
-    public void xor_path(Path path) {
+    public void removePathFromBitmap(Path path) {
         if (path.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
             return;
         }

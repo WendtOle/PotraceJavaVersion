@@ -174,7 +174,7 @@ public class Decompose {
             head.next = null;
 
             // render Path
-            bm.xor_path(head);
+            bm.removePathFromBitmap(head);
             bbox.setToBoundingBoxOfPath(head);
 
             /* now do insideness test for each element of cur; append it to
@@ -280,14 +280,14 @@ public class Decompose {
         Point currentPoint = new Point(0,bm1.height-1);
 
         while ((currentPoint = bm1.findNextPositionOfFilledPixel(currentPoint)) != null ) {
-            // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
-            int sign = bm.getPixelValue(currentPoint.x, currentPoint.y) ? '+' : '-';
+
+            int sign = getSignOfPathFromOriginalBitmap(bm,currentPoint);
 
             // calculate the Path
             Path p = findpath(bm1, currentPoint.x, currentPoint.y+1, sign, param.turnpolicy);
 
             // update buffered image
-            bm1.xor_path(p);
+            bm1.removePathFromBitmap(p);
 
             if (isPathBigEnough(p.area,param.turdsize)) {
                 plist = Path.insertElementAtTheEndOfList(p,plist);
@@ -300,5 +300,14 @@ public class Decompose {
 
     private static boolean isPathBigEnough(int actualArea, int areaOfTurd) {
         return actualArea > areaOfTurd;
+    }
+
+    private static int getSignOfPathFromOriginalBitmap(Bitmap bm, Point startPointOfPath) {
+        boolean isPathFilled = bm.getPixelValue(startPointOfPath.x, startPointOfPath.y);
+        if (isPathFilled)
+            return '+';
+        else
+            return '-';
+
     }
 }

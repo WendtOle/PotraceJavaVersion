@@ -66,7 +66,7 @@ public class decomposeTest {
         testBitmap.setPixelToValue(1,1,false);
 
         Path path = Decompose.findpath(testBitmap,0,3,43,4);
-        testBitmap.xor_path(path);
+        testBitmap.removePathFromBitmap(path);
 
         assertEquals(false, testBitmap.getPixelValue(0,0));
         assertEquals(false, testBitmap.getPixelValue(1,0));
