@@ -28,7 +28,7 @@ public class PathListToTree {
         this.pathlist = pathList;
         this.bitmap = bm;
 
-        bm.setWholeBitmapToSpecificValue(0);
+        bitmap.setWholeBitmapToSpecificValue(0);
 
         saveOriginalNextPointerToSibling();
 
@@ -71,13 +71,8 @@ public class PathListToTree {
 
         }
 
-        // copy sibling structure from "next" to "sibling" component
-        Path path = pathList;
-        while (path != null) {
-            Path p1 = path.sibling;
-            path.sibling = path.next;
-            path = p1;
-        }
+        copySiblingStructurFromNextToSiblingComponent();
+
 
         // reconstruct a new linked original.potrace.List ("next") structure from tree
         // ("childlist", "sibling") structure. This code is slightly messy,
@@ -91,7 +86,7 @@ public class PathListToTree {
         pathList = null;
         while (heap != null) {
             Path heap1 = heap.next;
-            for (path=heap; path != null; path=path.sibling) {
+            for (Path path=heap; path != null; path=path.sibling) {
                 // p is a positive Path
                 // append to linked original.potrace.List
                 pathList = Path.insertElementAtTheEndOfList(path, pathList);
@@ -108,6 +103,15 @@ public class PathListToTree {
                 }
             }
             heap = heap1;
+        }
+    }
+
+    private void copySiblingStructurFromNextToSiblingComponent() {
+        Path path = pathlist;
+        while (path != null) {
+            Path p1 = path.sibling;
+            path.sibling = path.next;
+            path = p1;
         }
     }
 
