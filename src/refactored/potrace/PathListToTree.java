@@ -62,6 +62,10 @@ public class PathListToTree {
             cur = cur.next;
             head.next = null;
 
+            //head -> currentPath
+            //heap -> childList Component
+            //cur -> next Component
+
             bitmap.invertPathOnBitmap(head);
 
             insidenessTestForEachElement(cur, head);
@@ -86,23 +90,25 @@ public class PathListToTree {
 
 
     //TODO it is not only a insidenessTest, it also does something
-    private void insidenessTestForEachElement(Path cur, Path head) {
+    private void insidenessTestForEachElement(Path pathListToTest, Path outerPath) {
         BBox bbox = new BBox();
-        bbox.setToBoundingBoxOfPath(head);
+        bbox.setToBoundingBoxOfPath(outerPath);
 
-        for (Path path=cur; (path != null); path=cur) {
-            cur=path.next;
-            path.next=null;
+        for (Path currentPathToTest=pathListToTest; (currentPathToTest != null); currentPathToTest=pathListToTest) {
+            pathListToTest=currentPathToTest.next;
+            currentPathToTest.next=null;
 
-            if (path.priv.pt[0].y <= bbox.y0) {
-                head.next = Path.insertElementAtTheEndOfList(path,head.next);
-                head.next = Path.insertListAtTheEndOfList(cur,head.next);
+            boolean isCurrentPathBelowOutherPath = currentPathToTest.priv.pt[0].y <= bbox.y0;
+            if (isCurrentPathBelowOutherPath) {
+                outerPath.next = Path.insertElementAtTheEndOfList(currentPathToTest,outerPath.next);
+                outerPath.next = Path.insertListAtTheEndOfList(pathListToTest,outerPath.next);
                 break;
             }
-            if (bitmap.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y-1)) {
-                head.childlist = Path.insertElementAtTheEndOfList(path,head.childlist);
+            boolean isCurrentPathInsideOfOuterPath = bitmap.getPixelValue(currentPathToTest.priv.pt[0].x, currentPathToTest.priv.pt[0].y - 1);
+            if (isCurrentPathInsideOfOuterPath) {
+                outerPath.childlist = Path.insertElementAtTheEndOfList(currentPathToTest,outerPath.childlist);
             } else {
-                head.next = Path.insertElementAtTheEndOfList(path,head.next);
+                outerPath.next = Path.insertElementAtTheEndOfList(currentPathToTest,outerPath.next);
             }
         }
         bitmap.clearBitmapWithBBox(bbox);
