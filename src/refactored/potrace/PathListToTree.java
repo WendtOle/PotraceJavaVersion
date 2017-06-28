@@ -23,7 +23,6 @@ public class PathListToTree {
 
     static void pathlist_to_tree(Path pathList, Bitmap bm) {
         Path heap = new Path();
-        Path heap1;
         Path cur = new Path();
         Path head = new Path();
         BBox bbox = new BBox();
@@ -123,7 +122,7 @@ public class PathListToTree {
         }
         pathList = null;
         while (heap != null) {
-            heap1 = heap.next;
+            Path heap1 = heap.next;
             for (path=heap; path != null; path=path.sibling) {
                 // p is a positive Path
                 // append to linked original.potrace.List
