@@ -30,8 +30,6 @@ public class PathListToTree {
 
         bm.setWholeBitmapToSpecificValue(0);
 
-        // save original "next" pointers
-
         saveOriginalNextPointerToSibling();
 
         Path heap = pathList;
@@ -55,42 +53,13 @@ public class PathListToTree {
             head.next = null;
 
             // render Path
-            bm.removePathFromBitmap(head);
+            bitmap.removePathFromBitmap(head);
 
-            BBox bbox = new BBox();
-            bbox.setToBoundingBoxOfPath(head);
-
-            /* now do insideness test for each element of cur; append it to
-            head->childlist if it's inside head, else append it to
-            head->next. */
-
-            
-
-            for (Path path=cur; (path != null); path=cur) {
-                cur=path.next;
-                path.next=null;
-
-                if (path.priv.pt[0].y <= bbox.y0) {
-                    head.next = Path.insertElementAtTheEndOfList(path,head.next);
-                    head.next = Path.insertListAtTheEndOfList(cur,head.next);
-                    break;
-                }
-                if (bm.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y-1)) {
-                    head.childlist = Path.insertElementAtTheEndOfList(path,head.childlist);
-
-                } else {
-
-                    head.next = Path.insertElementAtTheEndOfList(path,head.next);
-
-                }
-            }
-
-            // clear bm
-            bm.clearBitmapWithBBox(bbox);
+            insidenessTestForEachElement(cur, head);
 
             // now schedule head->childlist and head->next for further
             // processing
-            if (head.next != null) { //Ole: es gab pfade die außerhalb des aller ersten pfades waren
+            if (head.next != null) {
                 head.next.childlist = heap;
                 heap = head.next;
 
@@ -148,5 +117,36 @@ public class PathListToTree {
             path.childlist = null;
         }
     }
+
+    /* now do insideness test for each element of cur; append it to
+            head->childlist if it's inside head, else append it to
+            head->next. */
+
+    private void insidenessTestForEachElement(Path cur, Path head) {
+        BBox bbox = new BBox();
+        bbox.setToBoundingBoxOfPath(head);
+
+        for (Path path=cur; (path != null); path=cur) {
+            cur=path.next;
+            path.next=null;
+
+            if (path.priv.pt[0].y <= bbox.y0) {
+                head.next = Path.insertElementAtTheEndOfList(path,head.next);
+                head.next = Path.insertListAtTheEndOfList(cur,head.next);
+                break;
+            }
+            if (bitmap.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y-1)) {
+                head.childlist = Path.insertElementAtTheEndOfList(path,head.childlist);
+
+            } else {
+
+                head.next = Path.insertElementAtTheEndOfList(path,head.next);
+
+            }
+        }
+
+        bitmap.clearBitmapWithBBox(bbox);
+    }
+
 
 }
