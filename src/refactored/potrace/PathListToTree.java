@@ -53,7 +53,7 @@ public class PathListToTree {
             head.next = null;
 
             // render Path
-            bitmap.removePathFromBitmap(head);
+            bitmap.invertPathOnBitmap(head);
 
             insidenessTestForEachElement(cur, head);
 

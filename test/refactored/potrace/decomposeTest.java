@@ -66,7 +66,7 @@ public class decomposeTest {
 
         FindPath findPath = new FindPath(testBitmap,new Point(0,3),43,4);
         Path path = findPath.getPath();
-        testBitmap.removePathFromBitmap(path);
+        testBitmap.invertPathOnBitmap(path);
 
         assertEquals(false, testBitmap.getPixelValue(0,0));
         assertEquals(false, testBitmap.getPixelValue(1,0));

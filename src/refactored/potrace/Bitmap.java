@@ -185,7 +185,7 @@ public class Bitmap {
 
     /* Note: the Path must be within the dimensions of the pixmap. */
 
-    public void removePathFromBitmap(Path path) {
+    public void invertPathOnBitmap(Path path) {
         if (path.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
             return;
         }

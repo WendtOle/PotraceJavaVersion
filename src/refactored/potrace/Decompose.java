@@ -49,7 +49,7 @@ public class Decompose {
             FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfPath.x, startPointOfPath.y + 1), signOfPath, param.turnpolicy);
             Path currentPath = pathFinder.getPath();
 
-            workCopy.removePathFromBitmap(currentPath);
+            workCopy.invertPathOnBitmap(currentPath);
 
             if (isPathBigEnough(currentPath.area,param.turdsize)) {
                 pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
