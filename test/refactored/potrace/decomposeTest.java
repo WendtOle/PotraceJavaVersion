@@ -47,7 +47,7 @@ public class decomposeTest {
                 new Point(64,1)};
 
         FindPath findPath = new FindPath(testBitmap,new Point(63,1),43,4);
-        Path result = findPath.path;
+        Path result = findPath.getPath();
         for (int i = 0 ; i < expectedPath.length; i ++)
             comparePoints(expectedPath[i],result.priv.pt[i]);
     }
@@ -57,8 +57,6 @@ public class decomposeTest {
         Assert.assertEquals(should.y, actual.y);
     }
 
-
-
     @Test
     public void test_xor_path() {
         Bitmap testBitmap = new Bitmap(3,3);
@@ -67,7 +65,7 @@ public class decomposeTest {
         testBitmap.setPixelToValue(1,1,false);
 
         FindPath findPath = new FindPath(testBitmap,new Point(0,3),43,4);
-        Path path = findPath.path;
+        Path path = findPath.getPath();
         testBitmap.removePathFromBitmap(path);
 
         assertEquals(false, testBitmap.getPixelValue(0,0));

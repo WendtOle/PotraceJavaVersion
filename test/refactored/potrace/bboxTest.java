@@ -17,7 +17,7 @@ public class bboxTest {
         testBitmap.setPixelToValue(1,1,true);
 
         FindPath findPath = new FindPath(testBitmap,new Point(2,2),43,4);
-        Path path = findPath.path;
+        Path path = findPath.getPath();
 
         box.setToBoundingBoxOfPath(path);
         assertEquals(2,box.x0);

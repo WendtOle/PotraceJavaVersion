@@ -4,7 +4,6 @@ import java.awt.*;
 
 public class FindPath {
 
-    Path path;
     Point startPoint;
     Point direction = new Point(0, -1);;
     int sign;
@@ -13,32 +12,32 @@ public class FindPath {
     Point[] points = new Point[1];
     int indexOfCurrentPoint = 0;
     Point currentPoint;
+    int areaOfPath = 0;
 
     public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
         this.startPoint = startPointOfPath;
         this.currentPoint = new Point(startPointOfPath.x,startPointOfPath.y);
-
         this.sign = sign;
         this.turnPolicy = turnPolicy;
         this.bitmap = bitmap;
 
-        int area = 0;
-
         while (true) {
             addPointToPath();
-
-            /* move to next point */
-            currentPoint.x += direction.x;
-            currentPoint.y += direction.y;
-            area += currentPoint.x * direction.y;
-
+            moveToNextPoint();
             if (isPathComplete())
                 break;
-
             determineNextDirection();
         }
+    }
 
-        path =  new Path(area, sign, indexOfCurrentPoint, points);
+    public Path getPath(){
+        return new Path(areaOfPath, sign, indexOfCurrentPoint, points);
+    }
+
+    private void moveToNextPoint() {
+        currentPoint.x += direction.x;
+        currentPoint.y += direction.y;
+        areaOfPath += currentPoint.x * direction.y;
     }
 
     private void addPointToPath() {
