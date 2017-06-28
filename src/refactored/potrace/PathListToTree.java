@@ -7,7 +7,7 @@ public class PathListToTree {
 
     /* Give a tree structure to the given Path original.potrace.List, based on "insideness"
     testing. I.e., Path A is considered "below" Path B if it is inside
-    Path B. The input pathlist is assumed to be ordered so that "outer"
+    Path B. The input pathList is assumed to be ordered so that "outer"
     paths occur before "inner" paths. The tree structure is stored in
     the "childlist" and "sibling" components of the path_t
     structure. The linked original.potrace.List structure is also changed so that
@@ -21,11 +21,11 @@ public class PathListToTree {
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
 
-    Path pathlist;
+    Path pathList;
     Bitmap bitmap;
 
     void pathlist_to_tree(Path pathList, Bitmap bm) {
-        this.pathlist = pathList;
+        this.pathList = pathList;
         this.bitmap = bm;
         bitmap.setWholeBitmapToSpecificValue(0);
 
@@ -43,14 +43,14 @@ public class PathListToTree {
     }
 
     private void saveOriginalNextPointerToSibling() {
-        for (Path path = pathlist; path != null; path = path.next) {
+        for (Path path = pathList; path != null; path = path.next) {
             path.sibling = path.next;
             path.childlist = null;
         }
     }
 
     private void transformIntoTreeStructure() {
-        Path heap = pathlist;
+        Path heap = pathList;
         while (heap != null) {
             // unlink first sublist
             Path cur = heap;
@@ -84,6 +84,8 @@ public class PathListToTree {
             head->childlist if it's inside head, else append it to
             head->next. */
 
+
+    //TODO it is not only a insidenessTest, it also does something
     private void insidenessTestForEachElement(Path cur, Path head) {
         BBox bbox = new BBox();
         bbox.setToBoundingBoxOfPath(head);
@@ -99,19 +101,15 @@ public class PathListToTree {
             }
             if (bitmap.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y-1)) {
                 head.childlist = Path.insertElementAtTheEndOfList(path,head.childlist);
-
             } else {
-
                 head.next = Path.insertElementAtTheEndOfList(path,head.next);
-
             }
         }
-
         bitmap.clearBitmapWithBBox(bbox);
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {
-        Path path = pathlist;
+        Path path = pathList;
         while (path != null) {
             Path p1 = path.sibling;
             path.sibling = path.next;
@@ -121,19 +119,19 @@ public class PathListToTree {
 
     private void reconstructNextComponentFromChildAndSiblingComponent() {
         Path heap;
-        heap = pathlist;
+        heap = pathList;
         if (heap != null) {
             heap.next = null;  // heap is a linked original.potrace.List of childlists
         }
-        pathlist = null;
+        pathList = null;
         while (heap != null) {
             Path heap1 = heap.next;
             for (Path path=heap; path != null; path=path.sibling) {
 
-                pathlist = Path.insertElementAtTheEndOfList(path, pathlist);
+                pathList = Path.insertElementAtTheEndOfList(path, pathList);
 
                 for (Path p1=path.childlist; p1 != null; p1=p1.sibling) {
-                    pathlist = Path.insertElementAtTheEndOfList(p1, pathlist);
+                    pathList = Path.insertElementAtTheEndOfList(p1, pathList);
 
                     if (p1.childlist != null) {
                         heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
