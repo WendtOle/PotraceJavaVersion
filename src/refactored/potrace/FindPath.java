@@ -6,18 +6,17 @@ public class FindPath {
 
     Path path;
     Point startPoint;
-    Point direction;
+    Point direction = new Point(0, -1);;
     int sign;
     int turnPolicy;
     Bitmap bitmap;
+    Point[] points = new Point[1];
 
     public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
-        Point[] pt = new Point[1];
-
         this.startPoint = startPointOfPath;
         int x = startPointOfPath.x;
         int y = startPointOfPath.y;
-        this.direction = new Point(0, -1);
+
         this.sign = sign;
         this.turnPolicy = turnPolicy;
         this.bitmap = bitmap;
@@ -27,10 +26,10 @@ public class FindPath {
 
         while (true) {
             /* add point to Path */
-            if (len >= pt.length) {
-                pt = expendPointArrayCapacity(pt);
+            if (len >= points.length) {
+                expendPointArrayCapacity();
             }
-            pt[len] = new Point(x, y);
+            points[len] = new Point(x, y);
             len++;
 
             /* move to next point */
@@ -45,18 +44,18 @@ public class FindPath {
             direction = determineNextDirection(new Point(x, y));
         } /* while this Path */
 
-        path =  new Path(area, sign, len, pt);
+        path =  new Path(area, sign, len, points);
     }
 
     private boolean isPathComplete(Point currentPoint) {
         return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
     }
 
-    private static Point[] expendPointArrayCapacity(Point[] pt) {
-        int newSize = (int)(1.3 * (pt.length+100));
+    private void expendPointArrayCapacity() {
+        int newSize = (int)(1.3 * (points.length+100));
         Point[] newSizedPointArray = new Point[newSize];
-        System.arraycopy(pt,0,newSizedPointArray,0,pt.length);
-        return newSizedPointArray;
+        System.arraycopy(points,0,newSizedPointArray,0,points.length);
+        points = newSizedPointArray;
     }
 
     private Point determineNextDirection(Point currentPoint) {
