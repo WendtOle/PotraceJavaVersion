@@ -34,16 +34,6 @@ public class FindPath {
         }
     }
 
-    public Path getPath(){
-        return new Path(areaOfPath, sign, indexOfCurrentPoint, points);
-    }
-
-    private void moveToNextPoint() {
-        currentPoint.x += direction.x;
-        currentPoint.y += direction.y;
-        areaOfPath += currentPoint.x * direction.y;
-    }
-
     private void addPointToPath() {
         extendPointArrayCapacityWhenNecessary();
         points[indexOfCurrentPoint] = new Point(currentPoint.x,currentPoint.y);
@@ -61,6 +51,13 @@ public class FindPath {
         Point[] newSizedPointArray = new Point[newSize];
         System.arraycopy(points,0,newSizedPointArray,0,points.length);
         points = newSizedPointArray;
+
+    }
+
+    private void moveToNextPoint() {
+        currentPoint.x += direction.x;
+        currentPoint.y += direction.y;
+        areaOfPath += currentPoint.x * direction.y;
     }
 
     private boolean isPathComplete() {
@@ -80,14 +77,6 @@ public class FindPath {
         }
     }
 
-    private void performTurnInAmbiguousSituation() {
-        if (shouldGoRightInAmbiguousSituation()) {
-            performRightTurn();
-        } else {
-            performLeftTurn();
-        }
-    }
-
     private boolean isRightPixelFilled() {
         Point rightPixelPosition = new Point(currentPoint.x + (direction.x+direction.y-1)/2, currentPoint.y + (direction.y-direction.x-1)/2);
         return bitmap.getPixelValue(rightPixelPosition.x,rightPixelPosition.y);
@@ -98,16 +87,16 @@ public class FindPath {
         return bitmap.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
     }
 
-    private void performLeftTurn() {
-        direction = new Point(- direction.y,direction.x);
-    }
-
-    private void performRightTurn() {
-        direction = new Point(direction.y,-direction.x);
-    }
-
     private static boolean isAmbiguousSituation(boolean c, boolean d) {
         return c && !d;
+    }
+
+    private void performTurnInAmbiguousSituation() {
+        if (shouldGoRightInAmbiguousSituation()) {
+            performRightTurn();
+        } else {
+            performLeftTurn();
+        }
     }
 
     private boolean shouldGoRightInAmbiguousSituation() {
@@ -117,5 +106,17 @@ public class FindPath {
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && Decompose.detrand(currentPoint.x,currentPoint.y))
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y))
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y));
+    }
+
+    private void performRightTurn() {
+        direction = new Point(direction.y,-direction.x);
+    }
+
+    private void performLeftTurn() {
+        direction = new Point(- direction.y,direction.x);
+    }
+
+    public Path getPath(){
+        return new Path(areaOfPath, sign, indexOfCurrentPoint, points);
     }
 }
