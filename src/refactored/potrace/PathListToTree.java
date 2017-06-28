@@ -25,7 +25,6 @@ public class PathListToTree {
         Path heap = new Path();
         Path cur = new Path();
         Path head = new Path();
-        BBox bbox = new BBox();
 
         bm.setWholeBitmapToSpecificValue(0);
 
@@ -58,6 +57,8 @@ public class PathListToTree {
 
             // render Path
             bm.removePathFromBitmap(head);
+            
+            BBox bbox = new BBox();
             bbox.setToBoundingBoxOfPath(head);
 
             /* now do insideness test for each element of cur; append it to
