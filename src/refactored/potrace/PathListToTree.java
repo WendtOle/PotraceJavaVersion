@@ -21,7 +21,9 @@ public class PathListToTree {
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
 
-    static void pathlist_to_tree(Path pathList, Bitmap bm) {
+    
+
+    void pathlist_to_tree(Path pathList, Bitmap bm) {
         bm.setWholeBitmapToSpecificValue(0);
 
         // save original "next" pointers
