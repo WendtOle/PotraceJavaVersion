@@ -27,20 +27,23 @@ public class PathListToTree {
     void pathlist_to_tree(Path pathList, Bitmap bm) {
         this.pathlist = pathList;
         this.bitmap = bm;
-
         bitmap.setWholeBitmapToSpecificValue(0);
 
+        transformIntTree();
+    }
+
+    private void transformIntTree() {
         saveOriginalNextPointerToSibling();
 
-        Path heap = pathList;
+        transformIntoTreeStructure();
 
-        /* the heap holds a original.potrace.List of lists of paths. Use "childlist" field
-        for outer original.potrace.List, "next" field for inner original.potrace.List. Each of the sublists
-        is to be turned into a tree. This code is messy, but it is
-        actually fast. Each Path is rendered exactly once. We use the
-        heap to get a tail recursive algorithm: the heap holds a original.potrace.List of
-        pathlists which still need to be transformed. */
+        copySiblingStructurFromNextToSiblingComponent();
 
+        reconstructNextComponentFromChildAndSiblingComponent();
+    }
+
+    private void transformIntoTreeStructure() {
+        Path heap = pathlist;
         while (heap != null) {
             // unlink first sublist
             Path cur = heap;
@@ -52,7 +55,6 @@ public class PathListToTree {
             cur = cur.next;
             head.next = null;
 
-            // render Path
             bitmap.invertPathOnBitmap(head);
 
             insidenessTestForEachElement(cur, head);
@@ -70,31 +72,26 @@ public class PathListToTree {
             }
 
         }
+    }
 
-        copySiblingStructurFromNextToSiblingComponent();
-
-
-        // reconstruct a new linked original.potrace.List ("next") structure from tree
-        // ("childlist", "sibling") structure. This code is slightly messy,
-        // because we use a heap to make it tail recursive: the heap
-        // contains a original.potrace.List of childlists which still need to be
-        // processed.
-        heap = pathList;
+    private void reconstructNextComponentFromChildAndSiblingComponent() {
+        Path heap;
+        heap = pathlist;
         if (heap != null) {
             heap.next = null;  // heap is a linked original.potrace.List of childlists
         }
-        pathList = null;
+        pathlist = null;
         while (heap != null) {
             Path heap1 = heap.next;
             for (Path path=heap; path != null; path=path.sibling) {
                 // p is a positive Path
                 // append to linked original.potrace.List
-                pathList = Path.insertElementAtTheEndOfList(path, pathList);
+                pathlist = Path.insertElementAtTheEndOfList(path, pathlist);
 
                 // go through its children
                 for (Path p1=path.childlist; p1 != null; p1=p1.sibling) {
                     // append to linked original.potrace.List
-                    pathList = Path.insertElementAtTheEndOfList(p1, pathList);
+                    pathlist = Path.insertElementAtTheEndOfList(p1, pathlist);
                     // append its childlist to heap, if non-empty
 
                     if (p1.childlist != null) {
