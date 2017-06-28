@@ -12,11 +12,11 @@ public class FindPath {
     Bitmap bitmap;
     Point[] points = new Point[1];
     int indexOfCurrentPoint = 0;
+    Point currentPoint;
 
     public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
         this.startPoint = startPointOfPath;
-        int x = startPointOfPath.x;
-        int y = startPointOfPath.y;
+        this.currentPoint = new Point(startPointOfPath.x,startPointOfPath.y);
 
         this.sign = sign;
         this.turnPolicy = turnPolicy;
@@ -25,31 +25,30 @@ public class FindPath {
         int area = 0;
 
         while (true) {
-            addPointToPath(x, y);
+            addPointToPath();
 
             /* move to next point */
-            x += direction.x;
-            y += direction.y;
-            area += x * direction.y;
+            currentPoint.x += direction.x;
+            currentPoint.y += direction.y;
+            area += currentPoint.x * direction.y;
 
-            if (isPathComplete(new Point(x, y))) {
+            if (isPathComplete())
                 break;
-            }
 
-            direction = determineNextDirection(new Point(x, y));
-        } /* while this Path */
+            determineNextDirection();
+        }
 
         path =  new Path(area, sign, indexOfCurrentPoint, points);
     }
 
-    private void addPointToPath(int x, int y) {
-        extendPointArrayCapacityWhenNecessary(indexOfCurrentPoint);
-        points[indexOfCurrentPoint] = new Point(x, y);
+    private void addPointToPath() {
+        extendPointArrayCapacityWhenNecessary();
+        points[indexOfCurrentPoint] = new Point(currentPoint.x,currentPoint.y);
         indexOfCurrentPoint++;
     }
 
-    private void extendPointArrayCapacityWhenNecessary(int len) {
-        if (len >= points.length) {
+    private void extendPointArrayCapacityWhenNecessary() {
+        if (indexOfCurrentPoint >= points.length) {
             expendPointArrayCapacity();
         }
     }
@@ -61,11 +60,11 @@ public class FindPath {
         points = newSizedPointArray;
     }
 
-    private boolean isPathComplete(Point currentPoint) {
+    private boolean isPathComplete() {
         return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
     }
 
-    private Point determineNextDirection(Point currentPoint) {
+    private void determineNextDirection() {
         Point rightPixelPosition = new Point(currentPoint.x + (direction.x+direction.y-1)/2, currentPoint.y + (direction.y-direction.x-1)/2);
         Point leftPixelPosition = new Point(currentPoint.x + (direction.x-direction.y-1)/2, currentPoint.y + (direction.y+direction.x-1)/2);
 
@@ -83,7 +82,6 @@ public class FindPath {
         } else if (!isLeftPixelFilled) {
             direction = performLeftTurn();
         }
-        return direction;
     }
 
     private Point performLeftTurn() {
