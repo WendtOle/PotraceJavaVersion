@@ -22,10 +22,6 @@ public class PathListToTree {
     error with errno set. */
 
     static void pathlist_to_tree(Path pathList, Bitmap bm) {
-        Path heap = new Path();
-        Path cur = new Path();
-        Path head = new Path();
-
         bm.setWholeBitmapToSpecificValue(0);
 
         // save original "next" pointers
@@ -35,7 +31,7 @@ public class PathListToTree {
             path.childlist = null;
         }
 
-        heap = pathList;
+        Path heap = pathList;
 
         /* the heap holds a original.potrace.List of lists of paths. Use "childlist" field
         for outer original.potrace.List, "next" field for inner original.potrace.List. Each of the sublists
@@ -46,18 +42,18 @@ public class PathListToTree {
 
         while (heap != null) {
             // unlink first sublist
-            cur = heap;
+            Path cur = heap;
             heap = heap.childlist;
             cur.childlist = null;
 
             // unlink first Path
-            head = cur;
+            Path head = cur;
             cur = cur.next;
             head.next = null;
 
             // render Path
             bm.removePathFromBitmap(head);
-            
+
             BBox bbox = new BBox();
             bbox.setToBoundingBoxOfPath(head);
 
