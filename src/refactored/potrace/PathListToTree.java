@@ -21,28 +21,24 @@ public class PathListToTree {
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
 
-    static void pathlist_to_tree(Path plist, Bitmap bm) {
-        Path p = new Path();
+    static void pathlist_to_tree(Path pathList, Bitmap bm) {
         Path p1;
         Path heap = new Path();
         Path heap1;
         Path cur = new Path();
         Path head = new Path();
-        Path plist_hook;                // for fast appending to linked original.potrace.List
-        Path hook_in, hook_out;         // for fast appending to linked original.potrace.List
         BBox bbox = new BBox();
 
         bm.setWholeBitmapToSpecificValue(0);
 
         // save original "next" pointers
 
-        for (p = plist; p != null; p = p.next) {
-            p.sibling = p.next;
-            p.childlist = null;
+        for (Path path = pathList; path != null; path = path.next) {
+            path.sibling = path.next;
+            path.childlist = null;
         }
-        p = null;
 
-        heap = plist;
+        heap = pathList;
 
         /* the heap holds a original.potrace.List of lists of paths. Use "childlist" field
         for outer original.potrace.List, "next" field for inner original.potrace.List. Each of the sublists
@@ -70,29 +66,24 @@ public class PathListToTree {
             head->childlist if it's inside head, else append it to
             head->next. */
 
-            hook_in = head.childlist;
-            hook_out = head.next;
+            Path hook_in = head.childlist;
+            Path hook_out = head.next;
 
-            for (p=cur; (p != null); p=cur) {
-                cur=p.next;
-                p.next=null;
+            for (Path path=cur; (path != null); path=cur) {
+                cur=path.next;
+                path.next=null;
 
-                if (p.priv.pt[0].y <= bbox.y0) {
-                    //Todo find out what that if condition is for
-                    head.next = Path.insertElementAtTheEndOfList(p,head.next);
-                    // append the remainder of the original.potrace.List to hook_out
+                if (path.priv.pt[0].y <= bbox.y0) {
+                    head.next = Path.insertElementAtTheEndOfList(path,head.next);
                     head.next = Path.insertListAtTheEndOfList(cur,head.next);
-                    //head.next = Path.insertListAtTheEndOfList(cur,head.next);
-
                     break;
-
                 }
-                if (bm.getPixelValue(p.priv.pt[0].x, p.priv.pt[0].y-1)) {
-                    head.childlist = Path.insertElementAtTheEndOfList(p,head.childlist);
+                if (bm.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y-1)) {
+                    head.childlist = Path.insertElementAtTheEndOfList(path,head.childlist);
 
                 } else {
 
-                    head.next = Path.insertElementAtTheEndOfList(p,head.next);
+                    head.next = Path.insertElementAtTheEndOfList(path,head.next);
 
                 }
             }
@@ -115,11 +106,11 @@ public class PathListToTree {
         }
 
         // copy sibling structure from "next" to "sibling" component
-        p = plist;
-        while (p != null) {
-            p1 = p.sibling;
-            p.sibling = p.next;
-            p = p1;
+        Path path = pathList;
+        while (path != null) {
+            p1 = path.sibling;
+            path.sibling = path.next;
+            path = p1;
         }
 
         // reconstruct a new linked original.potrace.List ("next") structure from tree
@@ -127,22 +118,22 @@ public class PathListToTree {
         // because we use a heap to make it tail recursive: the heap
         // contains a original.potrace.List of childlists which still need to be
         // processed.
-        heap = plist;
+        heap = pathList;
         if (heap != null) {
             heap.next = null;  // heap is a linked original.potrace.List of childlists
         }
-        plist = null;
+        pathList = null;
         while (heap != null) {
             heap1 = heap.next;
-            for (p=heap; p != null; p=p.sibling) {
+            for (path=heap; path != null; path=path.sibling) {
                 // p is a positive Path
                 // append to linked original.potrace.List
-                plist = Path.insertElementAtTheEndOfList(p, plist);
+                pathList = Path.insertElementAtTheEndOfList(path, pathList);
 
                 // go through its children
-                for (p1=p.childlist; p1 != null; p1=p1.sibling) {
+                for (p1=path.childlist; p1 != null; p1=p1.sibling) {
                     // append to linked original.potrace.List
-                    plist = Path.insertElementAtTheEndOfList(p1, plist);
+                    pathList = Path.insertElementAtTheEndOfList(p1, pathList);
                     // append its childlist to heap, if non-empty
 
                     if (p1.childlist != null) {
