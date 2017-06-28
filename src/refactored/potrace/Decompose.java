@@ -202,7 +202,8 @@ public class Decompose {
 
             int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,startPointOfPath);
 
-            Path currentPath = FindPath.findpath(workCopy, new Point(startPointOfPath.x, startPointOfPath.y + 1), signOfPath, param.turnpolicy);
+            FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfPath.x, startPointOfPath.y + 1), signOfPath, param.turnpolicy);
+            Path currentPath = pathFinder.path;
 
             workCopy.removePathFromBitmap(currentPath);
 

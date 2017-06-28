@@ -3,7 +3,10 @@ package refactored.potrace;
 import java.awt.*;
 
 public class FindPath {
-    public static Path findpath(Bitmap bm, Point startPointOfPath, int sign, int turnpolicy) {
+
+    Path path;
+
+    public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
         Point[] pt = new Point[1];
 
         int x = startPointOfPath.x;
@@ -30,10 +33,10 @@ public class FindPath {
                 break;
             }
 
-            direction = determineNextDirection(bm, sign, turnpolicy, new Point(x, y), direction);
+            direction = determineNextDirection(bitmap, sign, turnPolicy, new Point(x, y), direction);
         } /* while this Path */
 
-        return new Path(area, sign, len, pt);
+        path =  new Path(area, sign, len, pt);
     }
 
     private static boolean isPathComplete(Point startPointOfPath, Point currentPoint) {

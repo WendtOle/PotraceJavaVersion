@@ -17,7 +17,7 @@ import java.util.Locale;
 public class RuntimeObservation {
 
     static String type = "Refactored";
-    static int amountOfRuns = 100;
+    static int amountOfRuns = 1000000;
     static String bitmapFileName = "02.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
