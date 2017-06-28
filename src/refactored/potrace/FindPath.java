@@ -5,13 +5,16 @@ import java.awt.*;
 public class FindPath {
 
     Path path;
+    Point startPoint;
+    Point direction;
 
     public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
         Point[] pt = new Point[1];
 
+        this.startPoint = startPointOfPath;
         int x = startPointOfPath.x;
         int y = startPointOfPath.y;
-        Point direction = new Point(0, -1);
+        this.direction = new Point(0, -1);
 
         int len = 0;
         int area = 0;
@@ -29,18 +32,18 @@ public class FindPath {
             y += direction.y;
             area += x * direction.y;
 
-            if (isPathComplete(startPointOfPath, new Point(x, y))) {
+            if (isPathComplete(new Point(x, y))) {
                 break;
             }
 
-            direction = determineNextDirection(bitmap, sign, turnPolicy, new Point(x, y), direction);
+            direction = determineNextDirection(bitmap, sign, turnPolicy, new Point(x, y));
         } /* while this Path */
 
         path =  new Path(area, sign, len, pt);
     }
 
-    private static boolean isPathComplete(Point startPointOfPath, Point currentPoint) {
-        return currentPoint.x==startPointOfPath.x && currentPoint.y==startPointOfPath.y;
+    private boolean isPathComplete(Point currentPoint) {
+        return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
     }
 
     private static Point[] expendPointArrayCapacity(Point[] pt) {
@@ -50,7 +53,7 @@ public class FindPath {
         return newSizedPointArray;
     }
 
-    private static Point determineNextDirection(Bitmap bm, int sign, int turnpolicy, Point currentPoint, Point direction) {
+    private Point determineNextDirection(Bitmap bm, int sign, int turnpolicy, Point currentPoint) {
         Point rightPixelPosition = new Point(currentPoint.x + (direction.x+direction.y-1)/2, currentPoint.y + (direction.y-direction.x-1)/2);
         Point leftPixelPosition = new Point(currentPoint.x + (direction.x-direction.y-1)/2, currentPoint.y + (direction.y+direction.x-1)/2);
 
@@ -59,23 +62,23 @@ public class FindPath {
 
         if (isAmbiguousSituation(isRightPixelFilled, isLeftPixelFilled)) {
             if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, currentPoint.x, currentPoint.y)) {
-                direction = performRightTurn(direction);
+                direction = performRightTurn();
             } else {
-                direction = performLeftTurn(direction);
+                direction = performLeftTurn();
             }
         } else if (isRightPixelFilled) {
-            direction = performRightTurn(direction);
+            direction = performRightTurn();
         } else if (!isLeftPixelFilled) {
-            direction = performLeftTurn(direction);
+            direction = performLeftTurn();
         }
         return direction;
     }
 
-    private static Point performLeftTurn(Point direction) {
+    private Point performLeftTurn() {
         return new Point(- direction.y,direction.x);
     }
 
-    private static Point performRightTurn(Point direction) {
+    private Point performRightTurn() {
         return new Point(direction.y,-direction.x);
     }
 
