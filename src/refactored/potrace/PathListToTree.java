@@ -42,6 +42,13 @@ public class PathListToTree {
         reconstructNextComponentFromChildAndSiblingComponent();
     }
 
+    private void saveOriginalNextPointerToSibling() {
+        for (Path path = pathlist; path != null; path = path.next) {
+            path.sibling = path.next;
+            path.childlist = null;
+        }
+    }
+
     private void transformIntoTreeStructure() {
         Path heap = pathlist;
         while (heap != null) {
@@ -73,52 +80,6 @@ public class PathListToTree {
 
         }
     }
-
-    private void reconstructNextComponentFromChildAndSiblingComponent() {
-        Path heap;
-        heap = pathlist;
-        if (heap != null) {
-            heap.next = null;  // heap is a linked original.potrace.List of childlists
-        }
-        pathlist = null;
-        while (heap != null) {
-            Path heap1 = heap.next;
-            for (Path path=heap; path != null; path=path.sibling) {
-                // p is a positive Path
-                // append to linked original.potrace.List
-                pathlist = Path.insertElementAtTheEndOfList(path, pathlist);
-
-                // go through its children
-                for (Path p1=path.childlist; p1 != null; p1=p1.sibling) {
-                    // append to linked original.potrace.List
-                    pathlist = Path.insertElementAtTheEndOfList(p1, pathlist);
-                    // append its childlist to heap, if non-empty
-
-                    if (p1.childlist != null) {
-                        heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
-                    }
-                }
-            }
-            heap = heap1;
-        }
-    }
-
-    private void copySiblingStructurFromNextToSiblingComponent() {
-        Path path = pathlist;
-        while (path != null) {
-            Path p1 = path.sibling;
-            path.sibling = path.next;
-            path = p1;
-        }
-    }
-
-    private void saveOriginalNextPointerToSibling() {
-        for (Path path = pathlist; path != null; path = path.next) {
-            path.sibling = path.next;
-            path.childlist = null;
-        }
-    }
-
     /* now do insideness test for each element of cur; append it to
             head->childlist if it's inside head, else append it to
             head->next. */
@@ -149,5 +110,37 @@ public class PathListToTree {
         bitmap.clearBitmapWithBBox(bbox);
     }
 
+    private void copySiblingStructurFromNextToSiblingComponent() {
+        Path path = pathlist;
+        while (path != null) {
+            Path p1 = path.sibling;
+            path.sibling = path.next;
+            path = p1;
+        }
+    }
 
+    private void reconstructNextComponentFromChildAndSiblingComponent() {
+        Path heap;
+        heap = pathlist;
+        if (heap != null) {
+            heap.next = null;  // heap is a linked original.potrace.List of childlists
+        }
+        pathlist = null;
+        while (heap != null) {
+            Path heap1 = heap.next;
+            for (Path path=heap; path != null; path=path.sibling) {
+
+                pathlist = Path.insertElementAtTheEndOfList(path, pathlist);
+
+                for (Path p1=path.childlist; p1 != null; p1=p1.sibling) {
+                    pathlist = Path.insertElementAtTheEndOfList(p1, pathlist);
+
+                    if (p1.childlist != null) {
+                        heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
+                    }
+                }
+            }
+        heap = heap1;
+        }
+    }
 }
