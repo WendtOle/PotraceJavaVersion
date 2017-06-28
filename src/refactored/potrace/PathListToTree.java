@@ -25,17 +25,14 @@ public class PathListToTree {
     Bitmap bitmap;
 
     void pathlist_to_tree(Path pathList, Bitmap bm) {
-        this.pathlist = pathlist;
+        this.pathlist = pathList;
         this.bitmap = bm;
 
         bm.setWholeBitmapToSpecificValue(0);
 
         // save original "next" pointers
 
-        for (Path path = pathList; path != null; path = path.next) {
-            path.sibling = path.next;
-            path.childlist = null;
-        }
+        saveOriginalNextPointerToSibling();
 
         Path heap = pathList;
 
@@ -67,8 +64,7 @@ public class PathListToTree {
             head->childlist if it's inside head, else append it to
             head->next. */
 
-            Path hook_in = head.childlist;
-            Path hook_out = head.next;
+            
 
             for (Path path=cur; (path != null); path=cur) {
                 cur=path.next;
@@ -143,6 +139,13 @@ public class PathListToTree {
                 }
             }
             heap = heap1;
+        }
+    }
+
+    private void saveOriginalNextPointerToSibling() {
+        for (Path path = pathlist; path != null; path = path.next) {
+            path.sibling = path.next;
+            path.childlist = null;
         }
     }
 
