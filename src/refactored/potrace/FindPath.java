@@ -7,6 +7,8 @@ public class FindPath {
     Path path;
     Point startPoint;
     Point direction;
+    int sign;
+    int turnPolicy;
 
     public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
         Point[] pt = new Point[1];
@@ -15,6 +17,8 @@ public class FindPath {
         int x = startPointOfPath.x;
         int y = startPointOfPath.y;
         this.direction = new Point(0, -1);
+        this.sign = sign;
+        this.turnPolicy = turnPolicy;
 
         int len = 0;
         int area = 0;
@@ -36,7 +40,7 @@ public class FindPath {
                 break;
             }
 
-            direction = determineNextDirection(bitmap, sign, turnPolicy, new Point(x, y));
+            direction = determineNextDirection(bitmap, new Point(x, y));
         } /* while this Path */
 
         path =  new Path(area, sign, len, pt);
@@ -53,7 +57,7 @@ public class FindPath {
         return newSizedPointArray;
     }
 
-    private Point determineNextDirection(Bitmap bm, int sign, int turnpolicy, Point currentPoint) {
+    private Point determineNextDirection(Bitmap bm, Point currentPoint) {
         Point rightPixelPosition = new Point(currentPoint.x + (direction.x+direction.y-1)/2, currentPoint.y + (direction.y-direction.x-1)/2);
         Point leftPixelPosition = new Point(currentPoint.x + (direction.x-direction.y-1)/2, currentPoint.y + (direction.y+direction.x-1)/2);
 
@@ -61,7 +65,7 @@ public class FindPath {
         boolean isLeftPixelFilled = bm.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
 
         if (isAmbiguousSituation(isRightPixelFilled, isLeftPixelFilled)) {
-            if (shouldGoRightInAmbiguousSituation(bm, sign, turnpolicy, currentPoint.x, currentPoint.y)) {
+            if (shouldGoRightInAmbiguousSituation(bm, currentPoint.x, currentPoint.y)) {
                 direction = performRightTurn();
             } else {
                 direction = performLeftTurn();
@@ -86,12 +90,12 @@ public class FindPath {
         return c && !d;
     }
 
-    private static boolean shouldGoRightInAmbiguousSituation(Bitmap bm, int sign, int turnpolicy, int x, int y) {
-        return turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
-                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
-                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
-                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && Decompose.detrand(x,y))
-                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bm.getMajorityValueAtIntersection(x, y))
-                || (turnpolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bm.getMajorityValueAtIntersection(x, y));
+    private boolean shouldGoRightInAmbiguousSituation(Bitmap bm, int x, int y) {
+        return turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
+                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
+                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
+                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && Decompose.detrand(x,y))
+                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bm.getMajorityValueAtIntersection(x, y))
+                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bm.getMajorityValueAtIntersection(x, y));
     }
 }
