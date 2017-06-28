@@ -22,7 +22,6 @@ public class PathListToTree {
     error with errno set. */
 
     static void pathlist_to_tree(Path pathList, Bitmap bm) {
-        Path p1;
         Path heap = new Path();
         Path heap1;
         Path cur = new Path();
@@ -108,7 +107,7 @@ public class PathListToTree {
         // copy sibling structure from "next" to "sibling" component
         Path path = pathList;
         while (path != null) {
-            p1 = path.sibling;
+            Path p1 = path.sibling;
             path.sibling = path.next;
             path = p1;
         }
@@ -131,7 +130,7 @@ public class PathListToTree {
                 pathList = Path.insertElementAtTheEndOfList(path, pathList);
 
                 // go through its children
-                for (p1=path.childlist; p1 != null; p1=p1.sibling) {
+                for (Path p1=path.childlist; p1 != null; p1=p1.sibling) {
                     // append to linked original.potrace.List
                     pathList = Path.insertElementAtTheEndOfList(p1, pathList);
                     // append its childlist to heap, if non-empty
