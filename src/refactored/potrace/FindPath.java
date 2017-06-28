@@ -11,6 +11,7 @@ public class FindPath {
     int turnPolicy;
     Bitmap bitmap;
     Point[] points = new Point[1];
+    int indexOfCurrentPoint = 0;
 
     public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, int turnPolicy) {
         this.startPoint = startPointOfPath;
@@ -21,16 +22,10 @@ public class FindPath {
         this.turnPolicy = turnPolicy;
         this.bitmap = bitmap;
 
-        int len = 0;
         int area = 0;
 
         while (true) {
-            /* add point to Path */
-            if (len >= points.length) {
-                expendPointArrayCapacity();
-            }
-            points[len] = new Point(x, y);
-            len++;
+            addPointToPath(x, y);
 
             /* move to next point */
             x += direction.x;
@@ -44,11 +39,19 @@ public class FindPath {
             direction = determineNextDirection(new Point(x, y));
         } /* while this Path */
 
-        path =  new Path(area, sign, len, points);
+        path =  new Path(area, sign, indexOfCurrentPoint, points);
     }
 
-    private boolean isPathComplete(Point currentPoint) {
-        return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
+    private void addPointToPath(int x, int y) {
+        extendPointArrayCapacityWhenNecessary(indexOfCurrentPoint);
+        points[indexOfCurrentPoint] = new Point(x, y);
+        indexOfCurrentPoint++;
+    }
+
+    private void extendPointArrayCapacityWhenNecessary(int len) {
+        if (len >= points.length) {
+            expendPointArrayCapacity();
+        }
     }
 
     private void expendPointArrayCapacity() {
@@ -56,6 +59,10 @@ public class FindPath {
         Point[] newSizedPointArray = new Point[newSize];
         System.arraycopy(points,0,newSizedPointArray,0,points.length);
         points = newSizedPointArray;
+    }
+
+    private boolean isPathComplete(Point currentPoint) {
+        return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
     }
 
     private Point determineNextDirection(Point currentPoint) {
