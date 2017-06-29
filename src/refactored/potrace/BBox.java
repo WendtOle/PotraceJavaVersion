@@ -5,6 +5,10 @@ public class BBox {
 
     public BBox(){};
 
+    public BBox(Path path){
+        setToBoundingBoxOfPath(path);
+    }
+
     public void setToBoundingBoxOfPath(Path path) {
         y0 = Integer.MAX_VALUE;
         y1 = 0;

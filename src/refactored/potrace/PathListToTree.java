@@ -68,7 +68,6 @@ public class PathListToTree {
             determineChildrenAndSiblings(pathesToOrder, currentPath);
 
             pathesThatNeedToProcess = scheduleOrderdPathesForFurtherProcessing(pathesThatNeedToProcess, currentPath);
-
         }
     }
 
@@ -85,34 +84,31 @@ public class PathListToTree {
         }
         return pathesThatNeedToProcess;
     }
-    /* now do insideness test for each element of cur; append it to
-            head->childlist if it's inside head, else append it to
-            head->next. */
 
-
-    //TODO it is not only a insidenessTest, it also does something
     private void determineChildrenAndSiblings(Path pathListToTest, Path outerPath) {
-        BBox bbox = new BBox();
-        bbox.setToBoundingBoxOfPath(outerPath);
+        BBox boundingBoxOfOuterPath = new BBox(outerPath);
+        orderPathListWetherInsideOrOutsideOfBoundingBox(pathListToTest, outerPath, boundingBoxOfOuterPath);
+        bitmap.clearBitmapWithBBox(boundingBoxOfOuterPath);
+    }
 
-        for (Path currentPathToTest=pathListToTest; (currentPathToTest != null); currentPathToTest=pathListToTest) {
-            pathListToTest=currentPathToTest.next;
-            currentPathToTest.next=null;
+    private void orderPathListWetherInsideOrOutsideOfBoundingBox(Path pathListToTest, Path outerPath, BBox boundingBoxOfOuterPath) {
+        for (Path currentPath=pathListToTest; currentPath != null; currentPath=pathListToTest) {
+            pathListToTest=currentPath.next;
+            currentPath.next=null;
 
-            boolean isCurrentPathBelowOutherPath = currentPathToTest.priv.pt[0].y <= bbox.y0;
-            if (isCurrentPathBelowOutherPath) {
-                outerPath.next = Path.insertElementAtTheEndOfList(currentPathToTest,outerPath.next);
+            boolean isCurrentPathBelowBoundingBox = currentPath.priv.pt[0].y <= boundingBoxOfOuterPath.y0;
+            if (isCurrentPathBelowBoundingBox) {
+                outerPath.next = Path.insertElementAtTheEndOfList(currentPath,outerPath.next);
                 outerPath.next = Path.insertListAtTheEndOfList(pathListToTest,outerPath.next);
-                break;
+                return;
             }
-            boolean isCurrentPathInsideOfOuterPath = bitmap.getPixelValue(currentPathToTest.priv.pt[0].x, currentPathToTest.priv.pt[0].y - 1);
-            if (isCurrentPathInsideOfOuterPath) {
-                outerPath.childlist = Path.insertElementAtTheEndOfList(currentPathToTest,outerPath.childlist);
+            boolean isCurrentPathInsideBoundingBox = bitmap.getPixelValue(currentPath.priv.pt[0].x, currentPath.priv.pt[0].y - 1);
+            if (isCurrentPathInsideBoundingBox) {
+                outerPath.childlist = Path.insertElementAtTheEndOfList(currentPath,outerPath.childlist);
             } else {
-                outerPath.next = Path.insertElementAtTheEndOfList(currentPathToTest,outerPath.next);
+                outerPath.next = Path.insertElementAtTheEndOfList(currentPath,outerPath.next);
             }
         }
-        bitmap.clearBitmapWithBBox(bbox);
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {
