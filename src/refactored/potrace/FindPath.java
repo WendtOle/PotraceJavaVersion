@@ -100,12 +100,12 @@ public class FindPath {
     }
 
     private boolean shouldGoRightInAmbiguousSituation() {
-        return turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
-                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
-                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
-                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && detrand(currentPoint.x,currentPoint.y))
-                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y))
-                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y));
+        return turnPolicy == TurnPolicyEnum.valueOf("RIGHT").ordinal()
+                || (turnPolicy == TurnPolicyEnum.valueOf("BLACK").ordinal() && sign == '+')
+                || (turnPolicy == TurnPolicyEnum.valueOf("WHITE").ordinal() && sign == '-')
+                || (turnPolicy == TurnPolicyEnum.valueOf("RANDOM").ordinal() && detrand(currentPoint.x,currentPoint.y))
+                || (turnPolicy == TurnPolicyEnum.valueOf("MAJORITY").ordinal() && bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y))
+                || (turnPolicy == TurnPolicyEnum.valueOf("MINORITY").ordinal() && !bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y));
     }
 
     static boolean detrand(int x, int y) {

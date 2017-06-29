@@ -14,7 +14,7 @@ public class Param {
 
     void param_default() {
             this.turdsize = 2;
-            this.turnpolicy = PotraceLib.POTRACE_TURNPOLICY_MINORITY;      /* turnpolicy */
+            this.turnpolicy = TurnPolicyEnum.valueOf("MINORITY").ordinal();      /* turnpolicy */
             this.alphamax = 1.0;                                /* alphamax */
             this.opticurve= true;                                  /* opticurve */
             this.opttolerance = 0.2;                            /* opttolerance */
