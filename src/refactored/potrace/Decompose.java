@@ -3,6 +3,16 @@ package refactored.potrace;
 import java.awt.*;
 
 public class Decompose {
+    Param param;
+    Bitmap bitmap;
+    Path pathList = null;
+
+    public Decompose(Bitmap bitmap, Param param) {
+        this.bitmap = bitmap;
+        this.param = param;
+        bm_to_pathlist();
+    };
+
 
     static boolean detrand(int x, int y) {
         int z; //TODO unsigned
@@ -34,8 +44,7 @@ public class Decompose {
     in. Returns 0 on success with plistp set, or -1 on error with errno
     set. */
 
-    public static Path bm_to_pathlist(Bitmap bitmap, Param param) {
-        Path pathList = null;
+    public void bm_to_pathlist() {
         Bitmap workCopy = bitmap.duplicate();
         workCopy.clearExcessPixelsOfBitmap();
 
@@ -58,7 +67,6 @@ public class Decompose {
 
         TreeStructurTransformation pathListToTree = new TreeStructurTransformation(pathList,workCopy);
         pathList = pathListToTree.getTreeStructure();
-        return pathList;
     }
 
     private static boolean isPathBigEnough(int actualArea, int areaOfTurd) {
@@ -72,5 +80,9 @@ public class Decompose {
         else
             return '-';
 
+    }
+
+    public Path getPathList() {
+        return pathList;
     }
 }

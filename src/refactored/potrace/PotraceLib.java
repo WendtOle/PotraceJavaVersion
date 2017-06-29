@@ -21,7 +21,8 @@ public class PotraceLib {
     potrace_state_free(). */
 
     public static Path potrace_trace(Param param, Bitmap bm) {
-        Path plist = Decompose.bm_to_pathlist(bm, param);
+        Decompose decomposer = new Decompose(bm, param);
+        Path plist = decomposer.getPathList();
         plist = Trace.process_path(plist, param);
         return plist;
     }
