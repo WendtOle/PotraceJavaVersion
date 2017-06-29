@@ -50,41 +50,40 @@ public class PathListToTree {
     }
 
     private void transformIntoTreeStructure() {
-        Path heap = pathList;
-        while (heap != null) {
+        Path pathesThatNeedToProcess = pathList;
+        while (pathesThatNeedToProcess != null) {
+
             // unlink first sublist
-            Path cur = heap;
-            heap = heap.childlist;
-            cur.childlist = null;
+            Path pathesToOrder = pathesThatNeedToProcess;
+            pathesThatNeedToProcess = pathesThatNeedToProcess.childlist;
+            pathesToOrder.childlist = null;
 
             // unlink first Path
-            Path head = cur;
-            cur = cur.next;
-            head.next = null;
+            Path currentPath = pathesToOrder;
+            pathesToOrder = pathesToOrder.next;
+            currentPath.next = null;
 
-            //head -> currentPath
-            //heap -> childList Component
-            //cur -> next Component
+            bitmap.invertPathOnBitmap(currentPath);
 
-            bitmap.invertPathOnBitmap(head);
+            determineChildrenAndSiblings(pathesToOrder, currentPath);
 
-            insidenessTestForEachElement(cur, head);
-
-            // now schedule head->childlist and head->next for further
-            // processing
-            boolean hasCurrentPathOtherPathesOutside = head.next != null;
-            if (hasCurrentPathOtherPathesOutside) {
-                head.next.childlist = heap;
-                heap = head.next;
-
-            }
-            boolean hasCurrentPathOtherPathesInside = head.childlist != null;
-            if (hasCurrentPathOtherPathesInside) {
-                head.childlist.childlist = heap;
-                heap = head.childlist;
-            }
+            pathesThatNeedToProcess = scheduleOrderdPathesForFurtherProcessing(pathesThatNeedToProcess, currentPath);
 
         }
+    }
+
+    private Path scheduleOrderdPathesForFurtherProcessing(Path pathesThatNeedToProcess, Path currentPath) {
+        boolean hasCurrentPathOtherPathesOutside = currentPath.next != null;
+        if (hasCurrentPathOtherPathesOutside) {
+            currentPath.next.childlist = pathesThatNeedToProcess;
+            pathesThatNeedToProcess = currentPath.next;
+        }
+        boolean hasCurrentPathOtherPathesInside = currentPath.childlist != null;
+        if (hasCurrentPathOtherPathesInside) {
+            currentPath.childlist.childlist = pathesThatNeedToProcess;
+            pathesThatNeedToProcess = currentPath.childlist;
+        }
+        return pathesThatNeedToProcess;
     }
     /* now do insideness test for each element of cur; append it to
             head->childlist if it's inside head, else append it to
@@ -92,7 +91,7 @@ public class PathListToTree {
 
 
     //TODO it is not only a insidenessTest, it also does something
-    private void insidenessTestForEachElement(Path pathListToTest, Path outerPath) {
+    private void determineChildrenAndSiblings(Path pathListToTest, Path outerPath) {
         BBox bbox = new BBox();
         bbox.setToBoundingBoxOfPath(outerPath);
 
