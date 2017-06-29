@@ -54,17 +54,29 @@ public class ChildrenAndSiblingFinder {
             currentPath.next=null;
 
             if (isPathBelowBoundingBox(currentPath)) {
-                referencePath.next = Path.insertElementAtTheEndOfList(currentPath,referencePath.next);
-                referencePath.next = Path.insertListAtTheEndOfList(pathesToOrder,referencePath.next);
+                addRemainingPathesAsSiblings(currentPath);
                 return;
-            }
-
-            if (isPathInsideReferencePath(currentPath)) {
-                referencePath.childlist = Path.insertElementAtTheEndOfList(currentPath,referencePath.childlist);
             } else {
-                referencePath.next = Path.insertElementAtTheEndOfList(currentPath,referencePath.next);
+                if (isPathInsideReferencePath(currentPath)) {
+                    addPathAsChild(currentPath);
+                } else {
+                    addPathAsSibling(currentPath);
+                }
             }
         }
+    }
+
+    private void addRemainingPathesAsSiblings(Path currentPath) {
+        addPathAsSibling(currentPath);
+        referencePath.next = Path.insertListAtTheEndOfList(pathesToOrder,referencePath.next);
+    }
+
+    private void addPathAsChild(Path currentPath) {
+        referencePath.childlist = Path.insertElementAtTheEndOfList(currentPath,referencePath.childlist);
+    }
+
+    private void addPathAsSibling(Path currentPath) {
+        referencePath.next = Path.insertElementAtTheEndOfList(currentPath,referencePath.next);
     }
 
     private boolean isPathBelowBoundingBox(Path path){
@@ -76,14 +88,15 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void scheduleAddedChildrenAndSiblingsForFurtherProcessing() {
-        if (hasReferencePathSiblings()) {
-            referencePath.next.childlist = pathesThatNeedToProcess;
-            pathesThatNeedToProcess = referencePath.next;
-        }
-        if (hasReferencePathChildren()) {
-            referencePath.childlist.childlist = pathesThatNeedToProcess;
-            pathesThatNeedToProcess = referencePath.childlist;
-        }
+        if (hasReferencePathSiblings())
+            schedulePathesForFurtherProcessing(referencePath.next);
+        if (hasReferencePathChildren())
+            schedulePathesForFurtherProcessing(referencePath.childlist);
+    }
+
+    private void schedulePathesForFurtherProcessing(Path path) {
+        path.childlist = pathesThatNeedToProcess;
+        pathesThatNeedToProcess = path;
     }
 
     private boolean hasReferencePathSiblings() {
