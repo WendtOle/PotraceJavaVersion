@@ -103,9 +103,34 @@ public class FindPath {
         return turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RIGHT
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_BLACK && sign == '+')
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_WHITE && sign == '-')
-                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && Decompose.detrand(currentPoint.x,currentPoint.y))
+                || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_RANDOM && detrand(currentPoint.x,currentPoint.y))
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MAJORITY && bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y))
                 || (turnPolicy == PotraceLib.POTRACE_TURNPOLICY_MINORITY && !bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y));
+    }
+
+    static boolean detrand(int x, int y) {
+        int z;
+        char t[] = {
+        /* non-linear sequence: constant term of inverse in GF(8),
+        mod x^8+x^4+x^3+x+1 */
+                0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1,
+                0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0,
+                0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+                1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1,
+                0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
+                0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+                0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0,
+                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1,
+                1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0,
+                0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1,
+                1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+        };
+
+        /* 0x04b3e375 and 0x05a8ef93 are chosen to contain every possible
+        5-bit sequence */
+        z = ((0x04b3e375 * x) ^ y) * 0x05a8ef93;
+        z = t[z & 0xff] ^ t[(z>>8) & 0xff] ^ t[(z>>16) & 0xff] ^ t[(z>>24) & 0xff];
+        return z == 1 ? true : false;
     }
 
     private void performRightTurn() {

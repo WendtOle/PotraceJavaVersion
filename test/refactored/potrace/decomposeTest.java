@@ -33,7 +33,7 @@ public class decomposeTest {
 
     @Test
     public void test_detrand() {
-        Assert.assertEquals(false, Decompose.detrand(20,4));
+        Assert.assertEquals(false, FindPath.detrand(20,4));
     }
 
     @Test
