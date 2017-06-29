@@ -39,7 +39,7 @@ public class PathListToTree {
 
         copySiblingStructurFromNextToSiblingComponent();
 
-        reconstructNextComponentFromChildAndSiblingComponent();
+        reconstructNextComponentFromChildrenAndSiblingComponent();
     }
 
     private void saveOriginalNextPointerToSiblingComponent() {
@@ -120,33 +120,8 @@ public class PathListToTree {
         }
     }
 
-    private void reconstructNextComponentFromChildAndSiblingComponent() {
-        Path currentPath = pathList;
-        if (currentPath != null) {
-            currentPath.next = null;
-        }
-        pathList = null;
-        while (currentPath != null) {
-            currentPath = addAllSiblingsWithTrailingChildren(currentPath, currentPath.next);
-        }
-    }
-
-    private Path addAllSiblingsWithTrailingChildren(Path heap, Path pathesThatNeedProcess) {
-        for (Path currentPath=heap; currentPath != null; currentPath=currentPath.sibling) {
-            pathList = Path.insertElementAtTheEndOfList(currentPath, pathList);
-            pathesThatNeedProcess = addAllChildren(pathesThatNeedProcess, currentPath);
-        }
-        return pathesThatNeedProcess;
-    }
-
-    private Path addAllChildren(Path heap1, Path currentPath) {
-        for (Path p1=currentPath.childlist; p1 != null; p1=p1.sibling) {
-            pathList = Path.insertElementAtTheEndOfList(p1, pathList);
-
-            if (p1.childlist != null) {
-                heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
-            }
-        }
-        return heap1;
+    private void reconstructNextComponentFromChildrenAndSiblingComponent() {
+        NextComponentReconstructor reconstructor = new NextComponentReconstructor(pathList);
+        pathList = reconstructor.getPathWithReconstructedNext();
     }
 }
