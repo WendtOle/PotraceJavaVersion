@@ -121,27 +121,32 @@ public class PathListToTree {
     }
 
     private void reconstructNextComponentFromChildAndSiblingComponent() {
-        Path heap;
-        heap = pathList;
-        if (heap != null) {
-            heap.next = null;  // heap is a linked original.potrace.List of childlists
+        Path currentPath = pathList;
+        if (currentPath != null) {
+            currentPath.next = null;
         }
         pathList = null;
-        while (heap != null) {
-            Path heap1 = heap.next;
-            for (Path path=heap; path != null; path=path.sibling) {
-
-                pathList = Path.insertElementAtTheEndOfList(path, pathList);
-
-                for (Path p1=path.childlist; p1 != null; p1=p1.sibling) {
-                    pathList = Path.insertElementAtTheEndOfList(p1, pathList);
-
-                    if (p1.childlist != null) {
-                        heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
-                    }
-                }
-            }
-        heap = heap1;
+        while (currentPath != null) {
+            currentPath = addAllSiblingsWithTrailingChildren(currentPath, currentPath.next);
         }
+    }
+
+    private Path addAllSiblingsWithTrailingChildren(Path heap, Path pathesThatNeedProcess) {
+        for (Path currentPath=heap; currentPath != null; currentPath=currentPath.sibling) {
+            pathList = Path.insertElementAtTheEndOfList(currentPath, pathList);
+            pathesThatNeedProcess = addAllChildren(pathesThatNeedProcess, currentPath);
+        }
+        return pathesThatNeedProcess;
+    }
+
+    private Path addAllChildren(Path heap1, Path currentPath) {
+        for (Path p1=currentPath.childlist; p1 != null; p1=p1.sibling) {
+            pathList = Path.insertElementAtTheEndOfList(p1, pathList);
+
+            if (p1.childlist != null) {
+                heap1 = Path.insertElementAtTheEndOfList(p1.childlist,heap1);
+            }
+        }
+        return heap1;
     }
 }
