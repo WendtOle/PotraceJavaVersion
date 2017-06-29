@@ -4,56 +4,67 @@ import java.awt.*;
 
 public class Decompose {
     Param param;
-    Bitmap bitmap;
+    Bitmap bitmap, workCopy;
+    Point currentPoint;
     Path pathList = null;
 
     public Decompose(Bitmap bitmap, Param param) {
         this.bitmap = bitmap;
         this.param = param;
-        bm_to_pathlist();
+        initializeValues();
+        decomposeBitmapIntoPathlist();
     };
 
-    /* Decompose the given Bitmap into paths. Returns a linked List of
-    path_t objects with the fields len, pt, area, sign filled
-    in. Returns 0 on success with plistp set, or -1 on error with errno
-    set. */
-
-    public void bm_to_pathlist() {
-        Bitmap workCopy = bitmap.duplicate();
-        workCopy.clearExcessPixelsOfBitmap();
-
-        // iterate through components
-        Point startPointOfPath = new Point(0,workCopy.height-1);
-
-        while ((startPointOfPath = workCopy.findNextFilledPixel(startPointOfPath)) != null ) {
-
-            int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,startPointOfPath);
-
-            FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfPath.x, startPointOfPath.y + 1), signOfPath, param.turnpolicy);
-            Path currentPath = pathFinder.getPath();
-
-            workCopy.invertPathOnBitmap(currentPath);
-
-            if (isPathBigEnough(currentPath.area,param.turdsize)) {
-                pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
-            }
+    private void decomposeBitmapIntoPathlist() {
+        for(findNextFilledPixel();currentPoint != null; findNextFilledPixel()) {
+            findAndAddPathToPathlist();
         }
-
-        TreeStructurTransformation pathListToTree = new TreeStructurTransformation(pathList,workCopy);
-        pathList = pathListToTree.getTreeStructure();
+        structurePathlistAsTree();
     }
 
-    private static boolean isPathBigEnough(int actualArea, int areaOfTurd) {
-        return actualArea > areaOfTurd;
+    private void findNextFilledPixel(){
+        currentPoint = workCopy.findNextFilledPixel(currentPoint);
     }
 
-    private static int getSignOfPathFromOriginalBitmap(Bitmap bm, Point startPointOfPath) {
-        boolean isPathFilled = bm.getPixelValue(startPointOfPath.x, startPointOfPath.y);
+    private void initializeValues() {
+        workCopy = bitmap.duplicate();
+        workCopy.clearExcessPixelsOfBitmap();
+        currentPoint = new Point(0,workCopy.height-1);
+    }
+
+    private void findAndAddPathToPathlist() {
+        Path currentPath = findPath();
+        addPathToPathListIfBigEnough(currentPath);
+    }
+
+    private Path findPath() {
+        int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,currentPoint);
+        FindPath pathFinder = new FindPath(workCopy, new Point(currentPoint.x, currentPoint.y + 1), signOfPath, param.turnpolicy);
+        return pathFinder.getPath();
+    }
+
+    private int getSignOfPathFromOriginalBitmap(Bitmap bitmap, Point currentPoint) {
+        boolean isPathFilled = bitmap.getPixelValue(currentPoint.x, currentPoint.y);
         if (isPathFilled)
             return '+';
         else
             return '-';
+    }
 
+    private void addPathToPathListIfBigEnough(Path currentPath) {
+        workCopy.invertPathOnBitmap(currentPath);
+        if (isPathBigEnough(currentPath.area,param.turdsize)) {
+            pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
+        }
+    }
+
+    private void structurePathlistAsTree() {
+        TreeStructurTransformation pathListToTree = new TreeStructurTransformation(pathList,workCopy);
+        pathList = pathListToTree.getTreeStructure();
+    }
+
+    private boolean isPathBigEnough(int actualArea, int areaOfTurd) {
+        return actualArea > areaOfTurd;
     }
 
     public Path getPathList() {

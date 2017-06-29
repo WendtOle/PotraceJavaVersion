@@ -277,7 +277,7 @@ public class Decompose {
     positive parent.  Note: some backends may ignore the tree
     structure, others may use it e.g. to group Path components. We
     assume that in the input, point 0 of each Path is an "upper left"
-    corner of the Path, as returned by bm_to_pathlist. This makes it
+    corner of the Path, as returned by decomposeBitmapIntoPathlist. This makes it
     easy to find an "interior" point. The bm argument should be a
     Bitmap of the correct size (large enough to hold all the paths),
     and will be used as scratch space. Return 0 on success or -1 on
