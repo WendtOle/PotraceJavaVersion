@@ -7,7 +7,8 @@ public class ChildrenAndSiblingFinder {
 
     Path pathList;
     Bitmap bitmap;
-    Path pathesToOrder, pathesThatNeedToProcess, currentPath;
+    Path pathesToOrder, pathesThatNeedToProcess, referencePath;
+    BBox boundingBox;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
@@ -21,11 +22,11 @@ public class ChildrenAndSiblingFinder {
 
             initializePathes();
 
-            bitmap.invertPathOnBitmap(currentPath);
+            bitmap.invertPathOnBitmap(referencePath);
 
             determineChildrenAndSiblings();
 
-            pathesThatNeedToProcess = scheduleOrderdPathesForFurtherProcessing();
+            scheduleAddedChildrenAndSiblingsForFurtherProcessing();
         }
     }
 
@@ -36,49 +37,61 @@ public class ChildrenAndSiblingFinder {
         pathesToOrder.childlist = null;
 
         // unlink first Path
-        currentPath = pathesToOrder;
+        referencePath = pathesToOrder;
         pathesToOrder = pathesToOrder.next;
-        currentPath.next = null;
+        referencePath.next = null;
     }
 
     private void determineChildrenAndSiblings() {
-        BBox boundingBoxOfOuterPath = new BBox(currentPath);
-        orderPathListWetherInsideOrOutsideOfBoundingBox(boundingBoxOfOuterPath);
-        bitmap.clearBitmapWithBBox(boundingBoxOfOuterPath);
+        boundingBox = new BBox(referencePath);
+        orderPathListWetherInsideOrOutsideOfBoundingBox();
+        bitmap.clearBitmapWithBBox(boundingBox);
     }
 
-    private void orderPathListWetherInsideOrOutsideOfBoundingBox(BBox boundingBoxOfOuterPath) {
+    private void orderPathListWetherInsideOrOutsideOfBoundingBox() {
         for (Path currentPath=pathesToOrder; currentPath != null; currentPath=pathesToOrder) {
             pathesToOrder=currentPath.next;
             currentPath.next=null;
 
-            boolean isCurrentPathBelowBoundingBox = currentPath.priv.pt[0].y <= boundingBoxOfOuterPath.y0;
-            if (isCurrentPathBelowBoundingBox) {
-                this.currentPath.next = Path.insertElementAtTheEndOfList(currentPath,this.currentPath.next);
-                this.currentPath.next = Path.insertListAtTheEndOfList(pathesToOrder,this.currentPath.next);
+            if (isPathBelowBoundingBox(currentPath)) {
+                referencePath.next = Path.insertElementAtTheEndOfList(currentPath,referencePath.next);
+                referencePath.next = Path.insertListAtTheEndOfList(pathesToOrder,referencePath.next);
                 return;
             }
-            boolean isCurrentPathInsideBoundingBox = bitmap.getPixelValue(currentPath.priv.pt[0].x, currentPath.priv.pt[0].y - 1);
-            if (isCurrentPathInsideBoundingBox) {
-                this.currentPath.childlist = Path.insertElementAtTheEndOfList(currentPath,this.currentPath.childlist);
+
+            if (isPathInsideReferencePath(currentPath)) {
+                referencePath.childlist = Path.insertElementAtTheEndOfList(currentPath,referencePath.childlist);
             } else {
-                this.currentPath.next = Path.insertElementAtTheEndOfList(currentPath,this.currentPath.next);
+                referencePath.next = Path.insertElementAtTheEndOfList(currentPath,referencePath.next);
             }
         }
     }
 
-    private Path scheduleOrderdPathesForFurtherProcessing() {
-        boolean hasCurrentPathOtherPathesOutside = currentPath.next != null;
-        if (hasCurrentPathOtherPathesOutside) {
-            currentPath.next.childlist = pathesThatNeedToProcess;
-            pathesThatNeedToProcess = currentPath.next;
+    private boolean isPathBelowBoundingBox(Path path){
+        return path.priv.pt[0].y <= boundingBox.y0;
+    }
+
+    private boolean isPathInsideReferencePath(Path path){
+        return bitmap.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y - 1);
+    }
+
+    private void scheduleAddedChildrenAndSiblingsForFurtherProcessing() {
+        if (hasReferencePathSiblings()) {
+            referencePath.next.childlist = pathesThatNeedToProcess;
+            pathesThatNeedToProcess = referencePath.next;
         }
-        boolean hasCurrentPathOtherPathesInside = currentPath.childlist != null;
-        if (hasCurrentPathOtherPathesInside) {
-            currentPath.childlist.childlist = pathesThatNeedToProcess;
-            pathesThatNeedToProcess = currentPath.childlist;
+        if (hasReferencePathChildren()) {
+            referencePath.childlist.childlist = pathesThatNeedToProcess;
+            pathesThatNeedToProcess = referencePath.childlist;
         }
-        return pathesThatNeedToProcess;
+    }
+
+    private boolean hasReferencePathSiblings() {
+        return referencePath.next != null;
+    }
+
+    private boolean hasReferencePathChildren() {
+        return referencePath.childlist != null;
     }
 
     public Path getPath(){
