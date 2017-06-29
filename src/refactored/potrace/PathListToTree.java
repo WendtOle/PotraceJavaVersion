@@ -33,7 +33,7 @@ public class PathListToTree {
     }
 
     private void transformIntTree() {
-        saveOriginalNextPointerToSibling();
+        saveOriginalNextPointerToSiblingComponent();
 
         transformIntoTreeStructure();
 
@@ -42,7 +42,7 @@ public class PathListToTree {
         reconstructNextComponentFromChildAndSiblingComponent();
     }
 
-    private void saveOriginalNextPointerToSibling() {
+    private void saveOriginalNextPointerToSiblingComponent() {
         for (Path path = pathList; path != null; path = path.next) {
             path.sibling = path.next;
             path.childlist = null;
@@ -72,12 +72,14 @@ public class PathListToTree {
 
             // now schedule head->childlist and head->next for further
             // processing
-            if (head.next != null) {
+            boolean hasCurrentPathOtherPathesOutside = head.next != null;
+            if (hasCurrentPathOtherPathesOutside) {
                 head.next.childlist = heap;
                 heap = head.next;
 
             }
-            if (head.childlist != null) {
+            boolean hasCurrentPathOtherPathesInside = head.childlist != null;
+            if (hasCurrentPathOtherPathesInside) {
                 head.childlist.childlist = heap;
                 heap = head.childlist;
             }
