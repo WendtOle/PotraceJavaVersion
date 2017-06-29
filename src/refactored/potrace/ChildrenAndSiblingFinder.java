@@ -19,13 +19,9 @@ public class ChildrenAndSiblingFinder {
     private void transformIntoTreeStructure() {
         pathesThatNeedToProcess = pathList;
         while (pathesThatNeedToProcess != null) {
-
             initializePathes();
-
             bitmap.invertPathOnBitmap(referencePath);
-
             determineChildrenAndSiblings();
-
             scheduleAddedChildrenAndSiblingsForFurtherProcessing();
         }
     }

@@ -56,8 +56,8 @@ public class Decompose {
             }
         }
 
-        PathListToTree pathListToTree = new PathListToTree();
-        pathListToTree.pathlist_to_tree(pathList, workCopy);
+        TreeStructurTransformation pathListToTree = new TreeStructurTransformation(pathList,workCopy);
+        pathList = pathListToTree.getTreeStructure();
         return pathList;
     }
 

@@ -3,12 +3,12 @@ package refactored.potrace;
 /**
  * Created by andreydelany on 29.06.17.
  */
-public class NextComponentReconstructor {
+public class NextComponentReconstruction {
     Path originPath;
     Path pathesThatNeedToProcess;
     Path currentPath;
 
-    public NextComponentReconstructor(Path pathlist) {
+    public NextComponentReconstruction(Path pathlist) {
         this.originPath = pathlist;
         initializeCurrentPathAndOriginPath();
         reconstructNextComponent();
