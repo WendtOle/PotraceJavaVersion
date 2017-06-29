@@ -35,7 +35,11 @@ public class PathListToTree {
     private void transformIntTree() {
         saveOriginalNextPointerToSiblingComponent();
 
-        transformIntoTreeStructure();
+        ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
+        pathList = childrenAndSiblingFinder.getPath();
+        bitmap = childrenAndSiblingFinder.getBitmap();
+
+        //transformIntoTreeStructure();
 
         copySiblingStructurFromNextToSiblingComponent();
 
