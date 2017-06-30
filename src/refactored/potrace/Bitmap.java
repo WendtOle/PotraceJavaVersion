@@ -34,14 +34,14 @@ public class Bitmap {
         return ((1L) << (PIXELINWORD-1-(position)));
     }
 
-    private boolean getPixelValueWithoutBoundChecking(int x, int y) {
-        long pixelValue = getWordWherePixelIsContained( x, y) & getMaskForPosition(x);
+    private boolean getPixelValueWithoutBoundChecking(Point pixel) {
+        long pixelValue = getWordWherePixelIsContained(pixel) & getMaskForPosition(pixel.x);
         return(pixelValue != 0);
     }
 
-    boolean getPixelValue(Point point) {
-        if (isPixelInRange(point))
-            return getPixelValueWithoutBoundChecking(point.x,point.y);
+    boolean getPixelValue(Point pixel) {
+        if (isPixelInRange(pixel))
+            return getPixelValueWithoutBoundChecking(pixel);
         else
             return false;
     }
@@ -54,8 +54,8 @@ public class Bitmap {
         return scanLine;
     }
 
-    long getWordWherePixelIsContained(int x, int y) {
-        return getLineWherePixelIsContained(y)[x/PIXELINWORD];
+    long getWordWherePixelIsContained(Point pixel) {
+        return getLineWherePixelIsContained(pixel.y)[pixel.x/PIXELINWORD];
     }
 
     private void clearPixel(Point pixel){
@@ -107,7 +107,7 @@ public class Bitmap {
         if (width % PIXELINWORD != 0) {
             long mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
             for (int y = 0; y < height; y ++) {
-                words[y * wordsPerScanLine + wordsPerScanLine - 1] = getWordWherePixelIsContained(width, y) & mask;
+                words[y * wordsPerScanLine + wordsPerScanLine - 1] = getWordWherePixelIsContained(new Point(width, y)) & mask;
             }
         }
     }
@@ -211,7 +211,7 @@ public class Bitmap {
         for (int y=startPointforSearch.y; y>=0; y--) {
             for (int x = x0; x<width && x>=0; x+=PIXELINWORD) {
 
-                if (getWordWherePixelIsContained(x, y) != 0) {
+                if (getWordWherePixelIsContained(new Point(x, y)) != 0) {
                     while (!getPixelValue(new Point(x, y))) {
                         x++;
                     }
