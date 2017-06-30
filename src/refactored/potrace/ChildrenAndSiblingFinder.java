@@ -1,5 +1,7 @@
 package refactored.potrace;
 
+import java.awt.*;
+
 /**
  * Created by andreydelany on 29.06.17.
  */
@@ -80,7 +82,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private boolean isPathInsideReferencePath(Path path){
-        return bitmap.getPixelValue(path.priv.pt[0].x, path.priv.pt[0].y - 1);
+        return bitmap.getPixelValue(new Point(path.priv.pt[0].x, path.priv.pt[0].y - 1));
     }
 
     private void scheduleAddedChildrenAndSiblingsForFurtherProcessing() {

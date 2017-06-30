@@ -44,7 +44,7 @@ public class Decompose {
     }
 
     private int getSignOfPathFromOriginalBitmap(Bitmap bitmap, Point currentPoint) {
-        boolean isPathFilled = bitmap.getPixelValue(currentPoint.x, currentPoint.y);
+        boolean isPathFilled = bitmap.getPixelValue(currentPoint);
         if (isPathFilled)
             return '+';
         else

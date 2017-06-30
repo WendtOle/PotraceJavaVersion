@@ -56,11 +56,11 @@ public class bitmapTest {
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
         smallTestBitmap.setPixelToValue(0,0,true);
-        assertEquals("with one original word in line: ",true, smallTestBitmap.getPixelValue(0,0));
+        assertEquals("with one original word in line: ",true, smallTestBitmap.getPixelValue(new Point(0,0)));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
         bigTestBitmap.setPixelToValue(99,99,true);
-        assertEquals("with more than one original word in line: ",true,bigTestBitmap.getPixelValue(99,99));
+        assertEquals("with more than one original word in line: ",true,bigTestBitmap.getPixelValue(new Point(99,99)));
     }
 
     @Test
@@ -68,18 +68,18 @@ public class bitmapTest {
         Bitmap smallTestBitmap = new Bitmap(10,10);
         smallTestBitmap.setPixelToValue(0,0,true);
         smallTestBitmap.setPixelToValue(0,0,false);
-        assertEquals(false, smallTestBitmap.getPixelValue(0,0));
+        assertEquals(false, smallTestBitmap.getPixelValue(new Point(0,0)));
     }
 
     @Test
     public void test_bm_clear() throws Exception {
         Bitmap testBitMap = new Bitmap(10,10);
         testBitMap.setWholeBitmapToSpecificValue(1);
-        assertEquals(true, testBitMap.getPixelValue(0,0));
-        assertEquals(true, testBitMap.getPixelValue(9,9));
+        assertEquals(true, testBitMap.getPixelValue(new Point(0,0)));
+        assertEquals(true, testBitMap.getPixelValue(new Point(9,9)));
         testBitMap.setWholeBitmapToSpecificValue(0);
-        assertEquals(false, testBitMap.getPixelValue(0,0));
-        assertEquals(false, testBitMap.getPixelValue(4,4));
+        assertEquals(false, testBitMap.getPixelValue(new Point(0,0)));
+        assertEquals(false, testBitMap.getPixelValue(new Point(4,4)));
     }
 
     @Test
@@ -137,8 +137,8 @@ public class bitmapTest {
         testBitmap.setPixelToValue(0,0,true);
         testBitmap.setPixelToValue(1,0,true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(0,0,1);
-        assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
-        assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
+        assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
+        assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
     }
 
     @Test
@@ -148,12 +148,12 @@ public class bitmapTest {
         testBitmap.setPixelToValue(69,0,true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(70,0,0);
         assertEquals(-1l,testBitmap.words[0]);
-        assertEquals("64: ", true, testBitmap.getPixelValue(64,0));
-        assertEquals("65: ", true, testBitmap.getPixelValue(65,0));
-        assertEquals("66: ", true, testBitmap.getPixelValue(66,0));
-        assertEquals("67: ", true, testBitmap.getPixelValue(67,0));
-        assertEquals("68: ", false, testBitmap.getPixelValue(68,0));
-        assertEquals("69: ", false, testBitmap.getPixelValue(69,0));
+        assertEquals("64: ", true, testBitmap.getPixelValue(new Point(64,0)));
+        assertEquals("65: ", true, testBitmap.getPixelValue(new Point(65,0)));
+        assertEquals("66: ", true, testBitmap.getPixelValue(new Point(66,0)));
+        assertEquals("67: ", true, testBitmap.getPixelValue(new Point(67,0)));
+        assertEquals("68: ", false, testBitmap.getPixelValue(new Point(68,0)));
+        assertEquals("69: ", false, testBitmap.getPixelValue(new Point(69,0)));
     }
 
     @Test
@@ -162,8 +162,8 @@ public class bitmapTest {
         testBitmap.setPixelToValue(0,0,true);
         testBitmap.setPixelToValue(1,0,true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(2,0,0);
-        assertEquals("firstPixel: ", false, testBitmap.getPixelValue(0,0));
-        assertEquals("secondPixel: ", false, testBitmap.getPixelValue(1,0));
+        assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
+        assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
     }
 
     @Test

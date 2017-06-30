@@ -63,14 +63,14 @@ public class decomposeTest {
         Path path = findPath.getPath();
         testBitmap.invertPathOnBitmap(path);
 
-        assertEquals(false, testBitmap.getPixelValue(0,0));
-        assertEquals(false, testBitmap.getPixelValue(1,0));
-        assertEquals(false, testBitmap.getPixelValue(2,0));
-        assertEquals(false, testBitmap.getPixelValue(0,1));
-        assertEquals(true, testBitmap.getPixelValue(1,1));
-        assertEquals(false, testBitmap.getPixelValue(2,1));
-        assertEquals(false, testBitmap.getPixelValue(0,2));
-        assertEquals(false, testBitmap.getPixelValue(1,3));
-        assertEquals(false, testBitmap.getPixelValue(2,3));
+        assertEquals(false, testBitmap.getPixelValue(new Point(0,0)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(1,0)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(2,0)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(0,1)));
+        assertEquals(true, testBitmap.getPixelValue(new Point(1,1)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(2,1)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(0,2)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(1,3)));
+        assertEquals(false, testBitmap.getPixelValue(new Point(2,3)));
     }
 }

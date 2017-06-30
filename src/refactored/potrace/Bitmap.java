@@ -39,9 +39,9 @@ public class Bitmap {
         return(pixelValue != 0);
     }
 
-    boolean getPixelValue(int x, int y) {
-        if (isPixelInRange(x,y))
-            return getPixelValueWithoutBoundChecking(x,y);
+    boolean getPixelValue(Point point) {
+        if (isPixelInRange(point.x,point.y))
+            return getPixelValueWithoutBoundChecking(point.x,point.y);
         else
             return false;
     }
@@ -131,10 +131,10 @@ public class Bitmap {
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += getPixelValue(x+a, y+i-1) ? 1 : -1;
-                ct += getPixelValue(x+i-1, y+a-1) ? 1 : -1;
-                ct += getPixelValue(x+a-1, y-i) ? 1 : -1;
-                ct += getPixelValue(x-i, y+a) ? 1 : -1;
+                ct += getPixelValue(new Point(x+a, y+i-1)) ? 1 : -1;
+                ct += getPixelValue(new Point(x+i-1, y+a-1)) ? 1 : -1;
+                ct += getPixelValue(new Point(x+a-1, y-i)) ? 1 : -1;
+                ct += getPixelValue(new Point(x-i, y+a)) ? 1 : -1;
             }
             if (ct>0) {
                 return true;
@@ -212,7 +212,7 @@ public class Bitmap {
             for (int x = x0; x<width && x>=0; x+=PIXELINWORD) {
 
                 if (getWordWherePixelIsContained(x, y) != 0) {
-                    while (!getPixelValue(x, y)) {
+                    while (!getPixelValue(new Point(x, y))) {
                         x++;
                     }
                     return new Point(x,y);

@@ -83,15 +83,13 @@ public class FindPath {
     private boolean isRightPixelFilled() {
         int xComponent = currentPoint.x + (direction.x+direction.y-1)/2;
         int yCompontent = currentPoint.y + (direction.y-direction.x-1)/2;
-        Point rightPixelPosition = new Point(xComponent, yCompontent);
-        return bitmap.getPixelValue(rightPixelPosition.x,rightPixelPosition.y);
+        return bitmap.getPixelValue(new Point(xComponent,yCompontent));
     }
 
     private boolean isLeftPixelFilled() {
         int xComponent = currentPoint.x + (direction.x - direction.y - 1) / 2;
         int yComponent = currentPoint.y + (direction.y + direction.x - 1) / 2;
-        Point leftPixelPosition = new Point(xComponent, yComponent);
-        return bitmap.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
+        return bitmap.getPixelValue(new Point(xComponent,yComponent));
     }
 
     private static boolean isAmbiguousSituation(boolean isRightPixelFilled, boolean isLeftPixelFilled) {
