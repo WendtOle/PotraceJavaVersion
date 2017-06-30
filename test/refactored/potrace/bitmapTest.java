@@ -77,10 +77,11 @@ public class bitmapTest {
     @Test
     public void test_bm_clear() throws Exception {
         Bitmap testBitMap = new Bitmap(10,10);
-        testBitMap.setWholeBitmapToSpecificValue(1);
+        BitmapManipulator manipulator = new BitmapManipulator(testBitMap);
+        manipulator.setWholeBitmapToSpecificValue(1);
         assertEquals(true, testBitMap.getPixelValue(new Point(0,0)));
         assertEquals(true, testBitMap.getPixelValue(new Point(9,9)));
-        testBitMap.setWholeBitmapToSpecificValue(0);
+        manipulator.setWholeBitmapToSpecificValue(0);
         assertEquals(false, testBitMap.getPixelValue(new Point(0,0)));
         assertEquals(false, testBitMap.getPixelValue(new Point(4,4)));
     }
@@ -127,9 +128,8 @@ public class bitmapTest {
 
         Boolean[] expectedOutcomes = new Boolean[]{true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false};
 
-        testBitmap.setWholeBitmapToSpecificValue(1);
-
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        manipulator.setWholeBitmapToSpecificValue(1);
 
         for(int i = 0; i < 16; i++) {
             manipulator.setPixelToValue(points[i],false);

@@ -58,9 +58,9 @@ public class decomposeTest {
     @Test
     public void test_xor_path() {
         Bitmap testBitmap = new Bitmap(3,3);
-        testBitmap.setWholeBitmapToSpecificValue(1);
-        testBitmap.clearExcessPixelsOfBitmap();
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        manipulator.setWholeBitmapToSpecificValue(1);
+        testBitmap.clearExcessPixelsOfBitmap();
         manipulator.setPixelToValue(new Point(1,1),false);
 
         FindPath findPath = new FindPath(testBitmap,new Point(0,3),43,4);

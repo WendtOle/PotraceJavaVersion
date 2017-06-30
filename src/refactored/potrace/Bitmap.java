@@ -69,34 +69,9 @@ public class Bitmap {
         return pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
     }
 
-     void setWholeBitmapToSpecificValue(int c) {
-        for (int y = 0; y < height; y ++) {
-            setLineToSpecificValue(c, y);
-        }
-    }
 
-    private void setLineToSpecificValue(int c, int y) {
-        for (int dyIndex = 0; dyIndex < wordsPerScanLine; dyIndex ++) {
-            setPotraceWordToSpecificValue(c, y, dyIndex);
-        }
-    }
 
-    private void setPotraceWordToSpecificValue(int c, int y, int dyIndex) {
-        words[wordsPerScanLine * y + dyIndex] = getClearedValue(c, dyIndex);
-    }
 
-    private long getClearedValue(int c, int dyIndex) {
-        long clearedValue = (c == 1 ? -1 : 0);
-        clearedValue = shiftClearedValueIfNeccessary(dyIndex, clearedValue);
-        return clearedValue;
-    }
-
-    private long shiftClearedValueIfNeccessary(int dyIndex, long clearedValue) {
-        if (dyIndex == wordsPerScanLine -1) {
-            clearedValue = shiftValueForLastWordInLine(clearedValue);
-        }
-        return clearedValue;
-    }
 
     public Bitmap duplicate() {
         Bitmap duplicatedBitmap = new Bitmap(this.width, this.height);
