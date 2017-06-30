@@ -56,12 +56,16 @@ public class Bitmap {
     }
 
     private void clearPixel(Point pixel){
-        int accessIndex = pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
+        int accessIndex = getAccessIndexOfWord(pixel);
         words[accessIndex] = words[accessIndex] & ~getMaskForPosition(pixel.x);
     }
 
+    private int getAccessIndexOfWord(Point pixel) {
+        return pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
+    }
+
     private void fillPixel(Point pixel) {
-        int accessIndex = pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
+        int accessIndex = getAccessIndexOfWord(pixel);
         words[accessIndex] = words[accessIndex] | getMaskForPosition(pixel.x);
     }
 
