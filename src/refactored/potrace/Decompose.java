@@ -29,8 +29,8 @@ public class Decompose {
 
     private void initializeValues() {
         workCopy = bitmap.duplicate();
-        workCopy.clearExcessPixelsOfBitmap();
         manipulatorForWorkCopy = new BitmapManipulator(workCopy);
+        manipulatorForWorkCopy.clearExcessPixelsOfBitmap();
         currentPoint = new Point(0,workCopy.height-1);
     }
 

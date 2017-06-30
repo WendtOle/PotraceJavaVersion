@@ -51,12 +51,8 @@ public class Bitmap {
         return scanLine;
     }
 
-    private long getWordWherePixelIsContained(Point pixel) {
+    public long getWordWherePixelIsContained(Point pixel) {
         return getLineWherePixelIsContained(pixel.y)[pixel.x/PIXELINWORD];
-    }
-
-    int getAccessIndexOfWord(Point pixel) {
-        return pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
     }
 
     public Bitmap duplicate() {
@@ -68,19 +64,6 @@ public class Bitmap {
             }
         }
         return duplicatedBitmap;
-    }
-
-    void clearExcessPixelsOfBitmap() {
-        if (width % PIXELINWORD != 0) {
-            long mask = shiftValueForLastWordInLine(BM_ALLBITS);
-            for (int y = 0; y < height; y ++) {
-                words[y * wordsPerScanLine + wordsPerScanLine - 1] = getWordWherePixelIsContained(new Point(width, y)) & mask;
-            }
-        }
-    }
-
-    private long shiftValueForLastWordInLine(long value) {
-        return value << (PIXELINWORD - (width % PIXELINWORD));
     }
 
     boolean getMajorityValueAtIntersection(int x, int y) {

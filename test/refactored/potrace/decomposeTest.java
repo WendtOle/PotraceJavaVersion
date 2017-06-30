@@ -60,7 +60,7 @@ public class decomposeTest {
         Bitmap testBitmap = new Bitmap(3,3);
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
         manipulator.setWholeBitmapToSpecificValue(1);
-        testBitmap.clearExcessPixelsOfBitmap();
+        manipulator.clearExcessPixelsOfBitmap();
         manipulator.setPixelToValue(new Point(1,1),false);
 
         FindPath findPath = new FindPath(testBitmap,new Point(0,3),43,4);

@@ -63,9 +63,18 @@ public class BitmapManipulator {
         }
     }
 
+    void clearExcessPixelsOfBitmap() {
+        if (bitmap.width % Bitmap.PIXELINWORD != 0) {
+            long mask = shiftValueForLastWordInLine(Bitmap.BM_ALLBITS);
+            for (int y = 0; y < bitmap.height; y ++) {
+                bitmap.words[y * bitmap.wordsPerScanLine + bitmap.wordsPerScanLine - 1] = bitmap.getWordWherePixelIsContained(new Point(bitmap.width, y)) & mask;
+            }
+        }
+    }
+
     private void flipBitsUnitStartPositionOfStartWord(int y, int beginningPositionOfStartWord, int indexOfXInStartWord) {
         if (indexOfXInStartWord > 0) {
-            int accessIndex = bitmap.getAccessIndexOfWord(new Point(beginningPositionOfStartWord,y));
+            int accessIndex = getAccessIndexOfWord(new Point(beginningPositionOfStartWord,y));
             long mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - indexOfXInStartWord);
             bitmap.words[accessIndex] = bitmap.words[accessIndex]  ^ mask;
         }
@@ -87,8 +96,12 @@ public class BitmapManipulator {
     }
 
     private void flipAllBitsInWord(Point wordIdentificationPixel) {
-        int indexOfWord = bitmap.getAccessIndexOfWord(wordIdentificationPixel);
+        int indexOfWord = getAccessIndexOfWord(wordIdentificationPixel);
         bitmap.words[indexOfWord] = bitmap.words[indexOfWord]  ^ Bitmap.BM_ALLBITS;
+    }
+
+    int getAccessIndexOfWord(Point pixel) {
+        return pixel.y * bitmap.wordsPerScanLine + (pixel.x / Bitmap.PIXELINWORD);
     }
 
     private void setPixelToValueWithoutBoundChecking(Point pixel, boolean shallPixelFilled) {
@@ -99,12 +112,12 @@ public class BitmapManipulator {
     }
 
     private void clearPixel(Point pixel){
-        int accessIndex = bitmap.getAccessIndexOfWord(pixel);
+        int accessIndex = getAccessIndexOfWord(pixel);
         bitmap.words[accessIndex] = bitmap.words[accessIndex] & ~bitmap.getMaskForPosition(pixel.x);
     }
 
     private void fillPixel(Point pixel) {
-        int accessIndex = bitmap.getAccessIndexOfWord(pixel);
+        int accessIndex = getAccessIndexOfWord(pixel);
         bitmap.words[accessIndex] = bitmap.words[accessIndex] | bitmap.getMaskForPosition(pixel.x);
     }
 
