@@ -26,15 +26,15 @@ public class FindPath {
 
     private void findPath() {
         while (true) {
-            addPointToPath();
+            addCurrentPointToPath();
             moveToNextPoint();
             if (isPathComplete())
                 break;
-            determineNextDirection();
+            performTurnInNextDirection();
         }
     }
 
-    private void addPointToPath() {
+    private void addCurrentPointToPath() {
         extendPointArrayCapacityWhenNecessary();
         points[indexOfCurrentPoint] = new Point(currentPoint.x,currentPoint.y);
         indexOfCurrentPoint++;
@@ -64,7 +64,7 @@ public class FindPath {
         return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
     }
 
-    private void determineNextDirection() {
+    private void performTurnInNextDirection() {
         boolean isRightPixelFilled = isRightPixelFilled();
         boolean isLeftPixelFilled = isLeftPixelFilled();
 
@@ -87,19 +87,19 @@ public class FindPath {
         return bitmap.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
     }
 
-    private static boolean isAmbiguousSituation(boolean c, boolean d) {
-        return c && !d;
+    private static boolean isAmbiguousSituation(boolean isRightPixelFilled, boolean isLeftPixelFilled) {
+        boolean isLeftPixelEmpty = !isLeftPixelFilled;
+        return isRightPixelFilled && isLeftPixelEmpty;
     }
 
     private void performTurnInAmbiguousSituation() {
-        if (shouldGoRightInAmbiguousSituation()) {
+        if (shouldTurnRightInAmbiguousSituation())
             performRightTurn();
-        } else {
+        else
             performLeftTurn();
-        }
     }
 
-    private boolean shouldGoRightInAmbiguousSituation() {
+    private boolean shouldTurnRightInAmbiguousSituation() {
         return turnPolicy == TurnPolicyEnum.valueOf("RIGHT").ordinal()
                 || (turnPolicy == TurnPolicyEnum.valueOf("BLACK").ordinal() && sign == '+')
                 || (turnPolicy == TurnPolicyEnum.valueOf("WHITE").ordinal() && sign == '-')
@@ -108,6 +108,7 @@ public class FindPath {
                 || (turnPolicy == TurnPolicyEnum.valueOf("MINORITY").ordinal() && !bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y));
     }
 
+    //TODO Refactor
     static boolean detrand(int x, int y) {
         int z;
         char t[] = {
