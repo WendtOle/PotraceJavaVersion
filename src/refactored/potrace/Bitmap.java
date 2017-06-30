@@ -58,26 +58,26 @@ public class Bitmap {
         return getLineWherePixelIsContained(y)[x/PIXELINWORD];
     }
 
-    private void clearPixel(int x, int y){
-        int accessIndex = y * wordsPerScanLine + (x / PIXELINWORD);
-        words[accessIndex] = words[accessIndex] & ~getMaskForPosition(x);
+    private void clearPixel(Point pixel){
+        int accessIndex = pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
+        words[accessIndex] = words[accessIndex] & ~getMaskForPosition(pixel.x);
     }
 
-    private void fillPixel(int x, int y) {
-        int accessIndex = y * wordsPerScanLine + (x / PIXELINWORD);
-        words[accessIndex] = words[accessIndex] | getMaskForPosition(x);
+    private void fillPixel(Point pixel) {
+        int accessIndex = pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
+        words[accessIndex] = words[accessIndex] | getMaskForPosition(pixel.x);
     }
 
-    private void setPixelToValueWithoutBoundChecking(int x, int y, boolean shallPixelFilled) {
+    private void setPixelToValueWithoutBoundChecking(Point pixel, boolean shallPixelFilled) {
         if (shallPixelFilled)
-            fillPixel(x, y);
+            fillPixel(pixel);
         else
-            clearPixel(x, y);
+            clearPixel(pixel);
     }
 
     void setPixelToValue(Point pixel, boolean b) {
         if (isPixelInRange(pixel))
-            setPixelToValueWithoutBoundChecking(pixel.x,pixel.y, b);
+            setPixelToValueWithoutBoundChecking(pixel, b);
     }
 
      void setWholeBitmapToSpecificValue(int c) {
