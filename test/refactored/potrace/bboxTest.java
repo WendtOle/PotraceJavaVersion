@@ -14,7 +14,7 @@ public class bboxTest {
     public void test_setbbox_path() {
         BBox box = new BBox();
         Bitmap testBitmap = new Bitmap(3,3);
-        testBitmap.setPixelToValue(1,1,true);
+        testBitmap.setPixelToValue(new Point(1,1),true);
 
         FindPath findPath = new FindPath(testBitmap,new Point(2,2),43,4);
         Path path = findPath.getPath();

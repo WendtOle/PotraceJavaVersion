@@ -26,8 +26,8 @@ public class Bitmap {
         return (coordinate) >= 0 && (coordinate) < (upperBound);
     }
 
-    boolean isPixelInRange(int x, int y) {
-        return isCoordinateInRange(x, width) && isCoordinateInRange(y, height);
+    boolean isPixelInRange(Point pixel) {
+        return isCoordinateInRange(pixel.x, width) && isCoordinateInRange(pixel.y, height);
     }
 
     long getMaskForPosition(int position) {
@@ -40,7 +40,7 @@ public class Bitmap {
     }
 
     boolean getPixelValue(Point point) {
-        if (isPixelInRange(point.x,point.y))
+        if (isPixelInRange(point))
             return getPixelValueWithoutBoundChecking(point.x,point.y);
         else
             return false;
@@ -75,9 +75,9 @@ public class Bitmap {
             clearPixel(x, y);
     }
 
-    void setPixelToValue(int x, int y, boolean b) {
-        if (isPixelInRange(x, y))
-            setPixelToValueWithoutBoundChecking(x, y, b);
+    void setPixelToValue(Point pixel, boolean b) {
+        if (isPixelInRange(pixel))
+            setPixelToValueWithoutBoundChecking(pixel.x,pixel.y, b);
     }
 
      void setWholeBitmapToSpecificValue(int c) {

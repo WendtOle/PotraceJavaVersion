@@ -36,11 +36,11 @@ public class bitmapTest {
     @Test
     public void testBmSafeAndBmRange() {
         Bitmap testBitmap = new Bitmap(10,10);
-        assertTrue("first inside: ", testBitmap.isPixelInRange(0,0));
-        assertTrue("second inside: ", testBitmap.isPixelInRange(9,9));
-        assertFalse("first outside: ", testBitmap.isPixelInRange(10,10));
-        assertFalse("second outside: ", testBitmap.isPixelInRange(10,1));
-        assertFalse("third outside: ", testBitmap.isPixelInRange(-1,1));
+        assertTrue("first inside: ", testBitmap.isPixelInRange(new Point(0,0)));
+        assertTrue("second inside: ", testBitmap.isPixelInRange(new Point(9,9)));
+        assertFalse("first outside: ", testBitmap.isPixelInRange(new Point(10,10)));
+        assertFalse("second outside: ", testBitmap.isPixelInRange(new Point(10,1)));
+        assertFalse("third outside: ", testBitmap.isPixelInRange(new Point(-1,1)));
     }
 
     @Test
@@ -55,19 +55,19 @@ public class bitmapTest {
     @Test
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        smallTestBitmap.setPixelToValue(0,0,true);
+        smallTestBitmap.setPixelToValue(new Point(0,0),true);
         assertEquals("with one original word in line: ",true, smallTestBitmap.getPixelValue(new Point(0,0)));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
-        bigTestBitmap.setPixelToValue(99,99,true);
+        bigTestBitmap.setPixelToValue(new Point(99,99),true);
         assertEquals("with more than one original word in line: ",true,bigTestBitmap.getPixelValue(new Point(99,99)));
     }
 
     @Test
     public void testBMClearFuntion() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        smallTestBitmap.setPixelToValue(0,0,true);
-        smallTestBitmap.setPixelToValue(0,0,false);
+        smallTestBitmap.setPixelToValue(new Point(0,0),true);
+        smallTestBitmap.setPixelToValue(new Point(0,0),false);
         assertEquals(false, smallTestBitmap.getPixelValue(new Point(0,0)));
     }
 
@@ -102,8 +102,8 @@ public class bitmapTest {
         box.y0 = 1;
         box.y1 = 2;
         Bitmap testBitmap = new Bitmap(3,3);
-        testBitmap.setPixelToValue(0,2,true);
-        testBitmap.setPixelToValue(1,1,true);
+        testBitmap.setPixelToValue(new Point(0,2),true);
+        testBitmap.setPixelToValue(new Point(1,1),true);
 
         testBitmap.clearBitmapWithBBox(box);
 
@@ -126,7 +126,7 @@ public class bitmapTest {
         testBitmap.setWholeBitmapToSpecificValue(1);
 
         for(int i = 0; i < 16; i++) {
-            testBitmap.setPixelToValue(points[i].x,points[i].y,false);
+            testBitmap.setPixelToValue(points[i],false);
             assertEquals("i: " + i,expectedOutcomes[i], testBitmap.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y));
         }
     }
@@ -134,8 +134,8 @@ public class bitmapTest {
     @Test
     public void testXorToRefFirstIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        testBitmap.setPixelToValue(0,0,true);
-        testBitmap.setPixelToValue(1,0,true);
+        testBitmap.setPixelToValue(new Point(0,0),true);
+        testBitmap.setPixelToValue(new Point(1,0),true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(0,0,1);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
@@ -144,8 +144,8 @@ public class bitmapTest {
     @Test
     public void testXorToRefHorizontalSecondIF() {
         Bitmap testBitmap = new Bitmap(70,1);
-        testBitmap.setPixelToValue(68,0,true);
-        testBitmap.setPixelToValue(69,0,true);
+        testBitmap.setPixelToValue(new Point(68,0),true);
+        testBitmap.setPixelToValue(new Point(69,0),true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(70,0,0);
         assertEquals(-1l,testBitmap.words[0]);
         assertEquals("64: ", true, testBitmap.getPixelValue(new Point(64,0)));
@@ -159,8 +159,8 @@ public class bitmapTest {
     @Test
     public void testXorToRefHorizontalThirdIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        testBitmap.setPixelToValue(0,0,true);
-        testBitmap.setPixelToValue(1,0,true);
+        testBitmap.setPixelToValue(new Point(0,0),true);
+        testBitmap.setPixelToValue(new Point(1,0),true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(2,0,0);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
@@ -169,8 +169,8 @@ public class bitmapTest {
     @Test
     public void xor_to_ref() {
         Bitmap testBitmap = new Bitmap(128,1);
-        testBitmap.setPixelToValue(68,0,true);
-        testBitmap.setPixelToValue(70,0,true);
+        testBitmap.setPixelToValue(new Point(68,0),true);
+        testBitmap.setPixelToValue(new Point(70,0),true);
         testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(5,0,65);
     }
 }
