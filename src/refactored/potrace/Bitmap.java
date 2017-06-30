@@ -83,14 +83,31 @@ public class Bitmap {
 
      void setWholeBitmapToSpecificValue(int c) {
         for (int y = 0; y < height; y ++) {
-            for (int dyIndex = 0; dyIndex < wordsPerScanLine; dyIndex ++) {
-                int clearedValue = (c == 1 ? -1 : 0);
-                if (dyIndex == wordsPerScanLine -1) {
-                    clearedValue =  clearedValue << (PIXELINWORD - (width % PIXELINWORD));
-                }
-                words[wordsPerScanLine * y + dyIndex] = clearedValue;
-            }
+            setLineToSpecificValue(c, y);
         }
+    }
+
+    private void setLineToSpecificValue(int c, int y) {
+        for (int dyIndex = 0; dyIndex < wordsPerScanLine; dyIndex ++) {
+            setPotraceWordToSpecificValue(c, y, dyIndex);
+        }
+    }
+
+    private void setPotraceWordToSpecificValue(int c, int y, int dyIndex) {
+        words[wordsPerScanLine * y + dyIndex] = getClearedValue(c, dyIndex);
+    }
+
+    private int getClearedValue(int c, int dyIndex) {
+        int clearedValue = (c == 1 ? -1 : 0);
+        clearedValue = shiftClearedValueIfNeccessary(dyIndex, clearedValue);
+        return clearedValue;
+    }
+
+    private int shiftClearedValueIfNeccessary(int dyIndex, int clearedValue) {
+        if (dyIndex == wordsPerScanLine -1) {
+            clearedValue =  clearedValue << (PIXELINWORD - (width % PIXELINWORD));
+        }
+        return clearedValue;
     }
 
     public Bitmap duplicate() {
@@ -158,7 +175,7 @@ public class Bitmap {
 
     private void flipBitsUnitStartPositionOfStartWord(int y, int beginningPositionOfStartWord, int indexOfXInStartWord) {
         if (indexOfXInStartWord > 0) {
-            int accessIndex = (wordsPerScanLine * y) + (beginningPositionOfStartWord / Bitmap.PIXELINWORD);
+            int accessIndex = getAccessIndexOfWord(new Point(beginningPositionOfStartWord,y));
             long mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - indexOfXInStartWord);
             words[accessIndex] = words[accessIndex]  ^ mask;
         }
@@ -175,12 +192,12 @@ public class Bitmap {
         }
 
         for(int i = startX; i < endX; i += Bitmap.PIXELINWORD) {
-            flipAllBitsInWord(i, y);
+            flipAllBitsInWord(new Point(i, y));
         }
     }
 
-    private void flipAllBitsInWord(int x, int y) {
-        int indexOfWord = (wordsPerScanLine * y) + (x / Bitmap.PIXELINWORD);
+    private void flipAllBitsInWord(Point wordIdentificationPixel) {
+        int indexOfWord = getAccessIndexOfWord(wordIdentificationPixel);
         words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS;
     }
 
