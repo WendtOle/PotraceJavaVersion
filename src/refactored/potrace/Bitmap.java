@@ -13,7 +13,7 @@ public class Bitmap {
     public long[] words;
 
 
-    public Bitmap() {};
+    public Bitmap() {}
 
     public Bitmap(int width, int height) {
         this.width = width;
@@ -51,7 +51,7 @@ public class Bitmap {
         return scanLine;
     }
 
-    long getWordWherePixelIsContained(Point pixel) {
+    private long getWordWherePixelIsContained(Point pixel) {
         return getLineWherePixelIsContained(pixel.y)[pixel.x/PIXELINWORD];
     }
 
@@ -97,15 +97,15 @@ public class Bitmap {
         words[wordsPerScanLine * y + dyIndex] = getClearedValue(c, dyIndex);
     }
 
-    private int getClearedValue(int c, int dyIndex) {
-        int clearedValue = (c == 1 ? -1 : 0);
+    private long getClearedValue(int c, int dyIndex) {
+        long clearedValue = (c == 1 ? -1 : 0);
         clearedValue = shiftClearedValueIfNeccessary(dyIndex, clearedValue);
         return clearedValue;
     }
 
-    private int shiftClearedValueIfNeccessary(int dyIndex, int clearedValue) {
+    private long shiftClearedValueIfNeccessary(int dyIndex, long clearedValue) {
         if (dyIndex == wordsPerScanLine -1) {
-            clearedValue =  clearedValue << (PIXELINWORD - (width % PIXELINWORD));
+            clearedValue = shiftValueForLastWordInLine(clearedValue);
         }
         return clearedValue;
     }
@@ -123,11 +123,15 @@ public class Bitmap {
 
     void clearExcessPixelsOfBitmap() {
         if (width % PIXELINWORD != 0) {
-            long mask = BM_ALLBITS << (PIXELINWORD - (width % PIXELINWORD));
+            long mask = shiftValueForLastWordInLine(BM_ALLBITS);
             for (int y = 0; y < height; y ++) {
                 words[y * wordsPerScanLine + wordsPerScanLine - 1] = getWordWherePixelIsContained(new Point(width, y)) & mask;
             }
         }
+    }
+
+    private long shiftValueForLastWordInLine(long value) {
+        return value << (PIXELINWORD - (width % PIXELINWORD));
     }
 
     void clearBitmapWithBBox(BBox bbox) {
