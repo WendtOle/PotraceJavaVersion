@@ -40,10 +40,7 @@ public class Bitmap {
     }
 
     boolean getPixelValue(Point pixel) {
-        if (isPixelInRange(pixel))
-            return getPixelValueWithoutBoundChecking(pixel);
-        else
-            return false;
+        return isPixelInRange(pixel) && getPixelValueWithoutBoundChecking(pixel);
     }
 
     private long[] getLineWherePixelIsContained(int y) {
@@ -206,7 +203,7 @@ public class Bitmap {
     }
 
     public Point findNextFilledPixel(Point startPointforSearch) {
-        int x0 = (startPointforSearch.x) & ~(Bitmap.PIXELINWORD-1);
+        int x0 = getBeginningIndexOfCurrentWord(startPointforSearch.x);
 
         for (int y=startPointforSearch.y; y>=0; y--) {
             for (int x = x0; x<width && x>=0; x+=PIXELINWORD) {
@@ -221,5 +218,9 @@ public class Bitmap {
             x0 = 0;
         }
         return null;
+    }
+
+    private int getBeginningIndexOfCurrentWord(int index) {
+        return (index) & ~(Bitmap.PIXELINWORD-1);
     }
 }
