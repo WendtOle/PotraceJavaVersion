@@ -186,7 +186,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         return x1*x2 + y1*y2;
     }
 
-    /* calculate distance between two points */
+    /* calculate distance between two pointsOfPath */
     static double ddist(Point2D.Double p, Point2D.Double q) {
         return Math.sqrt((p.x-q.x)*(p.x-q.x)+(p.y-q.y)*(p.y-q.y));
     }
@@ -285,7 +285,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     through i,j,k, for all i0<=i<j<k<=in. (Proof?) */
 
     /* this implementation of calc_lon is O(n^2). It replaces an older
-    O(n^3) version. A "constraint" means that future points must
+    O(n^3) version. A "constraint" means that future pointsOfPath must
     satisfy xprod(constraint[0], cur) >= 0 and xprod(constraint[1],
     cur) <= 0. */
 
@@ -293,7 +293,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     more complex than the implementation found in Potrace 1.0, but it
     is considerably faster. The introduction of the "nc" data structure
     means that we only have to test the constraints for "corner"
-    points. On a typical input file, this speeds up the calc_lon
+    pointsOfPath. On a typical input file, this speeds up the calc_lon
     function by a factor of 31.2, thereby decreasing its time share
     within the overall Potrace algorithm from 72.6% to 7.82%, and
     speeding up the overall algorithm by a factor of 3.36. On another
@@ -336,7 +336,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
 
         pp.lon = new int[n];
 
-        //determine pivot points: for each i, let pivk[i] be the furthest k
+        //determine pivot pointsOfPath: for each i, let pivk[i] be the furthest k
         //such that all j with i<j<k lie on a line connecting i,k.
 
         outerloop:

@@ -21,6 +21,6 @@ public class PrivePath {
 
     PrivCurve curve;    /* Curve[m]: array of Curve elements */
     PrivCurve ocurve;   /* ocurve[om]: array of Curve elements */
-    PrivCurve fcurve;   /* final Curve: this points to either Curve or
+    PrivCurve fcurve;   /* final Curve: this pointsOfPath to either Curve or
 		                ocurve. Do not free this separately. */
 }
