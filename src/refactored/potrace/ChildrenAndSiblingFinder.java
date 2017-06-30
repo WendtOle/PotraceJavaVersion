@@ -9,12 +9,14 @@ public class ChildrenAndSiblingFinder {
 
     Path pathList;
     Bitmap bitmap;
+    BitmapManipulator manipulator;
     Path pathesToOrder, pathesThatNeedToProcess, referencePath;
     BBox boundingBox;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
         this.bitmap = bitmap;
+        this.manipulator = new BitmapManipulator(bitmap);
         transformIntoTreeStructure();
     }
 
@@ -22,7 +24,7 @@ public class ChildrenAndSiblingFinder {
         pathesThatNeedToProcess = pathList;
         while (pathesThatNeedToProcess != null) {
             initializePathes();
-            bitmap.invertPathOnBitmap(referencePath);
+            manipulator.invertPathOnBitmap(referencePath);
             determineChildrenAndSiblings();
             scheduleAddedChildrenAndSiblingsForFurtherProcessing();
         }
@@ -43,7 +45,7 @@ public class ChildrenAndSiblingFinder {
     private void determineChildrenAndSiblings() {
         boundingBox = new BBox(referencePath);
         orderPathListWetherInsideOrOutsideOfBoundingBox();
-        bitmap.clearBitmapWithBBox(boundingBox);
+        manipulator.clearBitmapWithBBox(boundingBox);
     }
 
     private void orderPathListWetherInsideOrOutsideOfBoundingBox() {

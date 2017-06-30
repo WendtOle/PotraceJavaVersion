@@ -5,6 +5,7 @@ import java.awt.*;
 public class Decompose {
     Param param;
     Bitmap bitmap, workCopy;
+    BitmapManipulator manipulatorForWorkCopy;
     Point currentPoint;
     Path pathList = null;
 
@@ -29,6 +30,7 @@ public class Decompose {
     private void initializeValues() {
         workCopy = bitmap.duplicate();
         workCopy.clearExcessPixelsOfBitmap();
+        manipulatorForWorkCopy = new BitmapManipulator(workCopy);
         currentPoint = new Point(0,workCopy.height-1);
     }
 
@@ -52,7 +54,7 @@ public class Decompose {
     }
 
     private void addPathToPathListIfBigEnough(Path currentPath) {
-        workCopy.invertPathOnBitmap(currentPath);
+        manipulatorForWorkCopy.invertPathOnBitmap(currentPath);
         if (isPathBigEnough(currentPath.area,param.turdsize)) {
             pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
         }

@@ -55,23 +55,9 @@ public class Bitmap {
         return getLineWherePixelIsContained(pixel.y)[pixel.x/PIXELINWORD];
     }
 
-    private void clearPixel(Point pixel){
-        int accessIndex = getAccessIndexOfWord(pixel);
-        words[accessIndex] = words[accessIndex] & ~getMaskForPosition(pixel.x);
-    }
-
-    private void fillPixel(Point pixel) {
-        int accessIndex = getAccessIndexOfWord(pixel);
-        words[accessIndex] = words[accessIndex] | getMaskForPosition(pixel.x);
-    }
-
     int getAccessIndexOfWord(Point pixel) {
         return pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
     }
-
-
-
-
 
     public Bitmap duplicate() {
         Bitmap duplicatedBitmap = new Bitmap(this.width, this.height);
@@ -97,19 +83,6 @@ public class Bitmap {
         return value << (PIXELINWORD - (width % PIXELINWORD));
     }
 
-    void clearBitmapWithBBox(BBox bbox) {
-        int imin = (bbox.x0 / Bitmap.PIXELINWORD);
-        int imax = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
-
-        for (int y = bbox.y0; y < bbox.y1; y ++) {
-            for (int i = imin; i<imax; i++) {
-                words[y * wordsPerScanLine + i] = 0;
-            }
-        }
-    }
-
-    /* We assume that the Bitmap is balanced at "radius" 1.  */
-
     boolean getMajorityValueAtIntersection(int x, int y) {
         int i, a, ct;
 
@@ -128,66 +101,6 @@ public class Bitmap {
             }
         }
         return false;
-    }
-
-    /* Here xa must be a multiple of BM_WORDBITS. */
-
-    void invertBitsInWordsWhichAreInRangeFromXToXAInLine(int x, int y, int xa) {
-        int beginningIndexOfStartWord = x & - Bitmap.PIXELINWORD;
-        int indexOfXInStartWord = x & (Bitmap.PIXELINWORD-1);
-
-        flipAllContainedWordsInLineBetweenToValues(xa,beginningIndexOfStartWord,y);
-        flipBitsUnitStartPositionOfStartWord(y, beginningIndexOfStartWord, indexOfXInStartWord);
-    }
-
-    private void flipBitsUnitStartPositionOfStartWord(int y, int beginningPositionOfStartWord, int indexOfXInStartWord) {
-        if (indexOfXInStartWord > 0) {
-            int accessIndex = getAccessIndexOfWord(new Point(beginningPositionOfStartWord,y));
-            long mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - indexOfXInStartWord);
-            words[accessIndex] = words[accessIndex]  ^ mask;
-        }
-    }
-
-    private void flipAllContainedWordsInLineBetweenToValues(int firstValue, int secondValue, int y) {
-        int startX = firstValue;
-        int endX = secondValue;
-
-        if (endX < startX) {
-            int temp = startX;
-            startX = endX;
-            endX = temp;
-        }
-
-        for(int i = startX; i < endX; i += Bitmap.PIXELINWORD) {
-            flipAllBitsInWord(new Point(i, y));
-        }
-    }
-
-    private void flipAllBitsInWord(Point wordIdentificationPixel) {
-        int indexOfWord = getAccessIndexOfWord(wordIdentificationPixel);
-        words[indexOfWord] = words[indexOfWord]  ^ Bitmap.BM_ALLBITS;
-    }
-
-    /* Note: the Path must be within the dimensions of the pixmap. */
-
-    public void invertPathOnBitmap(Path path) {
-        if (path.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
-            return;
-        }
-
-        int y1 = path.priv.pt[path.priv.len-1].y;
-        int xa = path.priv.pt[0].x & - Bitmap.PIXELINWORD;
-
-        for (int k = 0; k < path.priv.len; k ++) {
-            int x = path.priv.pt[k].x;
-            int y = path.priv.pt[k].y;
-
-            if (y != y1) {
-                /* efficiently invert the rectangle [x,xa] x [y,y1] */
-                invertBitsInWordsWhichAreInRangeFromXToXAInLine( x, Auxiliary.min(y,y1), xa);
-                y1 = y;
-            }
-        }
     }
 
     public Point findNextFilledPixel(Point startPointforSearch) {

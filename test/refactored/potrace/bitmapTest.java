@@ -110,7 +110,7 @@ public class bitmapTest {
         manipulator.setPixelToValue(new Point(0,2),true);
         manipulator.setPixelToValue(new Point(1,1),true);
 
-        testBitmap.clearBitmapWithBBox(box);
+        manipulator.clearBitmapWithBBox(box);
 
         assertTrue("firstline: ",testBitmap.words[0] == 0);
         assertTrue("secondline: ",testBitmap.words[1] == 0);
@@ -143,7 +143,7 @@ public class bitmapTest {
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
         manipulator.setPixelToValue(new Point(0,0),true);
         manipulator.setPixelToValue(new Point(1,0),true);
-        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(0,0,1);
+        manipulator.invertBitsInWordsWhichAreInRangeFromXToXAInLine(0,0,1);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
     }
@@ -154,7 +154,7 @@ public class bitmapTest {
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
         manipulator.setPixelToValue(new Point(68,0),true);
         manipulator.setPixelToValue(new Point(69,0),true);
-        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(70,0,0);
+        manipulator.invertBitsInWordsWhichAreInRangeFromXToXAInLine(70,0,0);
         assertEquals(-1l,testBitmap.words[0]);
         assertEquals("64: ", true, testBitmap.getPixelValue(new Point(64,0)));
         assertEquals("65: ", true, testBitmap.getPixelValue(new Point(65,0)));
@@ -170,7 +170,7 @@ public class bitmapTest {
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
         manipulator.setPixelToValue(new Point(0,0),true);
         manipulator.setPixelToValue(new Point(1,0),true);
-        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(2,0,0);
+        manipulator.invertBitsInWordsWhichAreInRangeFromXToXAInLine(2,0,0);
         assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
         assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
     }
@@ -181,6 +181,6 @@ public class bitmapTest {
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
         manipulator.setPixelToValue(new Point(68,0),true);
         manipulator.setPixelToValue(new Point(70,0),true);
-        testBitmap.invertBitsInWordsWhichAreInRangeFromXToXAInLine(5,0,65);
+        manipulator.invertBitsInWordsWhichAreInRangeFromXToXAInLine(5,0,65);
     }
 }
