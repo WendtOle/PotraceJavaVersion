@@ -60,25 +60,13 @@ public class Bitmap {
         words[accessIndex] = words[accessIndex] & ~getMaskForPosition(pixel.x);
     }
 
-    private int getAccessIndexOfWord(Point pixel) {
-        return pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
-    }
-
     private void fillPixel(Point pixel) {
         int accessIndex = getAccessIndexOfWord(pixel);
         words[accessIndex] = words[accessIndex] | getMaskForPosition(pixel.x);
     }
 
-    private void setPixelToValueWithoutBoundChecking(Point pixel, boolean shallPixelFilled) {
-        if (shallPixelFilled)
-            fillPixel(pixel);
-        else
-            clearPixel(pixel);
-    }
-
-    void setPixelToValue(Point pixel, boolean b) {
-        if (isPixelInRange(pixel))
-            setPixelToValueWithoutBoundChecking(pixel, b);
+    int getAccessIndexOfWord(Point pixel) {
+        return pixel.y * wordsPerScanLine + (pixel.x / PIXELINWORD);
     }
 
      void setWholeBitmapToSpecificValue(int c) {

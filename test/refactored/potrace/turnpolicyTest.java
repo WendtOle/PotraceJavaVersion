@@ -17,13 +17,15 @@ public class turnpolicyTest {
     @Before
     public void prepareBitmaps() {
         simpleDiagonalBitmap = new Bitmap(2,2);
-        simpleDiagonalBitmap.setPixelToValue(new Point(0,0),true);
-        simpleDiagonalBitmap.setPixelToValue(new Point(1,1),true);
+        BitmapManipulator manipulator = new BitmapManipulator(simpleDiagonalBitmap);
+        manipulator.setPixelToValue(new Point(0,0),true);
+        manipulator.setPixelToValue(new Point(1,1),true);
 
         biggerDiagonalBitmap = new Bitmap(3,3);
-        biggerDiagonalBitmap.setPixelToValue(new Point(0,0),true);
-        biggerDiagonalBitmap.setPixelToValue(new Point(1,1),true);
-        biggerDiagonalBitmap.setPixelToValue(new Point(2,2),true);
+        manipulator = new BitmapManipulator(biggerDiagonalBitmap);
+        manipulator.setPixelToValue(new Point(0,0),true);
+        manipulator.setPixelToValue(new Point(1,1),true);
+        manipulator.setPixelToValue(new Point(2,2),true);
 
     }
 
