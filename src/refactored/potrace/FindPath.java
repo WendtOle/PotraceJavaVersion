@@ -7,8 +7,7 @@ public class FindPath {
     Point startPoint;
     Point direction = new Point(0, -1);;
     int sign;
-    TurnPolicyEnum turnPolicyEnum;
-    int turnPolicy;
+    TurnPolicyEnum turnPolicy;
     Bitmap bitmap;
     Point[] points = new Point[1];
     int indexOfCurrentPoint = 0;
@@ -19,8 +18,7 @@ public class FindPath {
         this.startPoint = startPointOfPath;
         this.currentPoint = new Point(startPointOfPath.x,startPointOfPath.y);
         this.sign = sign;
-        this.turnPolicy = turnPolicy;
-        this.turnPolicyEnum = TurnPolicyEnum.values()[turnPolicy];
+        this.turnPolicy = TurnPolicyEnum.values()[turnPolicy];
         this.bitmap = bitmap;
 
         findPath();
@@ -30,6 +28,7 @@ public class FindPath {
         while (true) {
             addCurrentPointToPath();
             moveToNextPoint();
+            updateAreaOfPath();
             if (isPathComplete())
                 break;
             performTurnInNextDirection();
@@ -53,17 +52,19 @@ public class FindPath {
         Point[] newSizedPointArray = new Point[newSize];
         System.arraycopy(points,0,newSizedPointArray,0,points.length);
         points = newSizedPointArray;
-
     }
 
     private void moveToNextPoint() {
         currentPoint.x += direction.x;
         currentPoint.y += direction.y;
+    }
+
+    private void updateAreaOfPath() {
         areaOfPath += currentPoint.x * direction.y;
     }
 
     private boolean isPathComplete() {
-        return currentPoint.x==startPoint.x && currentPoint.y==startPoint.y;
+        return currentPoint.equals(startPoint);
     }
 
     private void performTurnInNextDirection() {
@@ -80,12 +81,16 @@ public class FindPath {
     }
 
     private boolean isRightPixelFilled() {
-        Point rightPixelPosition = new Point(currentPoint.x + (direction.x+direction.y-1)/2, currentPoint.y + (direction.y-direction.x-1)/2);
+        int xComponent = currentPoint.x + (direction.x+direction.y-1)/2;
+        int yCompontent = currentPoint.y + (direction.y-direction.x-1)/2;
+        Point rightPixelPosition = new Point(xComponent, yCompontent);
         return bitmap.getPixelValue(rightPixelPosition.x,rightPixelPosition.y);
     }
 
     private boolean isLeftPixelFilled() {
-        Point leftPixelPosition = new Point(currentPoint.x + (direction.x-direction.y-1)/2, currentPoint.y + (direction.y+direction.x-1)/2);
+        int xComponent = currentPoint.x + (direction.x - direction.y - 1) / 2;
+        int yComponent = currentPoint.y + (direction.y + direction.x - 1) / 2;
+        Point leftPixelPosition = new Point(xComponent, yComponent);
         return bitmap.getPixelValue(leftPixelPosition.x,leftPixelPosition.y);
     }
 
@@ -102,7 +107,7 @@ public class FindPath {
     }
 
     private boolean shouldTurnRightInAmbiguousSituation() {
-        return turnPolicyEnum.isTurnPolicySatisfied(sign,bitmap,currentPoint);
+        return turnPolicy.isTurnPolicySatisfied(sign,bitmap,currentPoint);
     }
 
     private void performRightTurn() {

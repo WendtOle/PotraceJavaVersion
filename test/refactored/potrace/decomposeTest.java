@@ -32,11 +32,6 @@ public class decomposeTest {
     }
 
     @Test
-    public void test_detrand() {
-        Assert.assertEquals(false, FindPath.detrand(20,4));
-    }
-
-    @Test
     public void test_findPath_boundary() {
         Bitmap testBitmap = new Bitmap(128,1);
         testBitmap.setPixelToValue(63,0,true);
