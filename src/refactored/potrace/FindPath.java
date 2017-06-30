@@ -7,6 +7,7 @@ public class FindPath {
     Point startPoint;
     Point direction = new Point(0, -1);;
     int sign;
+    TurnPolicyEnum turnPolicyEnum;
     int turnPolicy;
     Bitmap bitmap;
     Point[] points = new Point[1];
@@ -19,6 +20,7 @@ public class FindPath {
         this.currentPoint = new Point(startPointOfPath.x,startPointOfPath.y);
         this.sign = sign;
         this.turnPolicy = turnPolicy;
+        this.turnPolicyEnum = TurnPolicyEnum.values()[turnPolicy];
         this.bitmap = bitmap;
 
         findPath();
@@ -100,38 +102,7 @@ public class FindPath {
     }
 
     private boolean shouldTurnRightInAmbiguousSituation() {
-        return turnPolicy == TurnPolicyEnum.valueOf("RIGHT").ordinal()
-                || (turnPolicy == TurnPolicyEnum.valueOf("BLACK").ordinal() && sign == '+')
-                || (turnPolicy == TurnPolicyEnum.valueOf("WHITE").ordinal() && sign == '-')
-                || (turnPolicy == TurnPolicyEnum.valueOf("RANDOM").ordinal() && detrand(currentPoint.x,currentPoint.y))
-                || (turnPolicy == TurnPolicyEnum.valueOf("MAJORITY").ordinal() && bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y))
-                || (turnPolicy == TurnPolicyEnum.valueOf("MINORITY").ordinal() && !bitmap.getMajorityValueAtIntersection(currentPoint.x, currentPoint.y));
-    }
-
-    //TODO Refactor
-    static boolean detrand(int x, int y) {
-        int z;
-        char t[] = {
-        /* non-linear sequence: constant term of inverse in GF(8),
-        mod x^8+x^4+x^3+x+1 */
-                0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1,
-                0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0,
-                0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-                1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1,
-                0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
-                0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0,
-                0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0,
-                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1,
-                1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0,
-                0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1,
-                1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
-        };
-
-        /* 0x04b3e375 and 0x05a8ef93 are chosen to contain every possible
-        5-bit sequence */
-        z = ((0x04b3e375 * x) ^ y) * 0x05a8ef93;
-        z = t[z & 0xff] ^ t[(z>>8) & 0xff] ^ t[(z>>16) & 0xff] ^ t[(z>>24) & 0xff];
-        return z == 1 ? true : false;
+        return turnPolicyEnum.isTurnPolicySatisfied(sign,bitmap,currentPoint);
     }
 
     private void performRightTurn() {
