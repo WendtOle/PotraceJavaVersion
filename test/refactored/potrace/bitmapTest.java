@@ -35,55 +35,55 @@ public class bitmapTest {
 
     @Test
     public void testBmSafeAndBmRange() {
-        Bitmap testBitmap = new Bitmap(10,10);
-        assertTrue("first inside: ", testBitmap.isPixelInRange(new Point(0,0)));
-        assertTrue("second inside: ", testBitmap.isPixelInRange(new Point(9,9)));
-        assertFalse("first outside: ", testBitmap.isPixelInRange(new Point(10,10)));
-        assertFalse("second outside: ", testBitmap.isPixelInRange(new Point(10,1)));
-        assertFalse("third outside: ", testBitmap.isPixelInRange(new Point(-1,1)));
+        BitmapPixelHandler handler = new BitmapPixelHandler(new Bitmap(10,10));
+        assertTrue("first inside: ", handler.isPixelInRange(new Point(0,0)));
+        assertTrue("second inside: ", handler.isPixelInRange(new Point(9,9)));
+        assertFalse("first outside: ", handler.isPixelInRange(new Point(10,10)));
+        assertFalse("second outside: ", handler.isPixelInRange(new Point(10,1)));
+        assertFalse("third outside: ", handler.isPixelInRange(new Point(-1,1)));
     }
 
     @Test
     public void testMaskFuntion() {
-        Bitmap bitmap = new Bitmap();
-        assertEquals("at position 0: ",0x8000000000000000l, bitmap.getMaskForPosition(0));
-        assertEquals("at position 1: ",0x4000000000000000l, bitmap.getMaskForPosition(1));
-        assertEquals("at position 64 -> 0: ",0x8000000000000000l, bitmap.getMaskForPosition(64));
-        assertEquals("at position 63: ",0x1, bitmap.getMaskForPosition(63));
+        BitmapPixelHandler handler = new BitmapPixelHandler(new Bitmap());
+        assertEquals("at position 0: ",0x8000000000000000l, handler.getMaskForPosition(0));
+        assertEquals("at position 1: ",0x4000000000000000l, handler.getMaskForPosition(1));
+        assertEquals("at position 64 -> 0: ",0x8000000000000000l, handler.getMaskForPosition(64));
+        assertEquals("at position 63: ",0x1, handler.getMaskForPosition(63));
     }
 
     @Test
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        BitmapManipulator manipulator = new BitmapManipulator(smallTestBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(smallTestBitmap);
         manipulator.setPixelToValue(new Point(0,0),true);
-        assertEquals("with one original word in line: ",true, smallTestBitmap.getPixelValue(new Point(0,0)));
+        assertEquals("with one original word in line: ",true, manipulator.getPixelValue(new Point(0,0)));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
-        manipulator = new BitmapManipulator(bigTestBitmap);
+        manipulator = new BitmapPixelHandler(bigTestBitmap);
         manipulator.setPixelToValue(new Point(99,99),true);
-        assertEquals("with more than one original word in line: ",true,bigTestBitmap.getPixelValue(new Point(99,99)));
+        assertEquals("with more than one original word in line: ",true,manipulator.getPixelValue(new Point(99,99)));
     }
 
     @Test
     public void testBMClearFuntion() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        BitmapManipulator manipulator = new BitmapManipulator(smallTestBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(smallTestBitmap);
         manipulator.setPixelToValue(new Point(0,0),true);
         manipulator.setPixelToValue(new Point(0,0),false);
-        assertEquals(false, smallTestBitmap.getPixelValue(new Point(0,0)));
+        assertEquals(false, manipulator.getPixelValue(new Point(0,0)));
     }
 
     @Test
     public void test_bm_clear() throws Exception {
         Bitmap testBitMap = new Bitmap(10,10);
-        BitmapManipulator manipulator = new BitmapManipulator(testBitMap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitMap);
         manipulator.setWholeBitmapToSpecificValue(1);
-        assertEquals(true, testBitMap.getPixelValue(new Point(0,0)));
-        assertEquals(true, testBitMap.getPixelValue(new Point(9,9)));
+        assertEquals(true, manipulator.getPixelValue(new Point(0,0)));
+        assertEquals(true, manipulator.getPixelValue(new Point(9,9)));
         manipulator.setWholeBitmapToSpecificValue(0);
-        assertEquals(false, testBitMap.getPixelValue(new Point(0,0)));
-        assertEquals(false, testBitMap.getPixelValue(new Point(4,4)));
+        assertEquals(false, manipulator.getPixelValue(new Point(0,0)));
+        assertEquals(false, manipulator.getPixelValue(new Point(4,4)));
     }
 
     @Test
@@ -106,11 +106,12 @@ public class bitmapTest {
         box.y0 = 1;
         box.y1 = 2;
         Bitmap testBitmap = new Bitmap(3,3);
-        BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
         manipulator.setPixelToValue(new Point(0,2),true);
         manipulator.setPixelToValue(new Point(1,1),true);
 
-        manipulator.clearBitmapWithBBox(box);
+        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(testBitmap);
+        bitmapClearer.clearBitmapWithBBox(box);
 
         assertTrue("firstline: ",testBitmap.words[0] == 0);
         assertTrue("secondline: ",testBitmap.words[1] == 0);
@@ -128,60 +129,60 @@ public class bitmapTest {
 
         Boolean[] expectedOutcomes = new Boolean[]{true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false};
 
-        BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
         manipulator.setWholeBitmapToSpecificValue(1);
 
         for(int i = 0; i < 16; i++) {
             manipulator.setPixelToValue(points[i],false);
-            assertEquals("i: " + i,expectedOutcomes[i], TurnPolicyEnum.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y,testBitmap));
+            assertEquals("i: " + i,expectedOutcomes[i], TurnPolicyEnum.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y,manipulator));
         }
     }
 
     @Test
     public void testXorToRefFirstIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
         manipulator.setPixelToValue(new Point(0,0),true);
         manipulator.setPixelToValue(new Point(1,0),true);
         PathOnBitmapInverter inverter = new PathOnBitmapInverter(testBitmap);
         inverter.invertBitsInWordsWhichAreInRangeFromXToXAInLine(0,0,1);
-        assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
-        assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
+        assertEquals("firstPixel: ", false, manipulator.getPixelValue(new Point(0,0)));
+        assertEquals("secondPixel: ", false, manipulator.getPixelValue(new Point(1,0)));
     }
 
     @Test
     public void testXorToRefHorizontalSecondIF() {
         Bitmap testBitmap = new Bitmap(70,1);
-        BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
         manipulator.setPixelToValue(new Point(68,0),true);
         manipulator.setPixelToValue(new Point(69,0),true);
         PathOnBitmapInverter inverter = new PathOnBitmapInverter(testBitmap);
         inverter.invertBitsInWordsWhichAreInRangeFromXToXAInLine(70,0,0);
         assertEquals(-1l,testBitmap.words[0]);
-        assertEquals("64: ", true, testBitmap.getPixelValue(new Point(64,0)));
-        assertEquals("65: ", true, testBitmap.getPixelValue(new Point(65,0)));
-        assertEquals("66: ", true, testBitmap.getPixelValue(new Point(66,0)));
-        assertEquals("67: ", true, testBitmap.getPixelValue(new Point(67,0)));
-        assertEquals("68: ", false, testBitmap.getPixelValue(new Point(68,0)));
-        assertEquals("69: ", false, testBitmap.getPixelValue(new Point(69,0)));
+        assertEquals("64: ", true, manipulator.getPixelValue(new Point(64,0)));
+        assertEquals("65: ", true, manipulator.getPixelValue(new Point(65,0)));
+        assertEquals("66: ", true, manipulator.getPixelValue(new Point(66,0)));
+        assertEquals("67: ", true, manipulator.getPixelValue(new Point(67,0)));
+        assertEquals("68: ", false, manipulator.getPixelValue(new Point(68,0)));
+        assertEquals("69: ", false, manipulator.getPixelValue(new Point(69,0)));
     }
 
     @Test
     public void testXorToRefHorizontalThirdIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
         manipulator.setPixelToValue(new Point(0,0),true);
         manipulator.setPixelToValue(new Point(1,0),true);
         PathOnBitmapInverter inverter = new PathOnBitmapInverter(testBitmap);
         inverter.invertBitsInWordsWhichAreInRangeFromXToXAInLine(2,0,0);
-        assertEquals("firstPixel: ", false, testBitmap.getPixelValue(new Point(0,0)));
-        assertEquals("secondPixel: ", false, testBitmap.getPixelValue(new Point(1,0)));
+        assertEquals("firstPixel: ", false, manipulator.getPixelValue(new Point(0,0)));
+        assertEquals("secondPixel: ", false, manipulator.getPixelValue(new Point(1,0)));
     }
 
     @Test
     public void xor_to_ref() {
         Bitmap testBitmap = new Bitmap(128,1);
-        BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
         manipulator.setPixelToValue(new Point(68,0),true);
         manipulator.setPixelToValue(new Point(70,0),true);
         PathOnBitmapInverter inverter = new PathOnBitmapInverter(testBitmap);

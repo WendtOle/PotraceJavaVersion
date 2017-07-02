@@ -8,14 +8,14 @@ import java.awt.*;
 public enum TurnPolicyEnum {
     BLACK, WHITE, LEFT, RIGHT, MINORITY, MAJORITY, RANDOM;
 
-    public boolean isTurnPolicySatisfied(int sign, Bitmap bitmap, Point currentPoint) {
+    public boolean isTurnPolicySatisfied(int sign, BitmapPixelHandler bitmapHandler, Point currentPoint) {
         switch (this) {
             case RIGHT: return true;
             case BLACK: return sign == '+';
             case WHITE: return sign == '-';
             case RANDOM: return detrand(currentPoint.x,currentPoint.y);
-            case MAJORITY: return getMajorityValueAtIntersection(currentPoint.x,currentPoint.y,bitmap);
-            case MINORITY: return isMinorityAtIntersection(currentPoint.x,currentPoint.y,bitmap);
+            case MAJORITY: return getMajorityValueAtIntersection(currentPoint.x,currentPoint.y,bitmapHandler);
+            case MINORITY: return isMinorityAtIntersection(currentPoint.x,currentPoint.y,bitmapHandler);
             default: return false;
         }
     }
@@ -45,16 +45,16 @@ public enum TurnPolicyEnum {
         return z == 1 ? true : false;
     }
 
-    static boolean getMajorityValueAtIntersection(int x, int y, Bitmap bitmap) {
+    static boolean getMajorityValueAtIntersection(int x, int y, BitmapPixelHandler bitmapHandler) {
         int i, a, ct;
 
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += bitmap.getPixelValue(new Point(x+a, y+i-1)) ? 1 : -1;
-                ct += bitmap.getPixelValue(new Point(x+i-1, y+a-1)) ? 1 : -1;
-                ct += bitmap.getPixelValue(new Point(x+a-1, y-i)) ? 1 : -1;
-                ct += bitmap.getPixelValue(new Point(x-i, y+a)) ? 1 : -1;
+                ct += bitmapHandler.getPixelValue(new Point(x+a, y+i-1)) ? 1 : -1;
+                ct += bitmapHandler.getPixelValue(new Point(x+i-1, y+a-1)) ? 1 : -1;
+                ct += bitmapHandler.getPixelValue(new Point(x+a-1, y-i)) ? 1 : -1;
+                ct += bitmapHandler.getPixelValue(new Point(x-i, y+a)) ? 1 : -1;
             }
             if (ct>0) {
                 return true;
@@ -65,7 +65,7 @@ public enum TurnPolicyEnum {
         return false;
     }
 
-    boolean isMinorityAtIntersection(int x, int y, Bitmap bitmap){
-        return !getMajorityValueAtIntersection(x,y,bitmap);
+    boolean isMinorityAtIntersection(int x, int y, BitmapPixelHandler bitmapHandler){
+        return !getMajorityValueAtIntersection(x,y,bitmapHandler);
     }
 }

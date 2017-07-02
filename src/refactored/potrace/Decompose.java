@@ -4,14 +4,15 @@ import java.awt.*;
 
 public class Decompose {
     Param param;
-    Bitmap bitmap, workCopy;
-    BitmapManipulator manipulatorForWorkCopy;
+    Bitmap workCopy;
+    BitmapPixelHandler manipulatorForWorkCopy, bitmapHandler;
     PathOnBitmapInverter pathInverterForWorkCopy;
     Point startPointOfCurrentPath;
     Path pathList = null;
 
     public Decompose(Bitmap bitmap, Param param) {
-        this.bitmap = bitmap;
+        this.workCopy = bitmap.duplicate();
+        this.bitmapHandler = new BitmapPixelHandler(bitmap);
         this.param = param;
         initializeValues();
         decomposeBitmapIntoPathlistNew();
@@ -35,8 +36,7 @@ public class Decompose {
     }
 
     private void initializeValues() {
-        workCopy = bitmap.duplicate();
-        manipulatorForWorkCopy = new BitmapManipulator(workCopy);
+        manipulatorForWorkCopy = new BitmapPixelHandler(workCopy);
         pathInverterForWorkCopy = new PathOnBitmapInverter(workCopy);
         manipulatorForWorkCopy.clearExcessPixelsOfBitmap();
     }
@@ -47,13 +47,13 @@ public class Decompose {
     }
 
     private Path findPath() {
-        int signOfPath = getSignOfPathFromOriginalBitmap(bitmap, startPointOfCurrentPath);
+        int signOfPath = getSignOfPathFromOriginalBitmap(startPointOfCurrentPath);
         FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfCurrentPath.x, startPointOfCurrentPath.y + 1), signOfPath, param.turnpolicy);
         return pathFinder.getPath();
     }
 
-    private int getSignOfPathFromOriginalBitmap(Bitmap bitmap, Point currentPoint) {
-        boolean isPathFilled = bitmap.getPixelValue(currentPoint);
+    private int getSignOfPathFromOriginalBitmap(Point currentPoint) {
+        boolean isPathFilled = bitmapHandler.getPixelValue(currentPoint);
         if (isPathFilled)
             return '+';
         else

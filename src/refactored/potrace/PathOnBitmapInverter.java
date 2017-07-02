@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by andreydelany on 02.07.17.
  */
-public class PathOnBitmapInverter extends BitmapManipulator {
+public class PathOnBitmapInverter extends BitmapPixelHandler {
 
     public PathOnBitmapInverter(Bitmap bitmap){
         super(bitmap);

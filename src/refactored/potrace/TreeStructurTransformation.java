@@ -10,7 +10,7 @@ public class TreeStructurTransformation {
     public TreeStructurTransformation(Path pathList, Bitmap bitmap) {
         this.pathList = pathList;
         this.bitmap = bitmap;
-        BitmapManipulator manipulator = new BitmapManipulator(this.bitmap);
+        BitmapPixelHandler manipulator = new BitmapPixelHandler(this.bitmap);
         manipulator.setWholeBitmapToSpecificValue(0);
 
         transformIntoTree();

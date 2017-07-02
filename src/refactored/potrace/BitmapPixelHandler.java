@@ -5,16 +5,49 @@ import java.awt.*;
 /**
  * Created by andreydelany on 30.06.17.
  */
-public class BitmapManipulator {
+public class BitmapPixelHandler {
 
     Bitmap bitmap;
 
-    public BitmapManipulator(Bitmap bitmap){
+    public BitmapPixelHandler(Bitmap bitmap){
         this.bitmap = bitmap;
     }
 
+    private boolean isCoordinateInRange(int coordinate, int upperBound) {
+        return (coordinate) >= 0 && (coordinate) < (upperBound);
+    }
+
+    boolean isPixelInRange(Point pixel) {
+        return isCoordinateInRange(pixel.x, bitmap.width) && isCoordinateInRange(pixel.y, bitmap.height);
+    }
+
+    long getMaskForPosition(int position) {
+        return ((1L) << (Bitmap.PIXELINWORD-1-(position)));
+    }
+
+    private boolean getPixelValueWithoutBoundChecking(Point pixel) {
+        long pixelValue = getWordWherePixelIsContained(pixel) & getMaskForPosition(pixel.x);
+        return(pixelValue != 0);
+    }
+
+    public boolean getPixelValue(Point pixel) {
+        return isPixelInRange(pixel) && getPixelValueWithoutBoundChecking(pixel);
+    }
+
+    private long[] getLineWherePixelIsContained(int y) {
+        long[] scanLine = new long[bitmap.wordsPerScanLine];
+        for (int i = 0; i < bitmap.wordsPerScanLine; i ++) {
+            scanLine[i] = bitmap.words[(y * bitmap.wordsPerScanLine) + i];
+        }
+        return scanLine;
+    }
+
+    public long getWordWherePixelIsContained(Point pixel) {
+        return getLineWherePixelIsContained(pixel.y)[pixel.x/Bitmap.PIXELINWORD];
+    }
+
     public void setPixelToValue(Point pixel, boolean b) {
-        if (bitmap.isPixelInRange(pixel))
+        if (isPixelInRange(pixel))
             setPixelToValueWithoutBoundChecking(pixel, b);
     }
 
@@ -24,22 +57,11 @@ public class BitmapManipulator {
         }
     }
 
-    public void clearBitmapWithBBox(BBox bbox) {
-        int imin = (bbox.x0 / Bitmap.PIXELINWORD);
-        int imax = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
-
-        for (int y = bbox.y0; y < bbox.y1; y ++) {
-            for (int i = imin; i<imax; i++) {
-                bitmap.words[y * bitmap.wordsPerScanLine + i] = 0;
-            }
-        }
-    }
-
     void clearExcessPixelsOfBitmap() {
         if (bitmap.width % Bitmap.PIXELINWORD != 0) {
             long mask = shiftValueForLastWordInLine(Bitmap.BM_ALLBITS);
             for (int y = 0; y < bitmap.height; y ++) {
-                bitmap.words[y * bitmap.wordsPerScanLine + bitmap.wordsPerScanLine - 1] = bitmap.getWordWherePixelIsContained(new Point(bitmap.width, y)) & mask;
+                bitmap.words[y * bitmap.wordsPerScanLine + bitmap.wordsPerScanLine - 1] = getWordWherePixelIsContained(new Point(bitmap.width, y)) & mask;
             }
         }
     }
@@ -57,12 +79,12 @@ public class BitmapManipulator {
 
     private void clearPixel(Point pixel){
         int accessIndex = getAccessIndexOfWord(pixel);
-        bitmap.words[accessIndex] = bitmap.words[accessIndex] & ~bitmap.getMaskForPosition(pixel.x);
+        bitmap.words[accessIndex] = bitmap.words[accessIndex] & ~getMaskForPosition(pixel.x);
     }
 
     private void fillPixel(Point pixel) {
         int accessIndex = getAccessIndexOfWord(pixel);
-        bitmap.words[accessIndex] = bitmap.words[accessIndex] | bitmap.getMaskForPosition(pixel.x);
+        bitmap.words[accessIndex] = bitmap.words[accessIndex] | getMaskForPosition(pixel.x);
     }
 
     private void setLineToSpecificValue(int c, int y) {
@@ -90,5 +112,9 @@ public class BitmapManipulator {
 
     private long shiftValueForLastWordInLine(long value) {
         return value << (Bitmap.PIXELINWORD - (bitmap.width % Bitmap.PIXELINWORD));
+    }
+
+    protected int getBeginningIndexOfCurrentWord(int index) {
+        return (index) & ~(Bitmap.PIXELINWORD-1);
     }
 }

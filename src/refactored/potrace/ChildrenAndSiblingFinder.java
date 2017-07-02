@@ -8,16 +8,17 @@ import java.awt.*;
 public class ChildrenAndSiblingFinder {
 
     Path pathList;
-    Bitmap bitmap;
-    BitmapManipulator manipulator;
+    //Bitmap bitmap;
+    BitmapPixelHandler bitmaphandler;
+    ClearBitmapWithBBox bitmapClearer;
     PathOnBitmapInverter inverter;
     Path pathesToOrder, pathesThatNeedToProcess, referencePath;
     BBox boundingBox;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
-        this.bitmap = bitmap;
-        this.manipulator = new BitmapManipulator(bitmap);
+        this.bitmaphandler = new BitmapPixelHandler(bitmap);
+        this.bitmapClearer = new ClearBitmapWithBBox(bitmap);
         this.inverter = new PathOnBitmapInverter(bitmap);
         transformIntoTreeStructure();
     }
@@ -47,7 +48,7 @@ public class ChildrenAndSiblingFinder {
     private void determineChildrenAndSiblings() {
         boundingBox = new BBox(referencePath);
         orderPathListWetherInsideOrOutsideOfBoundingBox();
-        manipulator.clearBitmapWithBBox(boundingBox);
+        bitmapClearer.clearBitmapWithBBox(boundingBox);
     }
 
     private void orderPathListWetherInsideOrOutsideOfBoundingBox() {
@@ -86,7 +87,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private boolean isPathInsideReferencePath(Path path){
-        return bitmap.getPixelValue(new Point(path.priv.pt[0].x, path.priv.pt[0].y - 1));
+        return bitmaphandler.getPixelValue(new Point(path.priv.pt[0].x, path.priv.pt[0].y - 1));
     }
 
     private void scheduleAddedChildrenAndSiblingsForFurtherProcessing() {
@@ -114,7 +115,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     public Bitmap getBitmap() {
-        return bitmap;
+        return bitmaphandler.bitmap;
     }
 
 }

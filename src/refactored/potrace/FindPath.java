@@ -8,7 +8,7 @@ public class FindPath {
     Point direction = new Point(0, -1);;
     int sign;
     TurnPolicyEnum turnPolicy;
-    Bitmap bitmap;
+    BitmapPixelHandler bitmapHandler;
     Point[] pointsOfPath = new Point[1];
     int indexOfCurrentPoint = 0;
     Point currentPoint;
@@ -19,7 +19,7 @@ public class FindPath {
         this.currentPoint = (Point) startPointOfPath.clone();
         this.sign = sign;
         this.turnPolicy = TurnPolicyEnum.values()[turnPolicy];
-        this.bitmap = bitmap;
+        this.bitmapHandler = new BitmapPixelHandler(bitmap);
 
         findPath();
     }
@@ -84,13 +84,13 @@ public class FindPath {
     private boolean isRightPixelFilled() {
         int xComponent = currentPoint.x + (direction.x+direction.y-1)/2;
         int yCompontent = currentPoint.y + (direction.y-direction.x-1)/2;
-        return bitmap.getPixelValue(new Point(xComponent,yCompontent));
+        return bitmapHandler.getPixelValue(new Point(xComponent,yCompontent));
     }
 
     private boolean isLeftPixelFilled() {
         int xComponent = currentPoint.x + (direction.x - direction.y - 1) / 2;
         int yComponent = currentPoint.y + (direction.y + direction.x - 1) / 2;
-        return bitmap.getPixelValue(new Point(xComponent,yComponent));
+        return bitmapHandler.getPixelValue(new Point(xComponent,yComponent));
     }
 
     private void performTurn(boolean isRightPixelFilled, boolean isLeftPixelFilled) {
@@ -113,7 +113,7 @@ public class FindPath {
     }
 
     private boolean shouldTurnRightInAmbiguousSituation() {
-        return turnPolicy.isTurnPolicySatisfied(sign,bitmap,currentPoint);
+        return turnPolicy.isTurnPolicySatisfied(sign,bitmapHandler,currentPoint);
     }
 
     private void performRightTurn() {
