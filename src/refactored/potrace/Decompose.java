@@ -13,18 +13,20 @@ public class Decompose {
         this.bitmap = bitmap;
         this.param = param;
         initializeValues();
-        decomposeBitmapIntoPathlist();
+        decomposeBitmapIntoPathlistNew();
     };
 
-    private void decomposeBitmapIntoPathlist() {
-        for(findNextFilledPixel();currentPoint != null; findNextFilledPixel()) {
+    public Path getPathList() {
+        return pathList;
+    }
+
+    private void decomposeBitmapIntoPathlistNew() {
+        NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
+        while(nextFilledPixelFinder.isThereAFilledPixel(currentPoint)) {
+            currentPoint = nextFilledPixelFinder.getPositionofNextFilledPixel();
             findAndAddPathToPathlist();
         }
         structurePathlistAsTree();
-    }
-
-    private void findNextFilledPixel(){
-        currentPoint = workCopy.findNextFilledPixel(currentPoint);
     }
 
     private void initializeValues() {
@@ -67,9 +69,5 @@ public class Decompose {
 
     private boolean isPathBigEnough(int actualArea, int areaOfTurd) {
         return actualArea > areaOfTurd;
-    }
-
-    public Path getPathList() {
-        return pathList;
     }
 }
