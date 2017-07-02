@@ -24,7 +24,7 @@ public class NextFilledPixelFinder extends BitmapPixelHandler {
         }
 
         private Point findNextFilledPixel() {
-            int x0 = getBeginningIndexOfCurrentWord(currentPixel.x);
+            int x0 = getBeginningIndexOfWord(currentPixel.x);
 
             for (int y=currentPixel.y; y>=0; y--) {
                 for (int x = x0; x<bitmap.width && x>=0; x+=Bitmap.PIXELINWORD) {

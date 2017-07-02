@@ -66,7 +66,7 @@ public class BitmapPixelHandler {
         }
     }
 
-    int getAccessIndexOfWord(Point pixel) {
+    protected int getAccessIndexOfWord(Point pixel) {
         return pixel.y * bitmap.wordsPerScanLine + (pixel.x / Bitmap.PIXELINWORD);
     }
 
@@ -114,7 +114,7 @@ public class BitmapPixelHandler {
         return value << (Bitmap.PIXELINWORD - (bitmap.width % Bitmap.PIXELINWORD));
     }
 
-    protected int getBeginningIndexOfCurrentWord(int index) {
-        return (index) & ~(Bitmap.PIXELINWORD-1);
+    protected int getBeginningIndexOfWord(int index) {
+        return (index) & -Bitmap.PIXELINWORD;
     }
 }
