@@ -13,23 +13,23 @@ public class BitmapPixelHandler {
         this.bitmap = bitmap;
     }
 
-    private boolean isCoordinateInRange(int coordinate, int upperBound) {
-        return (coordinate) >= 0 && (coordinate) < (upperBound);
-    }
-
     boolean isPixelInRange(Point pixel) {
         return isCoordinateInRange(pixel.x, bitmap.width) && isCoordinateInRange(pixel.y, bitmap.height);
     }
 
-    long getMultiplePixelMasUntilPosition(int position){
+    private boolean isCoordinateInRange(int coordinate, int upperBound) {
+        return (coordinate) >= 0 && (coordinate) < (upperBound);
+    }
+
+    static long getMultiplePixelMaskUntilPosition(int position){
         return getMask(Bitmap.BM_ALLBITS, position );
     }
 
-    long getOnePixelMaskForPosition(int position) {
+    static long getOnePixelMaskForPosition(int position) {
         return getMask(1l, position + 1 );
     }
 
-    long getMask(long pattern,int position) {
+    static long getMask(long pattern,int position) {
         return (pattern) << (Bitmap.PIXELINWORD  - (position));
     }
 
@@ -119,7 +119,8 @@ public class BitmapPixelHandler {
     }
 
     private long shiftValueForLastWordInLine(long value) {
-        return value << (Bitmap.PIXELINWORD - (bitmap.width % Bitmap.PIXELINWORD));
+        int indexOfLastBitInLastWordInLine = bitmap.width % Bitmap.PIXELINWORD;
+        return getMask(value,indexOfLastBitInLastWordInLine);
     }
 
     protected int getBeginningIndexOfWord(int index) {
