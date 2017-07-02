@@ -21,12 +21,16 @@ public class Decompose {
     }
 
     private void decomposeBitmapIntoPathlistNew() {
+        findPathesOnBitmap();
+        structurePathlistAsTree();
+    }
+
+    private void findPathesOnBitmap() {
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
         while(nextFilledPixelFinder.isThereAFilledPixel()) {
             startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
             findAndAddPathToPathlist();
         }
-        structurePathlistAsTree();
     }
 
     private void initializeValues() {

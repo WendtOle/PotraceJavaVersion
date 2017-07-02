@@ -65,24 +65,4 @@ public class Bitmap {
         }
         return duplicatedBitmap;
     }
-
-    boolean getMajorityValueAtIntersection(int x, int y) {
-        int i, a, ct;
-
-        for (i=2; i<5; i++) { /* check at "radius" i */
-            ct = 0;
-            for (a=-i+1; a<=i-1; a++) {
-                ct += getPixelValue(new Point(x+a, y+i-1)) ? 1 : -1;
-                ct += getPixelValue(new Point(x+i-1, y+a-1)) ? 1 : -1;
-                ct += getPixelValue(new Point(x+a-1, y-i)) ? 1 : -1;
-                ct += getPixelValue(new Point(x-i, y+a)) ? 1 : -1;
-            }
-            if (ct>0) {
-                return true;
-            } else if (ct<0) {
-                return false;
-            }
-        }
-        return false;
-    }
 }

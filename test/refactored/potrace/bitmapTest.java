@@ -133,7 +133,7 @@ public class bitmapTest {
 
         for(int i = 0; i < 16; i++) {
             manipulator.setPixelToValue(points[i],false);
-            assertEquals("i: " + i,expectedOutcomes[i], testBitmap.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y));
+            assertEquals("i: " + i,expectedOutcomes[i], TurnPolicyEnum.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y,testBitmap));
         }
     }
 

@@ -14,8 +14,8 @@ public enum TurnPolicyEnum {
             case BLACK: return sign == '+';
             case WHITE: return sign == '-';
             case RANDOM: return detrand(currentPoint.x,currentPoint.y);
-            case MAJORITY: return bitmap.getMajorityValueAtIntersection(currentPoint.x,currentPoint.y);
-            case MINORITY: return !bitmap.getMajorityValueAtIntersection(currentPoint.x,currentPoint.y);
+            case MAJORITY: return getMajorityValueAtIntersection(currentPoint.x,currentPoint.y,bitmap);
+            case MINORITY: return isMinorityAtIntersection(currentPoint.x,currentPoint.y,bitmap);
             default: return false;
         }
     }
@@ -43,5 +43,29 @@ public enum TurnPolicyEnum {
         z = ((0x04b3e375 * x) ^ y) * 0x05a8ef93;
         z = t[z & 0xff] ^ t[(z>>8) & 0xff] ^ t[(z>>16) & 0xff] ^ t[(z>>24) & 0xff];
         return z == 1 ? true : false;
+    }
+
+    static boolean getMajorityValueAtIntersection(int x, int y, Bitmap bitmap) {
+        int i, a, ct;
+
+        for (i=2; i<5; i++) { /* check at "radius" i */
+            ct = 0;
+            for (a=-i+1; a<=i-1; a++) {
+                ct += bitmap.getPixelValue(new Point(x+a, y+i-1)) ? 1 : -1;
+                ct += bitmap.getPixelValue(new Point(x+i-1, y+a-1)) ? 1 : -1;
+                ct += bitmap.getPixelValue(new Point(x+a-1, y-i)) ? 1 : -1;
+                ct += bitmap.getPixelValue(new Point(x-i, y+a)) ? 1 : -1;
+            }
+            if (ct>0) {
+                return true;
+            } else if (ct<0) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    boolean isMinorityAtIntersection(int x, int y, Bitmap bitmap){
+        return !getMajorityValueAtIntersection(x,y,bitmap);
     }
 }
