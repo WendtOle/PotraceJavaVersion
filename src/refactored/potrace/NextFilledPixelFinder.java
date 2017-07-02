@@ -8,25 +8,26 @@ import java.awt.*;
 public class NextFilledPixelFinder {
 
         Bitmap bitmap;
-        Point foundPixel;
+        Point currentPixel;
 
         public NextFilledPixelFinder(Bitmap bitmap){
             this.bitmap = bitmap;
+            currentPixel = new Point(0,bitmap.height-1);
         }
 
-        public boolean isThereAFilledPixel(Point startPointForSearch) {
-            foundPixel = findNextFilledPixel(startPointForSearch);
-            return foundPixel != null;
+        public boolean isThereAFilledPixel() {
+            currentPixel = findNextFilledPixel();
+            return currentPixel != null;
         }
 
-        public Point getPositionofNextFilledPixel() {
-            return foundPixel;
+        public Point getPositionOfNextFilledPixel() {
+            return currentPixel;
         }
 
-        private Point findNextFilledPixel(Point startPointforSearch) {
-            int x0 = getBeginningIndexOfCurrentWord(startPointforSearch.x);
+        private Point findNextFilledPixel() {
+            int x0 = getBeginningIndexOfCurrentWord(currentPixel.x);
 
-            for (int y=startPointforSearch.y; y>=0; y--) {
+            for (int y=currentPixel.y; y>=0; y--) {
                 for (int x = x0; x<bitmap.width && x>=0; x+=Bitmap.PIXELINWORD) {
 
                     if (getWordWherePixelIsContained(new Point(x, y)) != 0) {

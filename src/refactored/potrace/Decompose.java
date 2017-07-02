@@ -6,7 +6,7 @@ public class Decompose {
     Param param;
     Bitmap bitmap, workCopy;
     BitmapManipulator manipulatorForWorkCopy;
-    Point currentPoint;
+    Point startPointOfCurrentPath;
     Path pathList = null;
 
     public Decompose(Bitmap bitmap, Param param) {
@@ -22,8 +22,8 @@ public class Decompose {
 
     private void decomposeBitmapIntoPathlistNew() {
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
-        while(nextFilledPixelFinder.isThereAFilledPixel(currentPoint)) {
-            currentPoint = nextFilledPixelFinder.getPositionofNextFilledPixel();
+        while(nextFilledPixelFinder.isThereAFilledPixel()) {
+            startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
             findAndAddPathToPathlist();
         }
         structurePathlistAsTree();
@@ -33,7 +33,6 @@ public class Decompose {
         workCopy = bitmap.duplicate();
         manipulatorForWorkCopy = new BitmapManipulator(workCopy);
         manipulatorForWorkCopy.clearExcessPixelsOfBitmap();
-        currentPoint = new Point(0,workCopy.height-1);
     }
 
     private void findAndAddPathToPathlist() {
@@ -42,8 +41,8 @@ public class Decompose {
     }
 
     private Path findPath() {
-        int signOfPath = getSignOfPathFromOriginalBitmap(bitmap,currentPoint);
-        FindPath pathFinder = new FindPath(workCopy, new Point(currentPoint.x, currentPoint.y + 1), signOfPath, param.turnpolicy);
+        int signOfPath = getSignOfPathFromOriginalBitmap(bitmap, startPointOfCurrentPath);
+        FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfCurrentPath.x, startPointOfCurrentPath.y + 1), signOfPath, param.turnpolicy);
         return pathFinder.getPath();
     }
 
