@@ -85,26 +85,4 @@ public class Bitmap {
         }
         return false;
     }
-
-    public Point findNextFilledPixel(Point startPointforSearch) {
-        int x0 = getBeginningIndexOfCurrentWord(startPointforSearch.x);
-
-        for (int y=startPointforSearch.y; y>=0; y--) {
-            for (int x = x0; x<width && x>=0; x+=PIXELINWORD) {
-
-                if (getWordWherePixelIsContained(new Point(x, y)) != 0) {
-                    while (!getPixelValue(new Point(x, y))) {
-                        x++;
-                    }
-                    return new Point(x,y);
-                }
-            }
-            x0 = 0;
-        }
-        return null;
-    }
-
-    private int getBeginningIndexOfCurrentWord(int index) {
-        return (index) & ~(Bitmap.PIXELINWORD-1);
-    }
 }

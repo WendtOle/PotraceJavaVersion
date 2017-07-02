@@ -16,9 +16,9 @@ public class decomposeTest {
         BitmapManipulator manipulator = new BitmapManipulator(testBitmap);
         manipulator.setPixelToValue(new Point(65,0),true);
 
-        Point point = new Point(0,0);
-        assertTrue("found sth: ", (point = testBitmap.findNextFilledPixel(point)) != null);
-        assertEquals("found point: ",new Point(65,0),point);
+        NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(testBitmap);
+        assertTrue("found sth: ", nextFilledPixelFinder.isThereAFilledPixel(new Point(0,0)));
+        assertEquals("found point: ",new Point(65,0),nextFilledPixelFinder.getPositionofNextFilledPixel());
     }
 
     @Test
@@ -28,9 +28,10 @@ public class decomposeTest {
         manipulator.setPixelToValue(new Point(97,0),true);
         manipulator.setPixelToValue(new Point(99,0),true);
 
-        Point point = new Point(0,1);
-        assertTrue("found sth: ", (point = testBitmap.findNextFilledPixel(point)) != null);
-        assertEquals("found point: ", new Point(97,0),point);
+        NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(testBitmap);
+
+        assertTrue("found sth: ", nextFilledPixelFinder.isThereAFilledPixel(new Point(0,1)));
+        assertEquals("found point: ", new Point(97,0),nextFilledPixelFinder.getPositionofNextFilledPixel());
     }
 
     @Test
