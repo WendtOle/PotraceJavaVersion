@@ -6,6 +6,7 @@ public class Decompose {
     Param param;
     Bitmap bitmap, workCopy;
     BitmapManipulator manipulatorForWorkCopy;
+    PathOnBitmapInverter pathInverterForWorkCopy;
     Point startPointOfCurrentPath;
     Path pathList = null;
 
@@ -36,6 +37,7 @@ public class Decompose {
     private void initializeValues() {
         workCopy = bitmap.duplicate();
         manipulatorForWorkCopy = new BitmapManipulator(workCopy);
+        pathInverterForWorkCopy = new PathOnBitmapInverter(workCopy);
         manipulatorForWorkCopy.clearExcessPixelsOfBitmap();
     }
 
@@ -59,7 +61,7 @@ public class Decompose {
     }
 
     private void addPathToPathListIfBigEnough(Path currentPath) {
-        manipulatorForWorkCopy.invertPathOnBitmap(currentPath);
+        pathInverterForWorkCopy.invertPathOnBitmap(currentPath);
         if (isPathBigEnough(currentPath.area,param.turdsize)) {
             pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
         }
