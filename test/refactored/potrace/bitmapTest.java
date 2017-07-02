@@ -46,10 +46,10 @@ public class bitmapTest {
     @Test
     public void testMaskFuntion() {
         BitmapPixelHandler handler = new BitmapPixelHandler(new Bitmap());
-        assertEquals("at position 0: ",0x8000000000000000l, handler.getMaskForPosition(0));
-        assertEquals("at position 1: ",0x4000000000000000l, handler.getMaskForPosition(1));
-        assertEquals("at position 64 -> 0: ",0x8000000000000000l, handler.getMaskForPosition(64));
-        assertEquals("at position 63: ",0x1, handler.getMaskForPosition(63));
+        assertEquals("at position 0: ",0x8000000000000000l, handler.getOnePixelMaskForPosition(0));
+        assertEquals("at position 1: ",0x4000000000000000l, handler.getOnePixelMaskForPosition(1));
+        assertEquals("at position 64 -> 0: ",0x8000000000000000l, handler.getOnePixelMaskForPosition(64));
+        assertEquals("at position 63: ",0x1, handler.getOnePixelMaskForPosition(63));
     }
 
     @Test

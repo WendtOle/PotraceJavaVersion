@@ -19,6 +19,7 @@ public class PathOnBitmapInverter extends BitmapPixelHandler {
         int y1 = path.priv.pt[path.priv.len-1].y;
         int xa = getBeginningIndexOfWord(path.priv.pt[0].x);
 
+
         for (int k = 0; k < path.priv.len; k ++) {
             int x = path.priv.pt[k].x;
             int y = path.priv.pt[k].y;
@@ -42,7 +43,7 @@ public class PathOnBitmapInverter extends BitmapPixelHandler {
     private void flipBitsUnitStartPositionOfStartWord(int y, int beginningPositionOfStartWord, int indexOfXInStartWord) {
         if (indexOfXInStartWord > 0) {
             int accessIndex = getAccessIndexOfWord(new Point(beginningPositionOfStartWord,y));
-            long mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - indexOfXInStartWord);
+            long mask = getMultiplePixelMasUntilPosition(indexOfXInStartWord);
             bitmap.words[accessIndex] = bitmap.words[accessIndex]  ^ mask;
         }
     }

@@ -21,12 +21,20 @@ public class BitmapPixelHandler {
         return isCoordinateInRange(pixel.x, bitmap.width) && isCoordinateInRange(pixel.y, bitmap.height);
     }
 
-    long getMaskForPosition(int position) {
-        return ((1L) << (Bitmap.PIXELINWORD-1-(position)));
+    long getMultiplePixelMasUntilPosition(int position){
+        return getMask(Bitmap.BM_ALLBITS, position );
+    }
+
+    long getOnePixelMaskForPosition(int position) {
+        return getMask(1l, position + 1 );
+    }
+
+    long getMask(long pattern,int position) {
+        return (pattern) << (Bitmap.PIXELINWORD  - (position));
     }
 
     private boolean getPixelValueWithoutBoundChecking(Point pixel) {
-        long pixelValue = getWordWherePixelIsContained(pixel) & getMaskForPosition(pixel.x);
+        long pixelValue = getWordWherePixelIsContained(pixel) & getOnePixelMaskForPosition(pixel.x);
         return(pixelValue != 0);
     }
 
@@ -79,12 +87,12 @@ public class BitmapPixelHandler {
 
     private void clearPixel(Point pixel){
         int accessIndex = getAccessIndexOfWord(pixel);
-        bitmap.words[accessIndex] = bitmap.words[accessIndex] & ~getMaskForPosition(pixel.x);
+        bitmap.words[accessIndex] = bitmap.words[accessIndex] & ~getOnePixelMaskForPosition(pixel.x);
     }
 
     private void fillPixel(Point pixel) {
         int accessIndex = getAccessIndexOfWord(pixel);
-        bitmap.words[accessIndex] = bitmap.words[accessIndex] | getMaskForPosition(pixel.x);
+        bitmap.words[accessIndex] = bitmap.words[accessIndex] | getOnePixelMaskForPosition(pixel.x);
     }
 
     private void setLineToSpecificValue(int c, int y) {
