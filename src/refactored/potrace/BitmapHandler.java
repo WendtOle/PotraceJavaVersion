@@ -18,6 +18,11 @@ public class BitmapHandler implements BitmapHandlerInterface{
     }
 
     @Override
+    public long getAndWordWithMask(Point positionOfWord, long mask) {
+        return bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] & mask;
+    }
+
+    @Override
     public void flipBitsInWordWithMask(Point positionOfWord, long mask) {
         bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] ^= mask;
     }
@@ -29,5 +34,9 @@ public class BitmapHandler implements BitmapHandlerInterface{
 
     public void setWordToNull(Point positionOfWord) {
         bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] = 0;
+    }
+
+    public boolean areThereFilledPixelInWord(Point positionOfWord) {
+        return bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] != 0;
     }
 }

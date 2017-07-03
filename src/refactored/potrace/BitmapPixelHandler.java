@@ -36,7 +36,7 @@ public class BitmapPixelHandler {
     }
 
     private boolean getPixelValueWithoutBoundChecking(Point pixel) {
-        long pixelValue = getWordWherePixelIsContained(pixel) & getOnePixelMaskForPosition(pixel.x);
+        long pixelValue = bitmapHandler.getAndWordWithMask(pixel,getOnePixelMaskForPosition(pixel.x));
         return(pixelValue != 0);
     }
 

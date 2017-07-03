@@ -12,5 +12,9 @@ public interface BitmapHandlerInterface {
 
     public void ANDWordWithMask(Point positionOfWord, long mask);
 
+    public long getAndWordWithMask(Point positionOfWord, long mask);
+
+    public boolean areThereFilledPixelInWord(Point positionOfWord);
+
     public void ORWordWithMask(Point positionOfWord, long mask);
 }
