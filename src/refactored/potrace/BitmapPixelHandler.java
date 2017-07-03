@@ -29,7 +29,7 @@ public class BitmapPixelHandler {
         return getMask(1l, position + 1 );
     }
 
-    static long getMask(long pattern,int position) {
+    private static long getMask(long pattern,int position) {
         return (pattern) << (Bitmap.PIXELINWORD  - (position));
     }
 
