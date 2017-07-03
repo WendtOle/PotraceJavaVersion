@@ -5,10 +5,12 @@ import java.awt.*;
 /**
  * Created by andreydelany on 02.07.17.
  */
-public class PathOnBitmapInverter extends BitmapPixelHandler {
+public class PathOnBitmapInverter {
+
+    BitmapHandlerInterface bitmapHandler;
 
     public PathOnBitmapInverter(Bitmap bitmap){
-        super(bitmap);
+        this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
     public void invertPathOnBitmap(Path path) {
@@ -32,6 +34,10 @@ public class PathOnBitmapInverter extends BitmapPixelHandler {
         }
     }
 
+    protected int getBeginningIndexOfWord(int index) {
+        return (index) & -Bitmap.PIXELINWORD;
+    }
+
     public void invertBitsInWordsWhichAreInRangeFromXToXAInLine(int x, int y, int xa) {
         int beginningIndexOfStartWord = getBeginningIndexOfWord(x);
         int indexOfXInStartWord = x & (Bitmap.PIXELINWORD-1);
@@ -42,8 +48,7 @@ public class PathOnBitmapInverter extends BitmapPixelHandler {
 
     private void flipBitsUnitStartPositionOfStartWord(int y, int beginningPositionOfStartWord, int indexOfXInStartWord) {
         if (indexOfXInStartWord > 0) {
-            int accessIndex = getAccessIndexOfWord(new Point(beginningPositionOfStartWord,y));
-            invertWordWithIndexUntilPosition(accessIndex,indexOfXInStartWord);
+            invertWordWithIndexUntilPosition(new Point(beginningPositionOfStartWord,y),indexOfXInStartWord);
         }
     }
 
@@ -63,12 +68,11 @@ public class PathOnBitmapInverter extends BitmapPixelHandler {
     }
 
     private void flipAllBitsInWord(Point wordIdentificationPixel) {
-        int indexOfWord = getAccessIndexOfWord(wordIdentificationPixel);
-        invertWordWithIndexUntilPosition(indexOfWord,Bitmap.PIXELINWORD);
+        invertWordWithIndexUntilPosition(wordIdentificationPixel,Bitmap.PIXELINWORD);
     }
 
-    private void invertWordWithIndexUntilPosition(int index, int position) {
-        long mask = getMultiplePixelMaskUntilPosition(position);
-        bitmap.words[index] ^= mask;
+    private void invertWordWithIndexUntilPosition(Point index, int position) {
+        long mask = MaskCreator.getMultiplePixelMaskUntilPosition(position);
+        bitmapHandler.flipBitsInWordWithMask(index,mask);
     }
 }

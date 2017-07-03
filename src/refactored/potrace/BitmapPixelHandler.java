@@ -8,9 +8,11 @@ import java.awt.*;
 public class BitmapPixelHandler {
 
     Bitmap bitmap;
+    BitmapHandlerInterface bitmapHandler;
 
     public BitmapPixelHandler(Bitmap bitmap){
         this.bitmap = bitmap;
+        this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
     boolean isPixelInRange(Point pixel) {
@@ -69,7 +71,7 @@ public class BitmapPixelHandler {
         if (bitmap.width % Bitmap.PIXELINWORD != 0) {
             long mask = shiftValueForLastWordInLine(Bitmap.BM_ALLBITS);
             for (int y = 0; y < bitmap.height; y ++) {
-                bitmap.words[y * bitmap.wordsPerScanLine + bitmap.wordsPerScanLine - 1] = getWordWherePixelIsContained(new Point(bitmap.width, y)) & mask;
+                bitmapHandler.ANDWordWithMask(new Point(bitmap.width,y),mask);
             }
         }
     }
