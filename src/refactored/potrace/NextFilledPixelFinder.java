@@ -30,7 +30,7 @@ public class NextFilledPixelFinder extends BitmapPixelHandler {
                 for (int x = x0; x<bitmap.width && x>=0; x+=Bitmap.PIXELINWORD) {
 
                     if (bitmapHandler.areThereFilledPixelInWord(new Point(x,y))) {
-                        while (!getPixelValue(new Point(x, y))) {
+                        while (!bitmapHandler.isPixelFilled(new Point(x,y))) {
                             x++;
                         }
                         return new Point(x,y);
