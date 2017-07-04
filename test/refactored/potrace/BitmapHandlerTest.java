@@ -50,4 +50,23 @@ public class BitmapHandlerTest {
             assertEquals(message,expectedResult,bitmapHandler.isPixelFilled(pixelToTest));
         }
     }
+
+    @Test
+    public void testClearingExcessPixelWhenConstructingABitmapHandler(){
+        Bitmap bitmap = new Bitmap(65,1);
+        bitmap.words[1] = -1;
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
+        assertEquals(bitmap.words[1],0x8000000000000000l);
+    }
+
+    @Test
+    public void test_bm_clear() throws Exception {
+        bitmapHandler.setPixel(new Point(0,1));
+        bitmapHandler.setPixel(new Point(4,4));
+
+        bitmapHandler.clearCompleteBitmap();
+
+        assertEquals(false, bitmapHandler.isPixelFilled(new Point(0,1)));
+        assertEquals(false, bitmapHandler.isPixelFilled(new Point(4,4)));
+    }
 }

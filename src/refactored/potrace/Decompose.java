@@ -5,14 +5,14 @@ import java.awt.*;
 public class Decompose {
     Param param;
     Bitmap workCopy;
-    BitmapPixelHandler bitmapHandler;
+    BitmapHandlerInterface bitmapHandler;
     PathOnBitmapInverter pathInverterForWorkCopy;
     Point startPointOfCurrentPath;
     Path pathList = null;
 
     public Decompose(Bitmap bitmap, Param param) {
         this.workCopy = bitmap.duplicate();
-        this.bitmapHandler = new BitmapPixelHandler(bitmap);
+        this.bitmapHandler = new BitmapHandler(bitmap);
         this.pathInverterForWorkCopy = new PathOnBitmapInverter(workCopy);
         this.param = param;
         decomposeBitmapIntoPathlistNew();
@@ -47,7 +47,7 @@ public class Decompose {
     }
 
     private int getSignOfPathFromOriginalBitmap(Point currentPoint) {
-        boolean isPathFilled = bitmapHandler.getPixelValue(currentPoint);
+        boolean isPathFilled = bitmapHandler.isPixelFilled(currentPoint);
         if (isPathFilled)
             return '+';
         else

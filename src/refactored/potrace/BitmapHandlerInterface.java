@@ -25,4 +25,8 @@ public interface BitmapHandlerInterface {
     public int getBeginningIndexOfWordWithPixel(Point positionOfPixel);
 
     public int getWithOfBitmap();
+
+    public Bitmap getBitmap();
+
+    public void clearCompleteBitmap();
 }

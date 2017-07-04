@@ -54,6 +54,16 @@ public class BitmapHandler implements BitmapHandlerInterface{
         return bitmap.width;
     }
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void clearCompleteBitmap() {
+        for(int i = 0; i < bitmap.words.length; i ++) {
+            bitmap.words[i] = 0;
+        }
+    }
+
     private void clearExcessPixel() {
         if (bitmap.width % Bitmap.PIXELINWORD != 0) {
             long mask = shiftValueForLastWordInLine();

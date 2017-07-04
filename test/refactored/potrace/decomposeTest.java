@@ -13,8 +13,8 @@ public class decomposeTest {
     @Test
     public void test_findnextWithNextPointInSameLine() {
         Bitmap testBitmap = new Bitmap(70,1);
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
-        manipulator.setPixelToValue(new Point(65,0),true);
+        BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
+        manipulator.setPixel(new Point(65,0));
 
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(testBitmap);
         assertTrue("found sth: ", nextFilledPixelFinder.isThereAFilledPixel());
@@ -24,9 +24,9 @@ public class decomposeTest {
     @Test
     public void test_findnextWithNextPointNotInSameLine() {
         Bitmap testBitmap = new Bitmap(128,2);
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
-        manipulator.setPixelToValue(new Point(97,0),true);
-        manipulator.setPixelToValue(new Point(99,0),true);
+        BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
+        manipulator.setPixel(new Point(97,0));
+        manipulator.setPixel(new Point(99,0));
 
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(testBitmap);
 
@@ -37,9 +37,9 @@ public class decomposeTest {
     @Test
     public void test_findPath_boundary() {
         Bitmap testBitmap = new Bitmap(128,1);
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
-        manipulator.setPixelToValue(new Point(63,0),true);
-        manipulator.setPixelToValue(new Point(64,0),true);
+        BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
+        manipulator.setPixel(new Point(63,0));
+        manipulator.setPixel(new Point(64,0));
 
         Point[] expectedPath = new Point[]{ new Point(63,1), new Point(63,0),
                 new Point(64,0),new Point(65,0),new Point(65,1),
@@ -54,29 +54,5 @@ public class decomposeTest {
     private void comparePoints(Point should, Point actual) {
         Assert.assertEquals(should.x, actual.x);
         Assert.assertEquals(should.y, actual.y);
-    }
-
-    @Test
-    public void test_xor_path() {
-        Bitmap testBitmap = new Bitmap(3,3);
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
-        manipulator.setWholeBitmapToSpecificValue(1);
-        manipulator.clearExcessPixelsOfBitmap();
-        manipulator.setPixelToValue(new Point(1,1),false);
-
-        FindPath findPath = new FindPath(testBitmap,new Point(0,3),43,4);
-        Path path = findPath.getPath();
-        PathOnBitmapInverter inverter = new PathOnBitmapInverter(testBitmap);
-        inverter.invertPathOnBitmap(path);
-
-        assertEquals(false, manipulator.getPixelValue(new Point(0,0)));
-        assertEquals(false, manipulator.getPixelValue(new Point(1,0)));
-        assertEquals(false, manipulator.getPixelValue(new Point(2,0)));
-        assertEquals(false, manipulator.getPixelValue(new Point(0,1)));
-        assertEquals(true, manipulator.getPixelValue(new Point(1,1)));
-        assertEquals(false, manipulator.getPixelValue(new Point(2,1)));
-        assertEquals(false, manipulator.getPixelValue(new Point(0,2)));
-        assertEquals(false, manipulator.getPixelValue(new Point(1,3)));
-        assertEquals(false, manipulator.getPixelValue(new Point(2,3)));
     }
 }

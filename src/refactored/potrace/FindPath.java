@@ -8,7 +8,7 @@ public class FindPath {
     Point direction = new Point(0, -1);;
     int sign;
     TurnPolicyEnum turnPolicy;
-    BitmapPixelHandler bitmapHandler;
+    BitmapHandlerInterface bitmapHandler;
     Point[] pointsOfPath = new Point[1];
     int indexOfCurrentPoint = 0;
     Point currentPoint;
@@ -19,7 +19,7 @@ public class FindPath {
         this.currentPoint = (Point) startPointOfPath.clone();
         this.sign = sign;
         this.turnPolicy = TurnPolicyEnum.values()[turnPolicy];
-        this.bitmapHandler = new BitmapPixelHandler(bitmap);
+        this.bitmapHandler = new BitmapHandler(bitmap);
 
         findPath();
     }
@@ -84,13 +84,13 @@ public class FindPath {
     private boolean isRightPixelFilled() {
         int xComponent = currentPoint.x + (direction.x+direction.y-1)/2;
         int yCompontent = currentPoint.y + (direction.y-direction.x-1)/2;
-        return bitmapHandler.getPixelValue(new Point(xComponent,yCompontent));
+        return bitmapHandler.isPixelFilled(new Point(xComponent,yCompontent));
     }
 
     private boolean isLeftPixelFilled() {
         int xComponent = currentPoint.x + (direction.x - direction.y - 1) / 2;
         int yComponent = currentPoint.y + (direction.y + direction.x - 1) / 2;
-        return bitmapHandler.getPixelValue(new Point(xComponent,yComponent));
+        return bitmapHandler.isPixelFilled(new Point(xComponent,yComponent));
     }
 
     private void performTurn(boolean isRightPixelFilled, boolean isLeftPixelFilled) {

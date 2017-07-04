@@ -11,41 +11,41 @@ public class BitmapMaskCreationTest {
 
     @Test
     public void testCreatingMaskForFirstPixel(){
-        assertEquals(0x8000000000000000l,BitmapPixelHandler.getOnePixelMaskForPosition(0));
+        assertEquals(0x8000000000000000l,MaskCreator.getOnePixelMaskForPosition(0));
     }
 
     @Test
     public void testCreatingMaskForFirstPixelOverBound(){
-        assertEquals(0x8000000000000000l,BitmapPixelHandler.getOnePixelMaskForPosition(64));
+        assertEquals(0x8000000000000000l,MaskCreator.getOnePixelMaskForPosition(64));
     }
 
     @Test
     public void testCreatingMaskForLastPixel(){
-        assertEquals(0x1l,BitmapPixelHandler.getOnePixelMaskForPosition(63));
+        assertEquals(0x1l,MaskCreator.getOnePixelMaskForPosition(63));
     }
 
     @Test
     public void testCreatingMaskForLastPixelOverBound(){
-        assertEquals(0x1l,BitmapPixelHandler.getOnePixelMaskForPosition(-1));
+        assertEquals(0x1l,MaskCreator.getOnePixelMaskForPosition(-1));
     }
 
     @Test
     public void testCreatingMaskForAPixel(){
-        assertEquals(0x8l,BitmapPixelHandler.getOnePixelMaskForPosition(60));
+        assertEquals(0x8l,MaskCreator.getOnePixelMaskForPosition(60));
     }
 
     @Test
     public void testCreatingMaskForAllPixels() {
-        assertEquals(-1l,BitmapPixelHandler.getMultiplePixelMaskUntilPosition(64));
+        assertEquals(-1l,MaskCreator.getMultiplePixelMaskUntilPosition(64));
     }
 
     @Test
     public void testCreatingMaskForFirstTwoPixels() {
-        assertEquals(0xc000000000000000l,BitmapPixelHandler.getMultiplePixelMaskUntilPosition(2));
+        assertEquals(0xc000000000000000l,MaskCreator.getMultiplePixelMaskUntilPosition(2));
     }
 
     @Test
     public void testCreatingMaskForAllPixelWithoutLastTwo() {
-        assertEquals(0xfffffffffffffffcl,BitmapPixelHandler.getMultiplePixelMaskUntilPosition(62));
+        assertEquals(0xfffffffffffffffcl,MaskCreator.getMultiplePixelMaskUntilPosition(62));
     }
 }

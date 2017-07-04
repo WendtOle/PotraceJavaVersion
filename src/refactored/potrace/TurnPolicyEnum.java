@@ -8,7 +8,7 @@ import java.awt.*;
 public enum TurnPolicyEnum {
     BLACK, WHITE, LEFT, RIGHT, MINORITY, MAJORITY, RANDOM;
 
-    public boolean isTurnPolicySatisfied(int sign, BitmapPixelHandler bitmapHandler, Point currentPoint) {
+    public boolean isTurnPolicySatisfied(int sign, BitmapHandlerInterface bitmapHandler, Point currentPoint) {
         switch (this) {
             case RIGHT: return true;
             case BLACK: return sign == '+';
@@ -45,16 +45,16 @@ public enum TurnPolicyEnum {
         return z == 1 ? true : false;
     }
 
-    static boolean getMajorityValueAtIntersection(int x, int y, BitmapPixelHandler bitmapHandler) {
+    static boolean getMajorityValueAtIntersection(int x, int y, BitmapHandlerInterface bitmapHandler) {
         int i, a, ct;
 
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += bitmapHandler.getPixelValue(new Point(x+a, y+i-1)) ? 1 : -1;
-                ct += bitmapHandler.getPixelValue(new Point(x+i-1, y+a-1)) ? 1 : -1;
-                ct += bitmapHandler.getPixelValue(new Point(x+a-1, y-i)) ? 1 : -1;
-                ct += bitmapHandler.getPixelValue(new Point(x-i, y+a)) ? 1 : -1;
+                ct += bitmapHandler.isPixelFilled(new Point(x+a, y+i-1)) ? 1 : -1;
+                ct += bitmapHandler.isPixelFilled(new Point(x+i-1, y+a-1)) ? 1 : -1;
+                ct += bitmapHandler.isPixelFilled(new Point(x+a-1, y-i)) ? 1 : -1;
+                ct += bitmapHandler.isPixelFilled(new Point(x-i, y+a)) ? 1 : -1;
             }
             if (ct>0) {
                 return true;
@@ -65,7 +65,7 @@ public enum TurnPolicyEnum {
         return false;
     }
 
-    boolean isMinorityAtIntersection(int x, int y, BitmapPixelHandler bitmapHandler){
+    boolean isMinorityAtIntersection(int x, int y, BitmapHandlerInterface bitmapHandler){
         return !getMajorityValueAtIntersection(x,y,bitmapHandler);
     }
 }

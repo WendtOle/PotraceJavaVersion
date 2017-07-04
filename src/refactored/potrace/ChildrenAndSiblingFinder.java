@@ -8,8 +8,7 @@ import java.awt.*;
 public class ChildrenAndSiblingFinder {
 
     Path pathList;
-    //Bitmap bitmap;
-    BitmapPixelHandler bitmaphandler;
+    BitmapHandlerInterface bitmapHandler;
     ClearBitmapWithBBox bitmapClearer;
     PathOnBitmapInverter inverter;
     Path pathesToOrder, pathesThatNeedToProcess, referencePath;
@@ -17,7 +16,7 @@ public class ChildrenAndSiblingFinder {
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
-        this.bitmaphandler = new BitmapPixelHandler(bitmap);
+        this.bitmapHandler = new BitmapHandler(bitmap);
         this.bitmapClearer = new ClearBitmapWithBBox(bitmap);
         this.inverter = new PathOnBitmapInverter(bitmap);
         transformIntoTreeStructure();
@@ -87,7 +86,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private boolean isPathInsideReferencePath(Path path){
-        return bitmaphandler.getPixelValue(new Point(path.priv.pt[0].x, path.priv.pt[0].y - 1));
+        return bitmapHandler.isPixelFilled(new Point(path.priv.pt[0].x, path.priv.pt[0].y - 1));
     }
 
     private void scheduleAddedChildrenAndSiblingsForFurtherProcessing() {
@@ -115,7 +114,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     public Bitmap getBitmap() {
-        return bitmaphandler.bitmap;
+        return bitmapHandler.getBitmap();
     }
 
 }
