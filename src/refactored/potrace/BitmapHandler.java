@@ -26,9 +26,6 @@ public class BitmapHandler implements BitmapHandlerInterface{
         bitmap.words[getAccessIndex(positionOfWord)] ^= mask;
     }
 
-    public void ORWordWithMask(Point positionOfWord, long mask) {
-    }
-
     public void setWordToNull(Point positionOfWord) {
         bitmap.words[getAccessIndex(positionOfWord)] = 0;
     }
@@ -38,12 +35,15 @@ public class BitmapHandler implements BitmapHandlerInterface{
     }
 
     public boolean isPixelFilled(Point positionOfPixel) {
-        return isPixelInRange(positionOfPixel) && getPixelValueWithoutBoundChecking(positionOfPixel);
+        if (isPixelInRange(positionOfPixel))
+            return getPixelValueWithoutBoundChecking(positionOfPixel);
+        else
+            return false;
     }
 
     public void setPixel(Point positionOfPixel) {
         if (isPixelInRange(positionOfPixel))
-            setPixelToValueWithoutBoundChecking(positionOfPixel);
+            bitmap.words[getAccessIndex(positionOfPixel)] |= MaskCreator.getOnePixelMaskForPosition(positionOfPixel.x);
     }
 
     public int getBeginningIndexOfWordWithPixel(Point positionOfPixel){
@@ -65,25 +65,34 @@ public class BitmapHandler implements BitmapHandlerInterface{
     }
 
     private void clearExcessPixel() {
-        if (bitmap.width % Bitmap.PIXELINWORD != 0) {
-            long mask = shiftValueForLastWordInLine();
-            for (int y = 0; y < bitmap.height; y ++) {
-                ANDWordWithMask(new Point(bitmap.width,y),mask);
-            }
+        if (areThereExcessPixel()) {
+            clearExcessPixelOfLastWordInLines();
         }
     }
 
-    private long shiftValueForLastWordInLine() {
-        int indexOfLastBitInLastWordInLine = bitmap.width % Bitmap.PIXELINWORD;
+    private void clearExcessPixelOfLastWordInLines() {
+        long mask = getMaskForExcessPixel();
+        for (int y = 0; y < bitmap.height; y ++) {
+            Point pixelInLastWordInCurrentLine = new Point(bitmap.width,y);
+            ANDWordWithMask(pixelInLastWordInCurrentLine,mask);
+        }
+    }
+
+    private boolean areThereExcessPixel() {
+        return getPositionOfLastLineBitInWord() != 0;
+    }
+
+    private long getMaskForExcessPixel() {
+        int indexOfLastBitInLastWordInLine = getPositionOfLastLineBitInWord();
         return MaskCreator.getMultiplePixelMaskUntilPosition(indexOfLastBitInLastWordInLine);
+    }
+
+    private int getPositionOfLastLineBitInWord() {
+        return bitmap.width % Bitmap.PIXELINWORD;
     }
 
     private int getAccessIndex(Point pixelPosition) {
         return pixelPosition.y * bitmap.wordsPerScanLine + (pixelPosition.x / Bitmap.PIXELINWORD);
-    }
-
-    private void setPixelToValueWithoutBoundChecking(Point positionOfPixel) {
-        bitmap.words[getAccessIndex(positionOfPixel)] |= MaskCreator.getOnePixelMaskForPosition(positionOfPixel.x);
     }
 
     private boolean getPixelValueWithoutBoundChecking(Point pixel) {

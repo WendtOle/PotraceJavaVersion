@@ -13,6 +13,7 @@ public class NextFilledPixelFinder {
 
         public NextFilledPixelFinder(Bitmap bitmap){
             this.bitmapHandler = new BitmapHandler(bitmap);
+            this.bitmap = bitmap;
             currentPixel = new Point(0,bitmap.height-1);
         }
 
@@ -32,14 +33,18 @@ public class NextFilledPixelFinder {
                 for (int x = x0; x<bitmapHandler.getWithOfBitmap() && x>=0; x+=Bitmap.PIXELINWORD) {
 
                     if (bitmapHandler.areThereFilledPixelInWord(new Point(x,y))) {
-                        while (!bitmapHandler.isPixelFilled(new Point(x,y))) {
-                            x++;
-                        }
-                        return new Point(x,y);
+                        return getPositionOfNextFilledPixel(new Point(x,y));
                     }
                 }
                 x0 = 0;
             }
             return null;
         }
+
+    private Point getPositionOfNextFilledPixel(Point currentPosition) {
+        while (!bitmapHandler.isPixelFilled(currentPosition)) {
+            currentPosition.x++;
+        }
+        return currentPosition;
+    }
 }

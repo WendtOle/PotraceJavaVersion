@@ -22,14 +22,26 @@ public class ChildrenAndSiblingFinder {
         transformIntoTreeStructure();
     }
 
+    public Path getPath(){
+        return pathList;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmapHandler.getBitmap();
+    }
+
     private void transformIntoTreeStructure() {
         pathesThatNeedToProcess = pathList;
         while (pathesThatNeedToProcess != null) {
-            initializePathes();
-            inverter.invertPathOnBitmap(referencePath);
-            determineChildrenAndSiblings();
-            scheduleAddedChildrenAndSiblingsForFurtherProcessing();
+            processPathes();
         }
+    }
+
+    private void processPathes() {
+        initializePathes();
+        inverter.invertPathOnBitmap(referencePath);
+        determineChildrenAndSiblings();
+        scheduleAddedChildrenAndSiblingsForFurtherProcessing();
     }
 
     private void initializePathes() {
@@ -108,13 +120,4 @@ public class ChildrenAndSiblingFinder {
     private boolean hasReferencePathChildren() {
         return referencePath.childlist != null;
     }
-
-    public Path getPath(){
-        return pathList;
-    }
-
-    public Bitmap getBitmap() {
-        return bitmapHandler.getBitmap();
-    }
-
 }

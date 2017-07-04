@@ -16,8 +16,6 @@ public interface BitmapHandlerInterface {
 
     public boolean areThereFilledPixelInWord(Point positionOfWord);
 
-    public void ORWordWithMask(Point positionOfWord, long mask);
-
     public boolean isPixelFilled(Point positionOfPixel);
 
     public void setPixel(Point positionOfPixel);
