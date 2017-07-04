@@ -15,33 +15,39 @@ public class BitmapHandlerTest {
     @Test
     public void testSettingPixelAndGettingPixel(){
         Object[][] testDaten = new Object[][]{
-                new Object[]{new Point(-1,1),false},
-                new Object[]{new Point(1,1),true},
-                new Object[]{new Point(99,99),true},
-                new Object[]{new Point(9,101),false}
+                new Object[]{"x Outside Bound",new Point(-1,1),false},
+                new Object[]{"should work (1)", new Point(1,1),true},
+                new Object[]{"should Work(2)", new Point(99,99),true},
+                new Object[]{"at same position again",new Point(99,99),true},
+                new Object[]{"y ouside bound",new Point(9,101),false}
         };
         for (int i = 0; i < testDaten.length; i ++) {
-            bitmapHandler.setPixel((Point)testDaten[i][0]);
-            assertEquals("setPixel Test " + i,(Boolean)testDaten[i][1],bitmapHandler.isPixelFilled((Point)testDaten[i][0]));
+            String message = (String)testDaten[i][0];
+            Point pixelToTest = new Point((Point)testDaten[i][1]);
+            boolean expectedResult = (boolean) testDaten[i][2];
+
+            bitmapHandler.setPixel(pixelToTest);
+            assertEquals(message,expectedResult,bitmapHandler.isPixelFilled(pixelToTest));
         }
     }
 
     @Test
     public void testGettingPixel(){
         Object[][] testDaten = new Object[][]{
-                new Object[]{new Point(-1,1),false,false},
-                new Object[]{new Point(1,1),false,false},
-                new Object[]{new Point(1,1),true,true},
-                new Object[]{new Point(100,2),true,false}
+                new Object[]{"x outside bound",new Point(-1,1),false,false},
+                new Object[]{"not set and want to get",new Point(1,1),false,false},
+                new Object[]{"set and get -> should work",new Point(1,1),true,true},
+                new Object[]{"y outside bound",new Point(2,100),true,false}
         };
         for (int i = 0; i < testDaten.length; i ++) {
-            Point pixelToTest = new Point((Point)testDaten[i][0]);
-            boolean setPixel = (boolean) testDaten[i][1];
-            boolean expectedResult = (boolean) testDaten[i][2];
+            String message = (String)testDaten[i][0];
+            Point pixelToTest = new Point((Point)testDaten[i][1]);
+            boolean setPixel = (boolean) testDaten[i][2];
+            boolean expectedResult = (boolean) testDaten[i][3];
 
             if(setPixel)
                 bitmapHandler.setPixel(pixelToTest);
-            assertEquals("getPixel Test " + i,expectedResult,bitmapHandler.isPixelFilled(pixelToTest));
+            assertEquals(message,expectedResult,bitmapHandler.isPixelFilled(pixelToTest));
         }
     }
 }
