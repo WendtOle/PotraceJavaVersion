@@ -40,7 +40,14 @@ public class BitmapHandler implements BitmapHandlerInterface{
         return isPixelInRange(positionOfPixel) && getPixelValueWithoutBoundChecking(positionOfPixel);
     }
 
+    public void setPixel(Point positionOfPixel) {
+        if (isPixelInRange(positionOfPixel))
+            setPixelToValueWithoutBoundChecking(positionOfPixel);
+    }
 
+    private void setPixelToValueWithoutBoundChecking(Point positionOfPixel) {
+        bitmap.words[positionOfPixel.y * bitmap.wordsPerScanLine + (positionOfPixel.x/bitmap.PIXELINWORD)] |= MaskCreator.getOnePixelMaskForPosition(positionOfPixel.x);
+    }
 
     private boolean getPixelValueWithoutBoundChecking(Point pixel) {
         long pixelValue = getAndWordWithMask(pixel,MaskCreator.getOnePixelMaskForPosition(pixel.x));

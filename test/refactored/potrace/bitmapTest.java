@@ -55,14 +55,14 @@ public class bitmapTest {
     @Test
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(smallTestBitmap);
-        manipulator.setPixelToValue(new Point(0,0),true);
-        assertEquals("with one original word in line: ",true, manipulator.getPixelValue(new Point(0,0)));
+        BitmapHandlerInterface manipulator = new BitmapHandler(smallTestBitmap);
+        manipulator.setPixel(new Point(0,0));
+        assertEquals("with one original word in line: ",true, manipulator.isPixelFilled(new Point(0,0)));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
-        manipulator = new BitmapPixelHandler(bigTestBitmap);
-        manipulator.setPixelToValue(new Point(99,99),true);
-        assertEquals("with more than one original word in line: ",true,manipulator.getPixelValue(new Point(99,99)));
+        manipulator = new BitmapHandler(bigTestBitmap);
+        manipulator.setPixel(new Point(99,99));
+        assertEquals("with more than one original word in line: ",true,manipulator.isPixelFilled(new Point(99,99)));
     }
 
     @Test
