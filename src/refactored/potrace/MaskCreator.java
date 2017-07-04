@@ -16,5 +16,4 @@ public class MaskCreator {
     private static long getMask(long pattern,int position) {
         return (pattern) << (Bitmap.PIXELINWORD  - (position));
     }
-
 }
