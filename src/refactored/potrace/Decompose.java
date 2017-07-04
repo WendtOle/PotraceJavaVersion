@@ -5,7 +5,7 @@ import java.awt.*;
 public class Decompose {
     Param param;
     Bitmap workCopy;
-    BitmapPixelHandler manipulatorForWorkCopy, bitmapHandler;
+    BitmapPixelHandler bitmapHandler;
     PathOnBitmapInverter pathInverterForWorkCopy;
     Point startPointOfCurrentPath;
     Path pathList = null;
@@ -13,8 +13,8 @@ public class Decompose {
     public Decompose(Bitmap bitmap, Param param) {
         this.workCopy = bitmap.duplicate();
         this.bitmapHandler = new BitmapPixelHandler(bitmap);
+        this.pathInverterForWorkCopy = new PathOnBitmapInverter(workCopy);
         this.param = param;
-        initializeValues();
         decomposeBitmapIntoPathlistNew();
     };
 
@@ -33,12 +33,6 @@ public class Decompose {
             startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
             findAndAddPathToPathlist();
         }
-    }
-
-    private void initializeValues() {
-        manipulatorForWorkCopy = new BitmapPixelHandler(workCopy);
-        pathInverterForWorkCopy = new PathOnBitmapInverter(workCopy);
-        manipulatorForWorkCopy.clearExcessPixelsOfBitmap();
     }
 
     private void findAndAddPathToPathlist() {

@@ -21,4 +21,8 @@ public interface BitmapHandlerInterface {
     public boolean isPixelFilled(Point positionOfPixel);
 
     public void setPixel(Point positionOfPixel);
+
+    public int getBeginningIndexOfWordWithPixel(Point positionOfPixel);
+
+    public int getWithOfBitmap();
 }

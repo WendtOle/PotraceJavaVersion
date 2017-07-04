@@ -53,19 +53,6 @@ public class bitmapTest {
     }
 
     @Test
-    public void testBMPutAndBMGetFunction() {
-        Bitmap smallTestBitmap = new Bitmap(10,10);
-        BitmapHandlerInterface manipulator = new BitmapHandler(smallTestBitmap);
-        manipulator.setPixel(new Point(0,0));
-        assertEquals("with one original word in line: ",true, manipulator.isPixelFilled(new Point(0,0)));
-
-        Bitmap bigTestBitmap = new Bitmap(100,100);
-        manipulator = new BitmapHandler(bigTestBitmap);
-        manipulator.setPixel(new Point(99,99));
-        assertEquals("with more than one original word in line: ",true,manipulator.isPixelFilled(new Point(99,99)));
-    }
-
-    @Test
     public void testBMClearFuntion() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
         BitmapPixelHandler manipulator = new BitmapPixelHandler(smallTestBitmap);
@@ -106,9 +93,9 @@ public class bitmapTest {
         box.y0 = 1;
         box.y1 = 2;
         Bitmap testBitmap = new Bitmap(3,3);
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
-        manipulator.setPixelToValue(new Point(0,2),true);
-        manipulator.setPixelToValue(new Point(1,1),true);
+        BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
+        manipulator.setPixel(new Point(0,2));
+        manipulator.setPixel(new Point(1,1));
 
         ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(testBitmap);
         bitmapClearer.clearBitmapWithBBox(box);

@@ -19,7 +19,7 @@ public class PathOnBitmapInverter {
         }
 
         int y1 = path.priv.pt[path.priv.len-1].y;
-        int xa = getBeginningIndexOfWord(path.priv.pt[0].x);
+        int xa = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
 
 
         for (int k = 0; k < path.priv.len; k ++) {
@@ -34,12 +34,8 @@ public class PathOnBitmapInverter {
         }
     }
 
-    protected int getBeginningIndexOfWord(int index) {
-        return (index) & -Bitmap.PIXELINWORD;
-    }
-
     public void invertBitsInWordsWhichAreInRangeFromXToXAInLine(int x, int y, int xa) {
-        int beginningIndexOfStartWord = getBeginningIndexOfWord(x);
+        int beginningIndexOfStartWord = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(x,0));
         int indexOfXInStartWord = x & (Bitmap.PIXELINWORD-1);
 
         flipAllContainedWordsInLineBetweenToValues(xa,beginningIndexOfStartWord,y);

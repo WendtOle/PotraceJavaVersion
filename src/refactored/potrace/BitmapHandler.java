@@ -11,29 +11,30 @@ public class BitmapHandler implements BitmapHandlerInterface{
 
     public BitmapHandler (Bitmap bitmap) {
         this.bitmap = bitmap;
+        clearExcessPixel();
     }
 
     public void ANDWordWithMask(Point positionOfWord, long mask) {
-        bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] &= mask;
+        bitmap.words[getAccessIndex(positionOfWord)] &= mask;
     }
 
     public long getAndWordWithMask(Point positionOfWord, long mask) {
-        return bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] & mask;
+        return bitmap.words[getAccessIndex(positionOfWord)] & mask;
     }
 
     public void flipBitsInWordWithMask(Point positionOfWord, long mask) {
-        bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] ^= mask;
+        bitmap.words[getAccessIndex(positionOfWord)] ^= mask;
     }
 
     public void ORWordWithMask(Point positionOfWord, long mask) {
     }
 
     public void setWordToNull(Point positionOfWord) {
-        bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] = 0;
+        bitmap.words[getAccessIndex(positionOfWord)] = 0;
     }
 
     public boolean areThereFilledPixelInWord(Point positionOfWord) {
-        return bitmap.words[positionOfWord.y * bitmap.wordsPerScanLine + (positionOfWord.x / Bitmap.PIXELINWORD)] != 0;
+        return bitmap.words[getAccessIndex(positionOfWord)] != 0;
     }
 
     public boolean isPixelFilled(Point positionOfPixel) {
@@ -45,8 +46,34 @@ public class BitmapHandler implements BitmapHandlerInterface{
             setPixelToValueWithoutBoundChecking(positionOfPixel);
     }
 
+    public int getBeginningIndexOfWordWithPixel(Point positionOfPixel){
+        return (positionOfPixel.x) & -Bitmap.PIXELINWORD;
+    }
+
+    public int getWithOfBitmap(){
+        return bitmap.width;
+    }
+
+    private void clearExcessPixel() {
+        if (bitmap.width % Bitmap.PIXELINWORD != 0) {
+            long mask = shiftValueForLastWordInLine();
+            for (int y = 0; y < bitmap.height; y ++) {
+                ANDWordWithMask(new Point(bitmap.width,y),mask);
+            }
+        }
+    }
+
+    private long shiftValueForLastWordInLine() {
+        int indexOfLastBitInLastWordInLine = bitmap.width % Bitmap.PIXELINWORD;
+        return MaskCreator.getMultiplePixelMaskUntilPosition(indexOfLastBitInLastWordInLine);
+    }
+
+    private int getAccessIndex(Point pixelPosition) {
+        return pixelPosition.y * bitmap.wordsPerScanLine + (pixelPosition.x / Bitmap.PIXELINWORD);
+    }
+
     private void setPixelToValueWithoutBoundChecking(Point positionOfPixel) {
-        bitmap.words[positionOfPixel.y * bitmap.wordsPerScanLine + (positionOfPixel.x/bitmap.PIXELINWORD)] |= MaskCreator.getOnePixelMaskForPosition(positionOfPixel.x);
+        bitmap.words[getAccessIndex(positionOfPixel)] |= MaskCreator.getOnePixelMaskForPosition(positionOfPixel.x);
     }
 
     private boolean getPixelValueWithoutBoundChecking(Point pixel) {

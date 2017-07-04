@@ -5,12 +5,14 @@ import java.awt.*;
 /**
  * Created by andreydelany on 02.07.17.
  */
-public class NextFilledPixelFinder extends BitmapPixelHandler {
+public class NextFilledPixelFinder {
 
         Point currentPixel;
+        BitmapHandlerInterface bitmapHandler;
+        Bitmap bitmap;
 
         public NextFilledPixelFinder(Bitmap bitmap){
-            super(bitmap);
+            this.bitmapHandler = new BitmapHandler(bitmap);
             currentPixel = new Point(0,bitmap.height-1);
         }
 
@@ -24,10 +26,10 @@ public class NextFilledPixelFinder extends BitmapPixelHandler {
         }
 
         private Point findNextFilledPixel() {
-            int x0 = getBeginningIndexOfWord(currentPixel.x);
+            int x0 = bitmapHandler.getBeginningIndexOfWordWithPixel(currentPixel);
 
             for (int y=currentPixel.y; y>=0; y--) {
-                for (int x = x0; x<bitmap.width && x>=0; x+=Bitmap.PIXELINWORD) {
+                for (int x = x0; x<bitmapHandler.getWithOfBitmap() && x>=0; x+=Bitmap.PIXELINWORD) {
 
                     if (bitmapHandler.areThereFilledPixelInWord(new Point(x,y))) {
                         while (!bitmapHandler.isPixelFilled(new Point(x,y))) {
