@@ -14,9 +14,6 @@ public class PathOnBitmapInverter {
     }
 
     public void invertPathOnBitmap(Path path) {
-        if (path.priv.len <= 0) {  /* a Path of length 0 is silly, but legal */
-            return;
-        }
 
         int y1 = path.priv.pt[path.priv.len-1].y;
         int xa = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));

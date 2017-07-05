@@ -78,6 +78,4 @@ public class listTest {
         first = Path.insertListAtTheEndOfList(listOfSecondToFourht,first);
         assertEquals(fourth, first.next.next.next);
     }
-
-
 }
