@@ -10,7 +10,7 @@ public class ChildrenAndSiblingFinder {
     Path pathList;
     BitmapHandlerInterface bitmapHandler;
     ClearBitmapWithBBox bitmapClearer;
-    PathOnBitmapInverter inverter;
+    PathInverter inverter;
     Path pathesToOrder, pathesThatNeedToProcess, referencePath;
     BBox boundingBox;
 
@@ -18,7 +18,7 @@ public class ChildrenAndSiblingFinder {
         this.pathList = pathList;
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.bitmapClearer = new ClearBitmapWithBBox(bitmap);
-        this.inverter = new PathOnBitmapInverter(bitmap);
+        this.inverter = new PathInverter(bitmap);
         transformIntoTreeStructure();
     }
 

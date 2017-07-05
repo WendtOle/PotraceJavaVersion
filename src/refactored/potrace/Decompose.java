@@ -6,14 +6,14 @@ public class Decompose {
     Param param;
     Bitmap workCopy;
     BitmapHandlerInterface bitmapHandler;
-    PathOnBitmapInverter pathInverterForWorkCopy;
+    PathInverter pathInverterForWorkCopy;
     Point startPointOfCurrentPath;
     Path pathList = null;
 
     public Decompose(Bitmap bitmap, Param param) {
         this.workCopy = bitmap.duplicate();
         this.bitmapHandler = new BitmapHandler(bitmap);
-        this.pathInverterForWorkCopy = new PathOnBitmapInverter(workCopy);
+        this.pathInverterForWorkCopy = new PathInverter(workCopy);
         this.param = param;
         decomposeBitmapIntoPathlistNew();
     };

@@ -40,7 +40,7 @@ public class ChildrenAndSiblingFinderTest {
                 currentPath = currentPath.next;
             }
             currentPath = foundPath;
-            PathOnBitmapInverter inverter = new PathOnBitmapInverter(bitmap);
+            PathInverter inverter = new PathInverter(bitmap);
             inverter.invertPathOnBitmap(foundPath);
         }
     }
