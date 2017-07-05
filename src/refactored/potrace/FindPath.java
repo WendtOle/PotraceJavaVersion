@@ -14,14 +14,18 @@ public class FindPath {
     Point currentPoint;
     int areaOfPath = 0;
 
-    public FindPath(Bitmap bitmap, Point startPointOfPath, int sign, TurnPolicyEnum turnPolicy) {
-        this.startPoint = startPointOfPath;
-        this.currentPoint = (Point) startPointOfPath.clone();
+    public FindPath(Bitmap bitmap, Point firstFilledPixel, int sign, TurnPolicyEnum turnPolicy) {
         this.sign = sign;
         this.turnPolicy = turnPolicy;
         this.bitmapHandler = new BitmapHandler(bitmap);
+        setInitialPointPosition(firstFilledPixel);
 
         findPath();
+    }
+
+    private void setInitialPointPosition(Point firstFilledPixel) {
+        this.startPoint = new Point(firstFilledPixel.x,firstFilledPixel.y + 1);
+        this.currentPoint = new Point(firstFilledPixel.x,firstFilledPixel.y + 1);
     }
 
     public Path getPath(){

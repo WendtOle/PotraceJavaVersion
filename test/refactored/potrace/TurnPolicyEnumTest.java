@@ -1,31 +1,75 @@
 package refactored.potrace;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by andreydelany on 04.07.17.
  */
 public class TurnPolicyEnumTest {
+    BitmapHandlerInterface bitmapHandlerMinorityIsBlack = new BitmapHandler(new Bitmap(3,3));
+    BitmapHandlerInterface bitmapHandlerMajorityIsBlack = new BitmapHandler(new Bitmap(4,4));
+
+    @Before
+    public void prepareBitmap() {
+        bitmapHandlerMinorityIsBlack.setPixel(new Point(0,0));
+        bitmapHandlerMinorityIsBlack.setPixel(new Point(1,1));
+
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(0,0));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(1,0));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(2,0));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(3,0));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(0,1));
+
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(2,1));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(3,1));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(0,2));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(1,2));
+
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(3,2));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(0,3));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(1,3));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(2,3));
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(3,3));
+    }
+
     @Test
-    public void testMajorityFunction() {
-        /*
-        Bitmap testBitmap = new Bitmap(4,4);
-        Point observationPoint = new Point(testBitmap.width /2,testBitmap.height /2);
-        Point[] points = new Point[]{new Point(0,0),new Point(2,2),new Point(2,0),new Point(3,1),
-                new Point(1,0), new Point(2,1), new Point(3,3),new Point (2,3),
-                new Point(0,2), new Point(3,0), new Point(1,3), new Point(1,2),
-                new Point(3,2),new Point(1,1),new Point(0,3), new Point(0,1)};
+    public void testTurnpolicyMinority() throws Exception {
+        assertTrue(TurnPolicyEnum.MINORITY.isTurnPolicySatisfied(43, bitmapHandlerMinorityIsBlack,new Point(1,1)));
+    }
 
-        Boolean[] expectedOutcomes = new Boolean[]{true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false};
+    @Test
+    public void testTurnpolicyMajority() throws Exception {
+        assertFalse(TurnPolicyEnum.MAJORITY.isTurnPolicySatisfied(43, bitmapHandlerMinorityIsBlack,new Point(1,1)));
+    }
 
-        BitmapPixelHandler manipulator = new BitmapPixelHandler(testBitmap);
-        manipulator.setWholeBitmapToSpecificValue(1);
+    @Test
+    public void testTurnpolicyBlack() throws Exception {
+        assertTrue(TurnPolicyEnum.BLACK.isTurnPolicySatisfied(43, bitmapHandlerMinorityIsBlack,new Point(1,1)));
+    }
 
-        for(int i = 0; i < 16; i++) {
-            manipulator.setPixelToValue(points[i],false);
-            assertEquals("i: " + i,expectedOutcomes[i], TurnPolicyEnum.getMajorityValueAtIntersection(observationPoint.x, observationPoint.y,manipulator));
-        }
-        */
-        //TODO
+    @Test
+    public void testTurnpolicyWhite() throws Exception {
+        assertFalse(TurnPolicyEnum.WHITE.isTurnPolicySatisfied(43, bitmapHandlerMinorityIsBlack,new Point(1,1)));
+    }
+
+    @Test
+    public void testTurnpolicyLeft() throws Exception {
+        assertFalse(TurnPolicyEnum.LEFT.isTurnPolicySatisfied(43, bitmapHandlerMinorityIsBlack,new Point(1,1)));
+    }
+
+    @Test
+    public void testTurnpolicyRight() throws Exception {
+        assertTrue(TurnPolicyEnum.RIGHT.isTurnPolicySatisfied(43, bitmapHandlerMinorityIsBlack,new Point(1,1)));
+    }
+
+    @Test
+    public void testTurnpolicyMajorityWithMajorityIsBlack() throws Exception {
+        assertTrue(TurnPolicyEnum.MAJORITY.isTurnPolicySatisfied(43, bitmapHandlerMajorityIsBlack,new Point(2,2)));
     }
 }

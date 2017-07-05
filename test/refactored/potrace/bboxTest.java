@@ -17,12 +17,12 @@ public class bboxTest {
         BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
         manipulator.setPixel(new Point(1,1));
 
-        FindPath findPath = new FindPath(testBitmap,new Point(2,2),43,TurnPolicyEnum.MINORITY);
+        FindPath findPath = new FindPath(testBitmap,new Point(1,1),43,TurnPolicyEnum.MINORITY);
         Path path = findPath.getPath();
 
         box.setToBoundingBoxOfPath(path);
-        assertEquals(2,box.x0);
-        assertEquals(3,box.x1);
+        assertEquals(1,box.x0);
+        assertEquals(2,box.x1);
         assertEquals(1,box.y0);
         assertEquals(2,box.y1);
     }
