@@ -4,6 +4,7 @@ import org.junit.*;
 
 import java.awt.*;
 import static org.junit.Assert.*;
+import static refactored.potrace.AssertPoints.assertEqualPoints;
 
 public class decomposeTest {
 
@@ -64,13 +65,10 @@ public class decomposeTest {
 
         Path result = Decompose.findpath(testBitmap,63,1,43,4);
         for (int i = 0 ; i < expectedPath.length; i ++)
-            comparePoints(expectedPath[i],result.priv.pt[i]);
+            assertEqualPoints(expectedPath[i],result.priv.pt[i]);
     }
 
-    private void comparePoints(Point should, Point actual) {
-        Assert.assertEquals(should.x, actual.x);
-        Assert.assertEquals(should.y, actual.y);
-    }
+
 
     @Test
     public void testXorToRefFirstIF() {

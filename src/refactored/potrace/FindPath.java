@@ -24,6 +24,10 @@ public class FindPath {
         findPath();
     }
 
+    public Path getPath(){
+        return new Path(areaOfPath, sign, indexOfCurrentPoint, pointsOfPath);
+    }
+
     private void findPath() {
         moveInDirection();
         while (pathIsOpen()) {
@@ -130,9 +134,5 @@ public class FindPath {
         } else if (!isLeftPixelFilled) {
             performLeftTurn();
         }
-    }
-
-    public Path getPath(){
-        return new Path(areaOfPath, sign, indexOfCurrentPoint, pointsOfPath);
     }
 }

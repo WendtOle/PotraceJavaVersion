@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by andreydelany on 04.07.17.
@@ -29,8 +27,7 @@ public class NextFilledPixelFinderTest {
         assertTrue(pixelFinder.isThereAFilledPixel());
         Point expectedPosition = new Point(3,99);
         Point actualPosition = pixelFinder.getPositionOfNextFilledPixel();
-        assertEquals(expectedPosition.x,actualPosition.x);
-        assertEquals(expectedPosition.y, actualPosition.y);
+        assertEquals(expectedPosition,actualPosition);
     }
 
     @Test
@@ -40,8 +37,7 @@ public class NextFilledPixelFinderTest {
         assertTrue(pixelFinder.isThereAFilledPixel());
         Point expectedPosition = new Point(65,99);
         Point actualPosition = pixelFinder.getPositionOfNextFilledPixel();
-        assertEquals(expectedPosition.x,actualPosition.x);
-        assertEquals(expectedPosition.y, actualPosition.y);
+        assertEquals(expectedPosition,actualPosition);
     }
 
     @Test
@@ -51,8 +47,7 @@ public class NextFilledPixelFinderTest {
         assertTrue(pixelFinder.isThereAFilledPixel());
         Point expectedPosition = new Point(65,98);
         Point actualPosition = pixelFinder.getPositionOfNextFilledPixel();
-        assertEquals(expectedPosition.x,actualPosition.x);
-        assertEquals(expectedPosition.y, actualPosition.y);
+        assertEquals(expectedPosition,actualPosition);
     }
 
     @Test
@@ -60,12 +55,12 @@ public class NextFilledPixelFinderTest {
         bitmapHandler.setPixel(new Point(5,98));
         NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
         assertTrue(pixelFinder.isThereAFilledPixel());
-        assertPoints(new Point(5,98),pixelFinder.getPositionOfNextFilledPixel());
+        assertEquals(new Point(5,98),pixelFinder.getPositionOfNextFilledPixel());
 
         bitmapHandler.clearCompleteBitmap();
         bitmapHandler.setPixel(new Point(65,6));
         assertTrue(pixelFinder.isThereAFilledPixel());
-        assertPoints(new Point(65,6),pixelFinder.getPositionOfNextFilledPixel());
+        assertEquals(new Point(65,6),pixelFinder.getPositionOfNextFilledPixel());
 
         bitmapHandler.clearCompleteBitmap();
         assertFalse(pixelFinder.isThereAFilledPixel());
@@ -89,10 +84,5 @@ public class NextFilledPixelFinderTest {
             exceptionWasThrown = true;
         }
         assertTrue(exceptionWasThrown);
-    }
-
-    private void assertPoints(Point expectedPoint, Point actualPoint){
-        assertEquals(expectedPoint.x,actualPoint.x);
-        assertEquals(expectedPoint.y, actualPoint.y);
     }
 }

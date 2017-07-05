@@ -1,6 +1,5 @@
 package refactored.potrace;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.awt.*;
@@ -48,11 +47,6 @@ public class decomposeTest {
         FindPath findPath = new FindPath(testBitmap,new Point(63,1),43,TurnPolicyEnum.MINORITY);
         Path result = findPath.getPath();
         for (int i = 0 ; i < expectedPath.length; i ++)
-            comparePoints(expectedPath[i],result.priv.pt[i]);
-    }
-
-    private void comparePoints(Point should, Point actual) {
-        Assert.assertEquals(should.x, actual.x);
-        Assert.assertEquals(should.y, actual.y);
+            assertEquals(expectedPath[i],result.priv.pt[i]);
     }
 }
