@@ -68,7 +68,7 @@ public class PathOnBitmapInverter {
     }
 
     private void invertWordWithIndexUntilPosition(Point index, int position) {
-        long mask = MaskCreator.getMultiplePixelMaskUntilPosition(position);
+        long mask = BitMask.getMultiplePixelMaskUntilPosition(position);
         bitmapHandler.flipBitsInWordWithMask(index,mask);
     }
 }

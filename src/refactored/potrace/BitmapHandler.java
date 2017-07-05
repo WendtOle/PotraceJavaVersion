@@ -14,14 +14,6 @@ public class BitmapHandler implements BitmapHandlerInterface{
         clearExcessPixel();
     }
 
-    public void ANDWordWithMask(Point positionOfWord, long mask) {
-        bitmap.words[getAccessIndex(positionOfWord)] &= mask;
-    }
-
-    public long getAndWordWithMask(Point positionOfWord, long mask) {
-        return bitmap.words[getAccessIndex(positionOfWord)] & mask;
-    }
-
     public void flipBitsInWordWithMask(Point positionOfWord, long mask) {
         bitmap.words[getAccessIndex(positionOfWord)] ^= mask;
     }
@@ -43,7 +35,7 @@ public class BitmapHandler implements BitmapHandlerInterface{
 
     public void setPixel(Point positionOfPixel) {
         if (isPixelInRange(positionOfPixel))
-            bitmap.words[getAccessIndex(positionOfPixel)] |= MaskCreator.getOnePixelMaskForPosition(positionOfPixel.x);
+            bitmap.words[getAccessIndex(positionOfPixel)] |= BitMask.getOnePixelMaskForPosition(positionOfPixel.x);
     }
 
     public int getBeginningIndexOfWordWithPixel(Point positionOfPixel){
@@ -70,21 +62,25 @@ public class BitmapHandler implements BitmapHandlerInterface{
         }
     }
 
-    private void clearExcessPixelOfLastWordInLines() {
-        long mask = getMaskForExcessPixel();
-        for (int y = 0; y < bitmap.height; y ++) {
-            Point pixelInLastWordInCurrentLine = new Point(bitmap.width,y);
-            ANDWordWithMask(pixelInLastWordInCurrentLine,mask);
-        }
-    }
-
     private boolean areThereExcessPixel() {
         return getPositionOfLastLineBitInWord() != 0;
     }
 
+    private void clearExcessPixelOfLastWordInLines() {
+        long mask = getMaskForExcessPixel();
+        for (int y = 0; y < bitmap.height; y ++) {
+            Point lastPixelInCurrentLine = new Point(bitmap.width,y);
+            ANDWordWithMask(lastPixelInCurrentLine,mask);
+        }
+    }
+
     private long getMaskForExcessPixel() {
         int indexOfLastBitInLastWordInLine = getPositionOfLastLineBitInWord();
-        return MaskCreator.getMultiplePixelMaskUntilPosition(indexOfLastBitInLastWordInLine);
+        return BitMask.getMultiplePixelMaskUntilPosition(indexOfLastBitInLastWordInLine);
+    }
+
+    private void ANDWordWithMask(Point positionOfWord, long mask) {
+        bitmap.words[getAccessIndex(positionOfWord)] &= mask;
     }
 
     private int getPositionOfLastLineBitInWord() {
@@ -96,8 +92,12 @@ public class BitmapHandler implements BitmapHandlerInterface{
     }
 
     private boolean getPixelValueWithoutBoundChecking(Point pixel) {
-        long pixelValue = getAndWordWithMask(pixel,MaskCreator.getOnePixelMaskForPosition(pixel.x));
+        long pixelValue = getAndWordWithMask(pixel, BitMask.getOnePixelMaskForPosition(pixel.x));
         return(pixelValue != 0);
+    }
+
+    private long getAndWordWithMask(Point positionOfWord, long mask) {
+        return bitmap.words[getAccessIndex(positionOfWord)] & mask;
     }
 
     private boolean isPixelInRange(Point pixel) {

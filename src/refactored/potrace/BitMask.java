@@ -3,7 +3,7 @@ package refactored.potrace;
 /**
  * Created by andreydelany on 03.07.17.
  */
-public class MaskCreator {
+public class BitMask {
 
     static long getMultiplePixelMaskUntilPosition(int position){
         return getMask(Bitmap.BM_ALLBITS, position );

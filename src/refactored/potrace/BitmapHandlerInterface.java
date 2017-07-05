@@ -6,13 +6,10 @@ import java.awt.*;
  * Created by andreydelany on 03.07.17.
  */
 public interface BitmapHandlerInterface {
+
     void flipBitsInWordWithMask(Point positionOfWord, long mask);
 
     void setWordToNull(Point positionOfWord);
-
-    void ANDWordWithMask(Point positionOfWord, long mask);
-
-    long getAndWordWithMask(Point positionOfWord, long mask);
 
     boolean areThereFilledPixelInWord(Point positionOfWord);
 

@@ -10,13 +10,20 @@ public class TreeStructurTransformation {
     public TreeStructurTransformation(Path pathList, Bitmap bitmap) {
         this.pathList = pathList;
         this.bitmap = bitmap;
-        BitmapHandlerInterface manipulator = new BitmapHandler(this.bitmap);
-        manipulator.clearCompleteBitmap();
-
-        transformIntoTree();
+        clearBitmap();
+        transformPathIntoTree();
     }
 
-    private void transformIntoTree() {
+    public Path getTreeStructure() {
+        return pathList;
+    }
+
+    private void clearBitmap() {
+        BitmapHandlerInterface manipulator = new BitmapHandler(this.bitmap);
+        manipulator.clearCompleteBitmap();
+    }
+
+    private void transformPathIntoTree() {
         saveOriginalNextPointerToSiblingComponent();
         findChildrenAndSiblings();
         copySiblingStructurFromNextToSiblingComponent();
@@ -33,7 +40,6 @@ public class TreeStructurTransformation {
     private void findChildrenAndSiblings() {
         ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
         pathList = childrenAndSiblingFinder.getPath();
-        bitmap = childrenAndSiblingFinder.getBitmap();
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {
@@ -48,9 +54,5 @@ public class TreeStructurTransformation {
     private void reconstructNextComponentFromChildrenAndSiblingComponent() {
         NextComponentReconstruction reconstruction = new NextComponentReconstruction(pathList);
         pathList = reconstruction.getPathWithReconstructedNext();
-    }
-
-    public Path getTreeStructure() {
-        return pathList;
     }
 }
