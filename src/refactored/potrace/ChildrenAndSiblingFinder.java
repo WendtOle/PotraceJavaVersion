@@ -26,10 +26,6 @@ public class ChildrenAndSiblingFinder {
         return pathList;
     }
 
-    public Bitmap getBitmap() {
-        return bitmapHandler.getBitmap();
-    }
-
     private void transformIntoTreeStructure() {
         pathesThatNeedToProcess = pathList;
         while (pathesThatNeedToProcess != null) {

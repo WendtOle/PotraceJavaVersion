@@ -21,7 +21,5 @@ public interface BitmapHandlerInterface {
 
     int getWithOfBitmap();
 
-    Bitmap getBitmap();
-
     void clearCompleteBitmap();
 }
