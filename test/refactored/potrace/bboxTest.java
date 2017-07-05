@@ -17,7 +17,7 @@ public class bboxTest {
         BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
         manipulator.setPixel(new Point(1,1));
 
-        FindPath findPath = new FindPath(testBitmap,new Point(2,2),43,4);
+        FindPath findPath = new FindPath(testBitmap,new Point(2,2),43,TurnPolicyEnum.MINORITY);
         Path path = findPath.getPath();
 
         box.setToBoundingBoxOfPath(path);

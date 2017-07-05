@@ -33,7 +33,7 @@ public class ChildrenAndSiblingFinderTest {
         while(filledPixelFinder.isThereAFilledPixel()) {
             Point startPointOfPath = filledPixelFinder.getPositionOfNextFilledPixel();
             int signOfPath = bitmapHandler.isPixelFilled(startPointOfPath) ? '+' : '-';
-            FindPath pathFinder = new FindPath(bitmap,startPointOfPath,signOfPath,TurnPolicyEnum.RIGHT.ordinal());
+            FindPath pathFinder = new FindPath(bitmap,startPointOfPath,signOfPath,TurnPolicyEnum.RIGHT);
             Path foundPath = pathFinder.getPath();
             Path currentPath = path;
             while(currentPath != null){

@@ -31,7 +31,7 @@ public class turnpolicyTest {
 
     @Test
     public void testTurnpolicyMinority() throws Exception {
-        FindPath pathFinder = new FindPath(biggerDiagonalBitmap,new Point(2,3),43,4);
+        FindPath pathFinder = new FindPath(biggerDiagonalBitmap,new Point(2,3),43,TurnPolicyEnum.MINORITY);
         Path pathWithMinorityTurnpolicy = pathFinder.getPath();
         assertEquals(3,pathWithMinorityTurnpolicy.area);
     }
@@ -39,35 +39,35 @@ public class turnpolicyTest {
     @Test
     public void testTurnpolicyMajority() throws Exception {
 
-        FindPath findPath = new FindPath(biggerDiagonalBitmap,new Point(2,3),43,5);
+        FindPath findPath = new FindPath(biggerDiagonalBitmap,new Point(2,3),43,TurnPolicyEnum.MAJORITY);
         Path pathWithMajorityTurnpolicy = findPath.getPath();
         assertEquals(1,pathWithMajorityTurnpolicy.area);
     }
 
     @Test
     public void testTurnpolicyBlack() {
-        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,0);
+        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,TurnPolicyEnum.BLACK);
         Path pathWithBlackTurnpolicy = findPath.getPath();
         assertEquals(2,pathWithBlackTurnpolicy.area);
     }
 
     @Test
     public void testTurnpolicyWhite() {
-        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,1);
+        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,TurnPolicyEnum.WHITE);
         Path pathWithWhiteTurnpolicy = findPath.getPath();
         assertEquals(1,pathWithWhiteTurnpolicy.area);
     }
 
     @Test
     public void testTurnpolicyLeft() {
-        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,2);
+        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,TurnPolicyEnum.LEFT);
         Path pathWithLeftTurnpolicy = findPath.getPath();
         assertEquals(1,pathWithLeftTurnpolicy.area);
     }
 
     @Test
     public void testTurnpolicyRight() {
-        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,3);
+        FindPath findPath = new FindPath(simpleDiagonalBitmap,new Point(1,2),43,TurnPolicyEnum.RIGHT);
         Path pathWithRightTurnpolicy = findPath.getPath();
         assertEquals(2,pathWithRightTurnpolicy.area);
     }

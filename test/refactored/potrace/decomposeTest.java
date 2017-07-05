@@ -45,7 +45,7 @@ public class decomposeTest {
                 new Point(64,0),new Point(65,0),new Point(65,1),
                 new Point(64,1)};
 
-        FindPath findPath = new FindPath(testBitmap,new Point(63,1),43,4);
+        FindPath findPath = new FindPath(testBitmap,new Point(63,1),43,TurnPolicyEnum.MINORITY);
         Path result = findPath.getPath();
         for (int i = 0 ; i < expectedPath.length; i ++)
             comparePoints(expectedPath[i],result.priv.pt[i]);

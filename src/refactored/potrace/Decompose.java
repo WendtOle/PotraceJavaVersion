@@ -42,7 +42,7 @@ public class Decompose {
 
     private Path findPath() {
         int signOfPath = getSignOfPathFromOriginalBitmap(startPointOfCurrentPath);
-        FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfCurrentPath.x, startPointOfCurrentPath.y + 1), signOfPath, param.turnpolicy);
+        FindPath pathFinder = new FindPath(workCopy, new Point(startPointOfCurrentPath.x, startPointOfCurrentPath.y + 1), signOfPath, TurnPolicyEnum.values()[param.turnpolicy]);
         return pathFinder.getPath();
     }
 
