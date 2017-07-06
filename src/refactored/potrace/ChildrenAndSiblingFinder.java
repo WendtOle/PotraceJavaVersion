@@ -13,6 +13,7 @@ public class ChildrenAndSiblingFinder {
     PathInverter inverter;
     Path pathesToOrder, pathesThatNeedToProcess, referencePath;
     BBox boundingBox;
+    PathUnlinker unlinker;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
@@ -28,7 +29,8 @@ public class ChildrenAndSiblingFinder {
 
     private void transformIntoTreeStructure() {
         pathesThatNeedToProcess = pathList;
-        while (pathesThatNeedToProcess != null) {
+        unlinker = new PathUnlinker(pathesThatNeedToProcess);
+        while (unlinker.stillNeedToProcessPathes()) {
             processPathes();
         }
     }
@@ -37,19 +39,18 @@ public class ChildrenAndSiblingFinder {
         initializePathes();
         inverter.invertPathOnBitmap(referencePath);
         determineChildrenAndSiblings();
-        scheduleAddedChildrenAndSiblingsForFurtherProcessing();
+        unlinker.updatePathesThatNeedToProcess(referencePath);
     }
 
     private void initializePathes() {
-        // unlink first sublist
-        pathesToOrder = pathesThatNeedToProcess;
-        pathesThatNeedToProcess = pathesThatNeedToProcess.childlist;
-        pathesToOrder.childlist = null;
+        unlinker.unlink();
+        assignUnlinkedValues();
+    }
 
-        // unlink first Path
-        referencePath = pathesToOrder;
-        pathesToOrder = pathesToOrder.next;
-        referencePath.next = null;
+    private void assignUnlinkedValues() {
+        pathesThatNeedToProcess = unlinker.getPathesThatNeedToProcess();
+        pathesToOrder = unlinker.getPathesToOrder();
+        referencePath = unlinker.getReferencePath();
     }
 
     private void determineChildrenAndSiblings() {
@@ -60,13 +61,14 @@ public class ChildrenAndSiblingFinder {
 
     private void orderPathListWetherInsideOrOutsideOfBoundingBox() {
         Path currentPath=pathesToOrder;
-        while(currentPath != null) {
+        Boolean isNotFinishedWithOrdering = true;
+        while(currentPath != null && isNotFinishedWithOrdering) {
             pathesToOrder=currentPath.next;
             currentPath.next=null;
 
             if (isPathBelowBoundingBox(currentPath)) {
                 addRemainingPathesAsSiblings(currentPath);
-                return;
+                isNotFinishedWithOrdering = false;
             } else {
                 if (isPathInsideReferencePath(currentPath)) {
                     addPathAsChild(currentPath);
