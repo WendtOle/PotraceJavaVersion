@@ -314,12 +314,12 @@ public class Decompose {
         pathlists which still need to be transformed. */
 
         while (heap != null) {
-            // unlink first sublist
+            // seperateNextPathes first sublist
             cur = heap;
             heap = heap.childlist;
             cur.childlist = null;
 
-            // unlink first Path
+            // seperateNextPathes first Path
             head = cur;
             cur = cur.next;
             head.next = null;

@@ -11,9 +11,9 @@ public class ChildrenAndSiblingFinder {
     BitmapHandlerInterface bitmapHandler;
     ClearBitmapWithBBox bitmapClearer;
     PathInverter inverter;
-    Path pathesToOrder, pathesThatNeedToProcess, referencePath;
+    Path pathesToOrder, referencePath;
     BBox boundingBox;
-    PathUnlinker unlinker;
+    PathQueueInterface pathQueue;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
@@ -28,29 +28,23 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void transformIntoTreeStructure() {
-        pathesThatNeedToProcess = pathList;
-        unlinker = new PathUnlinker(pathesThatNeedToProcess);
-        while (unlinker.stillNeedToProcessPathes()) {
+        pathQueue = new PathQueue(pathList);
+        while (pathQueue.stillNeedToProcessPathes()) {
             processPathes();
         }
     }
 
-    private void processPathes() {
-        initializePathes();
+    private void processPathes(){
+        assignNextPathesToProcess();
         inverter.invertPathOnBitmap(referencePath);
         determineChildrenAndSiblings();
-        unlinker.updatePathesThatNeedToProcess(referencePath);
+        pathQueue.updateQueue(referencePath);
     }
 
-    private void initializePathes() {
-        unlinker.unlink();
-        assignUnlinkedValues();
-    }
-
-    private void assignUnlinkedValues() {
-        pathesThatNeedToProcess = unlinker.getPathesThatNeedToProcess();
-        pathesToOrder = unlinker.getPathesToOrder();
-        referencePath = unlinker.getReferencePath();
+    private void assignNextPathesToProcess() {
+        Path[] pathesNextToProcess = pathQueue.getNextPathes();
+        referencePath = pathesNextToProcess[0];
+        pathesToOrder = pathesNextToProcess[1];
     }
 
     private void determineChildrenAndSiblings() {
@@ -99,25 +93,5 @@ public class ChildrenAndSiblingFinder {
 
     private boolean isPathInsideReferencePath(Path path){
         return bitmapHandler.isPixelFilled(new Point(path.priv.pt[0].x, path.priv.pt[0].y - 1));
-    }
-
-    private void scheduleAddedChildrenAndSiblingsForFurtherProcessing() {
-        if (hasReferencePathSiblings())
-            schedulePathesForFurtherProcessing(referencePath.next);
-        if (hasReferencePathChildren())
-            schedulePathesForFurtherProcessing(referencePath.childlist);
-    }
-
-    private void schedulePathesForFurtherProcessing(Path path) {
-        path.childlist = pathesThatNeedToProcess;
-        pathesThatNeedToProcess = path;
-    }
-
-    private boolean hasReferencePathSiblings() {
-        return referencePath.next != null;
-    }
-
-    private boolean hasReferencePathChildren() {
-        return referencePath.childlist != null;
     }
 }

@@ -1,0 +1,47 @@
+package refactored.potrace;
+
+/**
+ * Created by andreydelany on 06.07.17.
+ */
+public class PathQueue implements PathQueueInterface {
+    Path referencePath, pathesToOrder, pathesThatNeedToProcess;
+
+    public PathQueue(Path path){
+        pathesThatNeedToProcess = path;
+    }
+
+    public boolean stillNeedToProcessPathes() {
+        return (pathesThatNeedToProcess != null);
+    }
+
+    public Path[] getNextPathes() {
+         seperateNextProcessingPathes();
+        return new Path[]{referencePath,pathesToOrder};
+    }
+
+    public void updateQueue(Path path) {
+        appendFoundChildrenAndSiblingsToQueue(path);
+    }
+
+    private void appendFoundChildrenAndSiblingsToQueue(Path path) {
+        schedulePathesForFurtherProcessing(path.next);
+        schedulePathesForFurtherProcessing(path.childlist);
+    }
+
+    private void schedulePathesForFurtherProcessing(Path path) {
+        if (path != null) {
+            path.childlist = pathesThatNeedToProcess;
+            pathesThatNeedToProcess = path;
+        }
+    }
+
+    private void seperateNextProcessingPathes() {
+        pathesToOrder = pathesThatNeedToProcess;
+        pathesThatNeedToProcess = pathesThatNeedToProcess.childlist;
+        pathesToOrder.childlist = null;
+
+        referencePath = pathesToOrder;
+        pathesToOrder = pathesToOrder.next;
+        referencePath.next = null;
+    }
+}
