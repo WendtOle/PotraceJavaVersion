@@ -59,7 +59,8 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void orderPathListWetherInsideOrOutsideOfBoundingBox() {
-        for (Path currentPath=pathesToOrder; currentPath != null; currentPath=pathesToOrder) {
+        Path currentPath=pathesToOrder;
+        while(currentPath != null) {
             pathesToOrder=currentPath.next;
             currentPath.next=null;
 
@@ -73,6 +74,7 @@ public class ChildrenAndSiblingFinder {
                     addPathAsSibling(currentPath);
                 }
             }
+            currentPath=pathesToOrder;
         }
     }
 

@@ -719,7 +719,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
             xmin = s.x;
             ymin = s.y;
 
-            if (Q.content[0][0] != 0.0) { //fixme: checken ob das mit den jumpmarcs wirklich funktioniert hat.
+            if (Q.content[0][0] != 0.0) {
                 for (z = 0; z < 2; z++) {   //value of the y-coordinate
                     w.y = s.y - 0.5 + z;
                     w.x = -(Q.content[0][1] * w.y + Q.content[0][2]) / Q.content[0][0];

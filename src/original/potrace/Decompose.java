@@ -101,12 +101,12 @@ public class Decompose {
         if (xhi<xa) {
             for (i = xhi; i < xa; i+= Bitmap.PIXELINWORD) {
                 int accessIndex = (bm.dy * y) + (i / Bitmap.PIXELINWORD);
-                bm.map[accessIndex] = bm.map[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                bm.map[accessIndex] = bm.map[accessIndex]  ^ Bitmap.BM_ALLBITS;
             }
         } else {
             for (i = xa; i < xhi; i+= Bitmap.PIXELINWORD) {
                 int accessIndex = (bm.dy * y) + (i / Bitmap.PIXELINWORD);
-                bm.map[accessIndex] = bm.map[accessIndex]  ^ Bitmap.BM_ALLBITS; //Todo check
+                bm.map[accessIndex] = bm.map[accessIndex]  ^ Bitmap.BM_ALLBITS;
             }
         }
 
@@ -114,7 +114,7 @@ public class Decompose {
         //a<<(b&31). I spent hours looking for this bug.
         if (xlo > 0) {
             int accessIndex = (bm.dy * y) + (xhi / Bitmap.PIXELINWORD);
-            bm.map[accessIndex] = bm.map[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo)); //Todo check
+            bm.map[accessIndex] = bm.map[accessIndex]  ^ (Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - xlo));
         }
     }
 
@@ -422,10 +422,10 @@ public class Decompose {
     (*xp,*yp). Else return 1. Note that this function assumes that
     excess bytes have been cleared with bm_clearexcess. */
 
-    public static boolean findnext(Bitmap bm, Point XY) { //TODO check it its working correct
+    public static boolean findnext(Bitmap bm, Point XY) {
         int x0;
 
-        x0 = (XY.x) & ~(Bitmap.PIXELINWORD-1); //TODO versteh ich nicht! Meiner meinung nach kommt da immer null raus, warum dann erst errechnen lassen?
+        x0 = (XY.x) & ~(Bitmap.PIXELINWORD-1);
 
         for (int y=XY.y; y>=0; y--) {
             for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {

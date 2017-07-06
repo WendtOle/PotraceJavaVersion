@@ -13,20 +13,22 @@ public class PlotterRunTime extends Application {
         public static final String xAxisLabel = "AmountOfRuns";
         public static String yAxisLabel = "MS per Run";
         public static int stepss;
+        public static String locationOfTestPicture;
 
         private static double[] dataY;
 
-        public static void plot(int steps, double[] yValues, String name) {
+        public static void plot(int steps, double[] yValues, String name,String location) {
             title = name;
             dataY = yValues;
             stepss = steps;
+            locationOfTestPicture = location;
             Application.launch(new String[0]);
         }
 
         @SuppressWarnings("unchecked")
         @Override public void start(Stage stage) {
 
-            stage.setTitle(title);
+            stage.setTitle(title + " - Average of runs: "+ dataY[99] + " ms - " + locationOfTestPicture);
 
             final NumberAxis xAxis = new NumberAxis();
             xAxis.setLabel(xAxisLabel);
