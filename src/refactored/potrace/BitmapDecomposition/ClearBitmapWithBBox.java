@@ -16,17 +16,17 @@ public class ClearBitmapWithBBox {
         this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
-    public void clearBitmapWithBBox(BBox bbox) {
+    public void clearBitmapWithBBox(BoundingBox bbox) {
         setHorizontalRange(bbox);
         clearAllLinesOfBbox(bbox);
     }
 
-    private void setHorizontalRange(BBox bbox) {
+    private void setHorizontalRange(BoundingBox bbox) {
         indexOfWordWhereBBoxStarts = (bbox.x0 / Bitmap.PIXELINWORD);
         indexOfwordWhereBBoxEnds = ((bbox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
     }
 
-    private void clearAllLinesOfBbox(BBox bbox) {
+    private void clearAllLinesOfBbox(BoundingBox bbox) {
         for (int y = bbox.y0; y < bbox.y1; y ++) {
             clearAllWordsThatOverlapWithBbox(y);
         }

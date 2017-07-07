@@ -4,7 +4,7 @@ import refactored.potrace.*;
 
 import java.awt.*;
 
-public class Decompose {
+public class Decompose implements DecompositionInterface {
     Param param;
     Bitmap workCopy;
     BitmapHandlerInterface bitmapHandler;

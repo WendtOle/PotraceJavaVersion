@@ -34,7 +34,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testToClearOnPixelBBox() {
-        BBox bbox = new BBox();
+        BoundingBox bbox = new BoundingBox();
         bbox.x0 = 1;
         bbox.x1 = 2;
         bbox.y0 = 1;
@@ -51,7 +51,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testToClearTwoPerTwoBBox() {
-        BBox bbox = new BBox();
+        BoundingBox bbox = new BoundingBox();
         bbox.x0 = 1;
         bbox.x1 = 3;
         bbox.y0 = 1;
@@ -68,7 +68,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testToClearOnePixelOverWordBoundary() {
-        BBox bbox = new BBox();
+        BoundingBox bbox = new BoundingBox();
         bbox.x0 = 63;
         bbox.x1 = 66;
         bbox.y0 = 1;
@@ -82,7 +82,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testClearCompleteTwoLinesOfBitmap() {
-        BBox bbox = new BBox();
+        BoundingBox bbox = new BoundingBox();
         bbox.x0 = 0;
         bbox.x1 = 71;
         bbox.y0 = 1;
@@ -99,7 +99,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testThatEveryPixelInSameLineIsAlsoClearedButNotOtherWords() {
-        BBox bbox = new BBox();
+        BoundingBox bbox = new BoundingBox();
         bbox.x0 = 1;
         bbox.x1 = 2;
         bbox.y0 = 1;

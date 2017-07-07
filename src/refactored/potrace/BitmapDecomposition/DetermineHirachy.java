@@ -12,7 +12,7 @@ public class DetermineHirachy {
     BitmapHandlerInterface bitmapHandler;
     ClearBitmapWithBBox bitmapClearer;
     PathInverter inverter;
-    BBox boundingBox;
+    BoundingBox boundingBox;
     Path referencePath, pathesToOrder;
 
     public DetermineHirachy(Bitmap bitmap) {
@@ -40,7 +40,7 @@ public class DetermineHirachy {
 
     private void markReferencePath() {
         inverter.invertPathOnBitmap(referencePath);
-        boundingBox = new BBox(referencePath);
+        boundingBox = new BoundingBox(referencePath);
     }
 
     private void unmarkReferencePath() {

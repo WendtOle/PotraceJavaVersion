@@ -48,10 +48,6 @@ public class BitmapHandler implements BitmapHandlerInterface{
         return bitmap.width;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
-
     public void clearCompleteBitmap() {
         for(int i = 0; i < bitmap.words.length; i ++) {
             bitmap.words[i] = 0;

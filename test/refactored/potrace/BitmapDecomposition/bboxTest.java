@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class bboxTest {
     @Test
     public void test_setbbox_path() {
-        BBox box = new BBox();
+        BoundingBox box = new BoundingBox();
         Bitmap testBitmap = new Bitmap(3,3);
         BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
         manipulator.setPixel(new Point(1,1));

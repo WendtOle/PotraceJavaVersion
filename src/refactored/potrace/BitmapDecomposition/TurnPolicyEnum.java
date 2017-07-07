@@ -42,7 +42,7 @@ public enum TurnPolicyEnum {
         5-bit sequence */
         z = ((0x04b3e375 * x) ^ y) * 0x05a8ef93;
         z = t[z & 0xff] ^ t[(z>>8) & 0xff] ^ t[(z>>16) & 0xff] ^ t[(z>>24) & 0xff];
-        return z == 1 ? true : false;
+        return z == 1;
     }
 
     static boolean getMajorityValueAtIntersection(int x, int y, BitmapHandlerInterface bitmapHandler) {

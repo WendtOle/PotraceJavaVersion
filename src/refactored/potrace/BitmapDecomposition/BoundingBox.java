@@ -2,12 +2,12 @@ package refactored.potrace.BitmapDecomposition;
 
 import refactored.potrace.Path;
 
-public class BBox {
+public class BoundingBox {
     int x0, x1, y0, y1;
 
-    public BBox(){};
+    public BoundingBox(){};
 
-    public BBox(Path path){
+    public BoundingBox(Path path){
         setToBoundingBoxOfPath(path);
     }
 

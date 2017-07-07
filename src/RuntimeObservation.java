@@ -1,9 +1,8 @@
-package refactored;
-
 import AdditionalCode.Bitmap;
 import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
 import org.json.simple.parser.ParseException;
+import refactored.PlotterRunTime;
 import refactored.potrace.Param;
 import refactored.potrace.PotraceLib;
 
