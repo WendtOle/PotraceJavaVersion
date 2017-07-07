@@ -2,8 +2,6 @@ package refactored.potrace;
 
 import org.junit.Test;
 
-import java.awt.*;
-
 import static org.junit.Assert.*;
 
 public class bitmapTest {
@@ -43,25 +41,5 @@ public class bitmapTest {
         assertEquals("potraceWordsInOneLine: ",originalBitmap.wordsPerScanLine, copiedBitmap.wordsPerScanLine);
         assertEquals("height: ",originalBitmap.height, copiedBitmap.height);
         assertEquals("width: ",originalBitmap.width, copiedBitmap.width);
-    }
-
-    @Test
-    public void test_clear_bm_with_bbox() {
-        BBox box = new BBox();
-        box.x0 = 2;
-        box.x1 = 3;
-        box.y0 = 1;
-        box.y1 = 2;
-        Bitmap testBitmap = new Bitmap(3,3);
-        BitmapHandlerInterface manipulator = new BitmapHandler(testBitmap);
-        manipulator.setPixel(new Point(0,2));
-        manipulator.setPixel(new Point(1,1));
-
-        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(testBitmap);
-        bitmapClearer.clearBitmapWithBBox(box);
-
-        assertTrue("firstline: ",testBitmap.words[0] == 0);
-        assertTrue("secondline: ",testBitmap.words[1] == 0);
-        assertTrue("thirdline: ",testBitmap.words[2] == 0x8000000000000000l);
     }
 }

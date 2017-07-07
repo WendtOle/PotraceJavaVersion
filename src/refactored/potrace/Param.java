@@ -1,5 +1,7 @@
 package refactored.potrace;
 
+import refactored.potrace.BitmapDecomposition.TurnPolicyEnum;
+
 public class Param {
 
     public int turdsize;        /* area of largest Path to be ignored */

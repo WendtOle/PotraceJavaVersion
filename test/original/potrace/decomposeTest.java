@@ -4,7 +4,7 @@ import org.junit.*;
 
 import java.awt.*;
 import static org.junit.Assert.*;
-import static refactored.potrace.AssertPoints.assertEqualPoints;
+import static refactored.potrace.BitmapDecomposition.AssertPoints.assertEqualPoints;
 
 public class decomposeTest {
 

@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
-import static refactored.potrace.AssertPathes.assertEqualPathes;
+import static refactored.potrace.BitmapDecomposition.AssertPathes.assertEqualPathes;
 
 /**
  * Created by andreydelany on 08/04/2017.

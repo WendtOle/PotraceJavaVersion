@@ -3,8 +3,8 @@ package refactored.potrace;
 public class Bitmap {
 
     public static int PIXELINWORD = 64;
-    static long BM_ALLBITS = (~0);
-    static long BM_HIBIT = 1 << PIXELINWORD -1;
+    public static long BM_ALLBITS = (~0);
+    public static long BM_HIBIT = 1 << PIXELINWORD -1;
 
     public int width, height;
     public int wordsPerScanLine;

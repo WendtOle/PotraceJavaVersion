@@ -1,5 +1,7 @@
 package refactored.potrace;
 
+import refactored.potrace.BitmapDecomposition.Decompose;
+
 public class PotraceLib {
 
     static int POTRACE_CURVETO = 1;
