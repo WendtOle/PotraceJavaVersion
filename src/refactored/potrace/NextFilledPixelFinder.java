@@ -47,20 +47,20 @@ public class NextFilledPixelFinder {
         }
     }
 
-    private boolean isInCurrentWordAFilledPixel(Point pixel) {
-        if (bitmapHandler.areThereFilledPixelInWord(pixel)) {
-            currentPixel =  getPositionOfNextFilledPixel(pixel);
-            return true;
-        }
-        return false;
-    }
-
     private boolean shouldContinueLooking(Point pixel) {
         return isPixelStillInBitmap(pixel) && !wasAFilledPixelFound;
     }
 
     private boolean isPixelStillInBitmap(Point pixel) {
         return pixel.x<bitmapHandler.getWithOfBitmap() && pixel.x>=0 && pixel.y>=0;
+    }
+
+    private boolean isInCurrentWordAFilledPixel(Point pixel) {
+        if (bitmapHandler.areThereFilledPixelInWord(pixel)) {
+            currentPixel = getPositionOfNextFilledPixel(pixel);
+            return true;
+        }
+        return false;
     }
 
     private Point goToNextSearchLocation(Point currentPosition) {

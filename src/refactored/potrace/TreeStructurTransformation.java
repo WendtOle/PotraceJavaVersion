@@ -31,10 +31,7 @@ public class TreeStructurTransformation {
     }
 
     private void saveOriginalNextPointerToSiblingComponent() {
-        for (Path path = pathList; path != null; path = path.next) {
-            path.sibling = path.next;
-            path.childlist = null;
-        }
+        pathList = PathReStructrurer.saveOriginalNextPointerToSiblingComponent(pathList);
     }
 
     private void findChildrenAndSiblings() {
@@ -43,12 +40,7 @@ public class TreeStructurTransformation {
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {
-        Path path = pathList;
-        while (path != null) {
-            Path p1 = path.sibling;
-            path.sibling = path.next;
-            path = p1;
-        }
+        pathList = PathReStructrurer.copySiblingStructurFromNextToSiblingComponent(pathList);
     }
 
     private void reconstructNextComponentFromChildrenAndSiblingComponent() {

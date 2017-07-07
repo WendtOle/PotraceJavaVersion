@@ -14,6 +14,10 @@ public class NextComponentReconstruction {
         reconstructNextComponent();
     }
 
+    public Path getPathWithReconstructedNext(){
+        return originPath;
+    }
+
     private void initializeCurrentPathAndOriginPath() {
         currentPath = originPath;
         if (currentPath != null) {
@@ -52,9 +56,5 @@ public class NextComponentReconstruction {
         if (path.childlist != null) {
             pathesThatNeedToProcess = Path.insertElementAtTheEndOfList(path.childlist,pathesThatNeedToProcess);
         }
-    }
-
-    public Path getPathWithReconstructedNext(){
-        return originPath;
     }
 }
