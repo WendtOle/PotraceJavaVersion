@@ -39,7 +39,7 @@ public class TreeStructurTransformation {
 
     private void findChildrenAndSiblings() {
         ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
-        pathList = childrenAndSiblingFinder.getPath();
+        pathList = childrenAndSiblingFinder.getTreeTransformedPathStructure();
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {

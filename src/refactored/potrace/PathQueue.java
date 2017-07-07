@@ -15,7 +15,7 @@ public class PathQueue implements PathQueueInterface {
     }
 
     public Path[] getNextPathes() {
-        seperateNextProcessingPathes();
+        schedulePathesForNextProcessingStep();
         return new Path[]{referencePath,pathesToOrder};
     }
 
@@ -35,7 +35,7 @@ public class PathQueue implements PathQueueInterface {
         }
     }
 
-    private void seperateNextProcessingPathes() {
+    private void schedulePathesForNextProcessingStep() {
         pathesToOrder = pathesThatNeedToProcess;
         pathesThatNeedToProcess = pathesThatNeedToProcess.childlist;
         pathesToOrder.childlist = null;
