@@ -15,15 +15,15 @@ public class PathQueue implements PathQueueInterface {
     }
 
     public Path[] getNextPathes() {
-         seperateNextProcessingPathes();
+        seperateNextProcessingPathes();
         return new Path[]{referencePath,pathesToOrder};
     }
 
     public void updateQueue(Path path) {
-        appendFoundChildrenAndSiblingsToQueue(path);
+        appendFoundChildrenInFrontOfSiblingsToQueue(path);
     }
 
-    private void appendFoundChildrenAndSiblingsToQueue(Path path) {
+    private void appendFoundChildrenInFrontOfSiblingsToQueue(Path path) {
         schedulePathesForFurtherProcessing(path.next);
         schedulePathesForFurtherProcessing(path.childlist);
     }
