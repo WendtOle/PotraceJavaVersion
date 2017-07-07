@@ -10,6 +10,7 @@ public class DirectionHandler {
     Point direction ;
     Point currentPoint;
     TurnPolicyEnum turnPolicy;
+    boolean isRightPixelFilled, isLeftPixelFilled;
     int sign;
 
     public DirectionHandler(Bitmap bitmap, TurnPolicyEnum turnPolicy, int sign) {
@@ -20,12 +21,15 @@ public class DirectionHandler {
     }
 
     public Point turnInNextDirection(Point currentPoint) {
-        this.currentPoint = currentPoint;
-        boolean isRightPixelFilled = isRightPixelFilled();
-        boolean isLeftPixelFilled = isLeftPixelFilled();
-
-        performTurn(isRightPixelFilled, isLeftPixelFilled);
+        gatherSituationInformations(currentPoint);
+        performTurn();
         return direction;
+    }
+
+    private void gatherSituationInformations(Point currentPoint) {
+        this.currentPoint = currentPoint;
+        this.isRightPixelFilled = isRightPixelFilled();
+        this.isLeftPixelFilled = isLeftPixelFilled();
     }
 
     private boolean isRightPixelFilled() {
@@ -40,14 +44,14 @@ public class DirectionHandler {
         return bitmapHandler.isPixelFilled(new Point(xComponent,yComponent));
     }
 
-    private void performTurn(boolean isRightPixelFilled, boolean isLeftPixelFilled) {
-        if (isAmbiguousSituation(isRightPixelFilled, isLeftPixelFilled))
+    private void performTurn() {
+        if (isAmbiguousSituation())
             performTurnInAmbiguousSituation();
         else
-            performTurnInNormalSituation(isRightPixelFilled, isLeftPixelFilled);
+            performTurnInNormalSituation();
     }
 
-    private static boolean isAmbiguousSituation(boolean isRightPixelFilled, boolean isLeftPixelFilled) {
+    private  boolean isAmbiguousSituation() {
         boolean isLeftPixelEmpty = !isLeftPixelFilled;
         return isRightPixelFilled && isLeftPixelEmpty;
     }
@@ -71,7 +75,7 @@ public class DirectionHandler {
         direction = new Point(- direction.y,direction.x);
     }
 
-    private void performTurnInNormalSituation(boolean isRightPixelFilled, boolean isLeftPixelFilled) {
+    private void performTurnInNormalSituation() {
         if (isRightPixelFilled) {
             performRightTurn();
         } else if (!isLeftPixelFilled) {
