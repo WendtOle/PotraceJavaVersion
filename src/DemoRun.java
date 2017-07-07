@@ -1,6 +1,13 @@
-package refactored;
+import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.OutputGraphical.Plotter;
+import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
+import General.BitmapInterface;
+import General.Param;
+import General.Path;
+import General.PotraceLibrary;
+import org.json.simple.parser.ParseException;
 
-import AdditionalCode.Bitmap;
+import java.io.IOException;
 
 /**
  * Created by andreydelany on 21.06.17.
@@ -8,14 +15,13 @@ import AdditionalCode.Bitmap;
 public class DemoRun {
     static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
-    static Bitmap bitmap;
-    static AdditionalCode.Path path;
-/*
+    static BitmapInterface bitmap;
+    static Path path;
+
     public static void main(String args[]) {
         loadBitmap();
 
-        Path originalPath = PotraceLib.potrace_trace(new Param(), BitmapTranslater.translateBitmapForRefactoredCode(bitmap));
-        path = PathTranslator.refactoredPathToGeneralPath(originalPath);
+        path = PotraceLibrary.potrace_trace(new Param(), bitmap);
 
         drawBitmap();
         drawPath();
@@ -45,5 +51,5 @@ public class DemoRun {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-   }*/
+   }
 }

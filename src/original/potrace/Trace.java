@@ -1091,28 +1091,4 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         pp.ocurve.alphacurve = 1;
     }
 
-    /* return 0 on success, 1 on error with errno set. */
-    static Path process_path(Path plist, Param param) {
-        /* call downstream function with each Path */
-
-        for (Path p = plist; p!=null; p=p.next) {
-            calc_sums(p.priv);
-            calc_lon(p.priv);
-            bestpolygon(p.priv);
-            adjust_vertices(p.priv);
-            if (p.sign == '-') {   /* reverse orientation of negative paths */
-                reverse(p.priv.curve);
-            }
-            smooth(p.priv.curve, param.alphamax);
-            if (param.opticurve) {
-                opticurve(p.priv, param.opttolerance);
-                p.priv.fcurve = p.priv.ocurve;
-            } else {
-                p.priv.fcurve = p.priv.curve;
-            }
-            p.curve = Curve.privcurve_to_curve(p.priv.fcurve);
-        }
-        return plist;
-
-    }
 }

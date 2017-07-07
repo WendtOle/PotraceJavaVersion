@@ -1,6 +1,6 @@
-package original.potrace;
+package refactored.potrace.BitmapDecomposition;
 
-import General.*;
+import General.Path;
 
 public class List {
 

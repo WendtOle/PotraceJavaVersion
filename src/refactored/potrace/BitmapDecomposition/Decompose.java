@@ -1,26 +1,27 @@
 package refactored.potrace.BitmapDecomposition;
 
+import General.*;
 import refactored.potrace.*;
 
 import java.awt.*;
 
 public class Decompose implements DecompositionInterface {
-    Param param;
+    General.Param param;
     Bitmap workCopy;
     BitmapHandlerInterface bitmapHandler;
     PathInverter pathInverterForWorkCopy;
     Point startPointOfCurrentPath;
     Path pathList = null;
 
-    public Decompose(Bitmap bitmap, Param param) {
+    public Path getPathList(BitmapInterface generalBitmap, General.Param param) {
+        Bitmap bitmap = new Bitmap(generalBitmap.getWidth(),generalBitmap.getHeight());
+        bitmap.words = generalBitmap.getWords();
+
         this.workCopy = bitmap.duplicate();
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.pathInverterForWorkCopy = new PathInverter(workCopy);
         this.param = param;
         decomposeBitmapIntoPathlistNew();
-    };
-
-    public Path getPathList() {
         return pathList;
     }
 
@@ -59,7 +60,7 @@ public class Decompose implements DecompositionInterface {
     private void addPathToPathListIfBigEnough(Path currentPath) {
         pathInverterForWorkCopy.invertPathOnBitmap(currentPath);
         if (isPathBigEnough(currentPath.area,param.turdsize)) {
-            pathList = Path.insertElementAtTheEndOfList(currentPath,pathList);
+            pathList = List.elementInsertAtTheLastNextOfList(currentPath,pathList);
         }
     }
 

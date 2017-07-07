@@ -1,7 +1,6 @@
 package refactored.potrace.BitmapDecomposition;
 
-import refactored.potrace.Path;
-
+import General.*;
 /**
  * Created by andreydelany on 07.07.17.
  */

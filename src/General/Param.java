@@ -1,6 +1,6 @@
-package refactored.potrace;
+package General;
 
-public class Param {
+public class Param implements ParamInterface {
 
     public int turdsize;        /* area of largest Path to be ignored */
     public int turnpolicy;      /* resolves ambiguous turns in Path decomposition */

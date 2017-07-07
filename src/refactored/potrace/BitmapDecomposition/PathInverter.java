@@ -1,7 +1,7 @@
 package refactored.potrace.BitmapDecomposition;
 
 import refactored.potrace.*;
-
+import General.*;
 import java.awt.*;
 
 /**

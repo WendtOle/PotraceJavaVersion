@@ -1,4 +1,4 @@
-package refactored.potrace;
+package General;
 
 /**
  * Created by andreydelany on 07.07.17.
@@ -6,5 +6,5 @@ package refactored.potrace;
 public interface DecompositionInterface {
     int peter = 10;
 
-    public Path getPathList();
+    Path getPathList(BitmapInterface generalBitmap, General.Param param);
 }

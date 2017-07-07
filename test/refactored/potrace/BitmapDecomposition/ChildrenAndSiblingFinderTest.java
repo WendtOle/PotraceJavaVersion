@@ -1,10 +1,10 @@
 package refactored.potrace.BitmapDecomposition;
 
-import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
+import General.BitmapInterface;
+import General.Path;
 import org.junit.Before;
 import refactored.potrace.Bitmap;
-import refactored.potrace.Path;
 
 import java.awt.*;
 import java.io.File;
@@ -22,7 +22,9 @@ public class ChildrenAndSiblingFinderTest {
     @Before
     public void importBitmap() {
         try {
-            bitmap = BitmapTranslater.translateBitmapForRefactoredCode(JSONDeEncoder.readBitmapFromJSon(new File("testPictures/11.jsonn")));
+            BitmapInterface bitmap = JSONDeEncoder.readBitmapFromJSon(new File("testPictures/11.jsonn"));
+            this.bitmap = new Bitmap(bitmap.getWidth(),bitmap.getHeight());
+            this.bitmap.words = bitmap.getWords();
         } catch (Exception e) {
             System.out.print(e);
         }
@@ -47,7 +49,7 @@ public class ChildrenAndSiblingFinderTest {
         }
     }
 
-
+//TODO
     public void test() {
         Path currentPath = path;
         int counter = 1;
@@ -57,4 +59,5 @@ public class ChildrenAndSiblingFinderTest {
         }
         assertEquals(9,counter);
     }
+
 }

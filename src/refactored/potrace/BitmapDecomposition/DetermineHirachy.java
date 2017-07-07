@@ -1,7 +1,7 @@
 package refactored.potrace.BitmapDecomposition;
 
 import refactored.potrace.*;
-
+import General.*;
 import java.awt.*;
 
 /**
@@ -70,15 +70,15 @@ public class DetermineHirachy {
 
     private void addRemainingPathesAsSiblings(Path currentPath) {
         addPathAsSibling(currentPath);
-        referencePath.next = Path.insertListAtTheEndOfList(pathesToOrder,referencePath.next);
+        referencePath.next = List.listInsertAtTheLastNextOfList(pathesToOrder,referencePath.next);
     }
 
     private void addPathAsChild(Path currentPath) {
-        referencePath.childlist = Path.insertElementAtTheEndOfList(currentPath,referencePath.childlist);
+        referencePath.childlist = List.elementInsertAtTheLastNextOfList(currentPath,referencePath.childlist);
     }
 
     private void addPathAsSibling(Path currentPath) {
-        referencePath.next = Path.insertElementAtTheEndOfList(currentPath,referencePath.next);
+        referencePath.next = List.elementInsertAtTheLastNextOfList(currentPath,referencePath.next);
     }
 
     private boolean isPathBelowBoundingBox(Path path){

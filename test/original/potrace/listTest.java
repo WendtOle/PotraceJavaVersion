@@ -1,15 +1,10 @@
 package original.potrace;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 /**
  * Created by andreydelany on 07/03/2017.
  */
 public class listTest {
+    /*
     Path first, second, third, fourth;
 
     @Before
@@ -80,5 +75,5 @@ public class listTest {
         assertEquals(fourth, first.next.next.next);
     }
 
-
+*/
 }

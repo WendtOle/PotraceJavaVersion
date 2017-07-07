@@ -1,7 +1,8 @@
 package AdditionalCode.Input;
 
+import General.*;
 import AdditionalCode.Bitmap;
-import AdditionalCode.Path;
+import General.BitmapInterface;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -56,7 +57,7 @@ public class JSONDeEncoder {
         return name;
     }
 
-    public static Bitmap readBitmapFromJSon(File file) throws IOException, ParseException {
+    public static BitmapInterface readBitmapFromJSon(File file) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object object = parser.parse(new FileReader(file));
 
@@ -70,7 +71,7 @@ public class JSONDeEncoder {
         return bitmap;
     }
 
-    public static Bitmap readBitmapFromJSon(String fileName, String folderName) throws IOException, ParseException {
+    public static BitmapInterface readBitmapFromJSon(String fileName, String folderName) throws IOException, ParseException {
         File file = new File(folderName+"/"+fileName);
         return readBitmapFromJSon(file);
     }
@@ -103,7 +104,19 @@ public class JSONDeEncoder {
         Path next = null;
         if(i + 1 < lengthOfPath)
             next = recoverPath(testDataObject,i + 1,lengthOfPath);
-        return new Path(area,sign,length,hasChild,hasSibling,points,next);
+
+        Path path = new Path();
+        path.area = area;
+        path.sign = sign;
+        path.priv.len = length;
+        if (hasChild)
+            path.childlist = new Path();
+        if (hasSibling)
+            path.sibling = new Path();
+        path.priv.pt = points;
+        path.next = next;
+
+        return path;
     }
 
     public static Path readTestDataFromJSon(String fileName, String folderName) throws IOException, ParseException {

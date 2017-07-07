@@ -1,7 +1,6 @@
 package refactored.potrace.BitmapDecomposition;
 
-import refactored.potrace.Path;
-
+import General.*;
 public class BoundingBox {
     int x0, x1, y0, y1;
 

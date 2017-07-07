@@ -1,4 +1,4 @@
-package refactored.potrace.BitmapDecomposition;
+package TestMethods;
 
 import java.awt.*;
 

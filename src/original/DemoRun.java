@@ -1,17 +1,7 @@
 package original;
 
 import AdditionalCode.Bitmap;
-import AdditionalCode.BitmapTranslater;
-import AdditionalCode.Input.JSONDeEncoder;
-import AdditionalCode.OutputGraphical.Plotter;
-import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
 import AdditionalCode.Path;
-import AdditionalCode.PathTranslator;
-import org.json.simple.parser.ParseException;
-import original.potrace.Param;
-import original.potrace.PotraceLib;
-
-import java.io.IOException;
 
 /**
  * Created by andreydelany on 21.06.17.
@@ -21,7 +11,7 @@ public class DemoRun {
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static Path path;
-
+/*
     public static void main(String args[]) {
         loadBitmap();
 
@@ -56,5 +46,5 @@ public class DemoRun {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-   }
+   }*/
 }

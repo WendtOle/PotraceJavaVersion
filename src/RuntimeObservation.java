@@ -1,10 +1,7 @@
-import AdditionalCode.Bitmap;
-import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
-import org.json.simple.parser.ParseException;
-import refactored.PlotterRunTime;
-import refactored.potrace.Param;
-import refactored.potrace.PotraceLib;
+import General.BitmapInterface;
+import General.Param;
+import General.PotraceLibrary;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -16,10 +13,10 @@ import java.util.Locale;
 public class RuntimeObservation {
 
     static String type = "Refactored";
-    static int amountOfRuns = 20000;
+    static int amountOfRuns = 50000;
     static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
-    static Bitmap bitmap;
+    static BitmapInterface bitmap;
     static double[] msPerRun = new double[100];
 
     public static void main(String args[]){
@@ -37,9 +34,9 @@ public class RuntimeObservation {
     public static void loadBitmap(){
         try {
             bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFileName, bitMapFileFolder);
-        } catch (IOException e) {
+        } catch (org.json.simple.parser.ParseException e) {
             e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -54,9 +51,8 @@ public class RuntimeObservation {
     }
 
     private static long getTimeForOneRun() {
-        refactored.potrace.Bitmap translatedBitmap = BitmapTranslater.translateBitmapForRefactoredCode(bitmap);
         long startTime = System.nanoTime();
-        PotraceLib.potrace_trace(new Param(), translatedBitmap);
+        PotraceLibrary.potrace_trace(new Param(), bitmap);
         long endTime = System.nanoTime();
         return (endTime - startTime);
     }
@@ -75,6 +71,6 @@ public class RuntimeObservation {
     private static void showResults() {
         System.out.println("\n" + type);
         System.out.println("\n Average Amount of MS Needed for One Run: " + msPerRun[99] + " ms");
-        PlotterRunTime.plot(amountOfRuns/100,msPerRun, type, bitMapFileFolder+"/"+bitmapFileName);
+        PlotterRunTime.plot(amountOfRuns / 100, msPerRun, type, bitMapFileFolder + "/" + bitmapFileName);
     }
 }

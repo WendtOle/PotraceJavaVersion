@@ -1,14 +1,13 @@
 package refactored.potrace.BitmapDecomposition;
 
+import General.Path;
 import org.junit.Before;
 import org.junit.Test;
 import refactored.potrace.Bitmap;
-import refactored.potrace.Path;
 
 import java.awt.*;
 
 import static org.junit.Assert.assertFalse;
-
 /**
  * Created by andreydelany on 04.07.17.
  */

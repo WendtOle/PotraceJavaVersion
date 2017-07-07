@@ -1,6 +1,6 @@
 package refactored.potrace;
 
-public class Bitmap {
+public class Bitmap{
 
     public static int PIXELINWORD = 64;
     public static long BM_ALLBITS = (~0);

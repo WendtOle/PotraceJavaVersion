@@ -1,21 +1,22 @@
 package refactored.potrace;
 
-import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
-import AdditionalCode.Path;
-import AdditionalCode.PathTranslator;
+import General.BitmapInterface;
+import General.Param;
+import General.Path;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import refactored.potrace.BitmapDecomposition.Decompose;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static TestMethods.AssertPathes.assertEqualPathes;
 import static org.junit.Assert.assertEquals;
-import static refactored.potrace.BitmapDecomposition.AssertPathes.assertEqualPathes;
 
 /**
  * Created by andreydelany on 08/04/2017.
@@ -23,6 +24,7 @@ import static refactored.potrace.BitmapDecomposition.AssertPathes.assertEqualPat
 
 @RunWith(Parameterized.class)
 public class CharakterizeDecomposeTest {
+
 
     Path arrayOfPathes;
     Path actualFirstPath;
@@ -43,7 +45,7 @@ public class CharakterizeDecomposeTest {
             testParameters = new Object[bitmapFiles.length][];
             for (int i = 0; i < bitmapFiles.length; i++) {
                 try {
-                    Bitmap bitmap = BitmapTranslater.translateBitmapForRefactoredCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
+                    BitmapInterface bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]);
                     Path path = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
                     testParameters[i] = new Object[]{bitmap,path};
                 } catch (ParseException e) {
@@ -56,11 +58,12 @@ public class CharakterizeDecomposeTest {
         return testParameters;
     }
 
-    public CharakterizeDecomposeTest(Bitmap bitmap,
+    public CharakterizeDecomposeTest(BitmapInterface bitmap,
                                      Path expectedPath) {
 
         this.arrayOfPathes = expectedPath;
-        this.actualFirstPath = PathTranslator.refactoredPathToGeneralPath(PotraceLib.potrace_trace(new Param(),bitmap));
+        Decompose decompser = new Decompose();
+        this.actualFirstPath = decompser.getPathList(bitmap, new Param());
     }
 
     @Test
@@ -93,4 +96,5 @@ public class CharakterizeDecomposeTest {
         }
         return actualAmountOfPathes;
     }
+
 }

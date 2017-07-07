@@ -1,9 +1,11 @@
 package AdditionalCode;
 
+import General.BitmapInterface;
+
 /**
  * Created by andreydelany on 24.06.17.
  */
-public class Bitmap {
+public class Bitmap implements BitmapInterface {
     public static int PIXELINWORD = 64;
 
     public int width, height;
@@ -20,6 +22,18 @@ public class Bitmap {
         this.height = height;
         this.potraceWordsInOneLine = (width - 1) / PIXELINWORD + 1;
         this.potraceWords = new long[this.potraceWordsInOneLine * this.height];
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public long[] getWords() {
+        return potraceWords;
     }
 
     private static boolean bm_range(int x, int a) {

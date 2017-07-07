@@ -1,10 +1,10 @@
 package original.potrace;
 
+import General.Path;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  * Created by andreydelany on 05/04/2017.

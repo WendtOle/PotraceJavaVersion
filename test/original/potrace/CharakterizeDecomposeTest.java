@@ -1,20 +1,20 @@
 package original.potrace;
 
-import AdditionalCode.BitmapTranslater;
 import AdditionalCode.Input.JSONDeEncoder;
-import AdditionalCode.Path;
-import AdditionalCode.PathTranslator;
-import org.json.simple.parser.ParseException;
+import General.BitmapInterface;
+import General.Param;
+import General.Path;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static TestMethods.AssertPathes.assertEqualPathes;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -43,10 +43,10 @@ public class CharakterizeDecomposeTest {
             testParameters = new Object[bitmapFiles.length][];
             for (int i = 0; i < bitmapFiles.length; i++) {
                 try {
-                    Bitmap bitmap = BitmapTranslater.translateBitmapForOriginalCode(JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]));
+                    BitmapInterface bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]);
                     Path path = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
                     testParameters[i] = new Object[]{bitmap,path};
-                } catch (ParseException e) {
+                } catch (org.json.simple.parser.ParseException e) {
                     e.printStackTrace();
                 }
             }
@@ -56,11 +56,12 @@ public class CharakterizeDecomposeTest {
         return testParameters;
     }
 
-    public CharakterizeDecomposeTest(Bitmap bitmap,
+    public CharakterizeDecomposeTest(BitmapInterface bitmap,
                                      Path expectedPath) {
 
         this.arrayOfPathes = expectedPath;
-        this.actualFirstPath = PathTranslator.originalPathToGeneralPath(PotraceLib.potrace_trace(new Param(),bitmap));
+        Decompose decompser = new Decompose();
+        this.actualFirstPath = decompser.getPathList(bitmap,new Param());
     }
 
     @Test
@@ -70,13 +71,13 @@ public class CharakterizeDecomposeTest {
         int index = 0;
         Path currentExpectedPath = arrayOfPathes;
         Path currentActualPath = actualFirstPath;
-        comparePathes(index,currentExpectedPath,currentActualPath);
+        assertEqualPathes(index,currentExpectedPath,currentActualPath);
 
         while(currentExpectedPath.next != null) {
             currentExpectedPath = currentExpectedPath.next;
             currentActualPath = currentActualPath.next;
             index ++;
-            comparePathes(index,currentExpectedPath,currentActualPath);
+            assertEqualPathes(currentExpectedPath,currentActualPath);
         }
     }
 
@@ -92,30 +93,5 @@ public class CharakterizeDecomposeTest {
             currentPath = currentPath.next;
         }
         return actualAmountOfPathes;
-    }
-
-    private void comparePathes(int indexOfPath, Path expectedPath, Path actualPath){
-        compareSiblingChildStructure(indexOfPath,expectedPath,actualPath);
-        compareGeneralPathInformations(indexOfPath,expectedPath,actualPath);
-        comparePointsOfPath(indexOfPath,expectedPath,actualPath);
-    }
-
-    private void compareSiblingChildStructure(int indexOfPath, Path expectedPath, Path actualPath){
-        assertEquals("Childlist (" + indexOfPath+")", expectedPath.hasChild,actualPath.hasChild);
-        assertEquals("Sibling (" + indexOfPath+")", expectedPath.hasSibling,actualPath.hasSibling);
-    }
-
-    private void compareGeneralPathInformations(int indexOfPath, Path expectedPath, Path actualPath){
-        assertEquals("Area ("+indexOfPath+")",expectedPath.area,actualPath.area);
-        assertEquals("Sign ("+indexOfPath+")",expectedPath.sign,actualPath.sign);
-        assertEquals("Length ("+indexOfPath+")",expectedPath.length,actualPath.length);
-    }
-
-    private void comparePointsOfPath(int indexOfPath, Path expectedPath, Path actualPath){
-        for(int indexOfCurrentPoint = 0; indexOfCurrentPoint < expectedPath.pt.length; indexOfCurrentPoint ++){
-            Point expectedCurrentPoint = expectedPath.pt[indexOfCurrentPoint];
-            Point acutalCurrentPoint = actualPath.pt[indexOfCurrentPoint];
-            assertEquals("Point - " + indexOfCurrentPoint + " ("+indexOfPath + ")",expectedCurrentPoint,acutalCurrentPoint);
-        }
     }
 }

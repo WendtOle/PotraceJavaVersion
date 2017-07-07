@@ -1,10 +1,11 @@
 package original.potrace;
 
 import org.junit.*;
-
+import General.*;
 import java.awt.*;
+
+import static TestMethods.AssertPoints.assertEqualPoints;
 import static org.junit.Assert.*;
-import static refactored.potrace.BitmapDecomposition.AssertPoints.assertEqualPoints;
 
 public class decomposeTest {
 

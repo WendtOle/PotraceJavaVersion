@@ -1,4 +1,4 @@
-package refactored.potrace;
+package General;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -809,7 +809,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
             curve.alpha0[j] = alpha;	 /* remember "original" value of alpha */
 
             if (alpha >= alphamax) {  /* pointed corner */
-                curve.tag[j] = PotraceLib.POTRACE_CORNER;
+                curve.tag[j] = PotraceLibrary.POTRACE_CORNER;
                 curve.c[j][1] = curve.vertex[j];
                 curve.c[j][2] = p4;
             } else {
@@ -820,7 +820,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
                 }
                 p2 = Auxiliary.interval(.5+.5*alpha, curve.vertex[i], curve.vertex[j]);
                 p3 = Auxiliary.interval(.5+.5*alpha, curve.vertex[k], curve.vertex[j]);
-                curve.tag[j] = PotraceLib.POTRACE_CURVETO;
+                curve.tag[j] = PotraceLibrary.POTRACE_CURVETO;
                 curve.c[j][0] = p2;
                 curve.c[j][1] = p3;
                 curve.c[j][2] = p4;
@@ -1005,7 +1005,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
 
         /* pre-calculate convexity: +1 = right turn, -1 = left turn, 0 = corner */
         for (i=0; i<m; i++) {
-            if (pp.curve.tag[i] == PotraceLib.POTRACE_CURVETO) {
+            if (pp.curve.tag[i] == PotraceLibrary.POTRACE_CURVETO) {
                 convc[i] = Auxiliary.sign(dpara(pp.curve.vertex[Auxiliary.mod(i-1,m)], pp.curve.vertex[i], pp.curve.vertex[Auxiliary.mod(i+1,m)]));
             } else {
                 convc[i] = 0;
@@ -1018,7 +1018,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         p0 = pp.curve.vertex[0];
         for (i=0; i<m; i++) {
             i1 = Auxiliary.mod(i+1, m);
-            if (pp.curve.tag[i1] == PotraceLib.POTRACE_CURVETO) {
+            if (pp.curve.tag[i1] == PotraceLibrary.POTRACE_CURVETO) {
                 alpha = pp.curve.alpha[i1];
                 area += 0.3*alpha*(4-alpha)*dpara(pp.curve.c[i][2], pp.curve.vertex[i1], pp.curve.c[i1][2])/2;
                 area += dpara(p0, pp.curve.c[i][2], pp.curve.c[i1][2])/2;
@@ -1070,7 +1070,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
                 pp.ocurve.beta[i]    = pp.curve.beta[Auxiliary.mod(j,m)];
                 s[i] = t[i] = 1.0;
             } else {
-                pp.ocurve.tag[i] = PotraceLib.POTRACE_CURVETO;
+                pp.ocurve.tag[i] = PotraceLibrary.POTRACE_CURVETO;
                 pp.ocurve.c[i][0] = opt[j].c[0];
                 pp.ocurve.c[i][1] = opt[j].c[1];
                 pp.ocurve.c[i][2] = pp.curve.c[Auxiliary.mod(j,m)][2];
@@ -1091,6 +1091,28 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
         pp.ocurve.alphacurve = 1;
     }
 
+    /* return 0 on success, 1 on error with errno set. */
+    static Path process_path(Path plist, Param param) {
+        /* call downstream function with each Path */
 
+        for (Path p = plist; p!=null; p=p.next) {
+            calc_sums(p.priv);
+            calc_lon(p.priv);
+            bestpolygon(p.priv);
+            adjust_vertices(p.priv);
+            if (p.sign == '-') {   /* reverse orientation of negative paths */
+                reverse(p.priv.curve);
+            }
+            smooth(p.priv.curve, param.alphamax);
+            if (param.opticurve) {
+                opticurve(p.priv, param.opttolerance);
+                p.priv.fcurve = p.priv.ocurve;
+            } else {
+                p.priv.fcurve = p.priv.curve;
+            }
+            p.curve = Curve.privcurve_to_curve(p.priv.fcurve);
+        }
+        return plist;
 
+    }
 }

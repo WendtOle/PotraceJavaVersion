@@ -1,6 +1,7 @@
 package refactored.potrace.BitmapDecomposition;
 
 import refactored.potrace.*;
+import General.*;
 
 /**
  * Created by andreydelany on 28.06.17.

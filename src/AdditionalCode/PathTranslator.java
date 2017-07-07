@@ -1,12 +1,10 @@
 package AdditionalCode;
 
-import java.awt.*;
-
 /**
  * Created by andreydelany on 24.06.17.
  */
 public class PathTranslator {
-
+/*
     public static Path originalPathToGeneralPath(original.potrace.Path path) {
         int area = path.area;
         int sign = path.sign;
@@ -38,4 +36,5 @@ public class PathTranslator {
         Path translatedPath = new Path(area,sign,length,hasChild,hasSibling,pt,curve,next);
         return translatedPath;
     }
+    */
 }

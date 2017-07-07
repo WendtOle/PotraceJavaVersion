@@ -1,8 +1,10 @@
 package original.potrace;
 
+import General.*;
+
 import java.awt.*;
 
-public class Decompose {
+public class Decompose implements DecompositionInterface{
 
     static boolean detrand(int x, int y) {
         int z; //TODO unsigned
@@ -446,13 +448,18 @@ public class Decompose {
         return false;
     }
 
-    //Entwickler:
     /* Decompose the given Bitmap into paths. Returns a linked List of
     path_t objects with the fields len, pt, area, sign filled
     in. Returns 0 on success with plistp set, or -1 on error with errno
     set. */
 
-    public static Path bm_to_pathlist(Bitmap bm, Param param) {
+    public General.Path getPathList(BitmapInterface generalBitmap, General.Param param) {
+        Bitmap bitmap = new Bitmap(generalBitmap.getWidth(),generalBitmap.getHeight());
+        bitmap.map = generalBitmap.getWords();
+        return bm_to_pathlist(bitmap,param);
+    }
+
+    public static Path bm_to_pathlist(Bitmap bm, General.Param param) {
         int x;
         int y;
         Path p;

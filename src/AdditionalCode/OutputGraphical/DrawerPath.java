@@ -1,6 +1,6 @@
 package AdditionalCode.OutputGraphical;
 
-import AdditionalCode.Path;
+import General.*;
 
 import java.awt.*;
 import java.awt.geom.CubicCurve2D;

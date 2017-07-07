@@ -19,10 +19,11 @@ public class PotraceLib {
     state (with st->status == POTRACE_STATUS_INCOMPLETE, and with errno
     set). Complete or incomplete Potrace state can be freed with
     potrace_state_free(). */
-
-    public static Path potrace_trace(Param param, Bitmap bm) {
+/*
+    public Path potrace_trace(Param param, Bitmap bm) {
         Path plist = Decompose.bm_to_pathlist(bm, param);
         plist = Trace.process_path(plist, param);
         return plist;
     }
+    */
 }

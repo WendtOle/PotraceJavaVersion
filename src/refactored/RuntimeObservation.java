@@ -1,21 +1,10 @@
 package refactored;
 
-import AdditionalCode.Bitmap;
-import AdditionalCode.BitmapTranslater;
-import AdditionalCode.Input.JSONDeEncoder;
-import org.json.simple.parser.ParseException;
-import refactored.potrace.Param;
-import refactored.potrace.PotraceLib;
-
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.Locale;
-
 /**
  * Created by andreydelany on 21.06.17.
  */
 public class RuntimeObservation {
-
+/*
     static String type = "Refactored";
     static int amountOfRuns = 20000;
     static String bitmapFileName = "01.json";
@@ -78,4 +67,5 @@ public class RuntimeObservation {
         System.out.println("\n Average Amount of MS Needed for One Run: " + msPerRun[99] + " ms");
         PlotterRunTime.plot(amountOfRuns/100,msPerRun, type, bitMapFileFolder+"/"+bitmapFileName);
     }
+    */
 }

@@ -1,7 +1,6 @@
 package refactored.potrace.BitmapDecomposition;
 
-import refactored.potrace.Path;
-
+import General.*;
 /**
  * Created by andreydelany on 29.06.17.
  */
@@ -51,12 +50,12 @@ public class NextComponentReconstruction {
     }
 
     private void addPathToNextComponent(Path path) {
-        originPath = Path.insertElementAtTheEndOfList(path, originPath);
+        originPath = List.elementInsertAtTheLastNextOfList(path, originPath);
     }
 
     private void scheduleChildrenOfCurrentChildForLaterProcessing(Path path) {
         if (path.childlist != null) {
-            pathesThatNeedToProcess = Path.insertElementAtTheEndOfList(path.childlist,pathesThatNeedToProcess);
+            pathesThatNeedToProcess = List.elementInsertAtTheLastNextOfList(path.childlist,pathesThatNeedToProcess);
         }
     }
 }
