@@ -9,8 +9,7 @@ public class FindPath {
     int sign;
     TurnPolicyEnum turnPolicy;
     BitmapHandlerInterface bitmapHandler;
-    Point[] pointsOfPath = new Point[1];
-    int indexOfCurrentPoint = 0;
+    PointShape pointShape;
     Point currentPoint;
     int areaOfPath = 0;
 
@@ -18,6 +17,7 @@ public class FindPath {
         this.sign = sign;
         this.turnPolicy = turnPolicy;
         this.bitmapHandler = new BitmapHandler(bitmap);
+        this.pointShape = new PointShape();
         setInitialPointPosition(firstFilledPixel);
 
         findPath();
@@ -29,7 +29,7 @@ public class FindPath {
     }
 
     public Path getPath(){
-        return new Path(areaOfPath, sign, indexOfCurrentPoint, pointsOfPath);
+        return new Path(areaOfPath, sign, pointShape.getLengthOfPath(), pointShape.getPointsOfPath());
     }
 
     private void findPath() {
@@ -41,31 +41,9 @@ public class FindPath {
     }
 
     private void moveInDirection() {
-        addCurrentPointToPath();
+        pointShape.addPointToPointsOfPath(currentPoint);
         moveToNextPoint();
         updateAreaOfPath();
-    }
-
-    private void addCurrentPointToPath() {
-        extendPointArrayCapacityWhenNecessary();
-        pointsOfPath[indexOfCurrentPoint] = (Point)currentPoint.clone();
-        indexOfCurrentPoint++;
-    }
-
-    private void extendPointArrayCapacityWhenNecessary() {
-        if (isPointArrayNotBigEnoughForAnotherPoint())
-            expendPointArrayCapacity();
-    }
-
-    private boolean isPointArrayNotBigEnoughForAnotherPoint() {
-        return indexOfCurrentPoint >= pointsOfPath.length;
-    }
-
-    private void expendPointArrayCapacity() {
-        int newSize = (int)(1.3 * (pointsOfPath.length+100));
-        Point[] newSizedPointArray = new Point[newSize];
-        System.arraycopy(pointsOfPath,0,newSizedPointArray,0, pointsOfPath.length);
-        pointsOfPath = newSizedPointArray;
     }
 
     private void moveToNextPoint() {
