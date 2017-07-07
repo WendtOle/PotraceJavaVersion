@@ -3,7 +3,7 @@ package refactored.potrace;
 /**
  * Created by andreydelany on 28.06.17.
  */
-public class TreeStructurTransformation {
+public class TreeStructurTransformation implements TreeStructurTransformationInterface{
     Path pathList;
     Bitmap bitmap;
 

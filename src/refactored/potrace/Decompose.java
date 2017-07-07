@@ -62,7 +62,7 @@ public class Decompose {
     }
 
     private void structurePathlistAsTree() {
-        TreeStructurTransformation pathListToTree = new TreeStructurTransformation(pathList,workCopy);
+        TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,workCopy);
         pathList = pathListToTree.getTreeStructure();
     }
 
