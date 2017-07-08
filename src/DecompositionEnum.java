@@ -15,4 +15,12 @@ public enum DecompositionEnum {
         }
         return null;
     }
+
+    public static String getDecompositionMethodsAsString() {
+        String allMethods = "";
+        for(DecompositionEnum currentDecompositionKind : DecompositionEnum.values()){
+            allMethods += currentDecompositionKind.toString() + " ";
+        }
+        return allMethods;
+    }
 }

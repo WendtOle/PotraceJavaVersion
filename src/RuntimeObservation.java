@@ -36,8 +36,7 @@ public class RuntimeObservation {
 
     private void printGeneralInformationAboutTimeObservation() {
         String status = "RunTimeObservation of Decomposition: \n";
-        for(DecompositionEnum currentKindOfDecomposition : DecompositionEnum.values())
-            status += currentKindOfDecomposition.toString() + " ";
+        status += DecompositionEnum.getDecompositionMethodsAsString();
         status += "\nAmountOfRuns: " + printRoundNumberWithPoints(amountOfRuns);
         System.out.println(status);
     }
