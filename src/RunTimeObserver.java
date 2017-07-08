@@ -11,6 +11,8 @@ public class RunTimeObserver implements Runnable {
     DecompositionEnum decomposerIdentifier;
     BitmapInterface bitmapInterface;
     double[] msPerRun;
+    int currentRun;
+    long totalRunTime = 0;
 
     public RunTimeObserver(int amountOfRuns, DecompositionEnum decomposer, BitmapInterface bitmapInterface){
         this.amountOfRuns = amountOfRuns;
@@ -20,19 +22,28 @@ public class RunTimeObserver implements Runnable {
     }
     @Override
     public void run() {
-        long totalRunTime = 0;
         Param params = new Param();
-        for (int currentRun = 0; currentRun < amountOfRuns; currentRun++) {
+        for (currentRun = 0; currentRun < amountOfRuns; currentRun++) {
             DecompositionInterface decomposer = decomposerIdentifier.getDecomposer();
+
             long startTime = System.nanoTime();
             decomposer.getPathList(bitmapInterface,params);
             long endTime = System.nanoTime();
-            totalRunTime += (endTime - startTime);
-            msPerRun[currentRun] = totalRunTime / ((double) (currentRun + 1) * 1000000);
+
+            saveRunTime(startTime,endTime);
         }
+    }
+
+    private void saveRunTime(long startTime,long endTime) {
+        totalRunTime += (endTime - startTime);
+        msPerRun[currentRun] = totalRunTime / ((double) (currentRun + 1) * 1000000);
     }
 
     public double[] getResults() {
         return msPerRun;
+    }
+
+    public double getProcentageToFinish() {
+        return (double)currentRun / (double)amountOfRuns;
     }
 }
