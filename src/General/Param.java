@@ -1,6 +1,6 @@
 package General;
 
-public class Param implements ParamInterface {
+public class Param {
 
     public int turdsize;        /* area of largest Path to be ignored */
     public int turnpolicy;      /* resolves ambiguous turns in Path decomposition */

@@ -13,15 +13,19 @@ public class Decompose implements DecompositionInterface {
     Path pathList = null;
 
     public Path getPathList(BitmapInterface generalBitmap, General.Param param) {
-        Bitmap bitmap = new Bitmap(generalBitmap.getWidth(),generalBitmap.getHeight());
-        bitmap.words = generalBitmap.getWords();
-
+        Bitmap bitmap = translateBitmap(generalBitmap);
         this.workCopy = bitmap.duplicate();
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.pathInverterForWorkCopy = new PathInverter(workCopy);
         this.param = param;
         decomposeBitmapIntoPathlistNew();
         return pathList;
+    }
+
+    private Bitmap translateBitmap(BitmapInterface generalBitmap) {
+        Bitmap bitmap = new Bitmap(generalBitmap.getWidth(),generalBitmap.getHeight());
+        bitmap.words = generalBitmap.getWords();
+        return bitmap;
     }
 
     private void decomposeBitmapIntoPathlistNew() {
