@@ -9,7 +9,7 @@ public class Path {
     public int area;                //area of the Bitmap Path
     public int sign;                //+ or -, depending on orientation
     public Curve curve;     // this Path vector data
-    public Path next;       //linked original.potrace.List structure
+    public Path next;       //linked original.List structure
     public Path childlist;  //tree structure
     public Path sibling;    //tree structure
     public PrivePath priv;  /* private state */

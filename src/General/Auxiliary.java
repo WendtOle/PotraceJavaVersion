@@ -46,7 +46,7 @@ public class Auxiliary {
         return (a)>0 ? (a) : -(a);
     }
 
-    static int min(int a, int b) {
+    public static int min(int a, int b) {
         return (a)<(b) ? (a) : (b);
     }
 }
