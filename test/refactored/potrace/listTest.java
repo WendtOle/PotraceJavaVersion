@@ -1,15 +1,16 @@
-package original.potrace;
+package refactored.potrace;
 
 import org.junit.Before;
 import org.junit.Test;
 import General.*;
+import refactored.potrace.List;
+
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by andreydelany on 07/03/2017.
  */
 public class listTest {
-
     Path first, second, third, fourth;
 
     @Before

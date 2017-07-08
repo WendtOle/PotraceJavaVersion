@@ -8,7 +8,6 @@ import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import refactored.potrace.BitmapDecomposition.Decompose;
 
 import java.io.File;
 import java.io.IOException;
