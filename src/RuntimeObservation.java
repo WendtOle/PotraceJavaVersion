@@ -1,7 +1,5 @@
 import AdditionalCode.Input.JSONDeEncoder;
 import General.BitmapInterface;
-import General.DecompositionInterface;
-import General.Param;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -12,30 +10,74 @@ import java.util.Locale;
  */
 public class RuntimeObservation {
 
-    static String type = "Refactored";
-    static int maxAmountOfRuns = 20000;
-    static String bitmapFileName = "02.json";
+    static int maxAmountOfRuns = 100000;
+    static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
-    static BitmapInterface bitmap;
-    static double[][] msPerRun = new double[2][100];
 
-    public static void main(String args[]){
-        loadBitmap();
-        long totalRefactoredRunTime = 0;
-        long totalOriginalRunTime = 0;
-        printGeneralInformationAboutRun();
-        for (int i = 0; i < maxAmountOfRuns; i++) {
-            totalRefactoredRunTime += getTimeForOneRefactoredRun();
-            totalOriginalRunTime += getTimeForOneOriginalRun();
-            saveCurrentAverageRunTime(totalRefactoredRunTime,totalOriginalRunTime,i);
-            showProgress(i);
-        }
+    int amountOfRuns;
+    BitmapInterface bitmap;
+    Thread[] threads;
+    RunTimeObserver[] oberserver;
+    double msPerRun[][];
+
+    public static void main(String args[]) throws InterruptedException {
+        RuntimeObservation observation = new RuntimeObservation(bitmapFileName,bitMapFileFolder,maxAmountOfRuns);
+        observation.runRunTimeOberservation();
+    }
+
+    public RuntimeObservation(String bitmapFileName, String bitmapFolderName, int amountOfRuns) {
+        setBitmap(bitmapFileName,bitmapFolderName);
+        this.amountOfRuns = amountOfRuns;
+        createDifferentThreads();
+        msPerRun = new double[DecompositionEnum.values().length][amountOfRuns];
+    }
+
+    public void runRunTimeOberservation(){
+        startAllThreads();
+        waitThatAllThreadsFinish();
+        getResultsFromObservers();
+        stopThreads();
         showResults();
     }
 
-    public static void loadBitmap(){
+    private void getResultsFromObservers() {
+        for(int i = 0; i < threads.length; i++){
+            msPerRun[i] = oberserver[i].getResults();
+        }
+    }
+
+    private void startAllThreads() {
+        for(Thread currentThread:threads)
+            currentThread.start();
+    }
+
+    private void waitThatAllThreadsFinish(){
+        for(Thread currentThread:threads){
+            try {
+                currentThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void stopThreads() {
+        for(Thread currentThread:threads)
+            currentThread.interrupt();
+    }
+
+    private void createDifferentThreads() {
+        threads = new Thread[DecompositionEnum.values().length];
+        oberserver = new RunTimeObserver[DecompositionEnum.values().length];
+        for (int i = 0; i < threads.length; i++) {
+            oberserver[i] = new RunTimeObserver(amountOfRuns, DecompositionEnum.values()[i], bitmap);
+            threads[i] = new Thread(oberserver[i]);
+        }
+    }
+
+    private void setBitmap(String bitmapFileName, String bitmapFolderName){
         try {
-            bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFileName, bitMapFileFolder);
+            bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFileName,bitmapFolderName);
         } catch (org.json.simple.parser.ParseException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -43,53 +85,16 @@ public class RuntimeObservation {
         }
     }
 
-    private static void printGeneralInformationAboutRun() {
-        System.out.println("Test starts with "+ printRoundNumberWithPoints(maxAmountOfRuns) + " Rounds:");
-        System.out.print("Progress : ||||||||||||||||||||\n           ");
-    }
-
     private static String printRoundNumberWithPoints (int i) {
         return NumberFormat.getNumberInstance(Locale.GERMAN).format(i);
     }
 
-    private static long getTimeForOneRefactoredRun() {
-        DecompositionInterface decomposer = new refactored.Decompose();
-        Param params = new Param();
-
-        long startTime = System.nanoTime();
-        decomposer.getPathList(bitmap,params);
-        long endTime = System.nanoTime();
-        return (endTime - startTime);
-    }
-
-    private static long getTimeForOneOriginalRun() {
-        DecompositionInterface decomposer = new original.Decompose();
-        Param params = new Param();
-
-        long startTime = System.nanoTime();
-        decomposer.getPathList(bitmap,params);
-        long endTime = System.nanoTime();
-        return (endTime - startTime);
-    }
-
-    private static void saveCurrentAverageRunTime(long refactoredRunTimes, long originalRunTimes, int currentRunIndex) {
-        if(currentRunIndex % (maxAmountOfRuns /100) == 0) {
-            int identifier = currentRunIndex / (maxAmountOfRuns / 100);
-            msPerRun[0][identifier] = refactoredRunTimes / ((double) (currentRunIndex + 1) * 1000000);
-            msPerRun[1][identifier] = originalRunTimes / ((double) (currentRunIndex + 1) * 1000000);
+    private void showResults() {
+        System.out.println("Average Amount of MS Needed for One Run");
+        for(int i = 0; i < msPerRun.length; i++){
+            double lastValue = msPerRun[i][amountOfRuns-1];
+            System.out.println(DecompositionEnum.values()[i] + ": " + lastValue + " ms");
         }
-    }
-
-    private static void showProgress(int currentRunIndex) {
-        if (currentRunIndex % (maxAmountOfRuns /20) == 0) {
-            System.out.print("|");
-        }
-    }
-
-    private static void showResults() {
-        System.out.println("\nAverage Amount of MS Needed for One Run");
-        System.out.println("Refactored: " + msPerRun[0][99] + " ms");
-        System.out.println("Original: " + msPerRun[1][99] + " ms");
-        PlotterRunTime.plot(maxAmountOfRuns / 100, msPerRun, type, bitmapFileName);
+        PlotterRunTime.plot(amountOfRuns, msPerRun,bitmapFileName);
     }
 }
