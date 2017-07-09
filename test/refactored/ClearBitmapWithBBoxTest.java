@@ -41,7 +41,7 @@ public class ClearBitmapWithBBoxTest {
         bbox.y0 = 1;
         bbox.y1 = 2;
 
-        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(bitmap);
+        ClearBitmapWithBoundingBox bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
         bitmapClearer.clearBitmapWithBBox(bbox);
 
         assertTrue(bitmapHandler.isPixelFilled(new Point(0,0)));
@@ -58,7 +58,7 @@ public class ClearBitmapWithBBoxTest {
         bbox.y0 = 1;
         bbox.y1 = 3;
 
-        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(bitmap);
+        ClearBitmapWithBoundingBox bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
         bitmapClearer.clearBitmapWithBBox(bbox);
 
         assertTrue(bitmapHandler.isPixelFilled(new Point(0,0)));
@@ -75,7 +75,7 @@ public class ClearBitmapWithBBoxTest {
         bbox.y0 = 1;
         bbox.y1 = 2;
 
-        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(bitmap);
+        ClearBitmapWithBoundingBox bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
         bitmapClearer.clearBitmapWithBBox(bbox);
 
         assertFalse(bitmapHandler.isPixelFilled(new Point(65,1)));
@@ -89,7 +89,7 @@ public class ClearBitmapWithBBoxTest {
         bbox.y0 = 1;
         bbox.y1 = 3;
 
-        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(bitmap);
+        ClearBitmapWithBoundingBox bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
         bitmapClearer.clearBitmapWithBBox(bbox);
 
         assertFalse(bitmapHandler.isPixelFilled(new Point(1,1)));
@@ -106,7 +106,7 @@ public class ClearBitmapWithBBoxTest {
         bbox.y0 = 1;
         bbox.y1 = 2;
 
-        ClearBitmapWithBBox bitmapClearer = new ClearBitmapWithBBox(bitmap);
+        ClearBitmapWithBoundingBox bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
         bitmapClearer.clearBitmapWithBBox(bbox);
 
         assertFalse(bitmapHandler.isPixelFilled(new Point(0,1)));

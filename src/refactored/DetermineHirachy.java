@@ -9,14 +9,14 @@ import java.awt.*;
 public class DetermineHirachy {
 
     BitmapHandlerInterface bitmapHandler;
-    ClearBitmapWithBBox bitmapClearer;
+    ClearBitmapWithBoundingBox bitmapClearer;
     PathInverter inverter;
     BoundingBox boundingBox;
     Path referencePath, pathesToOrder;
 
     public DetermineHirachy(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
-        this.bitmapClearer = new ClearBitmapWithBBox(bitmap);
+        this.bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
         this.inverter = new PathInverter(bitmap);
     }
 
