@@ -12,7 +12,7 @@ public class DirectionHandler {
     Point direction ;
     Point currentPoint;
     TurnPolicyEnum turnPolicy;
-    boolean isRightPixelFilled, isLeftPixelFilled;
+    boolean isRightPixelFilled, isLeftPixelEmpty;
     int sign;
 
     public DirectionHandler(Bitmap bitmap, TurnPolicyEnum turnPolicy, int sign) {
@@ -23,21 +23,21 @@ public class DirectionHandler {
     }
 
     public Point turnInNextDirection(Point currentPoint) {
-        gatherSituationInformations(currentPoint);
+        gatherInformationAboutCircumstances(currentPoint);
         performTurn();
         return direction;
     }
 
-    private void gatherSituationInformations(Point currentPoint) {
+    private void gatherInformationAboutCircumstances(Point currentPoint) {
         this.currentPoint = currentPoint;
         this.isRightPixelFilled = isRightPixelFilled();
-        this.isLeftPixelFilled = isLeftPixelFilled();
+        this.isLeftPixelEmpty = !isLeftPixelFilled();
     }
 
     private boolean isRightPixelFilled() {
         int xComponent = currentPoint.x + (direction.x+direction.y-1)/2;
-        int yCompontent = currentPoint.y + (direction.y-direction.x-1)/2;
-        return bitmapHandler.isPixelFilled(new Point(xComponent,yCompontent));
+        int yComponent = currentPoint.y + (direction.y-direction.x-1)/2;
+        return bitmapHandler.isPixelFilled(new Point(xComponent,yComponent));
     }
 
     private boolean isLeftPixelFilled() {
@@ -54,7 +54,6 @@ public class DirectionHandler {
     }
 
     private  boolean isAmbiguousSituation() {
-        boolean isLeftPixelEmpty = !isLeftPixelFilled;
         return isRightPixelFilled && isLeftPixelEmpty;
     }
 
@@ -78,10 +77,9 @@ public class DirectionHandler {
     }
 
     private void performTurnInNormalSituation() {
-        if (isRightPixelFilled) {
+        if (isRightPixelFilled)
             performRightTurn();
-        } else if (!isLeftPixelFilled) {
+        else if (isLeftPixelEmpty)
             performLeftTurn();
-        }
     }
 }
