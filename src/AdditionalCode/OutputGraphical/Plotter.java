@@ -1,6 +1,6 @@
 package AdditionalCode.OutputGraphical;
 
-import General.BitmapInterface;
+import General.Bitmap;
 import General.Path;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class Plotter {
     static int boarderVertically = 23;
 
 
-    public Plotter(BitmapInterface bitmap, Path path, PlotterOptionsEnum option){
+    public Plotter(Bitmap bitmap, Path path, PlotterOptionsEnum option){
         this.path = path;
         this.option = option;
         setOptimalScale(bitmap);
@@ -31,9 +31,9 @@ public class Plotter {
         jFrame.setSize(dimensionsOfWindow);
     };
 
-    private void setOptimalScale(BitmapInterface bitmap) {
-        double scaleWidth = dimensionsOfWindow.width / bitmap.getWidth();
-        double scaleHeight = dimensionsOfWindow.height / bitmap.getHeight();
+    private void setOptimalScale(Bitmap bitmap) {
+        double scaleWidth = dimensionsOfWindow.width / bitmap.w;
+        double scaleHeight = dimensionsOfWindow.height / bitmap.h;
 
         if (scaleHeight < scaleWidth) {
             this.scale = scaleHeight;
@@ -42,9 +42,9 @@ public class Plotter {
         }
     }
 
-    private void updateDimensionOfWindow(BitmapInterface bitmap) {
-        dimensionsOfWindow.width = (int)(bitmap.getWidth() * scale) + boarderHorizontally;
-        dimensionsOfWindow.height = (int)(bitmap.getHeight() * scale) + boarderVertically;
+    private void updateDimensionOfWindow(Bitmap bitmap) {
+        dimensionsOfWindow.width = (int)(bitmap.w * scale) + boarderHorizontally;
+        dimensionsOfWindow.height = (int)(bitmap.h * scale) + boarderVertically;
     }
 
     public void plot() {

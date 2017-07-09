@@ -1,6 +1,7 @@
 package AdditionalCode.Input;
 
-import AdditionalCode.Bitmap;
+import AdditionalCode.BitmapManipulator;
+import General.Bitmap;
 
 import java.awt.*;
 import java.util.Random;
@@ -16,7 +17,8 @@ public class RandomGeneratedBitmap extends Bitmap {
     public RandomGeneratedBitmap(int maxWidth, int maxHeight, double noiseRatio) {
         super();
         Dimension randomDimensions = generateRandomDimensions(maxWidth,maxHeight);
-        setDimensions(randomDimensions.width,randomDimensions.height);
+        this.w = randomDimensions.width;
+        this.h = randomDimensions.height;
         fillBitmapWithRandomValues(noiseRatio);
     }
 
@@ -27,10 +29,10 @@ public class RandomGeneratedBitmap extends Bitmap {
     }
 
     private void fillBitmapWithRandomValues(double noiseRatio) {
-        for (int y = 0; y < height; y++)
-            for(int x = 0; x < width; x++) {
+        for (int y = 0; y < h; y++)
+            for(int x = 0; x < w; x++) {
                 if(isPixelFilled(noiseRatio))
-                    Bitmap.BM_PUT(this,x,y,true);
+                    BitmapManipulator.BM_PUT(this,x,y,true);
             }
     }
 

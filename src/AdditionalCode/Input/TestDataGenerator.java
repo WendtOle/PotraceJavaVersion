@@ -1,7 +1,7 @@
 package AdditionalCode.Input;
 
-import AdditionalCode.Bitmap;
 import AdditionalCode.OutputConsol.PrinterBitmap;
+import General.Bitmap;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;

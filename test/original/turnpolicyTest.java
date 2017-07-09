@@ -1,10 +1,9 @@
 package original;
 
+import General.Bitmap;
 import General.Path;
 import org.junit.Before;
 import org.junit.Test;
-import original.Bitmap;
-import original.Decompose;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,13 +17,13 @@ public class turnpolicyTest {
     @Before
     public void prepareBitmaps() {
         simpleDiagonalBitmap = new Bitmap(2,2);
-        Bitmap.BM_PUT(simpleDiagonalBitmap,0,0,true);
-        Bitmap.BM_PUT(simpleDiagonalBitmap,1,1,true);
+        BitmapManipulator.BM_PUT(simpleDiagonalBitmap,0,0,true);
+        BitmapManipulator.BM_PUT(simpleDiagonalBitmap,1,1,true);
 
         biggerDiagonalBitmap = new Bitmap(3,3);
-        Bitmap.BM_PUT(biggerDiagonalBitmap,0,0,true);
-        Bitmap.BM_PUT(biggerDiagonalBitmap,1,1,true);
-        Bitmap.BM_PUT(biggerDiagonalBitmap,2,2,true);
+        BitmapManipulator.BM_PUT(biggerDiagonalBitmap,0,0,true);
+        BitmapManipulator.BM_PUT(biggerDiagonalBitmap,1,1,true);
+        BitmapManipulator.BM_PUT(biggerDiagonalBitmap,2,2,true);
 
     }
 

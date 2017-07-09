@@ -1,5 +1,7 @@
 package refactored;
 
+import General.Bitmap;
+
 import java.awt.*;
 
 /**
@@ -15,7 +17,7 @@ public class NextFilledPixelFinder {
     public NextFilledPixelFinder(Bitmap bitmap){
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.bitmap = bitmap;
-        currentPixel = new Point(0,bitmap.height-1);
+        currentPixel = new Point(0,bitmap.h-1);
     }
 
     public boolean isThereAFilledPixel() {

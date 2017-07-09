@@ -1,10 +1,7 @@
-package refactored;
-
 import AdditionalCode.Input.JSONDeEncoder;
-import General.Bitmap;
-import General.Param;
-import General.Path;
+import General.*;
 import org.json.simple.parser.ParseException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -25,8 +22,8 @@ import static org.junit.Assert.assertEquals;
 public class CharakterizeDecomposeTest {
 
 
-    Path arrayOfPathes;
-    Path actualFirstPath;
+    Path expectedPath;
+    Path[] actualFirstPath;
 
     @Parameterized.Parameters(name = "Testing {index}. BitmapManipulator")
     public static Collection testData() {
@@ -60,30 +57,36 @@ public class CharakterizeDecomposeTest {
     public CharakterizeDecomposeTest(Bitmap bitmap,
                                      Path expectedPath) {
 
-        this.arrayOfPathes = expectedPath;
-        Decompose decomposer = new Decompose();
-        this.actualFirstPath = decomposer.getPathList(bitmap, new Param());
-    }
-
-    @Test
-    public void checkThatAllPathesAreTheSame() {
-        checkThatThereAreSameNumberOfPathes();
-
-        int index = 0;
-        Path currentExpectedPath = arrayOfPathes;
-        Path currentActualPath = actualFirstPath;
-        assertEqualPathes(index,currentExpectedPath,currentActualPath);
-
-        while(currentExpectedPath.next != null) {
-            currentExpectedPath = currentExpectedPath.next;
-            currentActualPath = currentActualPath.next;
-            index ++;
-            assertEqualPathes(index,currentExpectedPath,currentActualPath);
+        this.expectedPath = expectedPath;
+        this.actualFirstPath = new Path[DecompositionEnum.values().length];
+        for (int i = 0; i < DecompositionEnum.values().length; i++) {
+            DecompositionInterface decomposer = DecompositionEnum.values()[i].getDecomposer();
+            this.actualFirstPath[i] = decomposer.getPathList(bitmap, new Param());
         }
     }
 
-    private void checkThatThereAreSameNumberOfPathes() {
-        assertEquals("Number of Pathes", countPathes(arrayOfPathes),countPathes(actualFirstPath));
+    @Ignore
+    @Test
+    public void checkThatAllPathesAreTheSame() {
+
+        Path currentExpectedPath = expectedPath;
+        for(Path currentActualPath : actualFirstPath){
+            checkThatThereAreSameNumberOfPathes(currentActualPath);
+            int index = 0;
+            assertEqualPathes(index,currentExpectedPath,currentActualPath);
+
+            while(currentExpectedPath.next != null) {
+                currentExpectedPath = currentExpectedPath.next;
+                currentActualPath = currentActualPath.next;
+                index ++;
+                assertEqualPathes(index,currentExpectedPath,currentActualPath);
+            }
+        }
+
+    }
+
+    private void checkThatThereAreSameNumberOfPathes(Path actualPath) {
+        assertEquals("Number of Pathes", countPathes(expectedPath),countPathes(actualPath));
     }
 
     private int countPathes(Path path) {

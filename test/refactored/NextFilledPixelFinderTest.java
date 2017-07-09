@@ -1,11 +1,8 @@
 package refactored;
 
+import General.Bitmap;
 import org.junit.Before;
 import org.junit.Test;
-import refactored.Bitmap;
-import refactored.BitmapHandler;
-import refactored.BitmapHandlerInterface;
-import refactored.NextFilledPixelFinder;
 
 import java.awt.*;
 

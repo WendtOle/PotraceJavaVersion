@@ -1,8 +1,7 @@
 package AdditionalCode.Input;
 
-import General.*;
-import AdditionalCode.Bitmap;
-import General.BitmapInterface;
+import General.Bitmap;
+import General.Path;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,11 +23,11 @@ public class JSONDeEncoder {
         String name = getNameForNewBitmap(folderName);
 
         JSONObject bitmapObject = new JSONObject();
-        bitmapObject.put("width",bitmap.width);
-        bitmapObject.put("height",bitmap.height);
+        bitmapObject.put("width",bitmap.w);
+        bitmapObject.put("height",bitmap.h);
         JSONArray map = new JSONArray();
-        for(int i = 0; i < bitmap.potraceWords.length; i++) {
-            map.add(bitmap.potraceWords[i]);
+        for(int i = 0; i < bitmap.map.length; i++) {
+            map.add(bitmap.map[i]);
         }
         bitmapObject.put("map", map);
 
@@ -57,7 +56,7 @@ public class JSONDeEncoder {
         return name;
     }
 
-    public static BitmapInterface readBitmapFromJSon(File file) throws IOException, ParseException {
+    public static Bitmap readBitmapFromJSon(File file) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
         Object object = parser.parse(new FileReader(file));
 
@@ -67,11 +66,11 @@ public class JSONDeEncoder {
         int height = (int)(long)bitmapObject.get("height");
         long[] map = objectToLongArray(bitmapObject.get("map"));
         Bitmap bitmap = new Bitmap(width,height);
-        bitmap.potraceWords = map;
+        bitmap.map = map;
         return bitmap;
     }
 
-    public static BitmapInterface readBitmapFromJSon(String fileName, String folderName) throws IOException, ParseException {
+    public static Bitmap readBitmapFromJSon(String fileName, String folderName) throws IOException, ParseException {
         File file = new File(folderName+"/"+fileName);
         return readBitmapFromJSon(file);
     }

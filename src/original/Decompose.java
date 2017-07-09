@@ -33,7 +33,7 @@ public class Decompose implements DecompositionInterface{
 
 
     /* ---------------------------------------------------------------------- */
-    /* Auxiliary Bitmap manipulations */
+    /* Auxiliary BitmapManipulator manipulations */
 
     /* set the excess padding to 0 */
     public static void bm_clearexcess(Bitmap bm) {
@@ -43,13 +43,13 @@ public class Decompose implements DecompositionInterface{
         if (bm.w % Bitmap.PIXELINWORD != 0) {
             mask = Bitmap.BM_ALLBITS << (Bitmap.PIXELINWORD - (bm.w % Bitmap.PIXELINWORD));
             for (y=0; y<bm.h; y++) {
-                bm.map[y * bm.dy + bm.dy - 1] = Bitmap.bm_index(bm,bm.w, y) & mask;
+                bm.map[y * bm.dy + bm.dy - 1] = BitmapManipulator.bm_index(bm,bm.w, y) & mask;
             }
         }
     }
 
     /* clear the bm, assuming the bounding box is set correctly (faster
-    than clearing the whole Bitmap) */
+    than clearing the whole BitmapManipulator) */
 
     static void clear_bm_with_bbox(Bitmap bm, BBox bbox) {
         int imin = (bbox.x0 / Bitmap.PIXELINWORD);
@@ -66,8 +66,8 @@ public class Decompose implements DecompositionInterface{
     /* ---------------------------------------------------------------------- */
     /* Auxiliary functions */
 
-    /* return the "majority" value of Bitmap bm at intersection (x,y). We
-    assume that the Bitmap is balanced at "radius" 1.  */
+    /* return the "majority" value of BitmapManipulator bm at intersection (x,y). We
+    assume that the BitmapManipulator is balanced at "radius" 1.  */
 
     static boolean majority(Bitmap bm, int x, int y) {
         int i, a, ct;
@@ -75,10 +75,10 @@ public class Decompose implements DecompositionInterface{
         for (i=2; i<5; i++) { /* check at "radius" i */
             ct = 0;
             for (a=-i+1; a<=i-1; a++) {
-                ct += Bitmap.BM_GET(bm,x+a, y+i-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x+i-1, y+a-1) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x+a-1, y-i) ? 1 : -1;
-                ct += Bitmap.BM_GET(bm,x-i, y+a) ? 1 : -1;
+                ct += BitmapManipulator.BM_GET(bm,x+a, y+i-1) ? 1 : -1;
+                ct += BitmapManipulator.BM_GET(bm,x+i-1, y+a-1) ? 1 : -1;
+                ct += BitmapManipulator.BM_GET(bm,x+a-1, y-i) ? 1 : -1;
+                ct += BitmapManipulator.BM_GET(bm,x-i, y+a) ? 1 : -1;
             }
             if (ct>0) {
                 return true;
@@ -229,8 +229,8 @@ public class Decompose implements DecompositionInterface{
             }
 
             /* determine next direction */
-            c = Bitmap.BM_GET(bm,x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
-            d = Bitmap.BM_GET(bm,x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
+            c = BitmapManipulator.BM_GET(bm,x + (dirx+diry-1)/2, y + (diry-dirx-1)/2);
+            d = BitmapManipulator.BM_GET(bm,x + (dirx-diry-1)/2, y + (diry+dirx-1)/2);
 
             if (c && !d) {               /* ambiguous turn */
                 if (turnpolicy == PotraceLibrary.POTRACE_TURNPOLICY_RIGHT
@@ -281,7 +281,7 @@ public class Decompose implements DecompositionInterface{
     assume that in the input, point 0 of each Path is an "upper left"
     corner of the Path, as returned by decomposeBitmapIntoPathlist. This makes it
     easy to find an "interior" point. The bm argument should be a
-    Bitmap of the correct size (large enough to hold all the paths),
+    BitmapManipulator of the correct size (large enough to hold all the paths),
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
 
@@ -296,7 +296,7 @@ public class Decompose implements DecompositionInterface{
         Path hook_in, hook_out;         // for fast appending to linked original.List
         BBox bbox = new BBox();
 
-        bm = Bitmap.bm_clear(bm, 0);
+        bm = BitmapManipulator.bm_clear(bm, 0);
 
         // save original "next" pointers
 
@@ -351,7 +351,7 @@ public class Decompose implements DecompositionInterface{
                     break;
 
                 }
-                if (Bitmap.BM_GET(bm,p.priv.pt[0].x, p.priv.pt[0].y-1)) {
+                if (BitmapManipulator.BM_GET(bm,p.priv.pt[0].x, p.priv.pt[0].y-1)) {
                     head.childlist = List.elementInsertAtTheLastNextOfList(p,head.childlist);
 
                 } else {
@@ -432,8 +432,8 @@ public class Decompose implements DecompositionInterface{
         for (int y=XY.y; y>=0; y--) {
             for (int x=x0; x<bm.w && x>=0; x+=bm.PIXELINWORD) {
 
-                if (Bitmap.bm_index(bm,x, y) != 0) {
-                    while (!Bitmap.BM_GET(bm,x, y)) {
+                if (BitmapManipulator.bm_index(bm,x, y) != 0) {
+                    while (!BitmapManipulator.BM_GET(bm,x, y)) {
                         x++;
                     }
 	                /* found */
@@ -448,18 +448,12 @@ public class Decompose implements DecompositionInterface{
         return false;
     }
 
-    /* Decompose the given Bitmap into paths. Returns a linked List of
+    /* Decompose the given BitmapManipulator into paths. Returns a linked List of
     path_t objects with the fields len, pt, area, sign filled
     in. Returns 0 on success with plistp set, or -1 on error with errno
     set. */
 
-    public General.Path getPathList(BitmapInterface generalBitmap, General.Param param) {
-        Bitmap bitmap = new Bitmap(generalBitmap.getWidth(),generalBitmap.getHeight());
-        bitmap.map = generalBitmap.getWords();
-        return bm_to_pathlist(bitmap,param);
-    }
-
-    public static Path bm_to_pathlist(Bitmap bm, General.Param param) {
+    public static Path bm_to_pathlist(Bitmap bm, Param param) {
         int x;
         int y;
         Path p;
@@ -479,9 +473,9 @@ public class Decompose implements DecompositionInterface{
         y = bm1.h - 1;
         Point xy = new Point(x,y);
         while ((findnext(bm1,xy))) {
-            // calculate the sign by looking at the original Bitmap, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
-            // mit dem nachgucken nach dem sign in der original Bitmap bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
-            sign = Bitmap.BM_GET(bm,xy.x, xy.y) ? '+' : '-';
+            // calculate the sign by looking at the original BitmapManipulator, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
+            // mit dem nachgucken nach dem sign in der original BitmapManipulator bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
+            sign = BitmapManipulator.BM_GET(bm,xy.x, xy.y) ? '+' : '-';
 
             // calculate the Path
             p = findpath(bm1, xy.x, xy.y+1, sign, param.turnpolicy);
@@ -499,5 +493,10 @@ public class Decompose implements DecompositionInterface{
 
         pathlist_to_tree(plist, bm1);
         return plist;
+    }
+
+    @Override
+    public Path getPathList(Bitmap generalBitmap, Param param) {
+        return bm_to_pathlist(generalBitmap,param);
     }
 }

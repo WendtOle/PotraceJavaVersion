@@ -1,9 +1,7 @@
 package refactored;
 
+import General.Bitmap;
 import org.junit.Test;
-import refactored.Bitmap;
-import refactored.BitmapHandler;
-import refactored.BitmapHandlerInterface;
 
 import java.awt.*;
 
@@ -57,9 +55,9 @@ public class BitmapHandlerTest {
     @Test
     public void testClearingExcessPixelWhenConstructingABitmapHandler(){
         Bitmap bitmap = new Bitmap(65,1);
-        bitmap.words[1] = -1;
+        bitmap.map[1] = -1;
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
-        assertEquals(bitmap.words[1],0x8000000000000000l);
+        assertEquals(bitmap.map[1],0x8000000000000000l);
     }
 
     @Test

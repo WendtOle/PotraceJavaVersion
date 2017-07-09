@@ -1,8 +1,8 @@
 package refactored;
 
+import General.Bitmap;
 import General.Path;
 import org.junit.Test;
-import refactored.*;
 
 import java.awt.*;
 

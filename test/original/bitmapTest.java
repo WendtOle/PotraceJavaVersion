@@ -1,7 +1,7 @@
 package original;
 
+import General.Bitmap;
 import org.junit.Test;
-import original.Bitmap;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ public class bitmapTest {
 
     @Test
     public void creatingBitmapWithEmptyConstructorTest() {
-        Bitmap testBitmap = new Bitmap();
+       Bitmap testBitmap = new Bitmap();
         assertEquals("width: ", 0,testBitmap.w);
         assertEquals("height: ", 0,testBitmap.h);
         assertEquals("potraceWordsInOneLine: ", 0,testBitmap.dy);
@@ -18,7 +18,7 @@ public class bitmapTest {
 
     @Test
     public void creatingBitmapWithNormalConstructorTest() {
-        Bitmap testBitmap = new Bitmap(100,100);
+       Bitmap testBitmap = new Bitmap(100,100);
         assertEquals("width: ", 100,testBitmap.w);
         assertEquals("height: ", 100,testBitmap.h);
         assertEquals("potraceWordsInOneLine: ", 2,testBitmap.dy);
@@ -34,50 +34,50 @@ public class bitmapTest {
 
     @Test
     public void testBmSafeAndBmRange() {
-        Bitmap testBitmap = new Bitmap(10,10);
-        assertTrue("first inside: ", Bitmap.bm_safe(testBitmap,0,0));
-        assertTrue("second inside: ", Bitmap.bm_safe(testBitmap,9,9));
-        assertFalse("first outside: ", Bitmap.bm_safe(testBitmap,10,10));
-        assertFalse("second outside: ", Bitmap.bm_safe(testBitmap,10,1));
-        assertFalse("third outside: ", Bitmap.bm_safe(testBitmap,-1,1));
+       Bitmap testBitmap = new Bitmap(10,10);
+        assertTrue("first inside: ", BitmapManipulator.bm_safe(testBitmap,0,0));
+        assertTrue("second inside: ", BitmapManipulator.bm_safe(testBitmap,9,9));
+        assertFalse("first outside: ", BitmapManipulator.bm_safe(testBitmap,10,10));
+        assertFalse("second outside: ", BitmapManipulator.bm_safe(testBitmap,10,1));
+        assertFalse("third outside: ", BitmapManipulator.bm_safe(testBitmap,-1,1));
     }
 
     @Test
     public void testMaskFuntion() {
-        assertEquals("at position 0: ",0x8000000000000000l, Bitmap.bm_mask(0));
-        assertEquals("at position 1: ",0x4000000000000000l, Bitmap.bm_mask(1));
-        assertEquals("at position 64 -> 0: ",0x8000000000000000l, Bitmap.bm_mask(64));
-        assertEquals("at position 63: ",0x1, Bitmap.bm_mask(63));
+        assertEquals("at position 0: ",0x8000000000000000l, BitmapManipulator.bm_mask(0));
+        assertEquals("at position 1: ",0x4000000000000000l, BitmapManipulator.bm_mask(1));
+        assertEquals("at position 64 -> 0: ",0x8000000000000000l, BitmapManipulator.bm_mask(64));
+        assertEquals("at position 63: ",0x1, BitmapManipulator.bm_mask(63));
     }
 
     @Test
     public void testBMPutAndBMGetFunction() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        Bitmap.BM_PUT(smallTestBitmap,0,0,true);
-        assertEquals("with one original word in line: ",true, Bitmap.BM_GET(smallTestBitmap,0,0));
+        BitmapManipulator.BM_PUT(smallTestBitmap,0,0,true);
+        assertEquals("with one original word in line: ",true, BitmapManipulator.BM_GET(smallTestBitmap,0,0));
 
         Bitmap bigTestBitmap = new Bitmap(100,100);
-        Bitmap.BM_PUT(bigTestBitmap,99,99,true);
-        assertEquals("with more than one original word in line: ",true, Bitmap.BM_GET(bigTestBitmap,99,99));
+        BitmapManipulator.BM_PUT(bigTestBitmap,99,99,true);
+        assertEquals("with more than one original word in line: ",true, BitmapManipulator.BM_GET(bigTestBitmap,99,99));
     }
 
     @Test
     public void testBMClearFuntion() {
         Bitmap smallTestBitmap = new Bitmap(10,10);
-        Bitmap.BM_PUT(smallTestBitmap,0,0,true);
-        Bitmap.BM_PUT(smallTestBitmap,0,0,false);
-        assertEquals(false, Bitmap.BM_GET(smallTestBitmap,0,0));
+        BitmapManipulator.BM_PUT(smallTestBitmap,0,0,true);
+        BitmapManipulator.BM_PUT(smallTestBitmap,0,0,false);
+        assertEquals(false, BitmapManipulator.BM_GET(smallTestBitmap,0,0));
     }
 
     @Test
     public void test_bm_clear() throws Exception {
-        Bitmap testBitMap = new Bitmap(10,10);
-        Bitmap.bm_clear(testBitMap,1);
-        assertEquals(true, Bitmap.BM_GET(testBitMap,0,0));
-        assertEquals(true, Bitmap.BM_GET(testBitMap,9,9));
-        Bitmap.bm_clear(testBitMap,0);
-        assertEquals(false, Bitmap.BM_GET(testBitMap,0,0));
-        assertEquals(false, Bitmap.BM_GET(testBitMap,4,4));
+       Bitmap testBitMap = new Bitmap(10,10);
+        BitmapManipulator.bm_clear(testBitMap,1);
+        assertEquals(true, BitmapManipulator.BM_GET(testBitMap,0,0));
+        assertEquals(true, BitmapManipulator.BM_GET(testBitMap,9,9));
+        BitmapManipulator.bm_clear(testBitMap,0);
+        assertEquals(false, BitmapManipulator.BM_GET(testBitMap,0,0));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitMap,4,4));
     }
 
     @Test

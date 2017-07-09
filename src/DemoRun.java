@@ -1,7 +1,7 @@
 import AdditionalCode.Input.JSONDeEncoder;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
-import General.BitmapInterface;
+import General.Bitmap;
 import General.Param;
 import General.Path;
 import General.PotraceLibrary;
@@ -15,7 +15,7 @@ import java.io.IOException;
 public class DemoRun {
     static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
-    static BitmapInterface bitmap;
+    static Bitmap bitmap;
     static Path path;
 
     public static void main(String args[]) {

@@ -12,21 +12,16 @@ public class Decompose implements DecompositionInterface {
     Point startPointOfCurrentPath;
     Path pathList = null;
 
-    public Path getPathList(BitmapInterface generalBitmap, General.Param param) {
-        Bitmap bitmap = translateBitmap(generalBitmap);
-        this.workCopy = bitmap.duplicate();
-        this.bitmapHandler = new BitmapHandler(bitmap);
-        this.pathInverterForWorkCopy = new PathInverter(workCopy);
+    public Path getPathList(Bitmap generalBitmap, General.Param param) {
+        this.workCopy = generalBitmap.bm_dup();
+        this.bitmapHandler = new BitmapHandler(generalBitmap);
+        this.pathInverterForWorkCopy = new PathInverter(workCopy); //TODO
         this.param = param;
         decomposeBitmapIntoPathlistNew();
         return pathList;
     }
 
-    private Bitmap translateBitmap(BitmapInterface generalBitmap) {
-        Bitmap bitmap = new Bitmap(generalBitmap.getWidth(),generalBitmap.getHeight());
-        bitmap.words = generalBitmap.getWords();
-        return bitmap;
-    }
+
 
     private void decomposeBitmapIntoPathlistNew() {
         findPathesOnBitmap();
@@ -34,7 +29,7 @@ public class Decompose implements DecompositionInterface {
     }
 
     private void findPathesOnBitmap() {
-        NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
+        NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(workCopy); //TODO
         while(nextFilledPixelFinder.isThereAFilledPixel()) {
             startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
             findAndAddPathToPathlist();
@@ -48,7 +43,7 @@ public class Decompose implements DecompositionInterface {
 
     private Path findPath() {
         int signOfPath = getSignOfPathFromOriginalBitmap(startPointOfCurrentPath);
-        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, signOfPath, TurnPolicyEnum.values()[param.turnpolicy]);
+        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, signOfPath, TurnPolicyEnum.values()[param.turnpolicy]); //TODO
         return pathFinder.getPath();
     }
 
@@ -68,7 +63,7 @@ public class Decompose implements DecompositionInterface {
     }
 
     private void structurePathlistAsTree() {
-        TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,workCopy);
+        TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,workCopy); //TODO
         pathList = pathListToTree.getTreeStructure();
     }
 

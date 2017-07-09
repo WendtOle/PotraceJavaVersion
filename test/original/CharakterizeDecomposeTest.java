@@ -1,13 +1,12 @@
 package original;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import General.BitmapInterface;
+import General.Bitmap;
 import General.Param;
 import General.Path;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import original.Decompose;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class CharakterizeDecomposeTest {
     Path arrayOfPathes;
     Path actualFirstPath;
 
-    @Parameterized.Parameters(name = "Testing {index}. Bitmap")
+    @Parameterized.Parameters(name = "Testing {index}. BitmapManipulator")
     public static Collection testData() {
         return Arrays.asList(getTestParameters("testPictures"));
     }
@@ -43,7 +42,7 @@ public class CharakterizeDecomposeTest {
             testParameters = new Object[bitmapFiles.length][];
             for (int i = 0; i < bitmapFiles.length; i++) {
                 try {
-                    BitmapInterface bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]);
+                    Bitmap bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFiles[i]);
                     Path path = JSONDeEncoder.readTestDataFromJSon(bitmapFiles[i]);
                     testParameters[i] = new Object[]{bitmap,path};
                 } catch (org.json.simple.parser.ParseException e) {
@@ -56,7 +55,7 @@ public class CharakterizeDecomposeTest {
         return testParameters;
     }
 
-    public CharakterizeDecomposeTest(BitmapInterface bitmap,
+    public CharakterizeDecomposeTest(Bitmap bitmap,
                                      Path expectedPath) {
 
         this.arrayOfPathes = expectedPath;

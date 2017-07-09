@@ -1,8 +1,8 @@
 package refactored;
 
+import General.Bitmap;
 import General.Path;
 import org.junit.Test;
-import refactored.*;
 
 import java.awt.*;
 
@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by andreydelany on 24.06.17.
  */
-public class bboxTest {
+public class BoundingBoxTest {
     @Test
     public void test_setbbox_path() {
         BoundingBox box = new BoundingBox();

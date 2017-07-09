@@ -1,10 +1,9 @@
 package refactored;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import General.BitmapInterface;
+import General.Bitmap;
 import General.Path;
 import org.junit.Before;
-import refactored.*;
 
 import java.awt.*;
 import java.io.File;
@@ -22,9 +21,9 @@ public class ChildrenAndSiblingFinderTest {
     @Before
     public void importBitmap() {
         try {
-            BitmapInterface bitmap = JSONDeEncoder.readBitmapFromJSon(new File("testPictures/11.jsonn"));
-            this.bitmap = new Bitmap(bitmap.getWidth(),bitmap.getHeight());
-            this.bitmap.words = bitmap.getWords();
+            Bitmap bitmap = JSONDeEncoder.readBitmapFromJSon(new File("testPictures/11.jsonn"));
+            this.bitmap = new Bitmap(bitmap.w,bitmap.h);
+            this.bitmap.map = bitmap.map;
         } catch (Exception e) {
             System.out.print(e);
         }

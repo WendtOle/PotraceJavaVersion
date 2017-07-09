@@ -16,7 +16,7 @@ public class PotraceLibrary {
     static int POTRACE_CURVETO = 1;
     static int POTRACE_CORNER = 2;
 
-    public static Path potrace_trace(Param param, BitmapInterface bm) {
+    public static Path potrace_trace(Param param, Bitmap bm) {
         //DecompositionInterface decomposer = new refactored.Decompose();
         DecompositionInterface decomposer = new original.Decompose();
         Path plist = decomposer.getPathList(bm, param);

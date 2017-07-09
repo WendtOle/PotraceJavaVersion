@@ -1,5 +1,7 @@
 package refactored;
 
+import General.Bitmap;
+
 /**
  * Created by andreydelany on 03.07.17.
  */

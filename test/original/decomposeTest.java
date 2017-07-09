@@ -1,22 +1,22 @@
 package original;
 
-import org.junit.*;
-import General.*;
-import original.BBox;
-import original.Bitmap;
-import original.Decompose;
+import General.Bitmap;
+import General.Path;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.awt.*;
 
 import static TestMethods.AssertPoints.assertEqualPoints;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class decomposeTest {
 
     @Test
     public void test_findnextWithNextPointInSameLine() {
         Bitmap testBitmap = new Bitmap(70,1);
-        Bitmap.BM_PUT(testBitmap,65,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,65,0,true);
 
         Point point = new Point(0,0);
         assertTrue("found sth: ", Decompose.findnext(testBitmap,point));
@@ -26,8 +26,8 @@ public class decomposeTest {
     @Test
     public void test_findnextWithNextPointNotInSameLine() {
         Bitmap testBitmap = new Bitmap(128,2);
-        Bitmap.BM_PUT(testBitmap,97,0,true);
-        Bitmap.BM_PUT(testBitmap,99,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,97,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,99,0,true);
 
         Point point = new Point(0,1);
         assertTrue("found sth: ", Decompose.findnext(testBitmap,point));
@@ -50,10 +50,10 @@ public class decomposeTest {
 
         Boolean[] expectedOutcomes = new Boolean[]{true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false};
 
-        Bitmap.bm_clear(testBitmap,1);
+        BitmapManipulator.bm_clear(testBitmap,1);
 
         for(int i = 0; i < 16; i++) {
-            Bitmap.BM_PUT(testBitmap,points[i].x,points[i].y,false);
+            BitmapManipulator.BM_PUT(testBitmap,points[i].x,points[i].y,false);
             assertEquals("i: " + i,expectedOutcomes[i], Decompose.majority(testBitmap, observationPoint.x, observationPoint.y));
         }
     }
@@ -61,8 +61,8 @@ public class decomposeTest {
     @Test
     public void test_findPath_boundary() {
         Bitmap testBitmap = new Bitmap(128,1);
-        Bitmap.BM_PUT(testBitmap,63,0,true);
-        Bitmap.BM_PUT(testBitmap,64,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,63,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,64,0,true);
 
         Point[] expectedPath = new Point[]{ new Point(63,1), new Point(63,0),
                 new Point(64,0),new Point(65,0),new Point(65,1),
@@ -78,64 +78,64 @@ public class decomposeTest {
     @Test
     public void testXorToRefFirstIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        Bitmap.BM_PUT(testBitmap,0,0,true);
-        Bitmap.BM_PUT(testBitmap,1,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,0,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,1,0,true);
         Decompose.xor_to_ref(testBitmap,0,0,1);
-        assertEquals("firstPixel: ", false, Bitmap.BM_GET(testBitmap,0,0));
-        assertEquals("secondPixel: ", false, Bitmap.BM_GET(testBitmap,1,0));
+        assertEquals("firstPixel: ", false, BitmapManipulator.BM_GET(testBitmap,0,0));
+        assertEquals("secondPixel: ", false, BitmapManipulator.BM_GET(testBitmap,1,0));
     }
 
     @Test
     public void testXorToRefHorizontalSecondIF() {
         Bitmap testBitmap = new Bitmap(70,1);
-        Bitmap.BM_PUT(testBitmap,68,0,true);
-        Bitmap.BM_PUT(testBitmap,69,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,68,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,69,0,true);
         Decompose.xor_to_ref(testBitmap,70,0,0);
         assertEquals(-1l,testBitmap.map[0]);
-        assertEquals("64: ", true, Bitmap.BM_GET(testBitmap,64,0));
-        assertEquals("65: ", true, Bitmap.BM_GET(testBitmap,65,0));
-        assertEquals("66: ", true, Bitmap.BM_GET(testBitmap,66,0));
-        assertEquals("67: ", true, Bitmap.BM_GET(testBitmap,67,0));
-        assertEquals("68: ", false, Bitmap.BM_GET(testBitmap,68,0));
-        assertEquals("69: ", false, Bitmap.BM_GET(testBitmap,69,0));
+        assertEquals("64: ", true, BitmapManipulator.BM_GET(testBitmap,64,0));
+        assertEquals("65: ", true, BitmapManipulator.BM_GET(testBitmap,65,0));
+        assertEquals("66: ", true, BitmapManipulator.BM_GET(testBitmap,66,0));
+        assertEquals("67: ", true, BitmapManipulator.BM_GET(testBitmap,67,0));
+        assertEquals("68: ", false, BitmapManipulator.BM_GET(testBitmap,68,0));
+        assertEquals("69: ", false, BitmapManipulator.BM_GET(testBitmap,69,0));
     }
 
     @Test
     public void testXorToRefHorizontalThirdIF() {
         Bitmap testBitmap = new Bitmap(2,1);
-        Bitmap.BM_PUT(testBitmap,0,0,true);
-        Bitmap.BM_PUT(testBitmap,1,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,0,0,true);
+        BitmapManipulator.BM_PUT(testBitmap,1,0,true);
         Decompose.xor_to_ref(testBitmap,2,0,0);
-        assertEquals("firstPixel: ", false, Bitmap.BM_GET(testBitmap,0,0));
-        assertEquals("secondPixel: ", false, Bitmap.BM_GET(testBitmap,1,0));
+        assertEquals("firstPixel: ", false, BitmapManipulator.BM_GET(testBitmap,0,0));
+        assertEquals("secondPixel: ", false, BitmapManipulator.BM_GET(testBitmap,1,0));
     }
 
     @Test
     public void test_xor_path() {
         Bitmap testBitmap = new Bitmap(3,3);
-        Bitmap.bm_clear(testBitmap,1);
-        Bitmap.bm_clearexcess(testBitmap);
-        Bitmap.BM_PUT(testBitmap,1,1,false);
+        BitmapManipulator.bm_clear(testBitmap,1);
+        Decompose.bm_clearexcess(testBitmap);
+        BitmapManipulator.BM_PUT(testBitmap,1,1,false);
 
         Path path = Decompose.findpath(testBitmap,0,3,43,4);
         Decompose.xor_path(testBitmap,path);
 
-        assertEquals(false, Bitmap.BM_GET(testBitmap,0,0));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,1,0));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,2,0));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,0,1));
-        assertEquals(true, Bitmap.BM_GET(testBitmap,1,1));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,2,1));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,0,2));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,1,3));
-        assertEquals(false, Bitmap.BM_GET(testBitmap,2,3));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,0,0));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,1,0));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,2,0));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,0,1));
+        assertEquals(true, BitmapManipulator.BM_GET(testBitmap,1,1));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,2,1));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,0,2));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,1,3));
+        assertEquals(false, BitmapManipulator.BM_GET(testBitmap,2,3));
     }
 
     @Test
     public void test_setbbox_path() {
         BBox box = new BBox();
         Bitmap testBitmap = new Bitmap(3,3);
-        Bitmap.BM_PUT(testBitmap,1,1,true);
+        BitmapManipulator.BM_PUT(testBitmap,1,1,true);
 
         Path path = Decompose.findpath(testBitmap,2,2,43,4);
 
@@ -154,8 +154,8 @@ public class decomposeTest {
         box.y0 = 1;
         box.y1 = 2;
         Bitmap testBitmap = new Bitmap(3,3);
-        Bitmap.BM_PUT(testBitmap,0,2,true);
-        Bitmap.BM_PUT(testBitmap,1,1,true);
+        BitmapManipulator.BM_PUT(testBitmap,0,2,true);
+        BitmapManipulator.BM_PUT(testBitmap,1,1,true);
 
         Decompose.clear_bm_with_bbox(testBitmap,box);
 

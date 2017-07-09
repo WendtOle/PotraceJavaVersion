@@ -1,5 +1,5 @@
 import AdditionalCode.Input.JSONDeEncoder;
-import General.BitmapInterface;
+import General.Bitmap;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -10,12 +10,12 @@ import java.util.Locale;
  */
 public class RuntimeObservation {
 
-    static int maxAmountOfRuns = 1000000;
+    static int maxAmountOfRuns = 100000;
     static String bitmapFileName = "02.json";
     static String bitMapFileFolder = "testPictures";
 
     int amountOfRuns;
-    BitmapInterface bitmap;
+    Bitmap bitmap;
     Thread[] threads;
     Thread progressPrinter;
     RunTimeObserver[] observer;
@@ -53,7 +53,7 @@ public class RuntimeObservation {
     private void startProgressPrinter() {
         Thread thread = new Thread(){
 
-            int secondIntervall = 1;
+            double secondIntervall = 1.5;
 
             @Override
             public void run() {
@@ -76,7 +76,7 @@ public class RuntimeObservation {
 
             private void sleep() {
                 try {
-                    sleep(secondIntervall * 1000);
+                    sleep((long)(secondIntervall * 1000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -126,7 +126,7 @@ public class RuntimeObservation {
     private void stopThreads() {
         for(Thread currentThread:threads)
             currentThread.interrupt();
-        progressPrinter.interrupt();
+        //progressPrinter.interrupt();
     }
 
     private void createDifferentThreads() {

@@ -1,28 +1,30 @@
 package refactored;
 
+import General.Bitmap;
 import org.junit.Test;
-import refactored.Bitmap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class bitmapTest {
 
     @Test
     public void creatingBitmapWithEmptyConstructorTest() {
         Bitmap testBitmap = new Bitmap();
-        assertEquals("width: ", 0,testBitmap.width);
-        assertEquals("height: ", 0,testBitmap.height);
-        assertEquals("potraceWordsInOneLine: ", 0,testBitmap.wordsPerScanLine);
-        assertEquals("potraceWords: ", null,testBitmap.words);
+        assertEquals("width: ", 0,testBitmap.w);
+        assertEquals("height: ", 0,testBitmap.h);
+        assertEquals("potraceWordsInOneLine: ", 0,testBitmap.dy);
+        assertEquals("potraceWords: ", null,testBitmap.map);
     }
 
     @Test
     public void creatingBitmapWithNormalConstructorTest() {
         Bitmap testBitmap = new Bitmap(100,100);
-        assertEquals("width: ", 100,testBitmap.width);
-        assertEquals("height: ", 100,testBitmap.height);
-        assertEquals("potraceWordsInOneLine: ", 2,testBitmap.wordsPerScanLine);
-        assertEquals("potraceWords: ", 200,testBitmap.words.length);
+        assertEquals("width: ", 100,testBitmap.w);
+        assertEquals("height: ", 100,testBitmap.h);
+        assertEquals("potraceWordsInOneLine: ", 2,testBitmap.dy);
+        assertEquals("potraceWords: ", 200,testBitmap.map.length);
     }
 
     @Test
@@ -35,12 +37,12 @@ public class bitmapTest {
     @Test
     public void test_bm_dup() throws Exception {
         Bitmap originalBitmap = new Bitmap(10,10);
-        Bitmap copiedBitmap = originalBitmap.duplicate();
+        Bitmap copiedBitmap = originalBitmap.bm_dup();
 
         assertFalse("reference: ", originalBitmap == copiedBitmap);
-        assertArrayEquals("potraceWords: ",originalBitmap.words,copiedBitmap.words);
-        assertEquals("potraceWordsInOneLine: ",originalBitmap.wordsPerScanLine, copiedBitmap.wordsPerScanLine);
-        assertEquals("height: ",originalBitmap.height, copiedBitmap.height);
-        assertEquals("width: ",originalBitmap.width, copiedBitmap.width);
+        assertArrayEquals("potraceWords: ",originalBitmap.map,copiedBitmap.map);
+        assertEquals("potraceWordsInOneLine: ",originalBitmap.dy, copiedBitmap.dy);
+        assertEquals("height: ",originalBitmap.h, copiedBitmap.h);
+        assertEquals("width: ",originalBitmap.w, copiedBitmap.w);
     }
 }

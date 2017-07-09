@@ -1,5 +1,7 @@
 package refactored;
 
+import General.Bitmap;
+
 import java.awt.*;
 
 /**

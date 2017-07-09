@@ -1,4 +1,4 @@
-import General.BitmapInterface;
+import General.Bitmap;
 import General.DecompositionInterface;
 import General.Param;
 
@@ -9,15 +9,15 @@ public class RunTimeObserver implements Runnable {
 
     int amountOfRuns;
     DecompositionEnum decomposerIdentifier;
-    BitmapInterface bitmapInterface;
+    Bitmap bitmap;
     double[] msPerRun;
     int currentRun;
     long totalRunTime = 0;
 
-    public RunTimeObserver(int amountOfRuns, DecompositionEnum decomposer, BitmapInterface bitmapInterface){
+    public RunTimeObserver(int amountOfRuns, DecompositionEnum decomposer, Bitmap bitmap){
         this.amountOfRuns = amountOfRuns;
         this.decomposerIdentifier = decomposer;
-        this.bitmapInterface = bitmapInterface;
+        this.bitmap = bitmap;
         msPerRun= new double[amountOfRuns];
     }
     @Override
@@ -27,7 +27,7 @@ public class RunTimeObserver implements Runnable {
             DecompositionInterface decomposer = decomposerIdentifier.getDecomposer();
 
             long startTime = System.nanoTime();
-            decomposer.getPathList(bitmapInterface,params);
+            decomposer.getPathList(bitmap,params);
             long endTime = System.nanoTime();
 
             saveRunTime(startTime,endTime);
