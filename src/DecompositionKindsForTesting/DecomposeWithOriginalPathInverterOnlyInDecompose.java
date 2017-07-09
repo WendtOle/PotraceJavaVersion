@@ -1,9 +1,9 @@
 package DecompositionKindsForTesting;
 
 import General.DecompositionInterface;
+import General.List;
 import General.Path;
 import refactored.Decompose;
-import refactored.List;
 
 /**
  * Created by andreydelany on 09.07.17.

@@ -1,6 +1,9 @@
 package refactored;
 
-import General.*;
+import General.Bitmap;
+import General.List;
+import General.Path;
+
 import java.awt.*;
 
 /**

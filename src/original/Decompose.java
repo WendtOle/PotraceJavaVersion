@@ -1,6 +1,7 @@
 package original;
 
 import General.*;
+import General.List;
 
 import java.awt.*;
 
@@ -269,12 +270,12 @@ public class Decompose implements DecompositionInterface{
         return p;
     }
 
-    /* Give a tree structure to the given Path original.List, based on "insideness"
+    /* Give a tree structure to the given Path General.List, based on "insideness"
     testing. I.e., Path A is considered "below" Path B if it is inside
     Path B. The input pathlist is assumed to be ordered so that "outer"
     paths occur before "inner" paths. The tree structure is stored in
     the "childlist" and "sibling" components of the path_t
-    structure. The linked original.List structure is also changed so that
+    structure. The linked General.List structure is also changed so that
     negative Path components are listed immediately after their
     positive parent.  Note: some backends may ignore the tree
     structure, others may use it e.g. to group Path components. We
@@ -292,8 +293,8 @@ public class Decompose implements DecompositionInterface{
         Path heap1;
         Path cur = new Path();
         Path head = new Path();
-        Path plist_hook;                // for fast appending to linked original.List
-        Path hook_in, hook_out;         // for fast appending to linked original.List
+        Path plist_hook;                // for fast appending to linked General.List
+        Path hook_in, hook_out;         // for fast appending to linked General.List
         BBox bbox = new BBox();
 
         bm = BitmapManipulator.bm_clear(bm, 0);
@@ -308,11 +309,11 @@ public class Decompose implements DecompositionInterface{
 
         heap = plist;
 
-        /* the heap holds a original.List of lists of paths. Use "childlist" field
-        for outer original.List, "next" field for inner original.List. Each of the sublists
+        /* the heap holds a General.List of lists of paths. Use "childlist" field
+        for outer General.List, "next" field for inner General.List. Each of the sublists
         is to be turned into a tree. This code is messy, but it is
         actually fast. Each Path is rendered exactly once. We use the
-        heap to get a tail recursive algorithm: the heap holds a original.List of
+        heap to get a tail recursive algorithm: the heap holds a General.List of
         pathlists which still need to be transformed. */
 
         while (heap != null) {
@@ -344,7 +345,7 @@ public class Decompose implements DecompositionInterface{
                 if (p.priv.pt[0].y <= bbox.y0) {
                 //Todo find out what that if condition is for
                     head.next = List.elementInsertAtTheLastNextOfList(p,head.next);
-	                // append the remainder of the original.List to hook_out
+	                // append the remainder of the General.List to hook_out
                     head.next = List.listInsertAtTheLastNextOfList(cur,head.next);
                     //head.next = List.insertListAtTheEndOfList(cur,head.next);
 
@@ -386,26 +387,26 @@ public class Decompose implements DecompositionInterface{
             p = p1;
         }
 
-        // reconstruct a new linked original.List ("next") structure from tree
+        // reconstruct a new linked General.List ("next") structure from tree
         // ("childlist", "sibling") structure. This code is slightly messy,
         // because we use a heap to make it tail recursive: the heap
-        // contains a original.List of childlists which still need to be
+        // contains a General.List of childlists which still need to be
         // processed.
         heap = plist;
         if (heap != null) {
-            heap.next = null;  // heap is a linked original.List of childlists
+            heap.next = null;  // heap is a linked General.List of childlists
         }
         plist = null;
         while (heap != null) {
             heap1 = heap.next;
             for (p=heap; p != null; p=p.sibling) {
                 // p is a positive Path
-                // append to linked original.List
+                // append to linked General.List
                 plist = List.elementInsertAtTheLastNextOfList(p, plist);
 
                 // go through its children
                 for (p1=p.childlist; p1 != null; p1=p1.sibling) {
-	                // append to linked original.List
+	                // append to linked General.List
                     plist = List.elementInsertAtTheLastNextOfList(p1, plist);
 	                // append its childlist to heap, if non-empty
 
@@ -458,7 +459,7 @@ public class Decompose implements DecompositionInterface{
         int y;
         Path p;
         Path plist = null;
-        //original.potrace.Path plist_hook = null;  // used to speed up appending to linked original.List
+        //original.potrace.Path plist_hook = null;  // used to speed up appending to linked General.List
         Bitmap bm1 = bm.bm_dup();
         int sign;
 
@@ -483,7 +484,7 @@ public class Decompose implements DecompositionInterface{
             // update buffered image
             xor_path(bm1, p);
 
-            // if it' a turd, eliminate it, else append it to the original.List
+            // if it' a turd, eliminate it, else append it to the General.List
             if (p.area > param.turdsize) {
 
                 //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist

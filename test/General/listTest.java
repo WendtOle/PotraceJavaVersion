@@ -1,9 +1,9 @@
-package refactored;
+package General;
 
 import org.junit.Before;
 import org.junit.Test;
 import General.*;
-import refactored.List;
+import General.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
  * Created by andreydelany on 07/03/2017.
  */
 public class listTest {
+
     Path first, second, third, fourth;
 
     @Before

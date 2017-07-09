@@ -1,7 +1,8 @@
 package DecompositionKindsForTesting;
 
+import General.List;
 import General.Path;
-import refactored.*;
+import refactored.Decompose;
 
 import java.awt.*;
 
@@ -33,7 +34,7 @@ public class FakeOriginal extends Decompose {
     protected void addPathToPathListIfBigEnough(Path currentPath){
         original.Decompose.xor_path(workCopy,currentPath);
         if (isPathBigEnough(currentPath.area,param.turdsize)) {
-            pathList = refactored.List.elementInsertAtTheLastNextOfList(currentPath,pathList);
+            pathList = List.elementInsertAtTheLastNextOfList(currentPath,pathList);
         }
     }
 

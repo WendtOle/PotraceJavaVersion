@@ -1,6 +1,6 @@
-package refactored;
+package General;
 
-import General.Path;
+import General.*;
 
 public class List {
 

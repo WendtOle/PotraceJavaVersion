@@ -9,9 +9,8 @@ public class NextComponentReconstruction {
     Path pathesThatNeedToProcess;
     Path currentPath;
 
-    public NextComponentReconstruction(Path pathlist) {
-        this.originPath = pathlist;
-        initializeCurrentPathAndOriginPath();
+    public NextComponentReconstruction(Path pathList) {
+        initializeFields(pathList);
         reconstructNextComponent();
     }
 
@@ -19,23 +18,27 @@ public class NextComponentReconstruction {
         return originPath;
     }
 
-    private void initializeCurrentPathAndOriginPath() {
+    private void initializeFields(Path pathList) {
+        originPath = pathList;
         currentPath = originPath;
-        if (currentPath != null) {
+        if (currentPath != null)
             currentPath.next = null;
-        }
         originPath = null;
     }
 
     private void reconstructNextComponent() {
-        while (currentPath != null) {
+        while (areTherePathesToProcess()) {
             pathesThatNeedToProcess = currentPath.next;
-            addAllSiblingsWithTrailingChildren();
+            addAllSiblingsWithTrailingChildrenOfCurrentPath();
             currentPath = pathesThatNeedToProcess;
         }
     }
 
-    private void addAllSiblingsWithTrailingChildren() {
+    private boolean areTherePathesToProcess() {
+        return currentPath != null;
+    }
+
+    private void addAllSiblingsWithTrailingChildrenOfCurrentPath() {
         for (Path currentSibling = currentPath; currentSibling != null; currentSibling=currentSibling.sibling) {
             addPathToNextComponent(currentSibling);
             addAllChildrenOfPath(currentSibling);
@@ -54,8 +57,7 @@ public class NextComponentReconstruction {
     }
 
     private void scheduleChildrenOfCurrentChildForLaterProcessing(Path path) {
-        if (path.childlist != null) {
+        if (path.childlist != null)
             pathesThatNeedToProcess = List.elementInsertAtTheLastNextOfList(path.childlist,pathesThatNeedToProcess);
-        }
     }
 }
