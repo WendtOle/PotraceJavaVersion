@@ -285,7 +285,7 @@ public class Decompose implements DecompositionInterface{
     and will be used as scratch space. Return 0 on success or -1 on
     error with errno set. */
 
-    static void pathlist_to_tree(Path plist, Bitmap bm) {
+    public static void pathlist_to_tree(Path plist, Bitmap bm) {
         Path p = new Path();
         Path p1;
         Path heap = new Path();

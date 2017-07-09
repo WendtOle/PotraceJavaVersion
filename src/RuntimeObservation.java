@@ -10,14 +10,13 @@ import java.util.Locale;
  */
 public class RuntimeObservation {
 
-    static int maxAmountOfRuns = 100000;
-    static String bitmapFileName = "02.json";
+    static int maxAmountOfRuns = 10000;
+    static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
 
     int amountOfRuns;
     Bitmap bitmap;
     Thread[] threads;
-    Thread progressPrinter;
     RunTimeObserver[] observer;
     double msPerRun[][];
 

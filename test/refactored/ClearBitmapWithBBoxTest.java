@@ -1,6 +1,7 @@
 package refactored;
 
 import General.Bitmap;
+import General.Path;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testToClearOnPixelBBox() {
-        BoundingBox bbox = new BoundingBox();
+        BoundingBox bbox = new BoundingBox(new Path());
         bbox.x0 = 1;
         bbox.x1 = 2;
         bbox.y0 = 1;
@@ -51,7 +52,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testToClearTwoPerTwoBBox() {
-        BoundingBox bbox = new BoundingBox();
+        BoundingBox bbox = new BoundingBox(new Path());
         bbox.x0 = 1;
         bbox.x1 = 3;
         bbox.y0 = 1;
@@ -68,7 +69,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testToClearOnePixelOverWordBoundary() {
-        BoundingBox bbox = new BoundingBox();
+        BoundingBox bbox = new BoundingBox(new Path());
         bbox.x0 = 63;
         bbox.x1 = 66;
         bbox.y0 = 1;
@@ -82,7 +83,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testClearCompleteTwoLinesOfBitmap() {
-        BoundingBox bbox = new BoundingBox();
+        BoundingBox bbox = new BoundingBox(new Path());
         bbox.x0 = 0;
         bbox.x1 = 71;
         bbox.y0 = 1;
@@ -99,7 +100,7 @@ public class ClearBitmapWithBBoxTest {
 
     @Test
     public void testThatEveryPixelInSameLineIsAlsoClearedButNotOtherWords() {
-        BoundingBox bbox = new BoundingBox();
+        BoundingBox bbox = new BoundingBox(new Path());
         bbox.x0 = 1;
         bbox.x1 = 2;
         bbox.y0 = 1;

@@ -1,37 +1,38 @@
 package refactored;
 
-import General.*;
-public class BoundingBox {
-    int x0, x1, y0, y1;
+import General.Path;
 
-    public BoundingBox(){};
+import java.awt.*;
+
+public class BoundingBox {
+    int y0 = Integer.MAX_VALUE;
+    int y1 = 0;
+    int x0 = Integer.MAX_VALUE;
+    int x1 = 0;
 
     public BoundingBox(Path path){
-        setToBoundingBoxOfPath(path);
+        for (int i = 0; i < path.priv.len; i++) {
+            Point currentPoint = path.priv.pt[i];
+            updateBoundingBoxDimensions(currentPoint);
+        }
     }
 
-    public void setToBoundingBoxOfPath(Path path) {
-        y0 = Integer.MAX_VALUE;
-        y1 = 0;
-        x0 = Integer.MAX_VALUE;
-        x1 = 0;
+    private void updateBoundingBoxDimensions(Point currentPoint) {
+        updateHorizontalDimensionsOfBoundingBox(currentPoint.x);
+        updateVerticalDimensionsOfBoundingBox(currentPoint.y);
+    }
 
-        for (int k = 0; k < path.priv.len; k ++) {
-            int x = path.priv.pt[k].x;
-            int y = path.priv.pt[k].y;
+    private void updateHorizontalDimensionsOfBoundingBox(int currentLocation) {
+        if (currentLocation < x0)
+            x0 = currentLocation;
+        if (currentLocation > x1)
+            x1 = currentLocation;
+    }
 
-            if (x < x0) {
-                x0 = x;
-            }
-            if (x > x1) {
-                x1 = x;
-            }
-            if (y < y0) {
-                y0 = y;
-            }
-            if (y > y1) {
-                y1 = y;
-            }
-        }
+    private void updateVerticalDimensionsOfBoundingBox(int currentLocation) {
+        if (currentLocation < y0)
+            y0 = currentLocation;
+        if (currentLocation > y1)
+            y1 = currentLocation;
     }
 }
