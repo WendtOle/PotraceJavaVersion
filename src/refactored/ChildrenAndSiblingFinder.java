@@ -25,10 +25,14 @@ public class ChildrenAndSiblingFinder {
 
     private void transformIntoTreeStructure() {
         while (pathQueue.stillNeedToProcessPathes()) {
-            getPathesToProcess();
-            determineHirachyBetweenPathes();
-            scheduleFoundChildrenAndSiblingsForFurtherProcessing();
+            processPathes();
         }
+    }
+
+    private void processPathes() {
+        getPathesToProcess();
+        determineHirachyBetweenPathes();
+        scheduleFoundChildrenAndSiblingsForFurtherProcessing();
     }
 
     private void getPathesToProcess() {
@@ -37,11 +41,11 @@ public class ChildrenAndSiblingFinder {
         pathesToOrder = pathesNextToProcess[1];
     }
 
-    private void scheduleFoundChildrenAndSiblingsForFurtherProcessing() {
-        pathQueue.updateQueue(referencePath);
-    }
-
     private void determineHirachyBetweenPathes(){
         referencePath = hirachyBuilder.getHierarchicallyOrderedPathes(referencePath,pathesToOrder);
+    }
+
+    private void scheduleFoundChildrenAndSiblingsForFurtherProcessing() {
+        pathQueue.updateQueue(referencePath);
     }
 }
