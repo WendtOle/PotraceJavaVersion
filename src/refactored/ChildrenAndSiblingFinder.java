@@ -10,11 +10,11 @@ public class ChildrenAndSiblingFinder {
     Path pathList;
     Path pathesToOrder, referencePath;
     PathQueueInterface pathQueue;
-    DetermineHirachy hirachyBuilder;
+    DetermineHierachy hirachyBuilder;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
-        hirachyBuilder = new DetermineHirachy(bitmap);
+        hirachyBuilder = new DetermineHierachy(bitmap);
         pathQueue = new PathQueue(pathList);
     }
 
