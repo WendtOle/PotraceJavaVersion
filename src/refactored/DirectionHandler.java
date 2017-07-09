@@ -22,10 +22,17 @@ public class DirectionHandler {
         direction = new Point(0, -1);
     }
 
-    public Point turnInNextDirection(Point currentPoint) {
+    public void turnInNextDirection(Point currentPoint) {
         gatherInformationAboutCircumstances(currentPoint);
         performTurn();
-        return direction;
+    }
+
+    public int getHorizontalDirection(){
+        return direction.x;
+    }
+
+    public int getVerticalDirection(){
+        return direction.y;
     }
 
     private void gatherInformationAboutCircumstances(Point currentPoint) {
