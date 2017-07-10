@@ -58,11 +58,11 @@ public class Decompose implements DecompositionInterface {
 
     protected Path findPathWhichStartsAt(Point startPointOfCurrentPath) {
         int signOfPath = getSignOfPathFromOriginalBitmap(startPointOfCurrentPath);
-        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, signOfPath, TurnPolicyEnum.values()[param.turnpolicy]); //TODO
+        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, signOfPath, TurnPolicyEnum.values()[param.turnpolicy]);
         return pathFinder.getPath();
     }
 
-    protected int getSignOfPathFromOriginalBitmap(Point currentPoint) { //TODO
+    protected int getSignOfPathFromOriginalBitmap(Point currentPoint) {
         if (isPathFilled(currentPoint))
             return '+';
         else

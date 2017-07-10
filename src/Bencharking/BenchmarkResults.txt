@@ -31,3 +31,9 @@ Bencharking.Benchmarking.mesureRefactored_PathListToTreeAndPathInverter  avgt   
 Bencharking.Benchmarking.mesureRefactored_fakeOriginal                   avgt   50  2.516 ± 0.038  ms/op
 Bencharking.BenchmarkingFindPathComponent.mesureOriginal                 avgt   50  1.125 ± 0.181  ms/op
 Bencharking.BenchmarkingFindPathComponent.mesureRefactored               avgt   50  0.623 ± 0.031  ms/op
+
+10. Juli 2017 - 17:07
+
+Benchmark                                                     Mode  Cnt  Score   Error  Units
+Bencharking.BenchmarkingInvertPathComponent.mesureOriginal    avgt   50  0.056 ± 0.001  ms/op
+Bencharking.BenchmarkingInvertPathComponent.mesureRefactored  avgt   50  0.033 ± 0.002  ms/op
