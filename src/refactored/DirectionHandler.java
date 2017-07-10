@@ -59,7 +59,7 @@ public class DirectionHandler {
             performTurnInNormalSituation();
     }
 
-    private  boolean isAmbiguousSituation() {
+    private boolean isAmbiguousSituation() {
         return isRightPixelFilled && isLeftPixelEmpty;
     }
 

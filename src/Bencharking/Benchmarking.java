@@ -1,7 +1,6 @@
 package Bencharking;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import DecompositionKindsForTesting.*;
 import General.Bitmap;
 import General.DecompositionInterface;
 import General.Param;
@@ -61,90 +60,6 @@ public class Benchmarking{
     @Threads(2)
     public void mesureOriginal(MySate state) throws InterruptedException {
         DecompositionInterface decomposer = new original.Decompose();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_PathListSwopped(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new DecomposeWithOriginalPathListToTree();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_PathInverterSwopped(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new DecomposeWithOriginalPathInverterOnlyInDecompose();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_FindFilledPixelAndFindPath(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new OriginFindFilledPixelAndFindPath();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_FindPath(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new OriginalFindPath();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_FindNextFilledPixel(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new OrigFindNextFilledPixel();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_PathListToTreeAndPathInverter(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new OrigPathListToTreeOrigPathInverterInDecomp();
-        decomposer.getPathList(state.bitmap,state.params);
-    }
-
-    @Benchmark
-    @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
-    @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
-    public void mesureRefactored_fakeOriginal(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new FakeOriginal();
         decomposer.getPathList(state.bitmap,state.params);
     }
 }

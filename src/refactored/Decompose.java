@@ -10,63 +10,93 @@ public class Decompose implements DecompositionInterface {
     protected Bitmap workCopy;
     BitmapHandlerInterface bitmapHandler;
     PathInverter pathInverterForWorkCopy;
+    NextFilledPixelFinder nextFilledPixelFinder;
     protected Point startPointOfCurrentPath;
     public Path pathList = null;
 
     public Path getPathList(Bitmap generalBitmap, General.Param param) {
-        this.workCopy = generalBitmap.bm_dup();
-        this.bitmapHandler = new BitmapHandler(generalBitmap);
-        this.pathInverterForWorkCopy = new PathInverter(workCopy); //TODO
-        this.param = param;
+        initializeFields(generalBitmap, param);
         decomposeBitmapIntoPathlistNew();
         return pathList;
     }
 
+    private void initializeFields(Bitmap generalBitmap, Param param) {
+        this.workCopy = generalBitmap.bm_dup();
+        this.bitmapHandler = new BitmapHandler(generalBitmap);
+        this.pathInverterForWorkCopy = new PathInverter(workCopy); //TODO
+        this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy); //TODO
+        this.param = param;
+    }
+
     private void decomposeBitmapIntoPathlistNew() {
-        findPathesOnBitmap();
-        structurePathlistAsTree();
+        findPathsOnBitmap();
+        structurePathListAsTree();
     }
 
-    protected void findPathesOnBitmap() {
-        NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(workCopy); //TODO
-        while(nextFilledPixelFinder.isThereAFilledPixel()) {
-            startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
-            findAndAddPathToPathlist();
-        }
+    protected void findPathsOnBitmap() {
+        while(isThereAFilledPixel())
+            findAndAddPathToPathList();
     }
 
-    protected void findAndAddPathToPathlist() {
+    private boolean isThereAFilledPixel() {
+        return nextFilledPixelFinder.isThereAFilledPixel();
+    }
+
+    protected void findAndAddPathToPathList() {
         Path currentPath = findPath();
-        addPathToPathListIfBigEnough(currentPath);
+        invertAndAddPath(currentPath);
     }
 
-    protected Path findPath() {
+    private Path findPath() {
+        Point startPointOfCurrentPath = determineBeginningPixelOfPath();
+        return findPathWhichStartsAt(startPointOfCurrentPath);
+    }
+
+    private Point determineBeginningPixelOfPath() {
+        return nextFilledPixelFinder.getPositionOfNextFilledPixel();
+    }
+
+    protected Path findPathWhichStartsAt(Point startPointOfCurrentPath) {
         int signOfPath = getSignOfPathFromOriginalBitmap(startPointOfCurrentPath);
         FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, signOfPath, TurnPolicyEnum.values()[param.turnpolicy]); //TODO
         return pathFinder.getPath();
     }
 
     protected int getSignOfPathFromOriginalBitmap(Point currentPoint) { //TODO
-        boolean isPathFilled = bitmapHandler.isPixelFilled(currentPoint);
-        if (isPathFilled)
+        if (isPathFilled(currentPoint))
             return '+';
         else
             return '-';
     }
 
-    protected void addPathToPathListIfBigEnough(Path currentPath) {
-        pathInverterForWorkCopy.invertPathOnBitmap(currentPath);
-        if (isPathBigEnough(currentPath.area,param.turdsize)) {
-            pathList = List.elementInsertAtTheLastNextOfList(currentPath,pathList);
-        }
+    private boolean isPathFilled(Point currentPoint) {
+        return bitmapHandler.isPixelFilled(currentPoint);
     }
 
-    protected void structurePathlistAsTree() {
+    private void invertAndAddPath(Path currentPath) {
+        invertPathOnBitmap(currentPath);
+        addPathToPathListIfBigEnough(currentPath);
+    }
+
+    private void invertPathOnBitmap(Path currentPath) {
+        pathInverterForWorkCopy.invertPathOnBitmap(currentPath);
+    }
+
+    protected void addPathToPathListIfBigEnough(Path currentPath) {
+        if (isPathBigEnough(currentPath.area))
+            addPathToPathList(currentPath);
+    }
+
+    private boolean isPathBigEnough(int actualArea) {
+        return actualArea > param.turdsize;
+    }
+
+    private void addPathToPathList(Path currentPath) {
+        pathList = List.elementInsertAtTheLastNextOfList(currentPath,pathList);
+    }
+
+    protected void structurePathListAsTree() {
         TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,workCopy); //TODO
         pathList = pathListToTree.getTreeStructure();
-    }
-
-    private boolean isPathBigEnough(int actualArea, int areaOfTurd) {
-        return actualArea > areaOfTurd;
     }
 }

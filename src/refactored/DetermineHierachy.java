@@ -75,7 +75,7 @@ public class DetermineHierachy {
 
     private void setPositionOfCurrentPath() {
         if (isPathBelowBoundingBox())
-            cancelOrderingProcessAndSaveRemainingPathes();
+            cancelOrderingProcessAndSaveRemainingPaths();
         else
             addPathToListDependingOnLocation();
     }
@@ -84,13 +84,17 @@ public class DetermineHierachy {
         return currentPath.priv.pt[0].y <= boundingBox.y0;
     }
 
-    private void cancelOrderingProcessAndSaveRemainingPathes() {
-        addRemainingPathesAsSiblings();
+    private void cancelOrderingProcessAndSaveRemainingPaths() {
+        addRemainingPathsAsSiblings();
         orderingProcessCanceled = true;
     }
 
-    private void addRemainingPathesAsSiblings() {
+    private void addRemainingPathsAsSiblings() {
         addPathAsSibling();
+        addPathesThatWillBeOrderedAsSibling();
+    }
+
+    private void addPathesThatWillBeOrderedAsSibling() {
         referencePath.next = List.listInsertAtTheLastNextOfList(pathesToOrder,referencePath.next);
     }
 

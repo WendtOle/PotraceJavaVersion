@@ -1,4 +1,3 @@
-import DecompositionKindsForTesting.*;
 import General.DecompositionInterface;
 
 /**
@@ -37,7 +36,7 @@ public enum DecompositionEnumAll {
     }
 */
 
- /*   original,
+    original,
     refactored;
 
     public DecompositionInterface getDecomposer(){
@@ -49,25 +48,7 @@ public enum DecompositionEnumAll {
         }
         return null;
     }
-*/
-    original,
-    refactored,
-    refactored_origPathListToTree_origPathInverter,
-    refactored_origFindNextFilledPixel_origFindPath;
 
-    public DecompositionInterface getDecomposer(){
-        switch (this) {
-            case original:
-                return new original.Decompose();
-            case refactored:
-                return new refactored.Decompose();
-            case refactored_origPathListToTree_origPathInverter:
-                return new OrigPathListToTreeOrigPathInverterInDecomp();
-            case refactored_origFindNextFilledPixel_origFindPath:
-                return new OriginFindFilledPixelAndFindPath();
-        }
-        return null;
-    }
 
 
 
