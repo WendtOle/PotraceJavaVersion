@@ -24,5 +24,4 @@ public class PathReStructrurer {
         }
         return pathList;
     }
-
 }

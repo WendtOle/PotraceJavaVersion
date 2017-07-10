@@ -1,5 +1,8 @@
 import AdditionalCode.Input.JSONDeEncoder;
-import General.*;
+import General.Bitmap;
+import General.DecompositionInterface;
+import General.Param;
+import General.Path;
 import org.json.simple.parser.ParseException;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -58,9 +61,9 @@ public class CharakterizeDecomposeTest {
                                      Path expectedPath) {
 
         this.expectedPath = expectedPath;
-        this.actualFirstPath = new Path[DecompositionEnum.values().length];
-        for (int i = 0; i < DecompositionEnum.values().length; i++) {
-            DecompositionInterface decomposer = DecompositionEnum.values()[i].getDecomposer();
+        this.actualFirstPath = new Path[DecompositionEnumAll.values().length];
+        for (int i = 0; i < DecompositionEnumAll.values().length; i++) {
+            DecompositionInterface decomposer = DecompositionEnumAll.values()[i].getDecomposer();
             this.actualFirstPath[i] = decomposer.getPathList(bitmap, new Param());
         }
     }

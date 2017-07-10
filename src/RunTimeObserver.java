@@ -8,13 +8,13 @@ import General.Param;
 public class RunTimeObserver implements Runnable {
 
     int amountOfRuns;
-    DecompositionEnum decomposerIdentifier;
+    DecompositionEnumAll decomposerIdentifier;
     Bitmap bitmap;
     double[] msPerRun;
     int currentRun;
     long totalRunTime = 0;
 
-    public RunTimeObserver(int amountOfRuns, DecompositionEnum decomposer, Bitmap bitmap){
+    public RunTimeObserver(int amountOfRuns, DecompositionEnumAll decomposer, Bitmap bitmap){
         this.amountOfRuns = amountOfRuns;
         this.decomposerIdentifier = decomposer;
         this.bitmap = bitmap;

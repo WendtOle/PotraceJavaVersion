@@ -2,7 +2,6 @@ package General;
 
 import org.junit.Before;
 import org.junit.Test;
-import General.*;
 import General.List;
 
 import static org.junit.Assert.assertEquals;

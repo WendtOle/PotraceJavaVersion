@@ -42,11 +42,6 @@ public class FindPath {
         while (pathIsOpen());
     }
 
-    private boolean pathIsOpen() {
-        boolean isPathClosed = currentPoint.equals(startPoint);
-        return !isPathClosed;
-    }
-
     private void moveInDirectionAndRemeberCurrentPoint() {
         determineNewDirection();
         saveCurrentLocation();
@@ -69,5 +64,10 @@ public class FindPath {
 
     private void updateAreaOfPath() {
         areaOfPath += currentPoint.x * directionHandler.getVerticalDirection();
+    }
+
+    private boolean pathIsOpen() {
+        boolean isPathClosed = currentPoint.equals(startPoint);
+        return !isPathClosed;
     }
 }

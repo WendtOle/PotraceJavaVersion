@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class DirectionHandler {
     BitmapHandlerInterface bitmapHandler;
-    Point direction ;
+    Point direction = new Point(0, -1);;
     Point currentPoint;
     TurnPolicyEnum turnPolicy;
     boolean isRightPixelFilled, isLeftPixelEmpty;
@@ -19,7 +19,6 @@ public class DirectionHandler {
         bitmapHandler = new BitmapHandler(bitmap);
         this.turnPolicy = turnPolicy;
         this.sign = sign;
-        direction = new Point(0, -1);
     }
 
     public void turnInNextDirection(Point currentPoint) {

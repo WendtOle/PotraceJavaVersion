@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public class RuntimeObservation {
 
-    static int maxAmountOfRuns = 10000;
+    static int maxAmountOfRuns = 5000;
     static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
 
@@ -29,13 +29,13 @@ public class RuntimeObservation {
         setBitmap(bitmapFileName,bitmapFolderName);
         this.amountOfRuns = amountOfRuns;
         createDifferentThreads();
-        msPerRun = new double[DecompositionEnum.values().length][amountOfRuns];
+        msPerRun = new double[DecompositionEnumAll.values().length][amountOfRuns];
         printGeneralInformationAboutTimeObservation();
     }
 
     private void printGeneralInformationAboutTimeObservation() {
         String status = "RunTimeObservation of Decomposition: \n";
-        status += DecompositionEnum.getDecompositionMethodsAsString();
+        status += DecompositionEnumAll.getDecompositionMethodsAsString();
         status += "\nAmountOfRuns: " + printRoundNumberWithPoints(amountOfRuns);
         System.out.println(status);
     }
@@ -52,7 +52,7 @@ public class RuntimeObservation {
     private void startProgressPrinter() {
         Thread thread = new Thread(){
 
-            double secondIntervall = 1.5;
+            double secondsIntervall = 1.5;
 
             @Override
             public void run() {
@@ -68,14 +68,14 @@ public class RuntimeObservation {
                 numberFormat.setMaximumFractionDigits(2);
                 numberFormat.setMinimumFractionDigits(2);
                 String procentage = numberFormat.format(getProgress() * 100);
-                int stillNeededTime = (int) (((1. - getProgress()) * secondIntervall * i) / getProgress());
+                int stillNeededTime = (int) (((1. - getProgress()) * secondsIntervall * i) / getProgress());
                 String status = procentage + "% done - still needs " + stillNeededTime + " sec";
                 System.out.println(status);
             }
 
             private void sleep() {
                 try {
-                    sleep((long)(secondIntervall * 1000));
+                    sleep((long)(secondsIntervall * 1000));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -125,14 +125,13 @@ public class RuntimeObservation {
     private void stopThreads() {
         for(Thread currentThread:threads)
             currentThread.interrupt();
-        //progressPrinter.interrupt();
     }
 
     private void createDifferentThreads() {
-        threads = new Thread[DecompositionEnum.values().length];
-        observer = new RunTimeObserver[DecompositionEnum.values().length];
+        threads = new Thread[DecompositionEnumAll.values().length];
+        observer = new RunTimeObserver[DecompositionEnumAll.values().length];
         for (int i = 0; i < threads.length; i++) {
-            observer[i] = new RunTimeObserver(amountOfRuns, DecompositionEnum.values()[i], bitmap);
+            observer[i] = new RunTimeObserver(amountOfRuns, DecompositionEnumAll.values()[i], bitmap);
             threads[i] = new Thread(observer[i]);
         }
     }
@@ -155,7 +154,7 @@ public class RuntimeObservation {
         System.out.println("Average Amount of MS Needed for One Run:");
         for(int i = 0; i < msPerRun.length; i++){
             double lastValue = msPerRun[i][amountOfRuns-1];
-            System.out.println(DecompositionEnum.values()[i] + ": " + lastValue + " ms");
+            System.out.println(DecompositionEnumAll.values()[i] + ": " + lastValue + " ms");
         }
         PlotterRunTime.plot(amountOfRuns, msPerRun,bitmapFileName);
     }

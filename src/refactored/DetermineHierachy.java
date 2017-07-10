@@ -10,7 +10,6 @@ import java.awt.*;
  * Created by andreydelany on 07.07.17.
  */
 public class DetermineHierachy {
-
     BitmapHandlerInterface bitmapHandler;
     ClearBitmapWithBoundingBox bitmapClearer;
     PathInverter inverter;

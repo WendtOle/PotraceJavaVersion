@@ -42,7 +42,7 @@ public class PlotterRunTime extends Application {
 
             for(int i = 0 ; i < dataY.length; i++) {
                 XYChart.Series<Number, Number> currentSeries = new XYChart.Series<>();
-                currentSeries.setName(DecompositionEnum.values()[i].toString());
+                currentSeries.setName(DecompositionEnumAll.values()[i].toString());
                 for (int j = 0; j < amountOfRuns; j += amountOfRuns / 20) {
                     currentSeries.getData().add(new XYChart.Data<Number, Number>(j , (float)dataY[i][j]));
                 }

@@ -24,9 +24,8 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void transformIntoTreeStructure() {
-        while (pathQueue.stillNeedToProcessPathes()) {
+        while (pathQueue.stillNeedToProcessPathes())
             processPathes();
-        }
     }
 
     private void processPathes() {

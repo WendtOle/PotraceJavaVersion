@@ -17,41 +17,34 @@ public class PathInverter {
     }
 
     public void invertPathOnBitmap(Path path) {
-
-        int verticalFixPunkt = path.priv.pt[path.priv.len-1].y;
-        int horizontalFixPunkt = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
-        previousePoint = new Point(horizontalFixPunkt,verticalFixPunkt);
-
+        initializeInvertingProcessBySettingFixPoints(path);
         invertingPathByIntervingRectangleBetweenPointsOfPath(path);
     }
 
-    private void invertingPathByIntervingRectangleBetweenPointsOfPath(Path path) {
-        for (int k = 0; k < path.priv.len; k ++) {
-            currentPoint = path.priv.pt[k];
-            tryToInvertRectangleBetweenCurrentAndPreviousePoint();
-        }
+    private void initializeInvertingProcessBySettingFixPoints(Path path) {
+        int verticalFixPunkt = path.priv.pt[path.priv.len-1].y;
+        int horizontalFixPunkt = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
+        previousePoint = new Point(horizontalFixPunkt,verticalFixPunkt);
     }
 
-    private void tryToInvertRectangleBetweenCurrentAndPreviousePoint() {
-        if (isRectangle()) {
-            invertRangeInOneLine();
+    private void invertingPathByIntervingRectangleBetweenPointsOfPath(Path path) {
+        for (int currentPointIdentifier = 0; currentPointIdentifier < path.priv.len; currentPointIdentifier ++) {
+            currentPoint = path.priv.pt[currentPointIdentifier];
+            tryToInvertRectangleBetweenCurrentAndPreviousePoint();
             previousePoint.y = currentPoint.y;
         }
     }
 
-    private int getLineToInvert() {
-        return min(currentPoint.y, previousePoint.y);
-    }
-
-    private int min(int a, int b) {
-        return (a)<(b) ? (a) : (b);
+    private void tryToInvertRectangleBetweenCurrentAndPreviousePoint() {
+        if (isRectangle())
+            invertRangeInOneLine();
     }
 
     private boolean isRectangle() {
         return currentPoint.y != previousePoint.y;
     }
 
-    public void invertRangeInOneLine() {
+    private void invertRangeInOneLine() {
         invertLeadingWordsOfRange();
         invertLeadingWordUntilStartOfRange();
     }
@@ -69,6 +62,14 @@ public class PathInverter {
         for(int i = startWordIdentifier; i < lastWordIdentifier; i += Bitmap.PIXELINWORD) {
             flipAllBitsInWord(new Point(i, getLineToInvert()));
         }
+    }
+
+    private int getLineToInvert() {
+        return min(currentPoint.y, previousePoint.y);
+    }
+
+    private int min(int a, int b) {
+        return (a)<(b) ? (a) : (b);
     }
 
     private int getWordIdentifierOfCurrentWord() {

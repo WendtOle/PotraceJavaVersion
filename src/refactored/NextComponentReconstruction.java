@@ -29,7 +29,7 @@ public class NextComponentReconstruction {
     private void reconstructNextComponent() {
         while (areTherePathesToProcess()) {
             pathesThatNeedToProcess = currentPath.next;
-            addAllSiblingsWithTrailingChildrenOfCurrentPath();
+            addAllSiblingsWithTrailingChildrenOfPath(currentPath);
             currentPath = pathesThatNeedToProcess;
         }
     }
@@ -38,8 +38,8 @@ public class NextComponentReconstruction {
         return currentPath != null;
     }
 
-    private void addAllSiblingsWithTrailingChildrenOfCurrentPath() {
-        for (Path currentSibling = currentPath; currentSibling != null; currentSibling=currentSibling.sibling) {
+    private void addAllSiblingsWithTrailingChildrenOfPath(Path path) {
+        for (Path currentSibling = path; currentSibling != null; currentSibling=currentSibling.sibling) {
             addPathToNextComponent(currentSibling);
             addAllChildrenOfPath(currentSibling);
         }
