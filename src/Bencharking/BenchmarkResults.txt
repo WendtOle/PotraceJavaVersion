@@ -37,3 +37,43 @@ Bencharking.BenchmarkingFindPathComponent.mesureRefactored               avgt   
 Benchmark                                                     Mode  Cnt  Score   Error  Units
 Bencharking.BenchmarkingInvertPathComponent.mesureOriginal    avgt   50  0.056 ± 0.001  ms/op
 Bencharking.BenchmarkingInvertPathComponent.mesureRefactored  avgt   50  0.033 ± 0.002  ms/op
+
+10. Juli 2017 - 17:18
+
+Benchmark                                                                Mode  Cnt     Score    Error  Units
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal    avgt   50  2130.947 ± 29.576  ns/op
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored  avgt   50   607.267 ± 29.125  ns/op            28.49% -> 71.51%
+
+10. Juli 2017 - 17:35
+
+Benchmark                                                                      Mode  Cnt  Score   Error  Units
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50  0.150 ± 0.012  ms/op
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50  0.213 ± 0.013  ms/op         141.33%  -> 41.33%
+
+10. Juli 2017 - 17:46
+
+Benchmark                                                                      Mode  Cnt     Score     Error  Units
+Bencharking.Benchmarking.mesureOriginal                                        avgt   50     2.707 ±   0.076  ms/op
+Bencharking.Benchmarking.mesureRefactored                                      avgt   50     2.378 ±   0.120  ms/op     87.84%  -> 12.16%   (1)
+Bencharking.BenchmarkingFindPathComponent.mesureOriginal                       avgt   50     1.192 ±   0.150  ms/op
+Bencharking.BenchmarkingFindPathComponent.mesureRefactored                     avgt   50     0.729 ±   0.097  ms/op     61.15%  -> 38.85%   (2)
+Bencharking.BenchmarkingInvertPathComponent.mesureOriginal                     avgt   50     0.058 ±   0.005  ms/op
+Bencharking.BenchmarkingInvertPathComponent.mesureRefactored                   avgt   50     0.036 ±   0.004  ms/op     62.06%  -> 37.94%   (3)
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          avgt   50  2891.657 ± 787.018  ns/op !!!!
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50   783.516 ± 268.208  ns/op     27.09%  -> 72.91%   (4)
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50     0.157 ±   0.015  ms/op
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50     0.282 ±   0.068  ms/op     179.61% -> 79.61%   (5)
+
+10. Juli 2017 - 18:04
+
+Benchmark                                                                      Mode  Cnt          Score         Error  Units
+Bencharking.Benchmarking.mesureOriginal                                        avgt   50  2 731 990.865 ± 173 623.515  ns/op
+Bencharking.Benchmarking.mesureRefactored                                      avgt   50  2 740 350.302 ± 216 037.538  ns/op    100.30% -> 0.30%    (1)
+Bencharking.BenchmarkingFindPathComponent.mesureOriginal                       avgt   50  1 094 377.066 ±  72 897.511  ns/op
+Bencharking.BenchmarkingFindPathComponent.mesureRefactored                     avgt   50    661 953.962 ±  41 988.505  ns/op    60.48%  -> 39.52%   (2)
+Bencharking.BenchmarkingInvertPathComponent.mesureOriginal                     avgt   50     59 403.846 ±   1 674.312  ns/op
+Bencharking.BenchmarkingInvertPathComponent.mesureRefactored                   avgt   50     31 795.986 ±     309.639  ns/op    18.49%  -> 81.51%   (3)
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          avgt   50      2 177.523 ±      60.618  ns/op
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50        512.375 ±       4.057  ns/op    23.56%  -> 36.44%   (4)
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50    136 584.951 ±   2 346.967  ns/op
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50    265 328.151 ±  41 245.937  ns/op    194.25% -> 94.25%   (5)

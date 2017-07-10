@@ -10,30 +10,32 @@ import java.awt.*;
 public class ClearBitmapWithBoundingBox {
 
     BitmapHandlerInterface bitmapHandler;
-    int indexOfWordWhereBBoxStarts, indexOfwordWhereBBoxEnds;
+    int indexOfWordWhereBoundingBoxStarts, indexOfwordWhereBoundingBoxEnds;
 
     public ClearBitmapWithBoundingBox(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
-    public void clearBitmapWithBBox(BoundingBox boundingBox) {
+    public void clearBitmapWithBoundingBox(BoundingBox boundingBox) {
         setHorizontalRange(boundingBox);
         clearBitmapInHorizontalRange(boundingBox);
     }
 
     private void setHorizontalRange(BoundingBox boundingBox) {
-        indexOfWordWhereBBoxStarts = (boundingBox.x0 / Bitmap.PIXELINWORD);
-        indexOfwordWhereBBoxEnds = ((boundingBox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
+        indexOfWordWhereBoundingBoxStarts = (boundingBox.x0 / Bitmap.PIXELINWORD);
+        indexOfwordWhereBoundingBoxEnds = ((boundingBox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
     }
 
-    private void clearBitmapInHorizontalRange(BoundingBox bbox) {
-        for (int y = bbox.y0; y < bbox.y1; y ++) {
-            clearAllWordsThatOverlapWithBbox(y);
+    private void clearBitmapInHorizontalRange(BoundingBox boundingBox) {
+        int currentLine = boundingBox.y0;
+        while(currentLine < boundingBox.y1) {
+            clearAllWordsInLineThatOverlapWithBoundingBox(currentLine);
+            currentLine ++;
         }
     }
 
-    private void clearAllWordsThatOverlapWithBbox(int line) {
-        for (int indexOfCurrentWord = indexOfWordWhereBBoxStarts; indexOfCurrentWord < indexOfwordWhereBBoxEnds; indexOfCurrentWord++) {
+    private void clearAllWordsInLineThatOverlapWithBoundingBox(int line) {
+        for (int indexOfCurrentWord = indexOfWordWhereBoundingBoxStarts; indexOfCurrentWord < indexOfwordWhereBoundingBoxEnds; indexOfCurrentWord++) {
             clearWord(line, indexOfCurrentWord);
         }
     }

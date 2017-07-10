@@ -118,6 +118,6 @@ public class DetermineHierachy {
     }
 
     private void unMarkLocationOfReferencePath() {
-        bitmapClearer.clearBitmapWithBBox(boundingBox);
+        bitmapClearer.clearBitmapWithBoundingBox(boundingBox);
     }
 }

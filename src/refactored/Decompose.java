@@ -23,8 +23,8 @@ public class Decompose implements DecompositionInterface {
     private void initializeFields(Bitmap generalBitmap, Param param) {
         this.workCopy = generalBitmap.bm_dup();
         this.bitmapHandler = new BitmapHandler(generalBitmap);
-        this.pathInverterForWorkCopy = new PathInverter(workCopy); //TODO
-        this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy); //TODO
+        this.pathInverterForWorkCopy = new PathInverter(workCopy);
+        this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
         this.param = param;
     }
 
@@ -96,7 +96,12 @@ public class Decompose implements DecompositionInterface {
     }
 
     protected void structurePathListAsTree() {
-        TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,workCopy); //TODO
+        TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,workCopy);
         pathList = pathListToTree.getTreeStructure();
+    }
+
+    @Override
+    public Bitmap getWorkCopy() {
+        return null;
     }
 }

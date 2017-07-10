@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.IOException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * Created by andreydelany on 10.07.17.
@@ -46,7 +47,7 @@ public class BenchmarkingInvertPathComponent {
     @Benchmark
     @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(5)
     @Threads(2)
@@ -58,7 +59,7 @@ public class BenchmarkingInvertPathComponent {
     @Benchmark
     @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(5)
     @Threads(2)
