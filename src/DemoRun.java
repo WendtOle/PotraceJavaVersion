@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by andreydelany on 21.06.17.
  */
 public class DemoRun {
-    static String bitmapFileName = "02.json";
+    static String bitmapFileName = "01.json";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static Path path;

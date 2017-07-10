@@ -38,18 +38,18 @@ public class FindPath {
     }
 
     private void findPath() {
-        do moveInDirectionAndRemeberCurrentPoint();
+        do moveInDirectionAndRememberCurrentPoint();
         while (pathIsOpen());
     }
 
-    private void moveInDirectionAndRemeberCurrentPoint() {
-        determineNewDirection();
+    private void moveInDirectionAndRememberCurrentPoint() {
+        determineNextDirection();
         saveCurrentLocation();
         moveToNextPoint();
         updateAreaOfPath();
     }
 
-    private void determineNewDirection() {
+    private void determineNextDirection() {
         directionHandler.turnInNextDirection(currentPoint);
     }
 
