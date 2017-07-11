@@ -1,3 +1,4 @@
+import AdditionalCode.Input.BitmapImporter;
 import AdditionalCode.Input.JsonEncoder;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
@@ -10,13 +11,15 @@ import Potrace.General.PotraceLibrary;
  * Created by andreydelany on 21.06.17.
  */
 public class DemoRun {
-    static String bitmapFileName = "01.json";
+    static String jsonBitmapFileName = "01.json";
+    static String bitmapFileName = "testPictureChildsAndSiblings.png";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static Path path;
 
     public static void main(String args[]) {
-        loadBitmap();
+        loadBitmapFromJson();
+        //loadBitmapFromPictureFile();
 
         path = PotraceLibrary.potrace_trace(new Param(), bitmap);
 
@@ -40,8 +43,13 @@ public class DemoRun {
         plotter.plot();
    }
 
-   public static void loadBitmap() {
-       JsonEncoder encoder = new JsonEncoder(bitmapFileName,bitMapFileFolder);
+   private static void loadBitmapFromJson() {
+       JsonEncoder encoder = new JsonEncoder(jsonBitmapFileName,bitMapFileFolder);
        bitmap = encoder.getBitmap();
    }
+
+    private static void loadBitmapFromPictureFile() {
+        BitmapImporter bitmapImporter = new BitmapImporter(bitmapFileName,bitMapFileFolder);
+        bitmap = bitmapImporter.getBitmap();
+    }
 }
