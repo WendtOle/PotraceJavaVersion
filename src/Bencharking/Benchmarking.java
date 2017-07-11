@@ -1,6 +1,6 @@
 package Bencharking;
 
-import AdditionalCode.Input.JsonEncoder;
+import AdditionalCode.FileInputOutput.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.DecompositionInterface;
 import Potrace.General.Param;

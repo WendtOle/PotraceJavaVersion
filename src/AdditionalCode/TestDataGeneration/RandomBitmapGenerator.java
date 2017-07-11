@@ -1,4 +1,4 @@
-package AdditionalCode.Input;
+package AdditionalCode.TestDataGeneration;
 
 import AdditionalCode.BitmapManipulator;
 import Potrace.General.Bitmap;

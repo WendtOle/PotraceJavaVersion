@@ -1,5 +1,5 @@
-import AdditionalCode.Input.BitmapImporter;
-import AdditionalCode.Input.JsonEncoder;
+import AdditionalCode.FileInputOutput.BitmapImporter;
+import AdditionalCode.FileInputOutput.JsonEncoder;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
 import Potrace.General.Bitmap;

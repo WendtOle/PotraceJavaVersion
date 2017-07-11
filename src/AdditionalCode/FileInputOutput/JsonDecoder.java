@@ -1,4 +1,4 @@
-package AdditionalCode.Input;
+package AdditionalCode.FileInputOutput;
 
 import Potrace.General.Bitmap;
 import org.json.simple.JSONArray;

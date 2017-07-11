@@ -1,4 +1,4 @@
-package AdditionalCode.Input;
+package AdditionalCode.FileInputOutput;
 
 import AdditionalCode.BitmapManipulator;
 import Potrace.General.Bitmap;

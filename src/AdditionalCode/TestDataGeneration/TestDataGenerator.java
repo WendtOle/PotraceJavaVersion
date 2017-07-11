@@ -1,5 +1,6 @@
-package AdditionalCode.Input;
+package AdditionalCode.TestDataGeneration;
 
+import AdditionalCode.FileInputOutput.JsonDecoder;
 import Potrace.General.Bitmap;
 import org.json.simple.parser.ParseException;
 

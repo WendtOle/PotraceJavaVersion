@@ -1,6 +1,6 @@
 package Potrace.refactored;
 
-import AdditionalCode.Input.JsonEncoder;
+import AdditionalCode.FileInputOutput.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.Path;
 import org.junit.Before;
