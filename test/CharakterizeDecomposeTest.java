@@ -4,10 +4,10 @@ import General.DecompositionInterface;
 import General.Param;
 import General.Path;
 import org.json.simple.parser.ParseException;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import original.Decompose;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,10 +23,9 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CharakterizeDecomposeTest {
-
-
     Path expectedPath;
-    Path[] actualFirstPath;
+    Path actualOriginalPath;
+    Path actualRefactoredPath;
 
     @Parameterized.Parameters(name = "Testing {index}. BitmapManipulator")
     public static Collection testData() {
@@ -57,42 +56,51 @@ public class CharakterizeDecomposeTest {
         return testParameters;
     }
 
-    public CharakterizeDecomposeTest(Bitmap bitmap,
-                                     Path expectedPath) {
-
+    public CharakterizeDecomposeTest(Bitmap bitmap, Path expectedPath) {
         this.expectedPath = expectedPath;
-        this.actualFirstPath = new Path[DecompositionEnumAll.values().length];
-        for (int i = 0; i < DecompositionEnumAll.values().length; i++) {
-            DecompositionInterface decomposer = DecompositionEnumAll.values()[i].getDecomposer();
-            this.actualFirstPath[i] = decomposer.getPathList(bitmap, new Param());
-        }
+        setActualOriginalPath(bitmap);
+        setActualRefactoredPath(bitmap);
     }
 
-    @Ignore
+    private void setActualOriginalPath(Bitmap bitmap) {
+        DecompositionInterface originalDecomposer = new Decompose();
+        this.actualOriginalPath = originalDecomposer.getPathList(bitmap,new Param());
+    }
+
+    private void setActualRefactoredPath(Bitmap bitmap) {
+        DecompositionInterface originalDecomposer = new Decompose();
+        this.actualRefactoredPath = originalDecomposer.getPathList(bitmap,new Param());
+    }
+
     @Test
-    public void checkThatAllPathesAreTheSame() {
+    public void testOriginalDecomposer(){
+        checkThatAllPathsAreTheSame(actualOriginalPath);
+    }
 
+    @Test
+    public void testRefactoredDecomposer(){
+        checkThatAllPathsAreTheSame(actualRefactoredPath);
+    }
+
+    private void checkThatAllPathsAreTheSame(Path actualPath) {
         Path currentExpectedPath = expectedPath;
-        for(Path currentActualPath : actualFirstPath){
-            checkThatThereAreSameNumberOfPathes(currentActualPath);
-            int index = 0;
-            assertEqualPathes(index,currentExpectedPath,currentActualPath);
+        checkThatThereAreSameNumberOfPaths(actualPath);
+        int index = 0;
+        assertEqualPathes(index,currentExpectedPath,actualPath);
 
-            while(currentExpectedPath.next != null) {
-                currentExpectedPath = currentExpectedPath.next;
-                currentActualPath = currentActualPath.next;
-                index ++;
-                assertEqualPathes(index,currentExpectedPath,currentActualPath);
-            }
+        while(currentExpectedPath.next != null) {
+            currentExpectedPath = currentExpectedPath.next;
+            actualPath = actualPath.next;
+            index ++;
+            assertEqualPathes(index,currentExpectedPath,actualPath);
         }
-
     }
 
-    private void checkThatThereAreSameNumberOfPathes(Path actualPath) {
-        assertEquals("Number of Pathes", countPathes(expectedPath),countPathes(actualPath));
+    private void checkThatThereAreSameNumberOfPaths(Path actualPath) {
+        assertEquals("Number of Pathes", countPaths(expectedPath), countPaths(actualPath));
     }
 
-    private int countPathes(Path path) {
+    private int countPaths(Path path) {
         int actualAmountOfPathes = 1;
         Path currentPath = path;
         while (currentPath.next != null) {
@@ -101,5 +109,4 @@ public class CharakterizeDecomposeTest {
         }
         return actualAmountOfPathes;
     }
-
 }

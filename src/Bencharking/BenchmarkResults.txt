@@ -77,3 +77,17 @@ Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          a
 Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50        512.375 ±       4.057  ns/op    23.56%  -> 36.44%   (4)
 Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50    136 584.951 ±   2 346.967  ns/op
 Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50    265 328.151 ±  41 245.937  ns/op    194.25% -> 94.25%   (5)
+
+10. Juli 2017 - 18:24
+
+Benchmark                                                                      Mode  Cnt          Score          Error  Units
+Bencharking.Benchmarking.mesureOriginal                                        avgt   50  3 401 069.246 ±  517 557.357  ns/op
+Bencharking.Benchmarking.mesureRefactored                                      avgt   50  2 518 420.834 ±  228 400.739  ns/op   74.04%  -> 25.96%   (1)
+Bencharking.BenchmarkingFindPathComponent.mesureOriginal                       avgt   50  1 019 022.152 ±   19 514.387  ns/op
+Bencharking.BenchmarkingFindPathComponent.mesureRefactored                     avgt   50    669 333.000 ±   55 178.551  ns/op   65.68%  -> 34.32%   (2)
+Bencharking.BenchmarkingInvertPathComponent.mesureOriginal                     avgt   50     66 590.596 ±    8 388.610  ns/op
+Bencharking.BenchmarkingInvertPathComponent.mesureRefactored                   avgt   50     42 816.827 ±    8 152.796  ns/op   64.29%  -> 35.71%   (3)
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          avgt   50      2 423.559 ±      142.177  ns/op
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50        609.089 ±       64.306  ns/op   25.13%  -> 74.87%   (4)
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50    195 301.789 ±   55 571.643  ns/op
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50    399 328.607 ±  127 255.313  ns/op   204.46% -> 104.46%  (5)
