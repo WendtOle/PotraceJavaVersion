@@ -20,7 +20,8 @@ public class TestDataGenerator {
     Bitmap bitmap;
 
     public TestDataGenerator(Dimension dimesionsOfRandomBitmap, double noiseRatio, String folderToSave){
-        this.bitmap = new RandomGeneratedBitmap(dimesionsOfRandomBitmap.width,dimesionsOfRandomBitmap.height,noiseRatio);
+        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(dimesionsOfRandomBitmap);
+        this.bitmap = bitmapGenerator.generate(noiseRatio);
         saveBitmapInJsonFile(folderToSave);
     }
 
