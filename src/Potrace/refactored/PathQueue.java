@@ -31,13 +31,13 @@ public class PathQueue implements PathQueueInterface {
 
     private void schedulePathesForFurtherProcessing(Path path) {
         if (path != null) {
-            path.childlist = pathesThatNeedToProcess;
+            path.childlist = pathesThatNeedToProcess; //todo if else
             pathesThatNeedToProcess = path;
         }
     }
 
     private void schedulePathesForNextProcessingStep() {
-        pathesToOrder = pathesThatNeedToProcess;
+        pathesToOrder = pathesThatNeedToProcess; //todo to long
         pathesThatNeedToProcess = pathesThatNeedToProcess.childlist;
         pathesToOrder.childlist = null;
 

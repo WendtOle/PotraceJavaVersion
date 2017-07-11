@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class FindPath {
 
-    Point startPoint;
+    Point startPoint;   //TODO zu viele Felder
     int sign;
     TurnPolicyEnum turnPolicy;
     BitmapHandlerInterface bitmapHandler;

@@ -32,7 +32,7 @@ public class PointShape {
         return indexOfCurrentPoint >= pointsOfPath.length;
     }
 
-    private void expendPointArrayCapacity() {
+    private void expendPointArrayCapacity() { //Todo to much
         int newSize = (int)(1.3 * (pointsOfPath.length+100));
         Point[] newSizedPointArray = new Point[newSize];
         System.arraycopy(pointsOfPath,0,newSizedPointArray,0, pointsOfPath.length);

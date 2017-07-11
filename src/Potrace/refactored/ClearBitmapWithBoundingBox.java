@@ -8,7 +8,6 @@ import java.awt.*;
  * Created by andreydelany on 02.07.17.
  */
 public class ClearBitmapWithBoundingBox {
-
     BitmapHandlerInterface bitmapHandler;
     int indexOfWordWhereBoundingBoxStarts, indexOfwordWhereBoundingBoxEnds;
 
@@ -29,13 +28,13 @@ public class ClearBitmapWithBoundingBox {
     private void clearBitmapInHorizontalRange(BoundingBox boundingBox) {
         int currentLine = boundingBox.y0;
         while(currentLine < boundingBox.y1) {
-            clearAllWordsInLineThatOverlapWithBoundingBox(currentLine);
+            clearAllWordsInLineThatOverlapWithBoundingBox(currentLine); //TODO auslagern
             currentLine ++;
         }
     }
 
     private void clearAllWordsInLineThatOverlapWithBoundingBox(int line) {
-        for (int indexOfCurrentWord = indexOfWordWhereBoundingBoxStarts; indexOfCurrentWord < indexOfwordWhereBoundingBoxEnds; indexOfCurrentWord++) {
+        for (int indexOfCurrentWord = indexOfWordWhereBoundingBoxStarts; indexOfCurrentWord < indexOfwordWhereBoundingBoxEnds; indexOfCurrentWord++) { //ToDO viel zu mächtiger kopf
             clearWord(line, indexOfCurrentWord);
         }
     }

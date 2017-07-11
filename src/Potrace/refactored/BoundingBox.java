@@ -12,7 +12,7 @@ public class BoundingBox {
 
     public BoundingBox(Path path){
         for (int i = 0; i < path.priv.len; i++) {
-            Point currentPoint = path.priv.pt[i];
+            Point currentPoint = path.priv.pt[i]; //TODO auslagern
             updateBoundingBoxDimensions(currentPoint);
         }
     }

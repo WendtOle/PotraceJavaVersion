@@ -6,7 +6,6 @@ import Potrace.General.*;
  * Created by andreydelany on 29.06.17.
  */
 public class ChildrenAndSiblingFinder {
-
     Path pathList;
     Path pathesToOrder, referencePath;
     PathQueueInterface pathQueue;

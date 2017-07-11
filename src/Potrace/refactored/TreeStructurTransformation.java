@@ -33,7 +33,7 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
     }
 
     private void saveOriginalNextPointerToSiblingComponent() {
-        pathList = PathReStructrurer.saveOriginalNextPointerToSiblingComponent(pathList);
+        pathList = PathReStructurer.saveOriginalNextPointerToSiblingComponent(pathList);
     }
 
     private void findChildrenAndSiblings() {
@@ -42,7 +42,7 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {
-        pathList = PathReStructrurer.copySiblingStructurFromNextToSiblingComponent(pathList);
+        pathList = PathReStructurer.copySiblingStructurFromNextToSiblingComponent(pathList);
     }
 
     private void reconstructNextComponentFromChildrenAndSiblingComponent() {

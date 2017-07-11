@@ -7,7 +7,6 @@ import java.awt.*;
  * Created by andreydelany on 02.07.17.
  */
 public class PathInverter {
-
     BitmapHandlerInterface bitmapHandler;
     private Point currentPoint;
     private Point previousePoint;
@@ -49,12 +48,12 @@ public class PathInverter {
         invertLeadingWordUntilStartOfRange();
     }
 
-    private void invertLeadingWordsOfRange() {
+    private void invertLeadingWordsOfRange() { //Todo to long
         int startWordIdentifier = getWordIdentifierOfPreviousePoint();
         int lastWordIdentifier = getWordIdentifierOfCurrentWord();
 
         if (lastWordIdentifier < startWordIdentifier) {
-            int temp = startWordIdentifier;
+            int temp = startWordIdentifier;     //Todo if else !
             startWordIdentifier = lastWordIdentifier;
             lastWordIdentifier = temp;
         }
@@ -91,7 +90,7 @@ public class PathInverter {
 
     private void invertLeadingWordUntilStartOfRange() {
         int startOfRange = currentPoint.x & (Bitmap.PIXELINWORD-1);
-        if (startOfRange > 0) {
+        if (startOfRange > 0) { // Todo if else //Todo extract boolean
             Point leadingWordIdentifierPoint = new Point(getWordIdentifierOfCurrentWord(),getLineToInvert());
             invertWordWithIndexUntilPosition(leadingWordIdentifierPoint,startOfRange);
         }

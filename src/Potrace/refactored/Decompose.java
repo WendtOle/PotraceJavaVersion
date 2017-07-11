@@ -6,22 +6,21 @@ import Potrace.General.List;
 import java.awt.*;
 
 public class Decompose implements DecompositionInterface {
-    protected Param param;
+    protected Param param;                                                  //ToDO gefühlt zu viele felder
     protected Bitmap workCopy;
     BitmapHandlerInterface bitmapHandler;
     PathInverter pathInverterForWorkCopy;
     NextFilledPixelFinder nextFilledPixelFinder;
-    protected Point startPointOfCurrentPath;
     public Path pathList = null;
 
-    public Path getPathList(Bitmap generalBitmap, Potrace.General.Param param) {
+    public Path getPathList(Bitmap generalBitmap, Param param) {
         initializeFields(generalBitmap, param);
         decomposeBitmapIntoPathlistNew();
         return pathList;
     }
 
     private void initializeFields(Bitmap generalBitmap, Param param) {
-        this.workCopy = generalBitmap.bm_dup();
+        this.workCopy = generalBitmap.bm_dup();                             //TODO kürzer!
         this.bitmapHandler = new BitmapHandler(generalBitmap);
         this.pathInverterForWorkCopy = new PathInverter(workCopy);
         this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
@@ -63,7 +62,7 @@ public class Decompose implements DecompositionInterface {
     }
 
     protected int getSignOfPathFromOriginalBitmap(Point currentPoint) {
-        if (isPathFilled(currentPoint))
+        if (isPathFilled(currentPoint))                     //TODO anders ausdrücken. so sieht es zu doof aus
             return '+';
         else
             return '-';

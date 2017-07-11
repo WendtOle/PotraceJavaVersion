@@ -19,7 +19,7 @@ public class NextComponentReconstruction {
     }
 
     private void initializeFields(Path pathList) {
-        originPath = pathList;
+        originPath = pathList;                  //Todo zu lang
         currentPath = originPath;
         if (currentPath != null)
             currentPath.next = null;
@@ -28,7 +28,7 @@ public class NextComponentReconstruction {
 
     private void reconstructNextComponent() {
         while (areTherePathesToProcess()) {
-            pathesThatNeedToProcess = currentPath.next;
+            pathesThatNeedToProcess = currentPath.next;         //TODO extract
             addAllSiblingsWithTrailingChildrenOfPath(currentPath);
             currentPath = pathesThatNeedToProcess;
         }
