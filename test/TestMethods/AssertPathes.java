@@ -1,6 +1,6 @@
 package TestMethods;
 
-import General.Path;
+import Potrace.General.Path;
 
 import java.awt.*;
 

@@ -1,7 +1,7 @@
 package AdditionalCode;
 
 
-import General.Bitmap;
+import Potrace.General.Bitmap;
 
 /**
  * Created by andreydelany on 24.06.17.

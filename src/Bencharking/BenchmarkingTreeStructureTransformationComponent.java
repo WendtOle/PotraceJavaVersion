@@ -1,14 +1,14 @@
 package Bencharking;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import General.Bitmap;
-import General.DecompositionInterface;
-import General.Param;
-import General.Path;
+import Potrace.General.Bitmap;
+import Potrace.General.DecompositionInterface;
+import Potrace.General.Param;
+import Potrace.General.Path;
 import org.openjdk.jmh.annotations.*;
-import original.Decompose;
-import refactored.TreeStructurTransformation;
-import refactored.TreeStructurTransformationInterface;
+import Potrace.original.Decompose;
+import Potrace.refactored.TreeStructurTransformation;
+import Potrace.refactored.TreeStructurTransformationInterface;
 
 import java.io.IOException;
 

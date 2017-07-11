@@ -1,13 +1,13 @@
 package Bencharking;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import General.Bitmap;
-import General.Path;
+import Potrace.General.Bitmap;
+import Potrace.General.Path;
 import org.openjdk.jmh.annotations.*;
-import original.Decompose;
-import refactored.FindPath;
-import refactored.PathInverter;
-import refactored.TurnPolicyEnum;
+import Potrace.original.Decompose;
+import Potrace.refactored.FindPath;
+import Potrace.refactored.PathInverter;
+import Potrace.refactored.TurnPolicyEnum;
 
 import java.awt.*;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package Bencharking;
 
-import General.Bitmap;
-import refactored.Decompose;
+import Potrace.General.Bitmap;
+import Potrace.refactored.Decompose;
 
 /**
  * Created by andreydelany on 10.07.17.

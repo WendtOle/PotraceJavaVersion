@@ -1,9 +1,9 @@
 package Bencharking;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import General.Bitmap;
-import General.DecompositionInterface;
-import General.Param;
+import Potrace.General.Bitmap;
+import Potrace.General.DecompositionInterface;
+import Potrace.General.Param;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class Benchmarking{
     public static class MySate {
 
         Bitmap bitmap;
-        General.Param params;
+        Potrace.General.Param params;
 
         @Setup
         public void setBitmap(){
@@ -48,7 +48,7 @@ public class Benchmarking{
     @Fork(10)
     @Threads(2)
     public void mesureRefactored(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new refactored.Decompose();
+        DecompositionInterface decomposer = new Potrace.refactored.Decompose();
         decomposer.getPathList(state.bitmap,state.params);
     }
 
@@ -60,7 +60,7 @@ public class Benchmarking{
     @Fork(10)
     @Threads(2)
     public void mesureOriginal(MySate state) throws InterruptedException {
-        DecompositionInterface decomposer = new original.Decompose();
+        DecompositionInterface decomposer = new Potrace.original.Decompose();
         decomposer.getPathList(state.bitmap,state.params);
     }
 }

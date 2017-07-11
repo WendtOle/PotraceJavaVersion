@@ -1,7 +1,7 @@
 package AdditionalCode.OutputGraphical;
 
 
-import General.*;
+import Potrace.General.*;
 
 import javax.swing.*;
 import java.awt.*;

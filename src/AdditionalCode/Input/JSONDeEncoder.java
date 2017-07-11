@@ -1,7 +1,7 @@
 package AdditionalCode.Input;
 
-import General.Bitmap;
-import General.Path;
+import Potrace.General.Bitmap;
+import Potrace.General.Path;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

@@ -1,7 +1,7 @@
 package AdditionalCode.Input;
 
 import AdditionalCode.BitmapManipulator;
-import General.Bitmap;
+import Potrace.General.Bitmap;
 
 import java.awt.*;
 import java.util.Random;

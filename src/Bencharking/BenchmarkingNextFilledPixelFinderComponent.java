@@ -1,9 +1,9 @@
 package Bencharking;
 
-import General.Bitmap;
+import Potrace.General.Bitmap;
 import org.openjdk.jmh.annotations.*;
-import original.Decompose;
-import refactored.NextFilledPixelFinder;
+import Potrace.original.Decompose;
+import Potrace.refactored.NextFilledPixelFinder;
 
 import java.awt.*;
 

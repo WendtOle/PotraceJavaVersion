@@ -1,7 +1,7 @@
 package AdditionalCode.OutputGraphical;
 
-import General.Bitmap;
-import General.Path;
+import Potrace.General.Bitmap;
+import Potrace.General.Path;
 
 import javax.swing.*;
 import java.awt.*;

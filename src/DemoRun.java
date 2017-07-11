@@ -1,10 +1,10 @@
 import AdditionalCode.Input.JSONDeEncoder;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
-import General.Bitmap;
-import General.Param;
-import General.Path;
-import General.PotraceLibrary;
+import Potrace.General.Bitmap;
+import Potrace.General.Param;
+import Potrace.General.Path;
+import Potrace.General.PotraceLibrary;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;

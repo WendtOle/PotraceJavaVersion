@@ -1,6 +1,6 @@
 package AdditionalCode.OutputGraphical;
 
-import General.*;
+import Potrace.General.*;
 
 import java.awt.*;
 

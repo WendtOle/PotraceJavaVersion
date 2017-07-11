@@ -1,7 +1,6 @@
 package AdditionalCode.Input;
 
-import AdditionalCode.OutputConsol.PrinterBitmap;
-import General.Bitmap;
+import Potrace.General.Bitmap;
 import org.json.simple.parser.ParseException;
 
 import java.awt.*;
@@ -14,11 +13,40 @@ public class TestDataGenerator {
     static String bitMapFileFolder = "testPictures";
 
     public static void main(String [] args) throws IOException, ParseException {
-        Bitmap bitmap = new RandomGeneratedBitmap(dimesionsOfRandomBitmap.width,dimesionsOfRandomBitmap.height,noiseRatioOfRandomBitmap);
+        TestDataGenerator testDataGenerator = new TestDataGenerator(dimesionsOfRandomBitmap,noiseRatioOfRandomBitmap,bitMapFileFolder);
+        testDataGenerator.printBitmapInformationToPasteIntoCProgramm();
+    }
 
-        JSONDeEncoder.bitmapToJSon(bitmap,bitMapFileFolder);
+    Bitmap bitmap;
 
-        PrinterBitmap printer = new PrinterBitmap(bitmap);
-        printer.printBitmapArchitectureForCUnderstandable();
+    public TestDataGenerator(Dimension dimesionsOfRandomBitmap, double noiseRatio, String folderToSave){
+        this.bitmap = new RandomGeneratedBitmap(dimesionsOfRandomBitmap.width,dimesionsOfRandomBitmap.height,noiseRatio);
+        saveBitmapInJsonFile(folderToSave);
+    }
+
+    public void printBitmapInformationToPasteIntoCProgramm(){
+        printConstructor();
+        printAllPotraceWordsOfBitmap();
+    }
+
+    private void printConstructor() {
+        System.out.println("bm = bm_newCopied("+bitmap.w+","+bitmap.h+");");
+    }
+
+    private void printAllPotraceWordsOfBitmap() {
+        for(int i = 0; i < bitmap.map.length; i++)
+            printAssignmentOfOnePotraceWordToConsole(i);
+    }
+
+    private void saveBitmapInJsonFile(String folderName) {
+        try {
+            JSONDeEncoder.bitmapToJSon(bitmap,folderName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void printAssignmentOfOnePotraceWordToConsole(int i) {
+        System.out.println("bm->map["+i+"] = 0x"+ Long.toHexString(bitmap.map[i]) + "l;");
     }
 }

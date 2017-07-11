@@ -1,12 +1,12 @@
 package Bencharking;
 
 import AdditionalCode.Input.JSONDeEncoder;
-import General.Bitmap;
-import General.Param;
+import Potrace.General.Bitmap;
+import Potrace.General.Param;
 import org.openjdk.jmh.annotations.*;
-import original.Decompose;
-import refactored.FindPath;
-import refactored.TurnPolicyEnum;
+import Potrace.original.Decompose;
+import Potrace.refactored.FindPath;
+import Potrace.refactored.TurnPolicyEnum;
 
 import java.awt.*;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class BenchmarkingFindPathComponent {
     public static class MySate {
 
         Bitmap bitmap;
-        General.Param params;
+        Potrace.General.Param params;
         TurnPolicyEnum turnPolicy = TurnPolicyEnum.MINORITY;
         int turnPolicyAsInt = turnPolicy.ordinal();
         int sign = 43;
