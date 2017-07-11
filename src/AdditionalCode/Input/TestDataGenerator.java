@@ -40,11 +40,8 @@ public class TestDataGenerator {
     }
 
     private void saveBitmapInJsonFile(String folderName) {
-        try {
-            JSONDeEncoder.bitmapToJSon(bitmap,folderName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JsonDecoder decoder = new JsonDecoder(folderName);
+        decoder.saveBitmap(bitmap);
     }
 
     private void printAssignmentOfOnePotraceWordToConsole(int i) {

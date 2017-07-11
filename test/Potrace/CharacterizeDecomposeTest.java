@@ -1,18 +1,16 @@
 package Potrace;
 
-import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.Input.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.DecompositionInterface;
 import Potrace.General.Param;
 import Potrace.General.Path;
-import org.json.simple.parser.ParseException;
+import Potrace.original.Decompose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import Potrace.original.Decompose;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -49,16 +47,9 @@ public class CharacterizeDecomposeTest {
     }
 
     private static Object[] loadBitmapPathPair(File bitmapFile){
-        Bitmap bitmap = null;
-        Path path = null;
-        try {
-            bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFile);
-            path = JSONDeEncoder.readTestDataFromJSon(bitmapFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        JsonEncoder encoder = new JsonEncoder(bitmapFile);
+        Bitmap bitmap = encoder.getBitmap();
+        Path path = encoder.getPath();
         return new Object[]{bitmap,path};
     }
 

@@ -1,6 +1,6 @@
 package Potrace.refactored;
 
-import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.Input.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.Path;
 import org.junit.Before;
@@ -20,13 +20,9 @@ public class ChildrenAndSiblingFinderTest {
 
     @Before
     public void importBitmap() {
-        try {
-            Bitmap bitmap = JSONDeEncoder.readBitmapFromJSon(new File("testPictures/11.jsonn"));
-            this.bitmap = new Bitmap(bitmap.w,bitmap.h);
-            this.bitmap.map = bitmap.map;
-        } catch (Exception e) {
-            System.out.print(e);
-        }
+        File file = new File("testPictures/11.jsonn");
+        JsonEncoder encoder = new JsonEncoder(file);
+        bitmap = encoder.getBitmap();
     }
 
     @Before

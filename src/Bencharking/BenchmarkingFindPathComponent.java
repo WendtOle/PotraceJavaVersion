@@ -1,15 +1,14 @@
 package Bencharking;
 
-import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.Input.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.Param;
-import org.openjdk.jmh.annotations.*;
 import Potrace.original.Decompose;
 import Potrace.refactored.FindPath;
 import Potrace.refactored.TurnPolicyEnum;
+import org.openjdk.jmh.annotations.*;
 
 import java.awt.*;
-import java.io.IOException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
@@ -33,13 +32,8 @@ public class BenchmarkingFindPathComponent {
 
         @Setup
         public void setBitmap(){
-            try {
-                bitmap = JSONDeEncoder.readBitmapFromJSon("01.json","testPictures");
-            } catch (org.json.simple.parser.ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            JsonEncoder encoder = new JsonEncoder("01.json","testPictures");
+            bitmap = encoder.getBitmap();
         }
 
         @Setup

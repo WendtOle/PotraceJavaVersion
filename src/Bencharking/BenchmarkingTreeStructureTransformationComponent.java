@@ -1,16 +1,14 @@
 package Bencharking;
 
-import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.Input.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.DecompositionInterface;
 import Potrace.General.Param;
 import Potrace.General.Path;
-import org.openjdk.jmh.annotations.*;
 import Potrace.original.Decompose;
 import Potrace.refactored.TreeStructurTransformation;
 import Potrace.refactored.TreeStructurTransformationInterface;
-
-import java.io.IOException;
+import org.openjdk.jmh.annotations.*;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
@@ -27,15 +25,8 @@ public class BenchmarkingTreeStructureTransformationComponent {
         Bitmap workCopy;
 
         public Bitmap getBitmap(){
-            Bitmap bitmap = new Bitmap();
-            try {
-                bitmap = JSONDeEncoder.readBitmapFromJSon("01.json","testPictures");
-            } catch (org.json.simple.parser.ParseException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bitmap;
+            JsonEncoder encoder = new JsonEncoder("01.json","testPictures");
+            return encoder.getBitmap();
         }
 
         @Setup

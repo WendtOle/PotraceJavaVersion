@@ -1,13 +1,10 @@
-import AdditionalCode.Input.JSONDeEncoder;
+import AdditionalCode.Input.JsonEncoder;
 import AdditionalCode.OutputGraphical.Plotter;
 import AdditionalCode.OutputGraphical.PlotterOptionsEnum;
 import Potrace.General.Bitmap;
 import Potrace.General.Param;
 import Potrace.General.Path;
 import Potrace.General.PotraceLibrary;
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
 
 /**
  * Created by andreydelany on 21.06.17.
@@ -44,12 +41,7 @@ public class DemoRun {
    }
 
    public static void loadBitmap() {
-        try {
-            bitmap = JSONDeEncoder.readBitmapFromJSon(bitmapFileName, bitMapFileFolder);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+       JsonEncoder encoder = new JsonEncoder(bitmapFileName,bitMapFileFolder);
+       bitmap = encoder.getBitmap();
    }
 }
