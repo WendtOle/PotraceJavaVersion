@@ -7,11 +7,11 @@ import java.awt.*;
 /**
  * Created by andreydelany on 02.07.17.
  */
-public class ClearBitmapWithBoundingBox {
+public class ClearPathWithBoundingBox {
     BitmapHandlerInterface bitmapHandler;
     int indexOfWordWhereBoundingBoxStarts, indexOfwordWhereBoundingBoxEnds;
 
-    public ClearBitmapWithBoundingBox(Bitmap bitmap) {
+    public ClearPathWithBoundingBox(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
     }
 

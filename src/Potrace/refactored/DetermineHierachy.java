@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public class DetermineHierachy {
     BitmapHandlerInterface bitmapHandler;
-    ClearBitmapWithBoundingBox bitmapClearer;
+    ClearPathWithBoundingBox bitmapClearer;
     PathInverter inverter;
     BoundingBox boundingBox;
     Path referencePath, pathesToOrder;
@@ -20,7 +20,7 @@ public class DetermineHierachy {
 
     public DetermineHierachy(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
-        this.bitmapClearer = new ClearBitmapWithBoundingBox(bitmap);
+        this.bitmapClearer = new ClearPathWithBoundingBox(bitmap);
         this.inverter = new PathInverter(bitmap);
     }
 

@@ -17,22 +17,26 @@ public class TurnPolicyEnumTest {
     BitmapHandlerInterface bitmapHandlerMajorityIsBlack = new BitmapHandler(new Bitmap(4,4));
 
     @Before
-    public void prepareBitmap() {
+    public void setBitmapWhereMinorityAreFilledPixel() {
         bitmapHandlerMinorityIsBlack.setPixel(new Point(0,0));
         bitmapHandlerMinorityIsBlack.setPixel(new Point(1,1));
+    }
 
+    @Before
+    public void setBitmapWhereMajorityOfPixelAreFilled() {
         bitmapHandlerMajorityIsBlack.setPixel(new Point(0,0));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(1,0));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(2,0));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(3,0));
-        bitmapHandlerMajorityIsBlack.setPixel(new Point(0,1));
 
+        bitmapHandlerMajorityIsBlack.setPixel(new Point(0,1));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(2,1));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(3,1));
+
         bitmapHandlerMajorityIsBlack.setPixel(new Point(0,2));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(1,2));
-
         bitmapHandlerMajorityIsBlack.setPixel(new Point(3,2));
+
         bitmapHandlerMajorityIsBlack.setPixel(new Point(0,3));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(1,3));
         bitmapHandlerMajorityIsBlack.setPixel(new Point(2,3));
