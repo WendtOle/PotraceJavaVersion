@@ -37,6 +37,7 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
             path.sibling = path.next;
     }
 
+
     private void findChildrenAndSiblings() {
         ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
         pathList = childrenAndSiblingFinder.getTreeTransformedPathStructure();

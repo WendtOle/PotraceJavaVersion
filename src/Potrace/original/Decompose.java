@@ -366,7 +366,7 @@ public class Decompose implements DecompositionInterface{
 
             // now schedule head->childlist and head->next for further
            // processing
-            if (head.next != null) { //Ole: es gab pfade die außerhalb des aller ersten pfades waren
+            if (head.next != null) {
                 head.next.childlist = heap;
                 heap = head.next;
 

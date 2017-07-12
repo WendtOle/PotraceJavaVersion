@@ -1,49 +1,95 @@
 package Potrace.refactored;
 
-import Potrace.General.*;
+import Potrace.General.Bitmap;
+import Potrace.General.Path;
 
 /**
  * Created by andreydelany on 29.06.17.
  */
 public class ChildrenAndSiblingFinder {
     Path pathList;
-    Path pathesToOrder, referencePath;
-    PathQueueInterface pathQueue;
-    DetermineHierachy hirachyBuilder;
+    ClearPathWithBoundingBox bitmapClearer;
+    PathInverter inverter;
+    BitmapHandlerInterface bitmapHandler;
+    PathManager pathManager;
+    BoundingBox boundingBox;
+    boolean shouldContinueOrdering;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
-        hirachyBuilder = new DetermineHierachy(bitmap);
-        pathQueue = new PathQueue(pathList);
+        bitmapClearer = new ClearPathWithBoundingBox(bitmap);
+        this.inverter = new PathInverter(bitmap);
+        bitmapHandler = new BitmapHandler(bitmap);
+        pathManager = new PathManager(pathList);
     }
 
     public Path getTreeTransformedPathStructure(){
-        transformIntoTreeStructure();
+        orderPathsOnFirstLevel();
         return pathList;
     }
 
-    private void transformIntoTreeStructure() {
-        while (pathQueue.stillNeedToProcessPathes())
-            processPathes();
+    private void orderPathsOnFirstLevel() {
+        while (stillNeedToOrderPathsOnFirstLevel()) {
+            pathManager.initializingPathForFirstLevelOrdering();
+            orderOnFirstLevelInRelationToReferencePath();
+        }
     }
 
-    private void processPathes() {
-        getPathesToProcess();
-        determineHirachyBetweenPathes();
-        scheduleFoundChildrenAndSiblingsForFurtherProcessing();
+    private boolean stillNeedToOrderPathsOnFirstLevel() {
+        return pathManager.stillNeedToProcessPathes();
     }
 
-    private void getPathesToProcess() {
-        Path[] pathesNextToProcess = pathQueue.getNextPathes();
-        referencePath = pathesNextToProcess[0];
-        pathesToOrder = pathesNextToProcess[1];
+    private void orderOnFirstLevelInRelationToReferencePath() {
+        markLocationOfReferencePath();
+        orderPathsRelativeToReferencePath();
+        unmarkLocationOfReferencePath();
     }
 
-    private void determineHirachyBetweenPathes(){
-        referencePath = hirachyBuilder.getHierarchicallyOrderedPathes(referencePath,pathesToOrder);
+    private void markLocationOfReferencePath() {
+        Path referencePath = pathManager.getCurrentReferencePath();
+        inverter.invertPathOnBitmap(referencePath);
+        boundingBox = new BoundingBox(referencePath);
     }
 
-    private void scheduleFoundChildrenAndSiblingsForFurtherProcessing() {
-        pathQueue.updateQueue(referencePath);
+    private void orderPathsRelativeToReferencePath() {
+        shouldContinueOrdering = true;
+        while (shouldContinueOrdering())
+            ordering();
+    }
+
+    private void ordering() {
+        pathManager.preparePathsThatWillLaterBeLookedAt();
+        if (isCurrentPathBelowReferencePath())
+            cancelOrderingProcess();
+        else
+            addCurrentPathToReferencePath();
+    }
+
+    private boolean shouldContinueOrdering() {
+        return pathManager.stillNeedToOrderPaths() && shouldContinueOrdering;
+    }
+
+    private void cancelOrderingProcess() {
+        pathManager.addRemainingPathsAsSibling();
+        shouldContinueOrdering = false;
+    }
+
+    private void addCurrentPathToReferencePath() {
+        if (isCurrentPathInsideReferencePath())
+            pathManager.addPathAsChild();
+        else
+            pathManager.addPathAsSibling();
+    }
+
+    private boolean isCurrentPathInsideReferencePath() {
+        return bitmapHandler.isPixelFilled(pathManager.getFirstPointOfCurrentPath());
+    }
+
+    private boolean isCurrentPathBelowReferencePath() {
+        return pathManager.getUpperBoundOfPath() <= boundingBox.y0;
+    }
+
+    private void unmarkLocationOfReferencePath() {
+        bitmapClearer.clearBitmapWithBoundingBox(boundingBox);
     }
 }
