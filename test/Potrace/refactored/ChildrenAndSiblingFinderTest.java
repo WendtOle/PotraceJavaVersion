@@ -1,12 +1,11 @@
 package Potrace.refactored;
 
-import AdditionalCode.FileInputOutput.JsonEncoder;
+import AdditionalCode.FileInputOutput.BitmapImporter;
 import Potrace.General.Bitmap;
 import Potrace.General.Path;
 import org.junit.Before;
 
 import java.awt.*;
-import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,9 +19,8 @@ public class ChildrenAndSiblingFinderTest {
 
     @Before
     public void importBitmap() {
-        File file = new File("testPictures/11.jsonn");
-        JsonEncoder encoder = new JsonEncoder(file);
-        bitmap = encoder.getBitmap();
+        BitmapImporter importer = new BitmapImporter("testPictureChildsAndSiblings.png","testPictures");
+        bitmap = importer.getBitmap();
     }
 
     @Before
