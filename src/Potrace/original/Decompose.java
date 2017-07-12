@@ -343,7 +343,6 @@ public class Decompose implements DecompositionInterface{
                 p.next=null;
 
                 if (p.priv.pt[0].y <= bbox.y0) {
-                //Todo find out what that if condition is for
                     head.next = List.elementInsertAtTheLastNextOfList(p,head.next);
 	                // append the remainder of the Potrace.General.List to hook_out
                     head.next = List.listInsertAtTheLastNextOfList(cur,head.next);
