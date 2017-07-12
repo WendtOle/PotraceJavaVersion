@@ -64,28 +64,28 @@ public class DirectionHandler {
     }
 
     private void performTurnInAmbiguousSituation() {
-        if (shouldTurnRightInAmbiguousSituation())
-            performRightTurn();
-        else
+        if (shouldTurnLeftInAmbiguousSituation())
             performLeftTurn();
+        else
+            performRightTurn();
     }
 
-    private boolean shouldTurnRightInAmbiguousSituation() {
+    private boolean shouldTurnLeftInAmbiguousSituation() {
         return turnPolicy.isTurnPolicySatisfied(sign,bitmapHandler,currentPoint);
     }
 
-    private void performRightTurn() {
+    private void performLeftTurn() {
         direction = new Point(direction.y,-direction.x);
     }
 
-    private void performLeftTurn() {
+    private void performRightTurn() {
         direction = new Point(- direction.y,direction.x);
     }
 
     private void performTurnInNormalSituation() {
         if (isRightPixelFilled)
-            performRightTurn();
-        else if (isLeftPixelEmpty)
             performLeftTurn();
+        else if (isLeftPixelEmpty)
+            performRightTurn();
     }
 }
