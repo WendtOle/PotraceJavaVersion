@@ -14,76 +14,87 @@ import static org.junit.Assert.*;
 public class NextFilledPixelFinderTest {
 
     Bitmap bitmap = new Bitmap(100,100);
-    BitmapHandlerInterface bitmapHandler;
+    BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
+    NextFilledPixelFinder pixelFinder;
 
     @Before
-    public void prepare() {
-        bitmapHandler = new BitmapHandler(bitmap);
+    public void clearBitmap(){
+        bitmapHandler.clearCompleteBitmap();
     }
 
     @Test
     public void findNextPixelInSameLineInSameWord() {
-        bitmapHandler.setPixel(new Point(3,99));
-        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
+        Point filledPixel = new Point(3,99);
+        pixelFinder = getFilledPixelFinderForTesting(filledPixel);
+
         assertTrue(pixelFinder.isThereAFilledPixel());
-        Point expectedPosition = new Point(3,99);
-        Point actualPosition = pixelFinder.getPositionOfNextFilledPixel();
-        assertEquals(expectedPosition,actualPosition);
+        assertEquals(filledPixel,pixelFinder.getPositionOfNextFilledPixel());
     }
 
     @Test
     public void findNextPixelInSameLineButNotInFirstWord() {
-        bitmapHandler.setPixel(new Point(65,99));
-        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
+        Point filledPixel = new Point(65,99);
+        pixelFinder = getFilledPixelFinderForTesting(filledPixel);
+
         assertTrue(pixelFinder.isThereAFilledPixel());
-        Point expectedPosition = new Point(65,99);
-        Point actualPosition = pixelFinder.getPositionOfNextFilledPixel();
-        assertEquals(expectedPosition,actualPosition);
+        assertEquals(filledPixel,pixelFinder.getPositionOfNextFilledPixel());
     }
 
     @Test
     public void findNextPixelNotInSameLine() {
-        bitmapHandler.setPixel(new Point(65,98));
-        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
+        Point filledPixel = new Point(65,98);
+        pixelFinder = getFilledPixelFinderForTesting(filledPixel);
+
         assertTrue(pixelFinder.isThereAFilledPixel());
-        Point expectedPosition = new Point(65,98);
-        Point actualPosition = pixelFinder.getPositionOfNextFilledPixel();
-        assertEquals(expectedPosition,actualPosition);
+        assertEquals(filledPixel,pixelFinder.getPositionOfNextFilledPixel());
     }
 
     @Test
-    public void findTwoFilledPixel() {
-        bitmapHandler.setPixel(new Point(5,98));
-        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
-        assertTrue(pixelFinder.isThereAFilledPixel());
-        assertEquals(new Point(5,98),pixelFinder.getPositionOfNextFilledPixel());
+    public void findTwoPixelWithSamePixelFinder() {
+        Point firstFilledPixel = new Point(5,98);
+        Point secondFilledPixel = new Point(65,6);
+        pixelFinder = getFilledPixelFinderForTesting(firstFilledPixel);
 
-        bitmapHandler.clearCompleteBitmap();
-        bitmapHandler.setPixel(new Point(65,6));
         assertTrue(pixelFinder.isThereAFilledPixel());
-        assertEquals(new Point(65,6),pixelFinder.getPositionOfNextFilledPixel());
+        assertEquals(firstFilledPixel,pixelFinder.getPositionOfNextFilledPixel());
 
-        bitmapHandler.clearCompleteBitmap();
-        assertFalse(pixelFinder.isThereAFilledPixel());
+        setAnotherPixelToBitmap(secondFilledPixel);
+
+        assertTrue(pixelFinder.isThereAFilledPixel());
+        assertEquals(secondFilledPixel,pixelFinder.getPositionOfNextFilledPixel());
     }
 
     @Test
     public void thereIsNoFilledPixelToFind(){
-        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
+        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(new Bitmap(100,100));
+
         assertFalse(pixelFinder.isThereAFilledPixel());
     }
 
     @Test
     public void throwingAExceptionWhenTryingToExcessNotFoundPixel() {
-        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(bitmap);
-        assertFalse(pixelFinder.isThereAFilledPixel());
+        NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(new Bitmap(100,100));
 
-        boolean exceptionWasThrown = false;
+        assertFalse(pixelFinder.isThereAFilledPixel());
+        assertTrue(wasExceptionThrown(pixelFinder));
+    }
+
+    private NextFilledPixelFinder getFilledPixelFinderForTesting(Point pixel){
+        bitmapHandler.setPixel(pixel);
+        return new NextFilledPixelFinder(bitmap);
+    }
+
+    private void setAnotherPixelToBitmap(Point pixel){
+        bitmapHandler.clearCompleteBitmap();
+        bitmapHandler.setPixel(pixel);
+    }
+
+    private boolean wasExceptionThrown(NextFilledPixelFinder pixelFinder) {
         try {
             pixelFinder.getPositionOfNextFilledPixel();
         } catch (RuntimeException e){
-            exceptionWasThrown = true;
+            return true;
         }
-        assertTrue(exceptionWasThrown);
+        return false;
     }
 }
