@@ -1,56 +1,36 @@
 package Potrace.refactored;
 
-import AdditionalCode.FileInputOutput.BitmapImporter;
-import Potrace.General.Bitmap;
 import Potrace.General.Path;
-import org.junit.Before;
+import org.junit.Test;
 
-import java.awt.*;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by andreydelany on 05.07.17.
  */
-public class ChildrenAndSiblingFinderTest {
+public class ChildrenAndSiblingFinderTest extends HierachyBaseTest{
 
-    Bitmap bitmap;
-    Path path;
-
-    @Before
-    public void importBitmap() {
-        BitmapImporter importer = new BitmapImporter("testPictureChildsAndSiblings.png","testPictures");
-        bitmap = importer.getBitmap();
+    public void putPathsInLine(){
+        allPaths = pathAbove;
+        pathAbove.next = pathLeft;
+        pathLeft.next = referencePath;
+        referencePath.next = pathRight;
+        pathRight.next = pathInside;
+        pathInside.next = pathBelow;
     }
 
-    @Before
-    public void preparePathes(){
-        NextFilledPixelFinder filledPixelFinder = new NextFilledPixelFinder(bitmap);
-        BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
-        while(filledPixelFinder.isThereAFilledPixel()) {
-            Point startPointOfPath = filledPixelFinder.getPositionOfNextFilledPixel();
-            int signOfPath = bitmapHandler.isPixelFilled(startPointOfPath) ? '+' : '-';
-            FindPath pathFinder = new FindPath(bitmap,startPointOfPath,signOfPath, TurnPolicyEnum.RIGHT);
-            Path foundPath = pathFinder.getPath();
-            Path currentPath = path;
-            while(currentPath != null){
-                currentPath = currentPath.next;
-            }
-            currentPath = foundPath;
-            PathInverter inverter = new PathInverter(bitmap);
-            inverter.invertPathOnBitmap(foundPath);
-        }
-    }
+    @Test
+    public void testThatPassesAreInRightOrder(){
+        ChildrenAndSiblingFinder finder = new ChildrenAndSiblingFinder(allPaths,bitmap);
 
-//TODO
-    public void test() {
-        Path currentPath = path;
-        int counter = 1;
-        while(currentPath.next != null) {
-            counter ++;
-            currentPath = currentPath.next;
-        }
-        assertEquals(9,counter);
+        Path result = finder.getTreeTransformedPathStructure();
+
+        assertTrue(result == pathAbove);
+        assertTrue(result.next == pathLeft);
+        assertTrue(result.next.next == pathBelow);
+        assertTrue(result.next.childlist == referencePath);
+        assertTrue(result.next.childlist.next == pathRight);
+        assertTrue(result.next.childlist.childlist == pathInside);
     }
 
 }
