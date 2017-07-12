@@ -1,4 +1,4 @@
-package TestMethods;
+package TestUtils;
 
 import Potrace.General.Path;
 

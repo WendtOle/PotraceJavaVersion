@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.awt.*;
 
-import static TestMethods.AssertPathes.assertEqualPathes;
+import static TestUtils.AssertPathes.assertEqualPathes;
 
 /**
  * Created by andreydelany on 05.07.17.

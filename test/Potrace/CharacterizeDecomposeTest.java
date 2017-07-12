@@ -14,7 +14,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static TestMethods.AssertPathes.assertEqualPathes;
+import static TestUtils.AssertPathes.assertEqualPathes;
 import static org.junit.Assert.assertEquals;
 
 /**
