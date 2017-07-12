@@ -8,11 +8,11 @@ import java.awt.*;
 public enum TurnPolicyEnum {
     BLACK, WHITE, LEFT, RIGHT, MINORITY, MAJORITY, RANDOM;
 
-    public boolean isTurnPolicySatisfied(int sign, BitmapHandlerInterface bitmapHandler, Point currentPoint) {
+    public boolean isTurnPolicySatisfied(PathKindEnum kindOfPath, BitmapHandlerInterface bitmapHandler, Point currentPoint) {
         switch (this) {
             case RIGHT: return true;
-            case BLACK: return sign == '+';
-            case WHITE: return sign == '-';
+            case BLACK: return kindOfPath.equals(PathKindEnum.POSITIV);
+            case WHITE: return kindOfPath.equals(PathKindEnum.NEGATIV);
             case RANDOM: return detrand(currentPoint.x,currentPoint.y);
             case MAJORITY: return getMajorityValueAtIntersection(currentPoint.x,currentPoint.y,bitmapHandler);
             case MINORITY: return isMinorityAtIntersection(currentPoint.x,currentPoint.y,bitmapHandler);

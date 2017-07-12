@@ -6,6 +6,7 @@ import Potrace.General.Path;
 import Potrace.original.Decompose;
 import Potrace.refactored.FindPath;
 import Potrace.refactored.PathInverter;
+import Potrace.refactored.PathKindEnum;
 import Potrace.refactored.TurnPolicyEnum;
 import org.openjdk.jmh.annotations.*;
 
@@ -33,7 +34,7 @@ public class BenchmarkingInvertPathComponent {
         @Setup
         public void setUpPath(){
             Point firstPoint = new Point(0,99);
-            FindPath pathFinder = new FindPath(bitmap,firstPoint,43, TurnPolicyEnum.MINORITY);
+            FindPath pathFinder = new FindPath(bitmap,firstPoint, PathKindEnum.POSITIV, TurnPolicyEnum.MINORITY);
             this.path = pathFinder.getPath();
         }
     }

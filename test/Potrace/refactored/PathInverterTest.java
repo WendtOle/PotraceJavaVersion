@@ -75,7 +75,7 @@ public class PathInverterTest {
     }
 
     private Path findPath(Bitmap bitmap) {
-        FindPath pathFinder = new FindPath(bitmap, pointsOfPath[0], 43, TurnPolicyEnum.MINORITY);
+        FindPath pathFinder = new FindPath(bitmap, pointsOfPath[0], PathKindEnum.POSITIV, TurnPolicyEnum.MINORITY);
         return pathFinder.getPath();
     }
 

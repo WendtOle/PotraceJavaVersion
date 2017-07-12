@@ -2,10 +2,10 @@ package Bencharking;
 
 import AdditionalCode.FileInputOutput.JsonEncoder;
 import Potrace.General.Bitmap;
-import Potrace.General.DecompositionInterface;
 import Potrace.General.Param;
 import Potrace.General.Path;
 import Potrace.original.Decompose;
+import Potrace.refactored.FindPathsOnBitmap;
 import Potrace.refactored.TreeStructurTransformation;
 import Potrace.refactored.TreeStructurTransformationInterface;
 import org.openjdk.jmh.annotations.*;
@@ -22,7 +22,7 @@ public class BenchmarkingTreeStructureTransformationComponent {
 
 
         Path path;
-        Bitmap workCopy;
+        Bitmap bitmap,emptyBitmap;
 
         public Bitmap getBitmap(){
             JsonEncoder encoder = new JsonEncoder("01.json","testPictures");
@@ -31,10 +31,10 @@ public class BenchmarkingTreeStructureTransformationComponent {
 
         @Setup
         public void setBitmap(){
-            DecompositionInterface decomposer = new DecomposeHelperForTreeStructureTransformation();
-            path = decomposer.getPathList(getBitmap(),new Param());
-            workCopy = decomposer.getWorkCopy();
-
+            this.bitmap = getBitmap();
+            this.emptyBitmap = new Bitmap(bitmap.w,bitmap.h);
+            FindPathsOnBitmap findPathsOnBitmap = new FindPathsOnBitmap(bitmap,new Param());
+            path = findPathsOnBitmap.getPathList();
         }
     }
 
@@ -46,7 +46,7 @@ public class BenchmarkingTreeStructureTransformationComponent {
     @Fork(5)
     @Threads(2)
     public void mesureRefactored(MySate state) throws InterruptedException {
-        TreeStructurTransformationInterface transformator = new TreeStructurTransformation(state.path,state.workCopy);
+        TreeStructurTransformationInterface transformator = new TreeStructurTransformation(state.path,state.emptyBitmap);
         transformator.getTreeStructure();
     }
 
@@ -58,6 +58,6 @@ public class BenchmarkingTreeStructureTransformationComponent {
     @Fork(5)
     @Threads(2)
     public void mesureOriginal(MySate state) throws InterruptedException {
-        Decompose.pathlist_to_tree(state.path,state.workCopy);
+        Decompose.pathlist_to_tree(state.path,state.emptyBitmap);
     }
 }

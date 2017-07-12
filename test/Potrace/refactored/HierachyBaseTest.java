@@ -28,22 +28,22 @@ public abstract class HierachyBaseTest {
     }
 
     private void findPaths() {
-        FindPath pathFinder = new FindPath(bitmap,new Point(3,8),43, TurnPolicyEnum.MINORITY);
+        FindPath pathFinder = new FindPath(bitmap,new Point(3,8),PathKindEnum.POSITIV, TurnPolicyEnum.MINORITY);
         referencePath = pathFinder.getPath();
 
-        pathFinder = new FindPath(bitmap,new Point(0,11),43,TurnPolicyEnum.MINORITY);
+        pathFinder = new FindPath(bitmap,new Point(0,11),PathKindEnum.POSITIV,TurnPolicyEnum.MINORITY);
         pathAbove = pathFinder.getPath();
 
-        pathFinder = new FindPath(bitmap,new Point(0,1),43,TurnPolicyEnum.MINORITY);
+        pathFinder = new FindPath(bitmap,new Point(0,1),PathKindEnum.POSITIV,TurnPolicyEnum.MINORITY);
         pathBelow = pathFinder.getPath();
 
-        pathFinder = new FindPath(bitmap,new Point(5,6),43,TurnPolicyEnum.MINORITY);
+        pathFinder = new FindPath(bitmap,new Point(5,6),PathKindEnum.POSITIV,TurnPolicyEnum.MINORITY);
         pathInside = pathFinder.getPath();
 
-        pathFinder = new FindPath(bitmap,new Point(0,8),43,TurnPolicyEnum.MINORITY);
+        pathFinder = new FindPath(bitmap,new Point(0,8),PathKindEnum.POSITIV,TurnPolicyEnum.MINORITY);
         pathLeft = pathFinder.getPath();
 
-        pathFinder = new FindPath(bitmap,new Point(12,8),43,TurnPolicyEnum.MINORITY);
+        pathFinder = new FindPath(bitmap,new Point(12,8),PathKindEnum.POSITIV,TurnPolicyEnum.MINORITY);
         pathRight = pathFinder.getPath();
     }
 

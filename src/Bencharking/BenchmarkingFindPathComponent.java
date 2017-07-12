@@ -5,6 +5,7 @@ import Potrace.General.Bitmap;
 import Potrace.General.Param;
 import Potrace.original.Decompose;
 import Potrace.refactored.FindPath;
+import Potrace.refactored.PathKindEnum;
 import Potrace.refactored.TurnPolicyEnum;
 import org.openjdk.jmh.annotations.*;
 
@@ -25,7 +26,8 @@ public class BenchmarkingFindPathComponent {
         Potrace.General.Param params;
         TurnPolicyEnum turnPolicy = TurnPolicyEnum.MINORITY;
         int turnPolicyAsInt = turnPolicy.ordinal();
-        int sign = 43;
+        PathKindEnum kindOfPath;
+        int sign = kindOfPath.getIntRepresentation();
         int x0 = 0;
         int y0 = 100;
         Point firstPoint = new Point(0,99);
@@ -50,7 +52,7 @@ public class BenchmarkingFindPathComponent {
     @Fork(5)
     @Threads(2)
     public void mesureRefactored(MySate state) throws InterruptedException {
-        FindPath findPath = new FindPath(state.bitmap,state.firstPoint,state.sign,state.turnPolicy);
+        FindPath findPath = new FindPath(state.bitmap,state.firstPoint,state.kindOfPath,state.turnPolicy);
         findPath.getPath();
     }
 

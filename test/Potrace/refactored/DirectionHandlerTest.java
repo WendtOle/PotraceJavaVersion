@@ -17,7 +17,7 @@ public class DirectionHandlerTest {
 
     @Test
     public void testInitialDirection(){
-        directionHandler = new DirectionHandler(new Bitmap(10,10),TurnPolicyEnum.MINORITY,43);
+        directionHandler = new DirectionHandler(new Bitmap(10,10),TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
         assertDirection(new Point(0,-1));
     }
 
@@ -25,7 +25,7 @@ public class DirectionHandlerTest {
     public void testSimpleTurnToRight(){
         Point[] pixel = new Point[]{new Point(1,1)};
         setBitmap(pixel);
-        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.MINORITY,34);
+        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
         directionHandler.turnInNextDirection(pixel[0]);
 
         assertDirection(new Point(1,0));
@@ -35,7 +35,7 @@ public class DirectionHandlerTest {
     public void testSimpleTurnToLeft() {
         Point[] points = new Point[]{new Point(1,1),new Point(1,0),new Point(0,0)};
         setBitmap(points);
-        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.MINORITY,34);
+        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
         directionHandler.turnInNextDirection(points[0]);
 
         assertDirection(new Point(-1,0));
@@ -45,7 +45,7 @@ public class DirectionHandlerTest {
     public void testAmbigousTurnToLeft(){
         Point[] points = new Point[]{new Point(1,1),new Point(0,0)};
         setBitmap(points);
-        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.MINORITY,34);
+        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
         directionHandler.turnInNextDirection(points[0]);
 
         assertDirection(new Point(-1,0));
@@ -55,7 +55,7 @@ public class DirectionHandlerTest {
     public void testAmbigousTurnToRight(){
         Point[] points = new Point[]{new Point(1,1),new Point(0,0)};
         setBitmap(points);
-        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.WHITE,34);
+        directionHandler = new DirectionHandler(bitmap,TurnPolicyEnum.WHITE,PathKindEnum.POSITIV);
         directionHandler.turnInNextDirection(points[0]);
 
         assertDirection(new Point(1,0));

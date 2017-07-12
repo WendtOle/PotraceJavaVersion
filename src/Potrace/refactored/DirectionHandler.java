@@ -13,12 +13,12 @@ public class DirectionHandler {
     Point currentPoint;
     TurnPolicyEnum turnPolicy;
     boolean isRightPixelFilled, isLeftPixelEmpty;
-    int sign;
+    PathKindEnum kindOfPath;
 
-    public DirectionHandler(Bitmap bitmap, TurnPolicyEnum turnPolicy, int sign) {
+    public DirectionHandler(Bitmap bitmap, TurnPolicyEnum turnPolicy, PathKindEnum kindOfPath) {
         bitmapHandler = new BitmapHandler(bitmap);
         this.turnPolicy = turnPolicy;
-        this.sign = sign;
+        this.kindOfPath = kindOfPath;
     }
 
     public void turnInNextDirection(Point currentPoint) {
@@ -71,7 +71,7 @@ public class DirectionHandler {
     }
 
     private boolean shouldTurnLeftInAmbiguousSituation() {
-        return turnPolicy.isTurnPolicySatisfied(sign,bitmapHandler,currentPoint);
+        return turnPolicy.isTurnPolicySatisfied(kindOfPath,bitmapHandler,currentPoint);
     }
 
     private void performLeftTurn() {

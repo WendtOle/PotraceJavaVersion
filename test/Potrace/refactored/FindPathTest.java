@@ -61,14 +61,14 @@ public class FindPathTest {
     }
 
     private void setActualPath(Bitmap bitmap,Point[] pointsOfPath) {
-        FindPath pathFinder = new FindPath(bitmap, pointsOfPath[0], 43, TurnPolicyEnum.MINORITY);
+        FindPath pathFinder = new FindPath(bitmap, pointsOfPath[0], PathKindEnum.POSITIV, TurnPolicyEnum.MINORITY);
         actualPath = pathFinder.getPath();
     }
 
     private void setExpectedPath(int area, Point[] pathPointShape) {
         expectedPath = new Path();
         expectedPath.area = area;
-        expectedPath.sign = 43;
+        expectedPath.sign = PathKindEnum.POSITIV.getIntRepresentation();
         expectedPath.priv.len = pathPointShape.length;
         expectedPath.priv.pt = pathPointShape;
     }

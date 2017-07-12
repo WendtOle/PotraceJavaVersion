@@ -60,16 +60,16 @@ public class FindPathsOnBitmap {
     }
 
     private Path findPathWhichStartsAt(Point startPointOfCurrentPath) {
-        int signOfPath = getSignOfPath(startPointOfCurrentPath);
-        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, signOfPath, TurnPolicyEnum.values()[param.turnpolicy]);
+        PathKindEnum kindOfPath = getKindOfPath(startPointOfCurrentPath);
+        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, kindOfPath, TurnPolicyEnum.values()[param.turnpolicy]);
         return pathFinder.getPath();
     }
 
-    private int getSignOfPath(Point currentPoint) {
+    private PathKindEnum getKindOfPath(Point currentPoint) {
         if (isPathFilled(currentPoint))                     //TODO anders ausdrücken. so sieht es doof aus
-            return '+';
+            return PathKindEnum.POSITIV;
         else
-            return '-';
+            return PathKindEnum.NEGATIV;
     }
 
     private boolean isPathFilled(Point currentPoint) {

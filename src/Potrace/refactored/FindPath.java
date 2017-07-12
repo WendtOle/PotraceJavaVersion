@@ -6,7 +6,7 @@ import java.awt.*;
 public class FindPath {
 
     Point startPoint;   //TODO zu viele Felder
-    int sign;
+    PathKindEnum kindOfPath;
     TurnPolicyEnum turnPolicy;
     BitmapHandlerInterface bitmapHandler;
     PointShape pointShape;
@@ -14,19 +14,19 @@ public class FindPath {
     int areaOfPath = 0;
     DirectionHandler directionHandler;
 
-    public FindPath(Bitmap bitmap, Point firstFilledPixel, int sign, TurnPolicyEnum turnPolicy) {
-        initializeFields(firstFilledPixel,bitmap, sign, turnPolicy);
+    public FindPath(Bitmap bitmap, Point firstFilledPixel, PathKindEnum kindOfPath, TurnPolicyEnum turnPolicy) {
+        initializeFields(firstFilledPixel,bitmap, kindOfPath, turnPolicy);
         findPath();
     }
 
     public Path getPath(){
-        return new Path(areaOfPath, sign, pointShape.getLengthOfPath(), pointShape.getPointsOfPath());
+        return new Path(areaOfPath, kindOfPath.intRepresentation, pointShape.getLengthOfPath(), pointShape.getPointsOfPath());
     }
 
-    private void initializeFields(Point firstFilledPixel, Bitmap bitmap, int sign, TurnPolicyEnum turnPolicy) {
-        this.sign = sign;
+    private void initializeFields(Point firstFilledPixel, Bitmap bitmap, PathKindEnum kindOfPath, TurnPolicyEnum turnPolicy) {
+        this.kindOfPath = kindOfPath;
         this.turnPolicy = turnPolicy;
-        directionHandler = new DirectionHandler(bitmap,turnPolicy,sign);
+        directionHandler = new DirectionHandler(bitmap,turnPolicy,kindOfPath);
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.pointShape = new PointShape();
         setInitialPointPosition(firstFilledPixel);
