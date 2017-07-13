@@ -8,45 +8,56 @@ import java.awt.*;
 /**
  * Created by andreydelany on 12.07.17.
  */
-public class PathManager {
-
+public class PathOrganizer {
     Path pathList;
     Path pathsThatNeedToProcess;
     Path pathsToOrder;
     Path referencePath;
     Path currentPath;
 
-    public PathManager(Path pathList){
+    public PathOrganizer(Path pathList){
         this.pathList = pathList;
         pathsThatNeedToProcess = pathList;
     }
 
-    public boolean stillNeedToProcessPathes() {
+    public boolean stillNeedToLevelOneOrder() {
         return pathsThatNeedToProcess != null;
     }
 
-    public void initializingPathForFirstLevelOrdering() {
-        pathsToOrder = pathsThatNeedToProcess; //todo to long
-        pathsThatNeedToProcess = pathsThatNeedToProcess.childlist;
-        pathsToOrder.childlist = null;
+    public boolean stillNeedToLevelTwoOrder(){
+        return currentPath != null;
+    }
 
+    public void initializingPathForLevelOneOrdering() {
+        setPathsForLaterLevelOneOrdering();
+        setPathsForCurrentLevelOneOrdering();
+    }
+
+    private void setPathsForLaterLevelOneOrdering() {
+        pathsToOrder = pathsThatNeedToProcess;
+        pathsThatNeedToProcess = pathsThatNeedToProcess.childlist;
+    }
+
+    private void setPathsForCurrentLevelOneOrdering() {
+        pathsToOrder.childlist = null;
         referencePath = pathsToOrder;
         pathsToOrder = pathsToOrder.next;
         referencePath.next = null;
+    }
+
+    public void initializePathForLevelTwoOrdering(){
+        currentPath = pathsToOrder;
+        pathsToOrder = currentPath.next;
+        currentPath.next=null;
     }
 
     public Path getCurrentReferencePath() {
         return referencePath;
     }
 
-    public boolean stillNeedToOrderPaths(){
-        return (currentPath != null);
-    }
-
-    public void preparePathsThatWillLaterBeLookedAt(){
-        currentPath = pathsToOrder;
-        pathsToOrder = currentPath.next;
-        currentPath.next=null;
+    public void addRemainingPathsAsSibling(){
+        addPathAsSibling();
+        addPathesThatWillBeOrderedAsSibling();
     }
 
     public void addPathAsSibling() {
@@ -63,11 +74,6 @@ public class PathManager {
 
     public Point getFirstPointOfCurrentPath(){
         return new Point(currentPath.priv.pt[0].x, currentPath.priv.pt[0].y - 1);
-    }
-
-    public void addRemainingPathsAsSibling(){
-        addPathAsSibling();
-        addPathesThatWillBeOrderedAsSibling();
     }
 
     public int getUpperBoundOfPath(){

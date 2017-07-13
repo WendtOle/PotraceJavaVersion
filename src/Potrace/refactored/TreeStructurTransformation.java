@@ -27,7 +27,7 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
 
     private void transformPathIntoTree() {
         copyComponentFromNextToSibling();
-        findChildrenAndSiblings();
+        findChildrenAndSiblingsAndSaveThemIntoNextAndChildrenComponent();
         copyComponentFromNextToSibling();
         reconstructNextComponentFromChildrenAndSiblingComponent();
     }
@@ -37,8 +37,7 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
             path.sibling = path.next;
     }
 
-
-    private void findChildrenAndSiblings() {
+    private void findChildrenAndSiblingsAndSaveThemIntoNextAndChildrenComponent() {
         ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
         pathList = childrenAndSiblingFinder.getTreeTransformedPathStructure();
     }

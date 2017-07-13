@@ -11,16 +11,13 @@ public class ChildrenAndSiblingFinder {
     ClearPathWithBoundingBox bitmapClearer;
     PathInverter inverter;
     BitmapHandlerInterface bitmapHandler;
-    PathManager pathManager;
+    PathOrganizer pathOrganizer;
     BoundingBox boundingBox;
     boolean shouldContinueOrdering;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
-        bitmapClearer = new ClearPathWithBoundingBox(bitmap);
-        this.inverter = new PathInverter(bitmap);
-        bitmapHandler = new BitmapHandler(bitmap);
-        pathManager = new PathManager(pathList);
+        initalizeHelperClasses(bitmap);
     }
 
     public Path getTreeTransformedPathStructure(){
@@ -28,25 +25,28 @@ public class ChildrenAndSiblingFinder {
         return pathList;
     }
 
+    private void initalizeHelperClasses(Bitmap bitmap) {
+        bitmapClearer = new ClearPathWithBoundingBox(bitmap);
+        inverter = new PathInverter(bitmap);
+        bitmapHandler = new BitmapHandler(bitmap);
+        pathOrganizer = new PathOrganizer(pathList);
+    }
+
     private void orderPathsOnFirstLevel() {
-        while (stillNeedToOrderPathsOnFirstLevel()) {
-            pathManager.initializingPathForFirstLevelOrdering();
-            orderOnFirstLevelInRelationToReferencePath();
+        while (pathOrganizer.stillNeedToLevelOneOrder()) {
+            pathOrganizer.initializingPathForLevelOneOrdering();
+            orderOnLevelOne();
         }
     }
 
-    private boolean stillNeedToOrderPathsOnFirstLevel() {
-        return pathManager.stillNeedToProcessPathes();
-    }
-
-    private void orderOnFirstLevelInRelationToReferencePath() {
+    private void orderOnLevelOne() {
         markLocationOfReferencePath();
         orderPathsRelativeToReferencePath();
         unmarkLocationOfReferencePath();
     }
 
     private void markLocationOfReferencePath() {
-        Path referencePath = pathManager.getCurrentReferencePath();
+        Path referencePath = pathOrganizer.getCurrentReferencePath();
         inverter.invertPathOnBitmap(referencePath);
         boundingBox = new BoundingBox(referencePath);
     }
@@ -58,7 +58,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void ordering() {
-        pathManager.preparePathsThatWillLaterBeLookedAt();
+        pathOrganizer.initializePathForLevelTwoOrdering();
         if (isCurrentPathBelowReferencePath())
             cancelOrderingProcess();
         else
@@ -66,27 +66,27 @@ public class ChildrenAndSiblingFinder {
     }
 
     private boolean shouldContinueOrdering() {
-        return pathManager.stillNeedToOrderPaths() && shouldContinueOrdering;
+        return pathOrganizer.stillNeedToLevelTwoOrder() && shouldContinueOrdering;
     }
 
     private void cancelOrderingProcess() {
-        pathManager.addRemainingPathsAsSibling();
+        pathOrganizer.addRemainingPathsAsSibling();
         shouldContinueOrdering = false;
     }
 
     private void addCurrentPathToReferencePath() {
         if (isCurrentPathInsideReferencePath())
-            pathManager.addPathAsChild();
+            pathOrganizer.addPathAsChild();
         else
-            pathManager.addPathAsSibling();
+            pathOrganizer.addPathAsSibling();
     }
 
     private boolean isCurrentPathInsideReferencePath() {
-        return bitmapHandler.isPixelFilled(pathManager.getFirstPointOfCurrentPath());
+        return bitmapHandler.isPixelFilled(pathOrganizer.getFirstPointOfCurrentPath());
     }
 
     private boolean isCurrentPathBelowReferencePath() {
-        return pathManager.getUpperBoundOfPath() <= boundingBox.y0;
+        return pathOrganizer.getUpperBoundOfPath() <= boundingBox.y0;
     }
 
     private void unmarkLocationOfReferencePath() {
