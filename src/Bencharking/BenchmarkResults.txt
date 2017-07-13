@@ -91,3 +91,17 @@ Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          a
 Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50        609.089 ±       64.306  ns/op   25.13%  -> 74.87%   (4)
 Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50    195 301.789 ±   55 571.643  ns/op
 Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50    399 328.607 ±  127 255.313  ns/op   204.46% -> 104.46%  (5)
+
+13. Juli 2017 - 09:16
+
+Benchmark                                                                      Mode  Cnt          Score          Error  Units
+Bencharking.Benchmarking.mesureOriginal                                        avgt   50  2 731 000.522 ±  148 385.844  ns/op
+Bencharking.Benchmarking.mesureRefactored                                      avgt   50     10 281.248 ±    1 240.276  ns/op   0.3%    -> 99.70% (1)
+Bencharking.BenchmarkingFindPathComponent.mesureOriginal                       avgt   50  1 064 782.096 ±   39 697.605  ns/op
+Bencharking.BenchmarkingFindPathComponent.mesureRefactored                     avgt   50    693 721.265 ±   51 454.586  ns/op   65.15%  -> 34.85% (2)
+Bencharking.BenchmarkingInvertPathComponent.mesureOriginal                     avgt   50     59 474.601 ±    1 653.913  ns/op
+Bencharking.BenchmarkingInvertPathComponent.mesureRefactored                   avgt   50     31 778.657 ±      424.955  ns/op   53.43%  -> 46.57% (3)
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          avgt   50      2 132.340 ±       22.098  ns/op
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50        528.732 ±       18.778  ns/op   24.79%  -> 75.21% (4)
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50    136 018.983 ±    4 023.594  ns/op
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50    130 433.501 ±    7 220.332  ns/op   95.89%  -> 04.11% (5)

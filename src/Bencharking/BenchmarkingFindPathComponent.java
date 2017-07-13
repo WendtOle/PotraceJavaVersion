@@ -26,7 +26,7 @@ public class BenchmarkingFindPathComponent {
         Potrace.General.Param params;
         TurnPolicyEnum turnPolicy = TurnPolicyEnum.MINORITY;
         int turnPolicyAsInt = turnPolicy.ordinal();
-        PathKindEnum kindOfPath;
+        PathKindEnum kindOfPath = PathKindEnum.POSITIV;
         int sign = kindOfPath.getIntRepresentation();
         int x0 = 0;
         int y0 = 100;
