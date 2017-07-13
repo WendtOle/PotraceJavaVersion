@@ -28,15 +28,13 @@ public class BitmapHandler implements BitmapHandlerInterface{
     }
 
     public boolean isPixelFilled(Point positionOfPixel) {
-        if (isPixelInRange(positionOfPixel))
-            return getPixelValueWithoutBoundChecking(positionOfPixel);
-        else
-            return false;
+        return isPixelInRange(positionOfPixel) && getPixelValueWithoutBoundChecking(positionOfPixel);
     }
 
     public void setPixel(Point positionOfPixel) {
+        long maskSettingAPixel = BitMask.getOnePixelMaskForPosition(positionOfPixel.x);
         if (isPixelInRange(positionOfPixel))
-            bitmap.map[getAccessIndex(positionOfPixel)] |= BitMask.getOnePixelMaskForPosition(positionOfPixel.x); //TODO Zeile zu lang
+            bitmap.map[getAccessIndex(positionOfPixel)] |=  maskSettingAPixel;
     }
 
     public int getBeginningIndexOfWordWithPixel(Point positionOfPixel){
@@ -64,9 +62,13 @@ public class BitmapHandler implements BitmapHandlerInterface{
     private void clearExcessPixelOfLastWordInLines() {
         long mask = getMaskForExcessPixel();
         for (int y = 0; y < bitmap.h; y ++) {
-            Point lastPixelInCurrentLine = new Point(bitmap.w,y); //TODO als Methode auslagern
-            ANDWordWithMask(lastPixelInCurrentLine,mask);
+            clearExcessPixelInLine(mask, y);
         }
+    }
+
+    private void clearExcessPixelInLine(long mask, int y) {
+        Point lastPixelInCurrentLine = new Point(bitmap.w,y);
+        ANDWordWithMask(lastPixelInCurrentLine,mask);
     }
 
     private long getMaskForExcessPixel() {
