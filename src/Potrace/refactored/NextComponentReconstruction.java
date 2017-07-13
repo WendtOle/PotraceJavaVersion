@@ -19,37 +19,54 @@ public class NextComponentReconstruction {
     }
 
     private void initializeFields(Path pathList) {
-        originPath = pathList;                  //Todo zu lang
-        currentPath = originPath;
-        if (currentPath != null)
-            currentPath.next = null;
+        originPath = pathList;
+        setCurrentPath();
         originPath = null;
     }
 
-    private void reconstructNextComponent() {
-        while (areTherePathesToProcess()) {
-            pathesThatNeedToProcess = currentPath.next;         //TODO extract
-            addAllSiblingsWithTrailingChildrenOfPath(currentPath);
-            currentPath = pathesThatNeedToProcess;
-        }
+    private void setCurrentPath() {
+        currentPath = originPath;
+        if (currentPath != null)
+            currentPath.next = null;
     }
 
-    private boolean areTherePathesToProcess() {
+    private void reconstructNextComponent() {
+        while (areTherePathsToProcess())
+            processPaths();
+    }
+
+    private boolean areTherePathsToProcess() {
         return currentPath != null;
     }
 
-    private void addAllSiblingsWithTrailingChildrenOfPath(Path path) {
-        for (Path currentSibling = path; currentSibling != null; currentSibling=currentSibling.sibling) {
-            addPathToNextComponent(currentSibling);
-            addAllChildrenOfPath(currentSibling);
+    private void processPaths() {
+        pathesThatNeedToProcess = currentPath.next;
+        addAllSiblingsWithTrailingChildren(currentPath);
+        currentPath = pathesThatNeedToProcess;
+    }
+
+    private void addAllSiblingsWithTrailingChildren(Path currentSibling) {
+        while(currentSibling != null) {
+            addSiblingWithTrailingChildrentoPath(currentSibling);
+            currentSibling=currentSibling.sibling;
         }
     }
 
-    private void addAllChildrenOfPath(Path path) {
-        for (Path currentChild=path.childlist; currentChild != null; currentChild=currentChild.sibling) {
-            addPathToNextComponent(currentChild);
-            scheduleChildrenOfCurrentChildForLaterProcessing(currentChild);
+    private void addSiblingWithTrailingChildrentoPath(Path currentSibling) {
+        addPathToNextComponent(currentSibling);
+        addAllChildrenOfPath(currentSibling.childlist);
+    }
+
+    private void addAllChildrenOfPath(Path currentChild) {
+        while (currentChild != null) {
+            addChildrenToPath(currentChild);
+            currentChild = currentChild.sibling;
         }
+    }
+
+    private void addChildrenToPath(Path child) {
+        addPathToNextComponent(child);
+        scheduleChildrenOfCurrentChildForLaterProcessing(child);
     }
 
     private void addPathToNextComponent(Path path) {
