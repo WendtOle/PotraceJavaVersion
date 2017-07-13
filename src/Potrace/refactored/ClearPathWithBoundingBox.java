@@ -10,33 +10,54 @@ import java.awt.*;
 public class ClearPathWithBoundingBox {
     BitmapHandlerInterface bitmapHandler;
     int indexOfWordWhereBoundingBoxStarts, indexOfwordWhereBoundingBoxEnds;
+    int indexOfCurrentWord, currentLine;
+    BoundingBox boundingBox;
 
     public ClearPathWithBoundingBox(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
     public void clearBitmapWithBoundingBox(BoundingBox boundingBox) {
-        setHorizontalRange(boundingBox);
-        clearBitmapInHorizontalRange(boundingBox);
+        this.boundingBox = boundingBox;
+        setHorizontalRange();
+        clearBitmapInHorizontalRange();
     }
 
-    private void setHorizontalRange(BoundingBox boundingBox) {
+    private void setHorizontalRange() {
         indexOfWordWhereBoundingBoxStarts = (boundingBox.x0 / Bitmap.PIXELINWORD);
         indexOfwordWhereBoundingBoxEnds = ((boundingBox.x1 + Bitmap.PIXELINWORD-1) / Bitmap.PIXELINWORD);
     }
 
-    private void clearBitmapInHorizontalRange(BoundingBox boundingBox) {
-        int currentLine = boundingBox.y0;
-        while(currentLine < boundingBox.y1) {
-            clearAllWordsInLineThatOverlapWithBoundingBox(currentLine); //TODO auslagern
-            currentLine ++;
+    private void clearBitmapInHorizontalRange() {
+        currentLine = boundingBox.y0;
+        while(stillVerticallyInBoundingBox()) {
+            clearLineAndGoToNextLine();
         }
     }
 
-    private void clearAllWordsInLineThatOverlapWithBoundingBox(int line) {
-        for (int indexOfCurrentWord = indexOfWordWhereBoundingBoxStarts; indexOfCurrentWord < indexOfwordWhereBoundingBoxEnds; indexOfCurrentWord++) { //ToDO viel zu mächtiger kopf
-            clearWord(line, indexOfCurrentWord);
+    private boolean stillVerticallyInBoundingBox() {
+        return currentLine < boundingBox.y1;
+    }
+
+    private void clearLineAndGoToNextLine() {
+        clearAllWordsInLineThatOverlapWithBoundingBox();
+        currentLine ++;
+    }
+
+    private void clearAllWordsInLineThatOverlapWithBoundingBox() {
+        indexOfCurrentWord = indexOfWordWhereBoundingBoxStarts;
+        while (stillHorizontallyInBoundingBox()) {
+            clearWordAnGoToNextWord();
         }
+    }
+
+    private boolean stillHorizontallyInBoundingBox() {
+        return indexOfCurrentWord < indexOfwordWhereBoundingBoxEnds;
+    }
+
+    private void clearWordAnGoToNextWord() {
+        clearWord(currentLine, indexOfCurrentWord);
+        indexOfCurrentWord++;
     }
 
     private void clearWord(int line, int indexOfWord) {

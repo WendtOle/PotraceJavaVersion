@@ -17,7 +17,7 @@ public class ChildrenAndSiblingFinder {
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
-        initalizeHelperClasses(bitmap);
+        initializeHelperClasses(bitmap);
     }
 
     public Path getTreeTransformedPathStructure(){
@@ -25,7 +25,7 @@ public class ChildrenAndSiblingFinder {
         return pathList;
     }
 
-    private void initalizeHelperClasses(Bitmap bitmap) {
+    private void initializeHelperClasses(Bitmap bitmap) {
         bitmapClearer = new ClearPathWithBoundingBox(bitmap);
         inverter = new PathInverter(bitmap);
         bitmapHandler = new BitmapHandler(bitmap);
@@ -58,19 +58,21 @@ public class ChildrenAndSiblingFinder {
 
     private void orderPathsRelativeToReferencePath() {
         shouldContinueOrdering = true;
-        while(shouldContinueOrdering()) {
-            ordering();
+        while(shouldContinueOrdering()){
+            levelTwoOrdering();
         }
     }
 
-    private void ordering() {
+    private void levelTwoOrdering() {
         pathOrganizer.initializePathForLevelTwoOrdering();
-        if (isCurrentPathBelowReferencePath()) {
+        ordering();
+    }
+
+    private void ordering() {
+        if (isCurrentPathBelowReferencePath())
             cancelOrderingProcess();
-        }
-        else {
+        else
             addCurrentPathToReferencePath();
-        }
     }
 
     private boolean shouldContinueOrdering() {

@@ -11,10 +11,12 @@ public class BoundingBox {
     int x1 = 0;
 
     public BoundingBox(Path path){
-        for (int i = 0; i < path.priv.len; i++) {
-            Point currentPoint = path.priv.pt[i]; //TODO auslagern
-            updateBoundingBoxDimensions(currentPoint);
-        }
+        matchDimensionsOfPathWithBoundingBox(path);
+    }
+
+    private void matchDimensionsOfPathWithBoundingBox(Path path) {
+        for (int i = 0; i < path.priv.len; i++)
+            updateBoundingBoxDimensions(path.priv.pt[i]);
     }
 
     private void updateBoundingBoxDimensions(Point currentPoint) {
