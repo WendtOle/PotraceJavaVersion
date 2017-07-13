@@ -12,17 +12,17 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by andreydelany on 13.07.17.
  */
-public class FindPathesOnBitmapTest {
-
+public class TreeStructureTransformationTest {
     Bitmap bitmap;
     Path pathList;
-
     @Before
     public void prepare(){
         BitmapImporter importer = new BitmapImporter("determineHierachyTestPicture.png","testPictures");
         bitmap = importer.getBitmap();
         FindPathsOnBitmap findPathsOnBitmap = new FindPathsOnBitmap(bitmap,new Param());
         pathList = findPathsOnBitmap.getPathList();
+        TreeStructurTransformation treeStructurTransformation = new TreeStructurTransformation(pathList,bitmap);
+        pathList = treeStructurTransformation.getTreeStructure();
     }
 
     @Test
@@ -41,22 +41,22 @@ public class FindPathesOnBitmapTest {
     }
 
     @Test
-    public void testFourthPath_RightPath() {
-        assertEquals(12,pathList.next.next.next.area);
+    public void testFourthPath_FirstInsidePath() {
+        assertEquals(24,pathList.next.next.next.area);
     }
 
     @Test
-    public void testFifthPath_FirstInsidePath() {
-        assertEquals(24,pathList.next.next.next.next.area);
+    public void testFifthPath_RightPath() {
+        assertEquals(12,pathList.next.next.next.next.area);
+    }
+
+    @Test
+    public void testSixthPath_PathBelow() {
+        assertEquals(28,pathList.next.next.next.next.next.area);
     }
 
     @Test
     public void testSixthPath_SecondInsidePath() {
-        assertEquals(8,pathList.next.next.next.next.next.area);
-    }
-
-    @Test
-    public void testSeventhPath_PathBelow() {
-        assertEquals(28,pathList.next.next.next.next.next.next.area);
+        assertEquals(8,pathList.next.next.next.next.next.next.area);
     }
 }

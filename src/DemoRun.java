@@ -12,14 +12,14 @@ import Potrace.General.PotraceLibrary;
  */
 public class DemoRun {
     static String jsonBitmapFileName = "04.json";
-    static String bitmapFileName = "testPictureChildsAndSiblings.png";
+    static String bitmapFileName = "determineHierachyTestPicture.png";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;
     static Path path;
 
     public static void main(String args[]) {
-        loadBitmapFromJson();
-        //loadBitmapFromPictureFile();
+        //loadBitmapFromJson();
+        loadBitmapFromPictureFile();
 
         path = PotraceLibrary.potrace_trace(new Param(), bitmap);
 
