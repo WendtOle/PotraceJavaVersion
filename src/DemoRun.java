@@ -11,7 +11,7 @@ import Potrace.General.PotraceLibrary;
  * Created by andreydelany on 21.06.17.
  */
 public class DemoRun {
-    static String jsonBitmapFileName = "01.json";
+    static String jsonBitmapFileName = "04.json";
     static String bitmapFileName = "testPictureChildsAndSiblings.png";
     static String bitMapFileFolder = "testPictures";
     static Bitmap bitmap;

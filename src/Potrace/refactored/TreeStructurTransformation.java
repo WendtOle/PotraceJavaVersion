@@ -26,15 +26,10 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
     }
 
     private void transformPathIntoTree() {
-        copyComponentFromNextToSibling();
+        saveOriginalNextPointerToSiblingComponent();
         findChildrenAndSiblingsAndSaveThemIntoNextAndChildrenComponent();
-        copyComponentFromNextToSibling();
+        copySiblingStructurFromNextToSiblingComponent();
         reconstructNextComponentFromChildrenAndSiblingComponent();
-    }
-
-    private void copyComponentFromNextToSibling() {
-        for (Path path = pathList; path != null; path = path.next)
-            path.sibling = path.next;
     }
 
     private void findChildrenAndSiblingsAndSaveThemIntoNextAndChildrenComponent() {
@@ -45,5 +40,21 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
     private void reconstructNextComponentFromChildrenAndSiblingComponent() {
         NextComponentReconstruction reconstruction = new NextComponentReconstruction(pathList);
         pathList = reconstruction.getPathWithReconstructedNext();
+    }
+
+    private void saveOriginalNextPointerToSiblingComponent() {
+        for (Path path = pathList; path != null; path = path.next) {
+            path.sibling = path.next;
+            path.childlist = null;
+        }
+    }
+
+    private void copySiblingStructurFromNextToSiblingComponent() {
+        Path path = pathList;
+        while (path != null) {
+            Path p1 = path.sibling;
+            path.sibling = path.next;
+            path = p1;
+        }
     }
 }

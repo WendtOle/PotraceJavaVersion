@@ -43,6 +43,11 @@ public class ChildrenAndSiblingFinder {
         markLocationOfReferencePath();
         orderPathsRelativeToReferencePath();
         unmarkLocationOfReferencePath();
+        scheduleOrderPathsForNextOrderingStep();
+    }
+
+    private void scheduleOrderPathsForNextOrderingStep() {
+        pathOrganizer.addOrderdPathsForNextOrderingStep();
     }
 
     private void markLocationOfReferencePath() {
@@ -53,16 +58,19 @@ public class ChildrenAndSiblingFinder {
 
     private void orderPathsRelativeToReferencePath() {
         shouldContinueOrdering = true;
-        while (shouldContinueOrdering())
+        while(shouldContinueOrdering()) {
             ordering();
+        }
     }
 
     private void ordering() {
         pathOrganizer.initializePathForLevelTwoOrdering();
-        if (isCurrentPathBelowReferencePath())
+        if (isCurrentPathBelowReferencePath()) {
             cancelOrderingProcess();
-        else
+        }
+        else {
             addCurrentPathToReferencePath();
+        }
     }
 
     private boolean shouldContinueOrdering() {

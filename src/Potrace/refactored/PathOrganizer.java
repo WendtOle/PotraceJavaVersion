@@ -25,6 +25,7 @@ public class PathOrganizer {
     }
 
     public boolean stillNeedToLevelTwoOrder(){
+        currentPath = pathsToOrder;
         return currentPath != null;
     }
 
@@ -46,7 +47,6 @@ public class PathOrganizer {
     }
 
     public void initializePathForLevelTwoOrdering(){
-        currentPath = pathsToOrder;
         pathsToOrder = currentPath.next;
         currentPath.next=null;
     }
@@ -57,14 +57,14 @@ public class PathOrganizer {
 
     public void addRemainingPathsAsSibling(){
         addPathAsSibling();
-        addPathesThatWillBeOrderedAsSibling();
+        addPathsThatWillBeOrderedAsSibling();
     }
 
     public void addPathAsSibling() {
         referencePath.next = List.elementInsertAtTheLastNextOfList(currentPath,referencePath.next);
     }
 
-    private void addPathesThatWillBeOrderedAsSibling() {
+    private void addPathsThatWillBeOrderedAsSibling() {
         referencePath.next = List.listInsertAtTheLastNextOfList(pathsToOrder,referencePath.next);
     }
 
@@ -78,5 +78,16 @@ public class PathOrganizer {
 
     public int getUpperBoundOfPath(){
         return currentPath.priv.pt[0].y;
+    }
+
+    public void addOrderdPathsForNextOrderingStep() {
+        if (referencePath.next != null) {
+            referencePath.next.childlist = pathsThatNeedToProcess;
+            pathsThatNeedToProcess = referencePath.next;
+        }
+        if (referencePath.childlist != null) {
+            referencePath.childlist.childlist = pathsThatNeedToProcess;
+            pathsThatNeedToProcess = referencePath.childlist;
+        }
     }
 }

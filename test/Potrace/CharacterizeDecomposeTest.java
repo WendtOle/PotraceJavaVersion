@@ -5,7 +5,6 @@ import Potrace.General.Bitmap;
 import Potrace.General.DecompositionInterface;
 import Potrace.General.Param;
 import Potrace.General.Path;
-import Potrace.original.Decompose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -23,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CharacterizeDecomposeTest {
+    Bitmap bitmap;
     Path expectedPath;
     Path actualOriginalPath;
     Path actualRefactoredPath;
@@ -62,27 +62,29 @@ public class CharacterizeDecomposeTest {
 
     public CharacterizeDecomposeTest(Bitmap bitmap, Path expectedPath) {
         this.expectedPath = expectedPath;
-        setActualOriginalPath(bitmap);
-        setActualRefactoredPath(bitmap);
+        this.bitmap = bitmap;
     }
 
-    private void setActualOriginalPath(Bitmap bitmap) {
-        DecompositionInterface originalDecomposer = new Decompose();
-        this.actualOriginalPath = originalDecomposer.getPathList(bitmap,new Param());
+    private void setActualOriginalPath() {
+        DecompositionInterface originalDecomposer = new Potrace.original.Decompose();
+        this.actualOriginalPath = originalDecomposer.getPathList(bitmap.bm_dup(),new Param());
     }
 
-    private void setActualRefactoredPath(Bitmap bitmap) {
-        DecompositionInterface originalDecomposer = new Decompose();
-        this.actualRefactoredPath = originalDecomposer.getPathList(bitmap,new Param());
+    private void setActualRefactoredPath() {
+        DecompositionInterface refactoredDecomposer = new Potrace.refactored.Decompose();
+        this.actualRefactoredPath = refactoredDecomposer.getPathList(bitmap.bm_dup(),new Param());
     }
+
 
     @Test
     public void testOriginalDecomposer(){
+        setActualOriginalPath();
         checkThatAllPathsAreTheSame(actualOriginalPath);
     }
 
     @Test
     public void testRefactoredDecomposer(){
+        setActualRefactoredPath();
         checkThatAllPathsAreTheSame(actualRefactoredPath);
     }
 
