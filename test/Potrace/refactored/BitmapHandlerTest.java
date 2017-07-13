@@ -6,50 +6,44 @@ import org.junit.Test;
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by andreydelany on 04.07.17.
  */
 public class BitmapHandlerTest {
-    BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(100,100));
 
     @Test
-    public void testSettingPixelAndGettingPixel(){
-        Object[][] testDaten = new Object[][]{
-                new Object[]{"x Outside Bound",new Point(-1,1),false},
-                new Object[]{"should work (1)", new Point(1,1),true},
-                new Object[]{"should Work(2)", new Point(99,99),true},
-                new Object[]{"at same position again",new Point(99,99),true},
-                new Object[]{"y ouside bound",new Point(9,101),false}
-        };
-        for (int i = 0; i < testDaten.length; i ++) {
-            String message = (String)testDaten[i][0];
-            Point pixelToTest = new Point((Point)testDaten[i][1]);
-            boolean expectedResult = (boolean) testDaten[i][2];
+    public void testSettingPixel(){
+        Bitmap bitmap = new Bitmap(10,10);
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
+        bitmapHandler.setPixel(new Point(0,0));
 
-            bitmapHandler.setPixel(pixelToTest);
-            assertEquals(message,expectedResult,bitmapHandler.isPixelFilled(pixelToTest));
-        }
+        assertEquals(bitmap.map[0],0x8000000000000000l);
     }
 
     @Test
-    public void testGettingPixel(){
-        Object[][] testDaten = new Object[][]{
-                new Object[]{"x outside bound",new Point(-1,1),false,false},
-                new Object[]{"not set and want to get",new Point(1,1),false,false},
-                new Object[]{"set and get -> should work",new Point(1,1),true,true},
-                new Object[]{"y outside bound",new Point(2,100),true,false}
-        };
-        for (int i = 0; i < testDaten.length; i ++) {
-            String message = (String)testDaten[i][0];
-            Point pixelToTest = new Point((Point)testDaten[i][1]);
-            boolean setPixel = (boolean) testDaten[i][2];
-            boolean expectedResult = (boolean) testDaten[i][3];
+    public void testGettingPixelFromLegalLocation(){
+        Bitmap bitmap = new Bitmap(10,10);
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
+        bitmapHandler.setPixel(new Point(0,0));
 
-            if(setPixel)
-                bitmapHandler.setPixel(pixelToTest);
-            assertEquals(message,expectedResult,bitmapHandler.isPixelFilled(pixelToTest));
-        }
+        assertTrue(bitmapHandler.isPixelFilled(new Point(0,0)));
+    }
+
+    @Test
+    public void testGettingPixelFromIlLegalLocation(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+
+        assertFalse(bitmapHandler.isPixelFilled(new Point(-1,0)));
+    }
+
+    @Test
+    public void testGettingPixelThatWasntEverSet(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+
+        assertFalse(bitmapHandler.isPixelFilled(new Point(0,0)));
     }
 
     @Test
@@ -57,17 +51,72 @@ public class BitmapHandlerTest {
         Bitmap bitmap = new Bitmap(65,1);
         bitmap.map[1] = -1;
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
+
         assertEquals(bitmap.map[1],0x8000000000000000l);
     }
 
     @Test
-    public void test_bm_clear() throws Exception {
+    public void testClearCompleteBitmap() throws Exception {
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
         bitmapHandler.setPixel(new Point(0,1));
         bitmapHandler.setPixel(new Point(4,4));
 
         bitmapHandler.clearCompleteBitmap();
 
-        assertEquals(false, bitmapHandler.isPixelFilled(new Point(0,1)));
-        assertEquals(false, bitmapHandler.isPixelFilled(new Point(4,4)));
+        assertFalse(bitmapHandler.isPixelFilled(new Point(0,1)));
+        assertFalse(bitmapHandler.isPixelFilled(new Point(4,4)));
+    }
+
+    @Test
+    public void testIsThereAFilledPixelInWordWhenThereIsActualOne(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+        bitmapHandler.setPixel(new Point(0,0));
+
+        assertTrue(bitmapHandler.areThereFilledPixelInWord(new Point(0,0)));
+    }
+
+    @Test
+    public void testIsThereAFilledPixelInWordWhenThereIsActualNone(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+
+        assertFalse(bitmapHandler.areThereFilledPixelInWord(new Point(0,0)));
+    }
+
+    @Test
+    public void testGettingWidthOfBitmap(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+
+        assertEquals(10,bitmapHandler.getWithOfBitmap());
+    }
+
+    @Test
+    public void testClearingCompleteWord(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+        bitmapHandler.setPixel(new Point(0,0));
+        bitmapHandler.setWordToNull(new Point(0,0));
+
+        assertFalse(bitmapHandler.areThereFilledPixelInWord(new Point(0,0)));
+    }
+
+    @Test
+    public void testFlippingCompleteWordWithMask(){
+        long mask = 1l;
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(64,1));
+        bitmapHandler.setPixel(new Point(62,0));
+        bitmapHandler.setPixel(new Point(63,0));
+        bitmapHandler.flipBitsInWordWithMask(new Point(0,0),mask);
+
+        assertTrue(bitmapHandler.isPixelFilled(new Point(62,0)));
+        assertFalse(bitmapHandler.isPixelFilled(new Point(63,0)));
+    }
+
+    @Test
+    public void testGetBeginningIndexOfWordWithPixel(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
+
+        assertEquals(0,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(3,0)));
+        assertEquals(0,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(63,0)));
+        assertEquals(64,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(70,0)));
+        assertEquals(64,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(120,0)));
     }
 }
