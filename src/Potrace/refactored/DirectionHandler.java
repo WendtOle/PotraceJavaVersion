@@ -15,10 +15,10 @@ public class DirectionHandler {
     boolean isRightPixelFilled, isLeftPixelEmpty;
     PathKindEnum kindOfPath;
 
-    public DirectionHandler(Bitmap bitmap, TurnPolicyEnum turnPolicy, PathKindEnum kindOfPath) {
+    public DirectionHandler(Bitmap bitmap, DirectionChooserIdentificator directionIdentificator) {
         bitmapHandler = new BitmapHandler(bitmap);
-        this.turnPolicy = turnPolicy;
-        this.kindOfPath = kindOfPath;
+        this.turnPolicy = directionIdentificator.turnPolicy;
+        this.kindOfPath = directionIdentificator.kindOfPath;
     }
 
     public void turnInNextDirection(Point currentPoint) {
@@ -26,8 +26,10 @@ public class DirectionHandler {
         performTurn();
     }
 
-    public int getHorizontalDirection(){
-        return direction.x;
+    public Point moveInDirection(){
+        currentPoint.x += direction.x;
+        currentPoint.y += direction.y;
+        return currentPoint;
     }
 
     public int getVerticalDirection(){

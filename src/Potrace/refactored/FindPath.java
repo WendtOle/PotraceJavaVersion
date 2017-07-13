@@ -4,32 +4,29 @@ import Potrace.General.*;
 import java.awt.*;
 
 public class FindPath {
-
-    Point startPoint;   //TODO zu viele Felder
+    Point startPoint;
     PathKindEnum kindOfPath;
-    TurnPolicyEnum turnPolicy;
-    BitmapHandlerInterface bitmapHandler;
     PointShape pointShape;
     Point currentPoint;
-    int areaOfPath = 0;
     DirectionHandler directionHandler;
 
-    public FindPath(Bitmap bitmap, Point firstFilledPixel, PathKindEnum kindOfPath, TurnPolicyEnum turnPolicy) {
-        initializeFields(firstFilledPixel,bitmap, kindOfPath, turnPolicy);
+    public FindPath(Bitmap bitmap, Point firstFilledPixel,DirectionChooserIdentificator directionIdentificators) {
+        this.kindOfPath = directionIdentificators.kindOfPath;
+        initializeHelperClasses(bitmap, directionIdentificators);
+        setInitialPointPosition(firstFilledPixel);
         findPath();
     }
 
     public Path getPath(){
-        return new Path(areaOfPath, kindOfPath.intRepresentation, pointShape.getLengthOfPath(), pointShape.getPointsOfPath());
+        int areaOfPath = pointShape.getAreaOfPath();
+        int lengthOfPath = pointShape.getLengthOfPath();
+        Point[] pointsOfPath = pointShape.getPointsOfPath();
+        return new Path(areaOfPath, kindOfPath.intRepresentation, lengthOfPath, pointsOfPath);
     }
 
-    private void initializeFields(Point firstFilledPixel, Bitmap bitmap, PathKindEnum kindOfPath, TurnPolicyEnum turnPolicy) {
-        this.kindOfPath = kindOfPath;
-        this.turnPolicy = turnPolicy;
-        directionHandler = new DirectionHandler(bitmap,turnPolicy,kindOfPath);
-        this.bitmapHandler = new BitmapHandler(bitmap);
+    private void initializeHelperClasses(Bitmap bitmap, DirectionChooserIdentificator directionIdentificators) {
+        directionHandler = new DirectionHandler(bitmap,directionIdentificators);
         this.pointShape = new PointShape();
-        setInitialPointPosition(firstFilledPixel);
     }
 
     private void setInitialPointPosition(Point firstFilledPixel) {
@@ -58,12 +55,11 @@ public class FindPath {
     }
 
     private void moveToNextPoint() {
-        currentPoint.x += directionHandler.getHorizontalDirection();
-        currentPoint.y += directionHandler.getVerticalDirection();
+        currentPoint = directionHandler.moveInDirection();
     }
 
     private void updateAreaOfPath() {
-        areaOfPath += currentPoint.x * directionHandler.getVerticalDirection();
+        pointShape.updateAreaOfPath(directionHandler.getVerticalDirection());
     }
 
     private boolean pathIsOpen() {

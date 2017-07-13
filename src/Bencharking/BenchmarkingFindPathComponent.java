@@ -4,6 +4,7 @@ import AdditionalCode.FileInputOutput.JsonEncoder;
 import Potrace.General.Bitmap;
 import Potrace.General.Param;
 import Potrace.original.Decompose;
+import Potrace.refactored.DirectionChooserIdentificator;
 import Potrace.refactored.FindPath;
 import Potrace.refactored.PathKindEnum;
 import Potrace.refactored.TurnPolicyEnum;
@@ -52,7 +53,7 @@ public class BenchmarkingFindPathComponent {
     @Fork(5)
     @Threads(2)
     public void mesureRefactored(MySate state) throws InterruptedException {
-        FindPath findPath = new FindPath(state.bitmap,state.firstPoint,state.kindOfPath,state.turnPolicy);
+        FindPath findPath = new FindPath(state.bitmap,state.firstPoint,new DirectionChooserIdentificator(state.turnPolicy,state.kindOfPath));
         findPath.getPath();
     }
 

@@ -28,9 +28,4 @@ public class Decompose implements DecompositionInterface {
         TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,bitmap);
         pathList = pathListToTree.getTreeStructure();
     }
-
-    @Override
-    public Bitmap getWorkCopy() {
-        return null;
-    }
 }

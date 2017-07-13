@@ -61,7 +61,8 @@ public class FindPathsOnBitmap {
 
     private Path findPathWhichStartsAt(Point startPointOfCurrentPath) {
         PathKindEnum kindOfPath = getKindOfPath(startPointOfCurrentPath);
-        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, kindOfPath, TurnPolicyEnum.values()[param.turnpolicy]);
+        DirectionChooserIdentificator directionIdentificator = new DirectionChooserIdentificator(TurnPolicyEnum.values()[param.turnpolicy],kindOfPath);
+        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, directionIdentificator);
         return pathFinder.getPath();
     }
 

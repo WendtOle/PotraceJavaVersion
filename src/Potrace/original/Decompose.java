@@ -499,9 +499,4 @@ public class Decompose implements DecompositionInterface{
     public Path getPathList(Bitmap generalBitmap, Param param) {
         return bm_to_pathlist(generalBitmap,param);
     }
-
-    @Override
-    public Bitmap getWorkCopy() {
-        return null;
-    }
 }

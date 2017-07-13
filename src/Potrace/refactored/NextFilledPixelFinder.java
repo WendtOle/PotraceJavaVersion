@@ -9,7 +9,7 @@ import java.awt.*;
  */
 public class NextFilledPixelFinder {
     Point currentPixel;
-    boolean wasAFilledPixelFound = false;
+    boolean noPixelWasFound = false;
     BitmapHandlerInterface bitmapHandler;
     Bitmap bitmap;
     private Point currentSearchPosition;
@@ -21,60 +21,85 @@ public class NextFilledPixelFinder {
     }
 
     public boolean isThereAFilledPixel() {
-        lookingForFilledPixel();
+        goThroughWholePictureUntilAFilledPixelWasFound();
+        boolean wasAFilledPixelFound = !noPixelWasFound;
         return wasAFilledPixelFound;
     }
 
     public Point getPositionOfNextFilledPixel(){
-        throwNoPixelFoundExceptionIfNecessary();
-        return currentPixel;
-    }
-
-    private void throwNoPixelFoundExceptionIfNecessary() {
-        if(!wasAFilledPixelFound)       //TODO negative booleans vermeiden
+        if(noPixelWasFound)
             throw new RuntimeException("There are no more filled Pixels");
+        else
+            return currentPixel;
     }
 
-    private void lookingForFilledPixel() {
-        currentSearchPosition = new Point(bitmapHandler.getBeginningIndexOfWordWithPixel(currentPixel),currentPixel.y);
-        wasAFilledPixelFound = false;
+    private void goThroughWholePictureUntilAFilledPixelWasFound() {
+        setInitialSearchPosition();
+        noPixelWasFound = true;
         lookForFilledPixelInAllWords();
     }
 
+    private void setInitialSearchPosition() {
+        int xComponent = bitmapHandler.getBeginningIndexOfWordWithPixel(currentPixel);
+        int yComponent = currentPixel.y;
+        currentSearchPosition = new Point(xComponent,yComponent);
+    }
+
     private void lookForFilledPixelInAllWords() {
-        while (shouldContinueLooking()) {
-            whenThereIsAFilledPixelGoToIt();
-            goToNextSearchLocation(); //ToDO better names
+        while (shouldContinueSearch()) {
+            lookInCurrentWordForFilledPixel();
+            goToNextWord();
         }
     }
 
-    private boolean shouldContinueLooking() {
-        return isPixelStillInBitmap(currentSearchPosition) && !wasAFilledPixelFound;
+    private boolean shouldContinueSearch() {
+        return isSearchPositionStillInBitmap(currentSearchPosition) && noPixelWasFound;
     }
 
-    private boolean isPixelStillInBitmap(Point pixel) {
+    private boolean isSearchPositionStillInBitmap(Point pixel) {
         return pixel.x<bitmapHandler.getWithOfBitmap() && pixel.x>=0 && pixel.y>=0;
     }
 
-    private void whenThereIsAFilledPixelGoToIt() {
-        if (bitmapHandler.areThereFilledPixelInWord(currentSearchPosition)) {
-            wasAFilledPixelFound = true;    //Todo if else!
-            getPositionOfNextFilledPixelInWord();
-        } else {
-            wasAFilledPixelFound = false;
-        }
+    private void lookInCurrentWordForFilledPixel() {
+        if (isAFilledPixelInCurrentWord())
+            goToPositionOfFirstFilledPixelInWord();
     }
 
-    private void goToNextSearchLocation() {
-        currentSearchPosition.x += Bitmap.PIXELINWORD;
-        if (bitmapHandler.getWithOfBitmap() <= currentSearchPosition.x) //Todo sehr unübersichtlich
-            currentSearchPosition = new Point(0,currentSearchPosition.y -1);
+    private boolean isAFilledPixelInCurrentWord() {
+        return bitmapHandler.areThereFilledPixelInWord(currentSearchPosition);
     }
 
-    private void getPositionOfNextFilledPixelInWord() {
+    private void goToPositionOfFirstFilledPixelInWord() {
+        currentPixel = goThroughWordToFirstFilledPixel();
+        noPixelWasFound = false;
+    }
+
+    private Point goThroughWordToFirstFilledPixel() {
         Point currentPosition = (Point)currentSearchPosition.clone();
-        while (!bitmapHandler.isPixelFilled(currentPosition))       //Todo unübersichtlich
+        while (isPixelEmpty(currentPosition))
             currentPosition.x++;
-        currentPixel = currentPosition;
+        return currentPosition;
+    }
+
+    private boolean isPixelEmpty(Point currentPosition) {
+        return !bitmapHandler.isPixelFilled(currentPosition);
+    }
+
+    private void goToNextWord() {
+        goToNextWordInLine();
+        if (isEndOfLineReached())
+            goToStartOfNextLine();
+    }
+
+    private void goToNextWordInLine() {
+        currentSearchPosition.x += Bitmap.PIXELINWORD;
+    }
+
+    private boolean isEndOfLineReached() {
+        return bitmapHandler.getWithOfBitmap() <= currentSearchPosition.x;
+    }
+
+    private void goToStartOfNextLine() {
+        currentSearchPosition = new Point(0,currentSearchPosition.y -1);
     }
 }

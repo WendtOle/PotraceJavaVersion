@@ -8,10 +8,13 @@ import java.awt.*;
 public class PointShape {
     Point[] pointsOfPath = new Point[1];
     int indexOfCurrentPoint = 0;
+    Point currentPoint;
+    int areaOfPath = 0;
 
     public void addPointToPointsOfPath(Point point) {
+        currentPoint = point;
         extendPointArrayCapacityWhenNecessary();
-        pointsOfPath[indexOfCurrentPoint]=(Point)point.clone();
+        pointsOfPath[indexOfCurrentPoint]=(Point) currentPoint.clone();
         indexOfCurrentPoint++;
     }
 
@@ -21,6 +24,10 @@ public class PointShape {
 
     public int getLengthOfPath() {
         return indexOfCurrentPoint;
+    }
+
+    public void updateAreaOfPath(int verticalDirection){
+        areaOfPath += currentPoint.x * verticalDirection;
     }
 
     private void extendPointArrayCapacityWhenNecessary() {
@@ -37,5 +44,9 @@ public class PointShape {
         Point[] newSizedPointArray = new Point[newSize];
         System.arraycopy(pointsOfPath,0,newSizedPointArray,0, pointsOfPath.length);
         pointsOfPath = newSizedPointArray;
+    }
+
+    public int getAreaOfPath() {
+        return areaOfPath;
     }
 }
