@@ -7,92 +7,65 @@ import java.awt.*;
  * Created by andreydelany on 02.07.17.
  */
 public class PathInverter {
+    LineOfWordsInverter lineInverter;
     BitmapHandlerInterface bitmapHandler;
     private Point currentPoint;
-    private Point previousePoint;
+    private Point previousPoint;
+    int currentPointIdentifier;
+    Path path;
 
     public PathInverter(Bitmap bitmap){
         this.bitmapHandler = new BitmapHandler(bitmap);
+        this.lineInverter = new LineOfWordsInverter(bitmap);
     }
 
     public void invertPathOnBitmap(Path path) {
-        initializeInvertingProcessBySettingFixPoints(path);
-        invertingPathByIntervingRectangleBetweenPointsOfPath(path);
+        this.path = path;
+        initializeInvertingProcessBySettingFixPoints();
+        invertingPathByInvertingRectangleBetweenPointsOfPath();
     }
 
-    private void initializeInvertingProcessBySettingFixPoints(Path path) {
+    private void initializeInvertingProcessBySettingFixPoints() {
         int verticalFixPunkt = path.priv.pt[path.priv.len-1].y;
         int horizontalFixPunkt = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
-        previousePoint = new Point(horizontalFixPunkt,verticalFixPunkt);
+        previousPoint = new Point(horizontalFixPunkt,verticalFixPunkt);
     }
 
-    private void invertingPathByIntervingRectangleBetweenPointsOfPath(Path path) {
-        for (int currentPointIdentifier = 0; currentPointIdentifier < path.priv.len; currentPointIdentifier ++) {
-            currentPoint = path.priv.pt[currentPointIdentifier];
-            tryToInvertRectangleBetweenCurrentAndPreviousePoint();
-            previousePoint.y = currentPoint.y;
-        }
+    private void invertingPathByInvertingRectangleBetweenPointsOfPath() {
+        currentPointIdentifier = 0;
+        while (notLookedAtAllPoints())
+            invertRectangleBetweenCurrentAndPreviousePoint();
     }
 
-    private void tryToInvertRectangleBetweenCurrentAndPreviousePoint() {
-        if (isRectangle())
-            invertRangeInOneLine();
+    private boolean notLookedAtAllPoints() {
+        return currentPointIdentifier < path.priv.len;
     }
 
-    private boolean isRectangle() {
-        return currentPoint.y != previousePoint.y;
+    private void invertRectangleBetweenCurrentAndPreviousePoint() {
+        currentPoint = getCurrentPoint();
+        tryToInvertRectangleBetweenCurrentAndPreviousPoint();
+        previousPoint.y = currentPoint.y;
+        currentPointIdentifier ++;
     }
 
-    private void invertRangeInOneLine() {
-        invertLeadingWordsOfRange();
-        invertLeadingWordUntilStartOfRange();
+    private Point getCurrentPoint() {
+        return path.priv.pt[currentPointIdentifier];
     }
 
-    private void invertLeadingWordsOfRange() { //Todo to long
-        int startWordIdentifier = getWordIdentifierOfPreviousePoint();
-        int lastWordIdentifier = getWordIdentifierOfCurrentWord();
+    private void tryToInvertRectangleBetweenCurrentAndPreviousPoint() {
+        if (canInvertALine())
+            lineInverter.invertRangeInOneLine(currentPoint,previousPoint,getLineToInvert());
+    }
 
-        if (lastWordIdentifier < startWordIdentifier) {
-            int temp = startWordIdentifier;     //Todo if else !
-            startWordIdentifier = lastWordIdentifier;
-            lastWordIdentifier = temp;
-        }
-
-        for(int i = startWordIdentifier; i < lastWordIdentifier; i += Bitmap.PIXELINWORD) {
-            flipAllBitsInWord(new Point(i, getLineToInvert()));
-        }
+    private boolean canInvertALine() {
+        return currentPoint.y != previousPoint.y;
     }
 
     private int getLineToInvert() {
-        return min(currentPoint.y, previousePoint.y);
+        return min(currentPoint.y, previousPoint.y);
     }
 
     private int min(int a, int b) {
         return (a)<(b) ? (a) : (b);
-    }
-
-    private int getWordIdentifierOfCurrentWord() {
-        return bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(currentPoint.x,0));
-    }
-
-    private int getWordIdentifierOfPreviousePoint() {
-        return previousePoint.x;
-    }
-
-    private void flipAllBitsInWord(Point wordIdentificationPixel) {
-        invertWordWithIndexUntilPosition(wordIdentificationPixel,Bitmap.PIXELINWORD);
-    }
-
-    private void invertWordWithIndexUntilPosition(Point index, int position) {
-        long mask = BitMask.getMultiplePixelMaskUntilPosition(position);
-        bitmapHandler.flipBitsInWordWithMask(index,mask);
-    }
-
-    private void invertLeadingWordUntilStartOfRange() {
-        int startOfRange = currentPoint.x & (Bitmap.PIXELINWORD-1);
-        if (startOfRange > 0) { // Todo if else //Todo extract boolean
-            Point leadingWordIdentifierPoint = new Point(getWordIdentifierOfCurrentWord(),getLineToInvert());
-            invertWordWithIndexUntilPosition(leadingWordIdentifierPoint,startOfRange);
-        }
     }
 }
