@@ -39,8 +39,8 @@ public class PathRestructerer {
     }
 
     private void copyNextIntoSiblingAndProcessSiblingComponentLater() {
-        Path p1 = currentPath.sibling;
+        Path temp = currentPath.sibling;
         currentPath.sibling = currentPath.next;
-        currentPath = p1;
+        currentPath = temp;
     }
 }

@@ -29,7 +29,7 @@ public class FindPathsOnBitmap {
     }
 
     private void initializeFields(Bitmap bitmap, Param param) {
-        this.workCopy = bitmap.bm_dup();                             //TODO kürzer!
+        this.workCopy = bitmap.bm_dup();
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.pathInverterForWorkCopy = new PathInverter(workCopy);
         this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
@@ -60,14 +60,18 @@ public class FindPathsOnBitmap {
     }
 
     private Path findPathWhichStartsAt(Point startPointOfCurrentPath) {
-        PathKindEnum kindOfPath = getKindOfPath(startPointOfCurrentPath);
-        DirectionChooserIdentificator directionIdentificator = new DirectionChooserIdentificator(TurnPolicyEnum.values()[param.turnpolicy],kindOfPath);
-        FindPath pathFinder = new FindPath(workCopy, startPointOfCurrentPath, directionIdentificator);
+        FindPath pathFinder = getPathFinder(startPointOfCurrentPath);
         return pathFinder.getPath();
     }
 
+    private FindPath getPathFinder(Point startPointOfCurrentPath) {
+        PathKindEnum kindOfPath = getKindOfPath(startPointOfCurrentPath);
+        DirectionChooserIdentificator directionIdentificator = new DirectionChooserIdentificator(TurnPolicyEnum.values()[param.turnpolicy],kindOfPath);
+        return new FindPath(workCopy, startPointOfCurrentPath, directionIdentificator);
+    }
+
     private PathKindEnum getKindOfPath(Point currentPoint) {
-        if (isPathFilled(currentPoint))                     //TODO anders ausdrücken. so sieht es doof aus
+        if (isPathFilled(currentPoint))
             return PathKindEnum.POSITIV;
         else
             return PathKindEnum.NEGATIV;

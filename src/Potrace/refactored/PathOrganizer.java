@@ -80,14 +80,20 @@ public class PathOrganizer {
         return currentPath.priv.pt[0].y;
     }
 
-    public void addOrderdPathsForNextOrderingStep() {
-        if (referencePath.next != null) {
-            referencePath.next.childlist = pathsThatNeedToProcess;
-            pathsThatNeedToProcess = referencePath.next;
-        }
-        if (referencePath.childlist != null) {
-            referencePath.childlist.childlist = pathsThatNeedToProcess;
-            pathsThatNeedToProcess = referencePath.childlist;
-        }
+    public void scheduleOrderdPathsForNextOrderingStep() {
+        if (referencePath.next != null)
+            scheduleSiblingsForNextOrderingStep();
+        if (referencePath.childlist != null)
+            scheduleChildrenForNextOrderingStep();
+    }
+
+    private void scheduleChildrenForNextOrderingStep() {
+        referencePath.childlist.childlist = pathsThatNeedToProcess;
+        pathsThatNeedToProcess = referencePath.childlist;
+    }
+
+    private void scheduleSiblingsForNextOrderingStep() {
+        referencePath.next.childlist = pathsThatNeedToProcess;
+        pathsThatNeedToProcess = referencePath.next;
     }
 }

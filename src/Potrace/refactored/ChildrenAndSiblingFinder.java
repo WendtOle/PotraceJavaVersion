@@ -47,7 +47,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void scheduleOrderPathsForNextOrderingStep() {
-        pathOrganizer.addOrderdPathsForNextOrderingStep();
+        pathOrganizer.scheduleOrderdPathsForNextOrderingStep();
     }
 
     private void markLocationOfReferencePath() {
