@@ -39,15 +39,15 @@ public class FindAllPathsOnBitmap {
         this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
     }
 
+    private void setStartPointForNextPath() {
+        startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
+    }
+
     private void findAllPathsOnBitmap() {
         while(isThereAnotherPath()) {
             findAndProcessPath();
             setStartPointForNextPath();
         }
-    }
-
-    private void setStartPointForNextPath() {
-        startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
     }
 
     private boolean isThereAnotherPath() {

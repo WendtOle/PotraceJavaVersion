@@ -21,6 +21,12 @@ class FilledPixelRate {
         return isMajorityOfPixelFilledAtIntersection();
     }
 
+    private void setFields(Point intersection, BitmapHandlerInterface bitmapHandler) {
+        this.bitmapHandler = bitmapHandler;
+        this.intersection = intersection;
+        radius = startRadius;
+    }
+
     private boolean isMajorityOfPixelFilledAtIntersection() {
         while (radius < endRadius){
             determineMajorityIdentifierAtRadius();
@@ -29,20 +35,6 @@ class FilledPixelRate {
             radius ++;
         }
         return false;
-    }
-
-    private boolean wasMajorityIdentifierDefinite() {
-        return majorityIdentifier != 0;
-    }
-
-    private void setFields(Point intersection, BitmapHandlerInterface bitmapHandler) {
-        this.bitmapHandler = bitmapHandler;
-        this.intersection = intersection;
-        radius = startRadius;
-    }
-
-    private boolean isMajorityFilled() {
-        return majorityIdentifier > 0;
     }
 
     private void determineMajorityIdentifierAtRadius() {
@@ -69,5 +61,13 @@ class FilledPixelRate {
             majorityIdentifier ++;
         else
             majorityIdentifier --;
+    }
+
+    private boolean wasMajorityIdentifierDefinite() {
+        return majorityIdentifier != 0;
+    }
+
+    private boolean isMajorityFilled() {
+        return majorityIdentifier > 0;
     }
 }

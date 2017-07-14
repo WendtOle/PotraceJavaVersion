@@ -71,8 +71,8 @@ public class ChildrenAndSiblingFinder {
             addCurrentPathToReferencePath();
     }
 
-    private boolean isCurrentPathInsideReferencePath() {
-        return bitmapHandler.isPixelFilled(pathOrganizer.getFirstPointOfCurrentPath());
+    private boolean isCurrentPathBelowReferencePath() {
+        return pathOrganizer.getUpperBoundOfPath() <= boundingBox.y0;
     }
 
     private void cancelOrderingProcess() {
@@ -87,15 +87,15 @@ public class ChildrenAndSiblingFinder {
             pathOrganizer.addPathAsSibling();
     }
 
-    private boolean isCurrentPathBelowReferencePath() {
-        return pathOrganizer.getUpperBoundOfPath() <= boundingBox.y0;
-    }
-
-    private void scheduleOrderPathsForNextOrderingStep() {
-        pathOrganizer.scheduleOrderedPathsForNextOrderingStep();
+    private boolean isCurrentPathInsideReferencePath() {
+        return bitmapHandler.isPixelFilled(pathOrganizer.getFirstPointOfCurrentPath());
     }
 
     private void unmarkLocationOfReferencePath() {
         bitmapClearer.clear(boundingBox);
+    }
+
+    private void scheduleOrderPathsForNextOrderingStep() {
+        pathOrganizer.scheduleOrderedPathsForNextOrderingStep();
     }
 }

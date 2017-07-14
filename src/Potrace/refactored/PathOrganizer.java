@@ -29,18 +29,6 @@ class PathOrganizer {
         setPathsForCurrentOrdering();
     }
 
-    private void setPathsForLaterOrdering() {
-        pathsToOrder = pathsThatNeedToProcess;
-        pathsThatNeedToProcess = pathsThatNeedToProcess.childlist;
-    }
-
-    private void setPathsForCurrentOrdering() {
-        pathsToOrder.childlist = null;
-        referencePath = pathsToOrder;
-        pathsToOrder = pathsToOrder.next;
-        referencePath.next = null;
-    }
-
     public void initializePathsForDetermineRelationToReferencePath(){
         pathsToOrder = currentPath.next;
         currentPath.next=null;
@@ -57,10 +45,6 @@ class PathOrganizer {
 
     public void addPathAsSibling() {
         referencePath.next = List.elementInsertAtTheLastNextOfList(currentPath,referencePath.next);
-    }
-
-    private void addPathsThatWillBeOrderedAsSibling() {
-        referencePath.next = List.listInsertAtTheLastNextOfList(pathsToOrder,referencePath.next);
     }
 
     public void addPathAsChild() {
@@ -82,13 +66,29 @@ class PathOrganizer {
             scheduleChildrenForNextOrderingStep();
     }
 
-    private void scheduleChildrenForNextOrderingStep() {
-        referencePath.childlist.childlist = pathsThatNeedToProcess;
-        pathsThatNeedToProcess = referencePath.childlist;
+    private void setPathsForLaterOrdering() {
+        pathsToOrder = pathsThatNeedToProcess;
+        pathsThatNeedToProcess = pathsThatNeedToProcess.childlist;
+    }
+
+    private void setPathsForCurrentOrdering() {
+        pathsToOrder.childlist = null;
+        referencePath = pathsToOrder;
+        pathsToOrder = pathsToOrder.next;
+        referencePath.next = null;
+    }
+
+    private void addPathsThatWillBeOrderedAsSibling() {
+        referencePath.next = List.listInsertAtTheLastNextOfList(pathsToOrder,referencePath.next);
     }
 
     private void scheduleSiblingsForNextOrderingStep() {
         referencePath.next.childlist = pathsThatNeedToProcess;
         pathsThatNeedToProcess = referencePath.next;
+    }
+
+    private void scheduleChildrenForNextOrderingStep() {
+        referencePath.childlist.childlist = pathsThatNeedToProcess;
+        pathsThatNeedToProcess = referencePath.childlist;
     }
 }

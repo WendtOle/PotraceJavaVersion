@@ -55,6 +55,10 @@ class NextComponentReconstruction {
         addAllChildrenOfPath(currentSibling.childlist);
     }
 
+    private void addPathToNextComponent(Path path) {
+        pathList = List.elementInsertAtTheLastNextOfList(path, pathList);
+    }
+
     private void addAllChildrenOfPath(Path currentChild) {
         while (currentChild != null) {
             addChildrenToPath(currentChild);
@@ -65,10 +69,6 @@ class NextComponentReconstruction {
     private void addChildrenToPath(Path child) {
         addPathToNextComponent(child);
         scheduleChildrenOfCurrentChildForLaterProcessing(child);
-    }
-
-    private void addPathToNextComponent(Path path) {
-        pathList = List.elementInsertAtTheLastNextOfList(path, pathList);
     }
 
     private void scheduleChildrenOfCurrentChildForLaterProcessing(Path path) {

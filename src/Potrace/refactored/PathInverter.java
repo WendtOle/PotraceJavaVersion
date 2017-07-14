@@ -50,13 +50,13 @@ public class PathInverter {
         return path.priv.pt[currentPointIdentifier];
     }
 
+    private boolean canInvertARectangle() {
+        return currentPoint.y != previousPoint.y;
+    }
+
     private void invertRectangle() {
         rangeInverter.invertRangeInLine(currentPoint, previousPoint, getLineToInvert());
         previousPoint.y = currentPoint.y;
-    }
-
-    private boolean canInvertARectangle() {
-        return currentPoint.y != previousPoint.y;
     }
 
     private int getLineToInvert() {
