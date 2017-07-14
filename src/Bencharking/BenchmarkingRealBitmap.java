@@ -1,24 +1,22 @@
 package Bencharking;
 
-import AdditionalCode.FileInputOutput.JsonEncoder;
+import AdditionalCode.FileInputOutput.BitmapImporter;
 import Potrace.General.Bitmap;
 import Potrace.General.DecompositionInterface;
 import Potrace.General.Param;
 import org.openjdk.jmh.annotations.*;
 
-import java.io.File;
-
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 
-public class Benchmarking{
+public class BenchmarkingRealBitmap {
 
     @State(Scope.Thread)
     public static class MySate {
 
         Bitmap[] bitmaps;
-        Potrace.General.Param params;
+        Param params;
 
         @Setup
         public void setBitmap(){
@@ -31,23 +29,17 @@ public class Benchmarking{
         }
 
         private Bitmap[] loadTestPictures() {
-            File[] bitmapFiles = getAllBitmapFilesForTesting("testPictures");
-            Bitmap[] testPictures = new Bitmap[bitmapFiles.length];
-            for (int i = 0; i < bitmapFiles.length; i++)
-                testPictures[i] = loadBitmap(bitmapFiles[i]);
+            Bitmap[] testPictures = new Bitmap[4];
+            BitmapImporter importer = new BitmapImporter("lion.png","benchmarkingPictures");
+            testPictures[0] = importer.getBitmap();
+            importer = new BitmapImporter("guyWithGun.png","benchmarkingPictures");
+            testPictures[1] = importer.getBitmap();
+            importer = new BitmapImporter("fox.png","benchmarkingPictures");
+            testPictures[2] = importer.getBitmap();
+            importer = new BitmapImporter("shark.png","benchmarkingPictures");
+            testPictures[3] = importer.getBitmap();
+
             return testPictures;
-        }
-
-        private Bitmap loadBitmap(File bitmapFile){
-            JsonEncoder encoder = new JsonEncoder(bitmapFile);
-            return encoder.getBitmap();
-        }
-
-        private File[] getAllBitmapFilesForTesting(String folderNameOfTestPictures) {
-            return new File(folderNameOfTestPictures).listFiles((dir, name) -> {
-                        return name.toLowerCase().endsWith(".json");
-                    }
-            );
         }
     }
 
@@ -56,7 +48,7 @@ public class Benchmarking{
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(2)
+    @Fork(4)
     @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         for(Bitmap currentBitmap : state.bitmaps) {
@@ -70,7 +62,7 @@ public class Benchmarking{
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(2)
+    @Fork(4)
     @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         for(Bitmap currentBitmap : state.bitmaps) {

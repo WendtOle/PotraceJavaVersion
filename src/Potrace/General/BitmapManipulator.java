@@ -1,7 +1,5 @@
 package Potrace.General;
 
-import Potrace.General.*;
-
 public class BitmapManipulator {
 
     /* macros for accessing pixel at index (x,y). U* macros omit the bounds check. */
@@ -60,7 +58,7 @@ public class BitmapManipulator {
     /* clear the given BitmapManipulator. Set all bits to c. Assumes a well-formed
     BitmapManipulator. */
 
-    static Bitmap bm_clear(Bitmap bm, int c) {
+    public static Bitmap bm_clear(Bitmap bm, int c) {
         for (int y = 0; y < bm.h; y ++) {
             for (int dy = 0; dy < bm.dy; dy ++) {
                 int clearedValue = (c == 1 ? -1 : 0);
