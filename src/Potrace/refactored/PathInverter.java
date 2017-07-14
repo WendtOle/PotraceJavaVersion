@@ -27,9 +27,9 @@ public class PathInverter {
     }
 
     private void setPreviousPoint() {
-        int xComponent = path.priv.pt[path.priv.len-1].y;
-        int yComponent = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
-        previousPoint = new Point(yComponent,xComponent);
+        int xComponent = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
+        int yComponent = path.priv.pt[path.priv.len-1].y;
+        previousPoint = new Point(xComponent,yComponent);
     }
 
     private void invertingPathByInvertingRectangleBetweenPointsOfPath() {

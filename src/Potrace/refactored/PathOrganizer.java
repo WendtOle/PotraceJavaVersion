@@ -20,16 +20,16 @@ public class PathOrganizer {
         pathsThatNeedToProcess = pathList;
     }
 
-    public boolean stillNeedToLevelOneOrder() {
+    public boolean stillNeedToProcessPathes() {
         return pathsThatNeedToProcess != null;
     }
 
-    public boolean stillNeedToLevelTwoOrder(){
+    public boolean stillNeedToDetermineRelationOfPathsToReferencePath(){
         currentPath = pathsToOrder;
         return currentPath != null;
     }
 
-    public void initializingPathForLevelOneOrdering() {
+    public void unlinkAllDifferentParts() {
         setPathsForLaterOrdering();
         setPathsForCurrentOrdering();
     }
@@ -46,7 +46,7 @@ public class PathOrganizer {
         referencePath.next = null;
     }
 
-    public void initializePathForLevelTwoOrdering(){
+    public void initializePathsForDetermineRelationToReferencePath(){
         pathsToOrder = currentPath.next;
         currentPath.next=null;
     }

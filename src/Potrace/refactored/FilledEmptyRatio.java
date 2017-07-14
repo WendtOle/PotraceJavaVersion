@@ -7,6 +7,7 @@ import java.awt.*;
  */
 public class FilledEmptyRatio {
     BitmapHandlerInterface bitmapHandler;
+
     public boolean isMajority(BitmapHandlerInterface bitmapHandler, Point intersection){
         this.bitmapHandler = bitmapHandler;
         for (int radius = 2; radius < 5; radius ++) { /* check at "radius" i */

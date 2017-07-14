@@ -40,7 +40,6 @@ public class PointShapeTest {
         for (int i = 0; i < amountOfPoints; i++)
             pointShape.addPointToPathShape(new Point(1,1));
         return pointShape;
-
     }
 
 }

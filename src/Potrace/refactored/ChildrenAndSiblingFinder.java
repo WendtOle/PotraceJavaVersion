@@ -33,8 +33,8 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void goThroughAllPathsAndDetermineChildrenAndSiblings() {
-        while (pathOrganizer.stillNeedToLevelOneOrder()) {
-            pathOrganizer.initializingPathForLevelOneOrdering();
+        while (pathOrganizer.stillNeedToProcessPathes()) {
+            pathOrganizer.unlinkAllDifferentParts();
             determineChildrenAndSiblingForReferencePath();
         }
     }
@@ -59,11 +59,11 @@ public class ChildrenAndSiblingFinder {
     }
 
     private boolean shouldContinueDetermine() {
-        return pathOrganizer.stillNeedToLevelTwoOrder() && shouldContinueDetermineChildrenAndSiblings;
+        return pathOrganizer.stillNeedToDetermineRelationOfPathsToReferencePath() && shouldContinueDetermineChildrenAndSiblings;
     }
 
     private void determineChildrenAndSiblingsOfReferencePath() {
-        pathOrganizer.initializePathForLevelTwoOrdering();
+        pathOrganizer.initializePathsForDetermineRelationToReferencePath();
         determineForCurrentPath();
     }
 

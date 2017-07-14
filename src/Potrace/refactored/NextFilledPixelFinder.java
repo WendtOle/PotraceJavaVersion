@@ -63,11 +63,11 @@ public class NextFilledPixelFinder {
     }
 
     private void goToPositionOfFirstFilledPixelInWord() {
-        currentPixel = goThroughWordToFirstFilledPixel();
+        currentPixel = getFirstFilledPixelInWord();
         noPixelWasFound = false;
     }
 
-    private Point goThroughWordToFirstFilledPixel() {
+    private Point getFirstFilledPixelInWord() {
         Point currentPosition = (Point)currentSearchPosition.clone();
         while (isPixelEmpty(currentPosition))
             currentPosition.x++;

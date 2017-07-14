@@ -30,12 +30,11 @@ public class ClearPathWithBoundingBox {
 
     private void clearBitmapInHorizontalRange() {
         currentLine = boundingBox.y0;
-        while(stillVerticallyInBoundingBox()) {
+        while(isStillVerticallyInBoundingBox())
             clearLineAndGoToNextLine();
-        }
     }
 
-    private boolean stillVerticallyInBoundingBox() {
+    private boolean isStillVerticallyInBoundingBox() {
         return currentLine < boundingBox.y1;
     }
 
@@ -46,18 +45,17 @@ public class ClearPathWithBoundingBox {
 
     private void clearAllWordsInLineThatOverlapWithBoundingBox() {
         indexOfCurrentWord = indexOfWordWhereBoundingBoxStarts;
-        while (stillHorizontallyInBoundingBox()) {
+        while (isStillHorizontallyInBoundingBox())
             clearWordAnGoToNextWord();
-        }
     }
 
-    private boolean stillHorizontallyInBoundingBox() {
+    private boolean isStillHorizontallyInBoundingBox() {
         return indexOfCurrentWord < indexOfwordWhereBoundingBoxEnds;
     }
 
     private void clearWordAnGoToNextWord() {
         clearWord(currentLine, indexOfCurrentWord);
-        indexOfCurrentWord++;
+        indexOfCurrentWord ++;
     }
 
     private void clearWord(int line, int indexOfWord) {

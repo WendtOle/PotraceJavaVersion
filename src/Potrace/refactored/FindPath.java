@@ -36,7 +36,7 @@ public class FindPath {
 
     private void findPath() {
         do moveInDirectionAndRememberCurrentPoint();
-        while (pathIsOpen());
+        while (isPathOpen());
     }
 
     private void moveInDirectionAndRememberCurrentPoint() {
@@ -62,7 +62,7 @@ public class FindPath {
         pathShape.updateAreaOfPath(directionHandler.getVerticalDirection());
     }
 
-    private boolean pathIsOpen() {
+    private boolean isPathOpen() {
         boolean isPathClosed = currentPoint.equals(startPoint);
         return !isPathClosed;
     }

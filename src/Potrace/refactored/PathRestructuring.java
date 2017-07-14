@@ -22,6 +22,12 @@ public class PathRestructuring {
         return pathList;
     }
 
+    public Path copySiblingStructureFromNextToSiblingComponent() {
+        while (stillNeedToRestructurePaths())
+            copyNextIntoSiblingAndProcessSiblingComponentLater();
+        return pathList;
+    }
+
     private boolean stillNeedToRestructurePaths() {
         return currentPath != null;
     }
@@ -30,12 +36,6 @@ public class PathRestructuring {
         currentPath.sibling = currentPath.next;
         currentPath.childlist = null;
         currentPath = currentPath.next;
-    }
-
-    public Path copySiblingStructurFromNextToSiblingComponent() {
-        while (stillNeedToRestructurePaths())
-            copyNextIntoSiblingAndProcessSiblingComponentLater();
-        return pathList;
     }
 
     private void copyNextIntoSiblingAndProcessSiblingComponentLater() {

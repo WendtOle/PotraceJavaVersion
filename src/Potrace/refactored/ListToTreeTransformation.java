@@ -44,7 +44,7 @@ public class ListToTreeTransformation implements ListToTreeTransformationInterfa
 
     private void copySiblingStructurFromNextToSiblingComponent() {
         PathRestructuring pathRestructuring = new PathRestructuring(pathList);
-        pathList = pathRestructuring.copySiblingStructurFromNextToSiblingComponent();
+        pathList = pathRestructuring.copySiblingStructureFromNextToSiblingComponent();
     }
 
     private void reconstructNextComponentFromChildrenAndSiblingComponent() {

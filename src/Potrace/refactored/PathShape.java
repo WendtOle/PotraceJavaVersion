@@ -14,7 +14,7 @@ public class PathShape {
     public void addPointToPathShape(Point point) {
         currentPoint = point;
         extendPointArrayCapacityWhenNecessary();
-        pointsOfPath[indexOfCurrentPoint]=(Point) currentPoint.clone();
+        pointsOfPath[indexOfCurrentPoint] = (Point) currentPoint.clone();
         indexOfCurrentPoint++;
     }
 
