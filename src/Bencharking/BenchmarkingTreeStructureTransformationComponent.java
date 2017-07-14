@@ -43,8 +43,8 @@ public class BenchmarkingTreeStructureTransformationComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
+    @Fork(10)
+    @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         TreeStructurTransformationInterface transformator = new TreeStructurTransformation(state.path,state.emptyBitmap);
         transformator.getTreeStructure();
@@ -55,8 +55,8 @@ public class BenchmarkingTreeStructureTransformationComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
+    @Fork(10)
+    @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         Decompose.pathlist_to_tree(state.path,state.emptyBitmap);
     }

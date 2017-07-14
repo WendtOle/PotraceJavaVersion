@@ -51,5 +51,4 @@ public class TreeStructurTransformation implements TreeStructurTransformationInt
         NextComponentReconstruction reconstruction = new NextComponentReconstruction(pathList);
         pathList = reconstruction.getPathWithReconstructedNext();
     }
-
 }

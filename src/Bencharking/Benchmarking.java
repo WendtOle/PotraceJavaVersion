@@ -39,7 +39,7 @@ public class Benchmarking{
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(10)
-    @Threads(2)
+    @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         DecompositionInterface decomposer = new Potrace.refactored.Decompose();
         decomposer.getPathList(state.bitmap,state.params);
@@ -51,7 +51,7 @@ public class Benchmarking{
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(10)
-    @Threads(2)
+    @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         DecompositionInterface decomposer = new Potrace.original.Decompose();
         decomposer.getPathList(state.bitmap,state.params);

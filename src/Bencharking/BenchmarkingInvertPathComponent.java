@@ -42,8 +42,8 @@ public class BenchmarkingInvertPathComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
+    @Fork(10)
+    @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         PathInverter pathInverter = new PathInverter(state.bitmap);
         pathInverter.invertPathOnBitmap(state.path);
@@ -54,8 +54,8 @@ public class BenchmarkingInvertPathComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
+    @Fork(10)
+    @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         Decompose.xor_path(state.bitmap,state.path);
     }

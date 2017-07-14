@@ -31,8 +31,8 @@ public class BenchmarkingNextFilledPixelFinderComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
+    @Fork(10)
+    @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(state.bitmap);
         if (nextFilledPixelFinder.isThereAFilledPixel())
@@ -44,8 +44,8 @@ public class BenchmarkingNextFilledPixelFinderComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(5)
-    @Threads(2)
+    @Fork(10)
+    @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         Decompose.findnext(state.bitmap,new Point(0,state.bitmap.h-1));
     }
