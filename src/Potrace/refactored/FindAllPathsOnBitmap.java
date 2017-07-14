@@ -38,30 +38,31 @@ public class FindAllPathsOnBitmap {
     }
 
     private void findAllPathsOnBitmap() {
-        setNextFilledPixelToStartPointOfNextPath();
-        while(isThereAFilledPixel())
-            findAndAddPathToPathList();
+        setStartPointForNextPath();
+        while(isThereAnotherPath())
+            findPathAndStartPointForNextPath();
     }
 
-    private boolean isThereAFilledPixel() {
-        return !startPointOfCurrentPath.equals(new NoPointFound());
-    }
-
-    private void findAndAddPathToPathList() {
-        Path path = findPath();
-        invertAndAddPath(path);
-        setNextFilledPixelToStartPointOfNextPath();
-    }
-
-    private Path findPath() {
-        return findPathAtStartPoint();
-    }
-
-    private void setNextFilledPixelToStartPointOfNextPath() {
+    private void setStartPointForNextPath() {
         startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
     }
 
-    private Path findPathAtStartPoint() {
+    private boolean isThereAnotherPath() {
+        return !startPointOfCurrentPath.equals(new NoPointFound());
+    }
+
+    private void findPathAndStartPointForNextPath() {
+        findAndProcessPath();
+        setStartPointForNextPath();
+    }
+
+    private void findAndProcessPath() {
+        Path path = findPath();
+        invertPath(path);
+        addPath(path);
+    }
+
+    private Path findPath() {
         FindPath pathFinder = getPathFinder();
         return pathFinder.getPath();
     }
@@ -84,16 +85,11 @@ public class FindAllPathsOnBitmap {
         return bitmapHandler.isPixelFilled(pointOfPath);
     }
 
-    private void invertAndAddPath(Path path) {
-        invertPath(path);
-        addToPathListIfBigEnough(path);
-    }
-
     private void invertPath(Path path) {
         pathInverter.invertPathOnBitmap(path);
     }
 
-    private void addToPathListIfBigEnough(Path path) {
+    private void addPath(Path path) {
         if (isPathBigEnough(path.area))
             addPathToPathList(path);
     }
