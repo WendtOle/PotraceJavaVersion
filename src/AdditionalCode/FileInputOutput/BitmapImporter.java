@@ -1,9 +1,10 @@
 package AdditionalCode.FileInputOutput;
 
-import AdditionalCode.BitmapManipulator;
 import Potrace.General.Bitmap;
+import Potrace.General.BitmapManipulator;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,9 +40,12 @@ public class BitmapImporter {
 
     private void copyPixelToBitmap(BufferedImage image) {
         for (int y = 0; y < image.getHeight(); y++)
-            for (int x = 0; x < image.getWidth(); x++) {
-                if ((image.getRGB(x, y) & 0xff) == 0)
-                    BitmapManipulator.BM_PUT(bitmap, x, image.getHeight() - y - 1, true);
-            }
+            for (int x = 0; x < image.getWidth(); x++)
+                setPixel(image, new Point(x,y));
+    }
+
+    private void setPixel(BufferedImage image, Point pixel) {
+        if ((image.getRGB(pixel.x, pixel.y) & 0xff) == 0)
+            BitmapManipulator.BM_PUT(bitmap, pixel.x, image.getHeight() - pixel.y - 1, true);
     }
 }

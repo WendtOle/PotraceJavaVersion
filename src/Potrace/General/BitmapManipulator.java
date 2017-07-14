@@ -1,4 +1,4 @@
-package Potrace.original;
+package Potrace.General;
 
 import Potrace.General.*;
 

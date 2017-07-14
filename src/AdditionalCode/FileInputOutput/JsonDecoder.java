@@ -23,22 +23,26 @@ public class JsonDecoder {
     }
 
     private JSONObject putBitmapJsonIntoBitmapPathPair(JSONObject bitmapObject) {
-        JSONObject obj = new JSONObject();
-        obj.put("bitmap",bitmapObject);
-        obj.put("testData",new JSONArray());
-        return obj;
+        JSONObject object = new JSONObject();
+        object.put("bitmap",bitmapObject);
+        object.put("testData",new JSONArray());
+        return object;
     }
 
     private JSONObject saveBitmapAsJson(Bitmap bitmap) {
         JSONObject bitmapObject = new JSONObject();
         bitmapObject.put("width",bitmap.w);
         bitmapObject.put("height",bitmap.h);
+        bitmapObject.put("map", savePotraceWordsInJsonArray(bitmap));
+        return bitmapObject;
+    }
+
+    private JSONArray savePotraceWordsInJsonArray(Bitmap bitmap) {
         JSONArray map = new JSONArray();
         for(int i = 0; i < bitmap.map.length; i++) {
             map.add(bitmap.map[i]);
         }
-        bitmapObject.put("map", map);
-        return bitmapObject;
+        return map;
     }
 
     private void writeJsonObjectToFile(JSONObject obj) {
@@ -57,6 +61,10 @@ public class JsonDecoder {
 
     private static String getNameForNewBitmap(String folderName) {
         int newFileIndex = getAmountOfAlreadyExistingFiles(folderName) + 1;
+        return getWellFormattedName(newFileIndex);
+    }
+
+    private static String getWellFormattedName(int newFileIndex) {
         String name = newFileIndex + "";
         if (newFileIndex < 10)
             name = "0" + name;

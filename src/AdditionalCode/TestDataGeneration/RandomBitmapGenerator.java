@@ -1,7 +1,7 @@
 package AdditionalCode.TestDataGeneration;
 
-import AdditionalCode.BitmapManipulator;
 import Potrace.General.Bitmap;
+import Potrace.General.BitmapManipulator;
 
 import java.awt.*;
 import java.util.Random;
