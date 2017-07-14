@@ -5,9 +5,9 @@ import Potrace.General.*;
  * Created by andreydelany on 29.06.17.
  */
 public class NextComponentReconstruction {
-    Path originPath;
-    Path pathesThatNeedToProcess;
-    Path currentPath;
+    Path pathList;
+    Path pathesThatNeedToAdd;
+    Path currentPathToAdd;
 
     public NextComponentReconstruction(Path pathList) {
         initializeFields(pathList);
@@ -15,44 +15,44 @@ public class NextComponentReconstruction {
     }
 
     public Path getPathWithReconstructedNext(){
-        return originPath;
+        return pathList;
     }
 
     private void initializeFields(Path pathList) {
-        originPath = pathList;
+        this.pathList = pathList;
         setCurrentPath();
-        originPath = null;
+        this.pathList = null;
     }
 
     private void setCurrentPath() {
-        currentPath = originPath;
-        if (currentPath != null)
-            currentPath.next = null;
+        currentPathToAdd = pathList;
+        if (currentPathToAdd != null)
+            currentPathToAdd.next = null;
     }
 
     private void reconstructNextComponent() {
-        while (areTherePathsToProcess())
-            processPaths();
+        while (areTherePathsAdd())
+            addPaths();
     }
 
-    private boolean areTherePathsToProcess() {
-        return currentPath != null;
+    private boolean areTherePathsAdd() {
+        return currentPathToAdd != null;
     }
 
-    private void processPaths() {
-        pathesThatNeedToProcess = currentPath.next;
-        addAllSiblingsWithTrailingChildren(currentPath);
-        currentPath = pathesThatNeedToProcess;
+    private void addPaths() {
+        pathesThatNeedToAdd = currentPathToAdd.next;
+        addAllSiblingsWithTrailingChildren(currentPathToAdd);
+        currentPathToAdd = pathesThatNeedToAdd;
     }
 
     private void addAllSiblingsWithTrailingChildren(Path currentSibling) {
         while(currentSibling != null) {
-            addSiblingWithTrailingChildrentoPath(currentSibling);
+            addSiblingWithTrailingChildrenToPath(currentSibling);
             currentSibling=currentSibling.sibling;
         }
     }
 
-    private void addSiblingWithTrailingChildrentoPath(Path currentSibling) {
+    private void addSiblingWithTrailingChildrenToPath(Path currentSibling) {
         addPathToNextComponent(currentSibling);
         addAllChildrenOfPath(currentSibling.childlist);
     }
@@ -70,11 +70,11 @@ public class NextComponentReconstruction {
     }
 
     private void addPathToNextComponent(Path path) {
-        originPath = List.elementInsertAtTheLastNextOfList(path, originPath);
+        pathList = List.elementInsertAtTheLastNextOfList(path, pathList);
     }
 
     private void scheduleChildrenOfCurrentChildForLaterProcessing(Path path) {
         if (path.childlist != null)
-            pathesThatNeedToProcess = List.elementInsertAtTheLastNextOfList(path.childlist,pathesThatNeedToProcess);
+            pathesThatNeedToAdd = List.elementInsertAtTheLastNextOfList(path.childlist, pathesThatNeedToAdd);
     }
 }
