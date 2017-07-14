@@ -119,3 +119,17 @@ Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          a
 Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   50        903.473 ±     35.293  ns/op     41.07%  -> 58.93% (4)
 Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   50    139 440.817 ±  1 712.814  ns/op
 Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   50    334 740.067 ± 10 545.941  ns/op     240.05% -> 140.05% (5)
+
+14. Juli 2017 - 19:19 (only 2 Forks)
+
+Benchmark                                                                      Mode  Cnt        Score        Error  Units
+Bencharking.Benchmarking.mesureOriginal                                        avgt   20  2875250.373 ± 155052.554  ns/op
+Bencharking.Benchmarking.mesureRefactored                                      avgt   20     7073.367 ±    755.505  ns/op       0.24%   -> 99.76% (1)
+Bencharking.BenchmarkingFindPathComponent.mesureOriginal                       avgt   20  1103208.334 ±  41387.757  ns/op
+Bencharking.BenchmarkingFindPathComponent.mesureRefactored                     avgt   20   714332.549 ±  21590.720  ns/op       64.75%  -> 35.25% (2)
+Bencharking.BenchmarkingInvertPathComponent.mesureOriginal                     avgt   20    62189.183 ±   4680.658  ns/op
+Bencharking.BenchmarkingInvertPathComponent.mesureRefactored                   avgt   20    79884.084 ±  24023.415  ns/op       128.45% -> 28.45% (3)
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureOriginal          avgt   20     2243.036 ±     77.083  ns/op
+Bencharking.BenchmarkingNextFilledPixelFinderComponent.mesureRefactored        avgt   20      687.544 ±     30.612  ns/op       17.27%  -> 82.73% (4)
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureOriginal    avgt   20   158926.105 ±   4183.447  ns/op
+Bencharking.BenchmarkingTreeStructureTransformationComponent.mesureRefactored  avgt   20   345734.518 ±  11157.921  ns/op       217.55% -> 117.55% (5)

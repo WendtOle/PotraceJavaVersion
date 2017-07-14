@@ -32,10 +32,10 @@ public class Benchmarking{
 
     @Benchmark
     @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 5, time = 500, timeUnit = MILLISECONDS)
+    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(10)
+    @Fork(2)
     @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         DecompositionInterface decomposer = new Potrace.refactored.Decompose();
@@ -44,10 +44,10 @@ public class Benchmarking{
 
     @Benchmark
     @Warmup(iterations = 10, time = 500, timeUnit = MILLISECONDS)
-    @Measurement(iterations = 5, time = 500, timeUnit = MILLISECONDS)
+    @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(10)
+    @Fork(2)
     @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         DecompositionInterface decomposer = new Potrace.original.Decompose();

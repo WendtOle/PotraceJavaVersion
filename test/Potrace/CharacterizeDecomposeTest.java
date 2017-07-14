@@ -32,6 +32,10 @@ public class CharacterizeDecomposeTest {
 
     private static Object[][] getTestParameters(String folderNameOfTestPictures) {
         File[] bitmapFiles = getAllBitmapFilesForTesting(folderNameOfTestPictures);
+        return loadTestParameters(bitmapFiles);
+    }
+
+    private static Object[][] loadTestParameters(File[] bitmapFiles) {
         Object[][] testParameters = new Object[bitmapFiles.length][];
         for (int i = 0; i < bitmapFiles.length; i++)
             testParameters[i] = loadBitmapPathPair(bitmapFiles[i]);

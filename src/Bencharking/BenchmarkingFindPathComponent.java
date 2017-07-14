@@ -47,7 +47,7 @@ public class BenchmarkingFindPathComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(3)
+    @Fork(2)
     @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         FindPath findPath = new FindPath(state.bitmap,state.firstPoint,new PathFindingCharacteristics(state.turnPolicy,state.kindOfPath));
@@ -59,7 +59,7 @@ public class BenchmarkingFindPathComponent {
     @Measurement(iterations = 10, time = 500, timeUnit = MILLISECONDS)
     @OutputTimeUnit(NANOSECONDS)
     @BenchmarkMode(Mode.AverageTime)
-    @Fork(3)
+    @Fork(2)
     @Threads(1)
     public void mesureOriginal(MySate state) throws InterruptedException {
         Decompose.findpath(state.bitmap,state.x0,state.y0,state.sign,state.turnPolicyAsInt);
