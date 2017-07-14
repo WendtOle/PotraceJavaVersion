@@ -30,16 +30,16 @@ public class PathOrganizer {
     }
 
     public void initializingPathForLevelOneOrdering() {
-        setPathsForLaterLevelOneOrdering();
-        setPathsForCurrentLevelOneOrdering();
+        setPathsForLaterOrdering();
+        setPathsForCurrentOrdering();
     }
 
-    private void setPathsForLaterLevelOneOrdering() {
+    private void setPathsForLaterOrdering() {
         pathsToOrder = pathsThatNeedToProcess;
         pathsThatNeedToProcess = pathsThatNeedToProcess.childlist;
     }
 
-    private void setPathsForCurrentLevelOneOrdering() {
+    private void setPathsForCurrentOrdering() {
         pathsToOrder.childlist = null;
         referencePath = pathsToOrder;
         pathsToOrder = pathsToOrder.next;

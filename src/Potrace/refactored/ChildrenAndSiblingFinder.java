@@ -13,7 +13,7 @@ public class ChildrenAndSiblingFinder {
     BitmapHandlerInterface bitmapHandler;
     PathOrganizer pathOrganizer;
     PathBoundingBox boundingBox;
-    boolean shouldContinueOrdering;
+    boolean shouldContinueDetermineChildrenAndSiblings;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
@@ -21,7 +21,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     public Path getTreeTransformedPathStructure(){
-        orderPathsOnFirstLevel();
+        goThroughAllPathsAndDetermineChildrenAndSiblings();
         return pathList;
     }
 
@@ -32,22 +32,18 @@ public class ChildrenAndSiblingFinder {
         pathOrganizer = new PathOrganizer(pathList);
     }
 
-    private void orderPathsOnFirstLevel() {
+    private void goThroughAllPathsAndDetermineChildrenAndSiblings() {
         while (pathOrganizer.stillNeedToLevelOneOrder()) {
             pathOrganizer.initializingPathForLevelOneOrdering();
-            orderOnLevelOne();
+            determineChildrenAndSiblingForReferencePath();
         }
     }
 
-    private void orderOnLevelOne() {
+    private void determineChildrenAndSiblingForReferencePath() {
         markLocationOfReferencePath();
-        orderPathsRelativeToReferencePath();
+        determineChildrenAndSiblingsRelativeToReferencePath();
         unmarkLocationOfReferencePath();
         scheduleOrderPathsForNextOrderingStep();
-    }
-
-    private void scheduleOrderPathsForNextOrderingStep() {
-        pathOrganizer.scheduleOrderdPathsForNextOrderingStep();
     }
 
     private void markLocationOfReferencePath() {
@@ -56,32 +52,35 @@ public class ChildrenAndSiblingFinder {
         boundingBox = new PathBoundingBox(referencePath);
     }
 
-    private void orderPathsRelativeToReferencePath() {
-        shouldContinueOrdering = true;
-        while(shouldContinueOrdering()){
-            levelTwoOrdering();
-        }
+    private void determineChildrenAndSiblingsRelativeToReferencePath() {
+        shouldContinueDetermineChildrenAndSiblings = true;
+        while(shouldContinueDetermine())
+            determineChildrenAndSiblingsOfReferencePath();
     }
 
-    private void levelTwoOrdering() {
+    private boolean shouldContinueDetermine() {
+        return pathOrganizer.stillNeedToLevelTwoOrder() && shouldContinueDetermineChildrenAndSiblings;
+    }
+
+    private void determineChildrenAndSiblingsOfReferencePath() {
         pathOrganizer.initializePathForLevelTwoOrdering();
-        ordering();
+        determineForCurrentPath();
     }
 
-    private void ordering() {
+    private void determineForCurrentPath() {
         if (isCurrentPathBelowReferencePath())
             cancelOrderingProcess();
         else
             addCurrentPathToReferencePath();
     }
 
-    private boolean shouldContinueOrdering() {
-        return pathOrganizer.stillNeedToLevelTwoOrder() && shouldContinueOrdering;
+    private boolean isCurrentPathInsideReferencePath() {
+        return bitmapHandler.isPixelFilled(pathOrganizer.getFirstPointOfCurrentPath());
     }
 
     private void cancelOrderingProcess() {
         pathOrganizer.addRemainingPathsAsSibling();
-        shouldContinueOrdering = false;
+        shouldContinueDetermineChildrenAndSiblings = false;
     }
 
     private void addCurrentPathToReferencePath() {
@@ -91,12 +90,12 @@ public class ChildrenAndSiblingFinder {
             pathOrganizer.addPathAsSibling();
     }
 
-    private boolean isCurrentPathInsideReferencePath() {
-        return bitmapHandler.isPixelFilled(pathOrganizer.getFirstPointOfCurrentPath());
-    }
-
     private boolean isCurrentPathBelowReferencePath() {
         return pathOrganizer.getUpperBoundOfPath() <= boundingBox.y0;
+    }
+
+    private void scheduleOrderPathsForNextOrderingStep() {
+        pathOrganizer.scheduleOrderdPathsForNextOrderingStep();
     }
 
     private void unmarkLocationOfReferencePath() {

@@ -8,7 +8,7 @@ public enum PathKindEnum {
 
     int intRepresentation;
 
-    private PathKindEnum(int intRepresentation){
+    PathKindEnum(int intRepresentation){
         this.intRepresentation = intRepresentation;
     }
 
