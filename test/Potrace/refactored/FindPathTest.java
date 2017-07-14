@@ -61,7 +61,7 @@ public class FindPathTest {
     }
 
     private void setActualPath(Bitmap bitmap,Point[] pointsOfPath) {
-        FindPath pathFinder = new FindPath(bitmap, pointsOfPath[0], new DirectionChooserIdentificator(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV));
+        FindPath pathFinder = new FindPath(bitmap, pointsOfPath[0], new PathFindingCharacteristics(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV));
         actualPath = pathFinder.getPath();
     }
 

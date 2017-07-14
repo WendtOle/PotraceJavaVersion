@@ -5,9 +5,9 @@ import Potrace.General.Bitmap;
 import Potrace.General.Param;
 import Potrace.General.Path;
 import Potrace.original.Decompose;
-import Potrace.refactored.FindPathsOnBitmap;
-import Potrace.refactored.TreeStructurTransformation;
-import Potrace.refactored.TreeStructurTransformationInterface;
+import Potrace.refactored.FindAllPathsOnBitmap;
+import Potrace.refactored.ListToTreeTransformation;
+import Potrace.refactored.ListToTreeTransformationInterface;
 import org.openjdk.jmh.annotations.*;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -33,7 +33,7 @@ public class BenchmarkingTreeStructureTransformationComponent {
         public void setBitmap(){
             this.bitmap = getBitmap();
             this.emptyBitmap = new Bitmap(bitmap.w,bitmap.h);
-            FindPathsOnBitmap findPathsOnBitmap = new FindPathsOnBitmap(bitmap,new Param());
+            FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,new Param());
             path = findPathsOnBitmap.getPathList();
         }
     }
@@ -46,7 +46,7 @@ public class BenchmarkingTreeStructureTransformationComponent {
     @Fork(10)
     @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
-        TreeStructurTransformationInterface transformator = new TreeStructurTransformation(state.path,state.emptyBitmap);
+        ListToTreeTransformationInterface transformator = new ListToTreeTransformation(state.path,state.emptyBitmap);
         transformator.getTreeStructure();
     }
 

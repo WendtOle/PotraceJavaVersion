@@ -5,11 +5,11 @@ import Potrace.General.*;
 /**
  * Created by andreydelany on 28.06.17.
  */
-public class TreeStructurTransformation implements TreeStructurTransformationInterface{
+public class ListToTreeTransformation implements ListToTreeTransformationInterface {
     Path pathList;
     Bitmap bitmap;
 
-    public TreeStructurTransformation(Path pathList, Bitmap bitmap) {
+    public ListToTreeTransformation(Path pathList, Bitmap bitmap) {
         this.pathList = pathList;
         this.bitmap = bitmap;
         clearBitmap();

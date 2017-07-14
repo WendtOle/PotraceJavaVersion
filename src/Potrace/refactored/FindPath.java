@@ -6,27 +6,27 @@ import java.awt.*;
 public class FindPath {
     Point startPoint;
     PathKindEnum kindOfPath;
-    PointShape pointShape;
+    PathShape pathShape;
     Point currentPoint;
     DirectionHandler directionHandler;
 
-    public FindPath(Bitmap bitmap, Point firstFilledPixel,DirectionChooserIdentificator directionIdentificators) {
-        this.kindOfPath = directionIdentificators.kindOfPath;
-        initializeHelperClasses(bitmap, directionIdentificators);
+    public FindPath(Bitmap bitmap, Point firstFilledPixel,PathFindingCharacteristics pathFindingCharacteristics) {
+        this.kindOfPath = pathFindingCharacteristics.kindOfPath;
+        initializeHelperClasses(bitmap, pathFindingCharacteristics);
         setInitialPointPosition(firstFilledPixel);
         findPath();
     }
 
     public Path getPath(){
-        int areaOfPath = pointShape.getAreaOfPath();
-        int lengthOfPath = pointShape.getLengthOfPath();
-        Point[] pointsOfPath = pointShape.getPointsOfPath();
+        int areaOfPath = pathShape.getAreaOfPath();
+        int lengthOfPath = pathShape.getLengthOfPath();
+        Point[] pointsOfPath = pathShape.getPointsOfPath();
         return new Path(areaOfPath, kindOfPath.intRepresentation, lengthOfPath, pointsOfPath);
     }
 
-    private void initializeHelperClasses(Bitmap bitmap, DirectionChooserIdentificator directionIdentificators) {
-        directionHandler = new DirectionHandler(bitmap,directionIdentificators);
-        this.pointShape = new PointShape();
+    private void initializeHelperClasses(Bitmap bitmap, PathFindingCharacteristics pathFindingCharacteristics) {
+        directionHandler = new DirectionHandler(bitmap,pathFindingCharacteristics);
+        pathShape = new PathShape();
     }
 
     private void setInitialPointPosition(Point firstFilledPixel) {
@@ -51,7 +51,7 @@ public class FindPath {
     }
 
     private void saveCurrentLocation() {
-        pointShape.addPointToPointsOfPath(currentPoint);
+        pathShape.addPointToPathShape(currentPoint);
     }
 
     private void moveToNextPoint() {
@@ -59,7 +59,7 @@ public class FindPath {
     }
 
     private void updateAreaOfPath() {
-        pointShape.updateAreaOfPath(directionHandler.getVerticalDirection());
+        pathShape.updateAreaOfPath(directionHandler.getVerticalDirection());
     }
 
     private boolean pathIsOpen() {

@@ -14,7 +14,7 @@ public class DirectionHandlerTest {
 
     Bitmap bitmap;
     DirectionHandler directionHandler;
-    DirectionChooserIdentificator directionIdentificator = new DirectionChooserIdentificator(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
+    PathFindingCharacteristics directionIdentificator = new PathFindingCharacteristics(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
 
     @Test
     public void testSimpleTurnToRight(){
@@ -50,7 +50,7 @@ public class DirectionHandlerTest {
     public void testAmbigousTurnToRight(){
         Point[] points = new Point[]{new Point(1,1),new Point(0,0)};
         setBitmap(points);
-        directionHandler = new DirectionHandler(bitmap,new DirectionChooserIdentificator(TurnPolicyEnum.WHITE,PathKindEnum.POSITIV));
+        directionHandler = new DirectionHandler(bitmap,new PathFindingCharacteristics(TurnPolicyEnum.WHITE,PathKindEnum.POSITIV));
         directionHandler.turnInNextDirection(points[0]);
 
         assertEquals(new Point(2,1),directionHandler.moveInDirection());

@@ -5,13 +5,13 @@ import java.awt.*;
 /**
  * Created by andreydelany on 07.07.17.
  */
-public class PointShape {
+public class PathShape {
     Point[] pointsOfPath = new Point[1];
     int indexOfCurrentPoint = 0;
     Point currentPoint;
     int areaOfPath = 0;
 
-    public void addPointToPointsOfPath(Point point) {
+    public void addPointToPathShape(Point point) {
         currentPoint = point;
         extendPointArrayCapacityWhenNecessary();
         pointsOfPath[indexOfCurrentPoint]=(Point) currentPoint.clone();

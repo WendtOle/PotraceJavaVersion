@@ -7,25 +7,25 @@ public class Decompose implements DecompositionInterface {
     Param param;
     Path pathList;
 
-    public Path getPathList(Bitmap generalBitmap, Param param) {
-        this.bitmap = generalBitmap;
+    public Path getPathList(Bitmap bitmap, Param param) {
+        this.bitmap = bitmap;
         this.param = param;
-        decomposeBitmapIntoPathList();
+        decomposeBitmapIntoListOfPaths();
         return pathList;
     }
 
-    private void decomposeBitmapIntoPathList() {
+    private void decomposeBitmapIntoListOfPaths() {
         findPathsOnBitmap();
-        structurePathListAsTree();
+        structurePathsAsTree();
     }
 
     private void findPathsOnBitmap() {
-        FindPathsOnBitmap findPathsOnBitmap = new FindPathsOnBitmap(bitmap,param);
+        FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,param);
         pathList = findPathsOnBitmap.getPathList();
     }
 
-    private void structurePathListAsTree() {
-        TreeStructurTransformationInterface pathListToTree = new TreeStructurTransformation(pathList,bitmap);
+    private void structurePathsAsTree() {
+        ListToTreeTransformationInterface pathListToTree = new ListToTreeTransformation(pathList,bitmap);
         pathList = pathListToTree.getTreeStructure();
     }
 }

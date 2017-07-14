@@ -31,7 +31,7 @@ public class BenchmarkingInvertPathComponent {
         @Setup
         public void setUpPath(){
             Point firstPoint = new Point(0,99);
-            DirectionChooserIdentificator directionIdentificators = new DirectionChooserIdentificator(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
+            PathFindingCharacteristics directionIdentificators = new PathFindingCharacteristics(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
             FindPath pathFinder = new FindPath(bitmap,firstPoint,directionIdentificators );
             this.path = pathFinder.getPath();
         }

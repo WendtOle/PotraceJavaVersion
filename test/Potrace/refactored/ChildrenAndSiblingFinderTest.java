@@ -20,7 +20,7 @@ public class ChildrenAndSiblingFinderTest {
     public void prepare(){
         BitmapImporter importer = new BitmapImporter("determineHierachyTestPicture.png","testPictures");
         bitmap = importer.getBitmap();
-        FindPathsOnBitmap findPathsOnBitmap = new FindPathsOnBitmap(bitmap,new Param());
+        FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,new Param());
         pathList = findPathsOnBitmap.getPathList();
         ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
         pathList = childrenAndSiblingFinder.getTreeTransformedPathStructure();
