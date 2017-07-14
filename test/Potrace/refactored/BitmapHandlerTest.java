@@ -93,7 +93,7 @@ public class BitmapHandlerTest {
     public void testClearingCompleteWord(){
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
         bitmapHandler.setPixel(new Point(0,0));
-        bitmapHandler.setWordToNull(new Point(0,0));
+        bitmapHandler.clearPotraceWord(new Point(0,0));
 
         assertFalse(bitmapHandler.areThereFilledPixelInWord(new Point(0,0)));
     }
@@ -104,7 +104,7 @@ public class BitmapHandlerTest {
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(64,1));
         bitmapHandler.setPixel(new Point(62,0));
         bitmapHandler.setPixel(new Point(63,0));
-        bitmapHandler.flipBitsInWordWithMask(new Point(0,0),mask);
+        bitmapHandler.invertPotraceWordWithMask(new Point(0,0),mask);
 
         assertTrue(bitmapHandler.isPixelFilled(new Point(62,0)));
         assertFalse(bitmapHandler.isPixelFilled(new Point(63,0)));

@@ -57,7 +57,7 @@ public class NextFilledPixelFinder {
     }
 
     private boolean isSearchPositionStillInBitmap(Point pixel) {
-        return pixel.x<bitmapHandler.getWithOfBitmap() && pixel.x>=0 && pixel.y>=0;
+        return pixel.x<bitmapHandler.getWithOfBitmap() && pixel.x>=0 && pixel.y>=0; //ToDO extract to BitmapHandler inRange()
     }
 
     private void lookInCurrentWordForFilledPixel() {

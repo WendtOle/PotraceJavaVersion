@@ -62,6 +62,6 @@ public class ClearPathWithBoundingBox {
 
     private void clearWord(int line, int indexOfWord) {
         Point positionOfWord = new Point(indexOfWord * Bitmap.PIXELINWORD, line);
-        bitmapHandler.setWordToNull(positionOfWord);
+        bitmapHandler.clearPotraceWord(positionOfWord);
     }
 }

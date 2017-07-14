@@ -15,30 +15,34 @@ public class BitmapHandler implements BitmapHandlerInterface{
         clearExcessPixel();
     }
 
-    public void flipBitsInWordWithMask(Point positionOfWord, long mask) {
-        bitmap.map[getAccessIndex(positionOfWord)] ^= mask;
+    public void invertPotraceWordWithMask(Point potraceWordIdentificationPixel, long mask) {
+        int potraceWordArrayIndex = getPotraceWordArrayIndex(potraceWordIdentificationPixel);
+        bitmap.map[potraceWordArrayIndex] ^= mask;
     }
 
-    public void setWordToNull(Point positionOfWord) {
-        bitmap.map[getAccessIndex(positionOfWord)] = 0;
+    public void clearPotraceWord(Point potraceWordIdentificationPixel) {
+        int potraceWordArrayIndex = getPotraceWordArrayIndex(potraceWordIdentificationPixel);
+        bitmap.map[potraceWordArrayIndex] = 0;
     }
 
-    public boolean areThereFilledPixelInWord(Point positionOfWord) {
-        return bitmap.map[getAccessIndex(positionOfWord)] != 0;
+    public boolean areThereFilledPixelInWord(Point potraceWordIdentificationPixel) {
+        int potraceWordArrayIndex = getPotraceWordArrayIndex(potraceWordIdentificationPixel);
+        return bitmap.map[potraceWordArrayIndex] != 0;
     }
 
-    public boolean isPixelFilled(Point positionOfPixel) {
-        return isPixelInRange(positionOfPixel) && getPixelValueWithoutBoundChecking(positionOfPixel);
+    public boolean isPixelFilled(Point pixel) {
+        return isPixelInBitmap(pixel) && isPixelFilledWithoutBoundcheck(pixel);
     }
 
-    public void setPixel(Point positionOfPixel) {
-        long maskSettingAPixel = BitMask.getOnePixelMaskForPosition(positionOfPixel.x);
-        if (isPixelInRange(positionOfPixel))
-            bitmap.map[getAccessIndex(positionOfPixel)] |=  maskSettingAPixel;
+    public void setPixel(Point pixel) {
+        long setPixelMask = BitMask.getOnePixelMaskForPosition(pixel.x);
+        int potraceWordArrayIndex = getPotraceWordArrayIndex(pixel);
+        if (isPixelInBitmap(pixel))
+            bitmap.map[potraceWordArrayIndex] |=  setPixelMask;
     }
 
-    public int getBeginningIndexOfWordWithPixel(Point positionOfPixel){
-        return (positionOfPixel.x) & -Bitmap.PIXELINWORD;
+    public int getBeginningIndexOfWordWithPixel(Point pixel){
+        return (pixel.x) & -Bitmap.PIXELINWORD;
     }
 
     public int getWithOfBitmap(){
@@ -56,48 +60,52 @@ public class BitmapHandler implements BitmapHandlerInterface{
     }
 
     private boolean areThereExcessPixel() {
-        return getPositionOfLastLineBitInWord() != 0;
+        return getAmountOfExcessPixel() != 0;
+    }
+
+    private int getAmountOfExcessPixel() {
+        return bitmap.w % Bitmap.PIXELINWORD;
     }
 
     private void clearExcessPixelOfLastWordInLines() {
         long mask = getMaskForExcessPixel();
-        for (int y = 0; y < bitmap.h; y ++) {
-            clearExcessPixelInLine(mask, y);
-        }
-    }
-
-    private void clearExcessPixelInLine(long mask, int y) {
-        Point lastPixelInCurrentLine = new Point(bitmap.w,y);
-        ANDWordWithMask(lastPixelInCurrentLine,mask);
+        for (int y = 0; y < bitmap.h; y ++) 
+            clearExcessPixelWithMaskInLine(mask, y);
     }
 
     private long getMaskForExcessPixel() {
-        int indexOfLastBitInLastWordInLine = getPositionOfLastLineBitInWord();
-        return BitMask.getMultiplePixelMaskUntilPosition(indexOfLastBitInLastWordInLine);
+        int indexOfLastPixelInLastWord = getAmountOfExcessPixel();
+        return BitMask.getMultiplePixelMaskUntilPosition(indexOfLastPixelInLastWord);
     }
 
-    private void ANDWordWithMask(Point positionOfWord, long mask) {
-        bitmap.map[getAccessIndex(positionOfWord)] &= mask;
+    private void clearExcessPixelWithMaskInLine(long excessPixelMask, int line) {
+        Point lastPotraceWordInLineIdentificationPixel = new Point(bitmap.w,line);
+        clearMultiplePixelOfWordWithMask(lastPotraceWordInLineIdentificationPixel,excessPixelMask);
     }
 
-    private int getPositionOfLastLineBitInWord() {
-        return bitmap.w % Bitmap.PIXELINWORD;
+    private void clearMultiplePixelOfWordWithMask(Point potraceWordIdentificationPixel, long mask) {
+        int potraceWordArrayIndex = getPotraceWordArrayIndex(potraceWordIdentificationPixel);
+        bitmap.map[potraceWordArrayIndex] &= mask;
     }
 
-    private int getAccessIndex(Point pixelPosition) {
-        return pixelPosition.y * bitmap.dy + (pixelPosition.x / Bitmap.PIXELINWORD);
+    private int getPotraceWordArrayIndex(Point potraceWordIdentificationPixel) {
+        int verticalPotraceWordLocation = potraceWordIdentificationPixel.y * bitmap.dy;
+        int horizontalPotraceWordLocation = potraceWordIdentificationPixel.x / Bitmap.PIXELINWORD;
+        return verticalPotraceWordLocation + horizontalPotraceWordLocation;
     }
 
-    private boolean getPixelValueWithoutBoundChecking(Point pixel) {
-        long pixelValue = getAndWordWithMask(pixel, BitMask.getOnePixelMaskForPosition(pixel.x));
+    private boolean isPixelFilledWithoutBoundcheck(Point pixel) {
+        long onePixelMask = BitMask.getOnePixelMaskForPosition(pixel.x);
+        long pixelValue = getPixelValueWithMask(pixel, onePixelMask);
         return pixelValue != 0;
     }
 
-    private long getAndWordWithMask(Point positionOfWord, long mask) {
-        return bitmap.map[getAccessIndex(positionOfWord)] & mask;
+    private long getPixelValueWithMask(Point potraceWordIdentificationPixel, long onePixelMask) {
+        int potraceWordArrayIndex = getPotraceWordArrayIndex(potraceWordIdentificationPixel);
+        return bitmap.map[potraceWordArrayIndex] & onePixelMask;
     }
 
-    private boolean isPixelInRange(Point pixel) {
+    private boolean isPixelInBitmap(Point pixel) {
         return isCoordinateInRange(pixel.x, bitmap.w) && isCoordinateInRange(pixel.y, bitmap.h);
     }
 

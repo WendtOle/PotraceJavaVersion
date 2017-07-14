@@ -7,9 +7,9 @@ import java.awt.*;
  */
 public interface BitmapHandlerInterface {
 
-    void flipBitsInWordWithMask(Point positionOfWord, long mask);
+    void invertPotraceWordWithMask(Point positionOfWord, long mask);
 
-    void setWordToNull(Point positionOfWord);
+    void clearPotraceWord(Point positionOfWord);
 
     boolean areThereFilledPixelInWord(Point positionOfWord);
 
