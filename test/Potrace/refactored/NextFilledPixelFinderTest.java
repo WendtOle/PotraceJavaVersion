@@ -63,14 +63,14 @@ public class NextFilledPixelFinderTest {
     public void thereIsNoFilledPixelToFind(){
         NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(new Bitmap(100,100));
 
-        assertEquals(new NoPointFound(),pixelFinder.getPositionOfNextFilledPixel());
+        assertEquals(new NoFilledPixelFound(),pixelFinder.getPositionOfNextFilledPixel());
     }
 
     @Test
     public void throwingAExceptionWhenTryingToExcessNotFoundPixel() {
         NextFilledPixelFinder pixelFinder = new NextFilledPixelFinder(new Bitmap(100,100));
 
-        assertEquals(new NoPointFound(),pixelFinder.getPositionOfNextFilledPixel());
+        assertEquals(new NoFilledPixelFound(),pixelFinder.getPositionOfNextFilledPixel());
     }
 
     private NextFilledPixelFinder getFilledPixelFinderForTesting(Point pixel){

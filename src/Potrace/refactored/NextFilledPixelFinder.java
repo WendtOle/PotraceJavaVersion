@@ -28,7 +28,7 @@ public class NextFilledPixelFinder {
 
     private void setInitialSearchParameters() {
         setInitialSearchLocation();
-        currentPixel = new NoPointFound();
+        currentPixel = new NoFilledPixelFound();
         noPixelWasFound = true;
     }
 

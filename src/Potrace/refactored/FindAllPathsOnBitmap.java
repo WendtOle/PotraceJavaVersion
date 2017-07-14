@@ -54,7 +54,7 @@ public class FindAllPathsOnBitmap {
     }
 
     private boolean isThereAnotherPath() {
-        return !startPointOfCurrentPath.equals(new NoPointFound());
+        return !startPointOfCurrentPath.equals(new NoFilledPixelFound());
     }
 
     private void findAndProcessPath() {

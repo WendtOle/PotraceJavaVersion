@@ -21,43 +21,44 @@ public class PathInverter {
 
     public void invertPathOnBitmap(Path path) {
         this.path = path;
-        initializeInvertingProcessBySettingFixPoints();
+        setPreviousPoint();
         invertingPathByInvertingRectangleBetweenPointsOfPath();
+        currentPointIdentifier = 0;
     }
 
-    private void initializeInvertingProcessBySettingFixPoints() {
-        int verticalFixPunkt = path.priv.pt[path.priv.len-1].y;
-        int horizontalFixPunkt = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
-        previousPoint = new Point(horizontalFixPunkt,verticalFixPunkt);
+    private void setPreviousPoint() {
+        int xComponent = path.priv.pt[path.priv.len-1].y;
+        int yComponent = bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(path.priv.pt[0]));
+        previousPoint = new Point(yComponent,xComponent);
     }
 
     private void invertingPathByInvertingRectangleBetweenPointsOfPath() {
-        currentPointIdentifier = 0;
-        while (notLookedAtAllPoints())
-            invertRectangleBetweenCurrentAndPreviousePoint();
+        while (notLookedAtAllPoints()) {
+            invertRectangleBetweenCurrentAndPreviousPoint();
+            currentPointIdentifier ++;
+        }
     }
 
     private boolean notLookedAtAllPoints() {
         return currentPointIdentifier < path.priv.len;
     }
 
-    private void invertRectangleBetweenCurrentAndPreviousePoint() {
+    private void invertRectangleBetweenCurrentAndPreviousPoint() {
         currentPoint = getCurrentPoint();
-        tryToInvertRectangleBetweenCurrentAndPreviousPoint();
-        previousPoint.y = currentPoint.y;
-        currentPointIdentifier ++;
+        if (canInvertARectangle())
+            invertRectangle();
     }
 
     private Point getCurrentPoint() {
         return path.priv.pt[currentPointIdentifier];
     }
 
-    private void tryToInvertRectangleBetweenCurrentAndPreviousPoint() {
-        if (canInvertALine())
-            rangeInverter.invertRangeInLine(currentPoint,previousPoint,getLineToInvert());
+    private void invertRectangle() {
+        rangeInverter.invertRangeInLine(currentPoint, previousPoint, getLineToInvert());
+        previousPoint.y = currentPoint.y;
     }
 
-    private boolean canInvertALine() {
+    private boolean canInvertARectangle() {
         return currentPoint.y != previousPoint.y;
     }
 
