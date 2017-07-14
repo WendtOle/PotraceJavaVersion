@@ -20,17 +20,9 @@ public class NextFilledPixelFinder {
         currentPixel = new Point(0,bitmap.h-1);
     }
 
-    public boolean isThereAFilledPixel() {
-        goThroughWholePictureUntilAFilledPixelWasFound();
-        boolean wasAFilledPixelFound = !noPixelWasFound;
-        return wasAFilledPixelFound;
-    }
-
     public Point getPositionOfNextFilledPixel(){
-        if(noPixelWasFound)
-            throw new RuntimeException("There are no more filled Pixels");
-        else
-            return currentPixel;
+        goThroughWholePictureUntilAFilledPixelWasFound();
+        return currentPixel;
     }
 
     private void goThroughWholePictureUntilAFilledPixelWasFound() {
@@ -43,6 +35,7 @@ public class NextFilledPixelFinder {
         int xComponent = bitmapHandler.getBeginningIndexOfWordWithPixel(currentPixel);
         int yComponent = currentPixel.y;
         currentSearchPosition = new Point(xComponent,yComponent);
+        currentPixel = new NoPointFound();
     }
 
     private void lookForFilledPixelInAllWords() {

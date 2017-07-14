@@ -35,8 +35,7 @@ public class BenchmarkingNextFilledPixelFinderComponent {
     @Threads(1)
     public void mesureRefactored(MySate state) throws InterruptedException {
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(state.bitmap);
-        if (nextFilledPixelFinder.isThereAFilledPixel())
-            nextFilledPixelFinder.getPositionOfNextFilledPixel();
+        nextFilledPixelFinder.getPositionOfNextFilledPixel();
     }
 
     @Benchmark

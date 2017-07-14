@@ -18,6 +18,7 @@ public class FindAllPathsOnBitmap {
     NextFilledPixelFinder nextFilledPixelFinder;
     Param param;
     Path pathList = null;
+    Point startPointOfCurrentPath;
 
     public FindAllPathsOnBitmap(Bitmap bitmap, Param param){
         initializeFields(bitmap, param);
@@ -37,38 +38,39 @@ public class FindAllPathsOnBitmap {
     }
 
     private void findAllPathsOnBitmap() {
+        setNextFilledPixelToStartPointOfNextPath();
         while(isThereAFilledPixel())
             findAndAddPathToPathList();
     }
 
     private boolean isThereAFilledPixel() {
-        return nextFilledPixelFinder.isThereAFilledPixel();
+        return !startPointOfCurrentPath.equals(new NoPointFound());
     }
 
     private void findAndAddPathToPathList() {
         Path path = findPath();
         invertAndAddPath(path);
+        setNextFilledPixelToStartPointOfNextPath();
     }
 
     private Path findPath() {
-        Point startPointOfPath = determineStartPointOfPath();
-        return findPathWhichStartsAt(startPointOfPath);
+        return findPathAtStartPoint();
     }
 
-    private Point determineStartPointOfPath() {
-        return nextFilledPixelFinder.getPositionOfNextFilledPixel();
+    private void setNextFilledPixelToStartPointOfNextPath() {
+        startPointOfCurrentPath = nextFilledPixelFinder.getPositionOfNextFilledPixel();
     }
 
-    private Path findPathWhichStartsAt(Point startPointOfPath) {
-        FindPath pathFinder = getPathFinder(startPointOfPath);
+    private Path findPathAtStartPoint() {
+        FindPath pathFinder = getPathFinder();
         return pathFinder.getPath();
     }
 
-    private FindPath getPathFinder(Point startPointOfPath) {
-        PathKindEnum kindOfPath = getKindOfPath(startPointOfPath);
+    private FindPath getPathFinder() {
+        PathKindEnum kindOfPath = getKindOfPath(startPointOfCurrentPath);
         TurnPolicyEnum turnPolicy = TurnPolicyEnum.values()[param.turnpolicy];
         PathFindingCharacteristics pathFindingCharacteristics = new PathFindingCharacteristics(turnPolicy,kindOfPath);
-        return new FindPath(workCopy, startPointOfPath, pathFindingCharacteristics);
+        return new FindPath(workCopy, startPointOfCurrentPath, pathFindingCharacteristics);
     }
 
     private PathKindEnum getKindOfPath(Point pointOfPath) {

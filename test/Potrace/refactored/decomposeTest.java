@@ -7,7 +7,6 @@ import org.junit.Test;
 import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 public class decomposeTest {
 
     @Test
@@ -17,7 +16,6 @@ public class decomposeTest {
         manipulator.setPixel(new Point(65,0));
 
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(testBitmap);
-        assertTrue("found sth: ", nextFilledPixelFinder.isThereAFilledPixel());
         assertEquals("found point: ",new Point(65,0),nextFilledPixelFinder.getPositionOfNextFilledPixel());
     }
 
@@ -30,7 +28,6 @@ public class decomposeTest {
 
         NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(testBitmap);
 
-        assertTrue("found sth: ", nextFilledPixelFinder.isThereAFilledPixel());
         assertEquals("found point: ", new Point(97,0),nextFilledPixelFinder.getPositionOfNextFilledPixel());
     }
 
