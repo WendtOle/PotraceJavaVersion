@@ -12,7 +12,7 @@ public class ChildrenAndSiblingFinder {
     PathInverter inverter;
     BitmapHandlerInterface bitmapHandler;
     PathOrganizer pathOrganizer;
-    BoundingBox boundingBox;
+    PathBoundingBox boundingBox;
     boolean shouldContinueOrdering;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
@@ -53,7 +53,7 @@ public class ChildrenAndSiblingFinder {
     private void markLocationOfReferencePath() {
         Path referencePath = pathOrganizer.getCurrentReferencePath();
         inverter.invertPathOnBitmap(referencePath);
-        boundingBox = new BoundingBox(referencePath);
+        boundingBox = new PathBoundingBox(referencePath);
     }
 
     private void orderPathsRelativeToReferencePath() {

@@ -71,7 +71,7 @@ public class LineOfWordsInverter {
     }
 
     private void invertWordWithIndexUntilPosition(Point index, int position) {
-        long mask = BitMask.getMultiplePixelMaskUntilPosition(position);
+        long mask = BitMask.getMultiplePixelMaskFromStartUntilPosition(position);
         bitmapHandler.invertPotraceWordWithMask(index,mask);
     }
 

@@ -69,7 +69,7 @@ public class ClearPathWithBoundingBoxTest {
 
     private void clearPathWithBoundingBox(Bitmap bitmap, Path path) {
         ClearPathWithBoundingBox bitmapWithBoundingBoxClearer = new ClearPathWithBoundingBox(bitmap);
-        bitmapWithBoundingBoxClearer.clearBitmapWithBoundingBox(new BoundingBox(path));
+        bitmapWithBoundingBoxClearer.clearBitmapWithBoundingBox(new PathBoundingBox(path));
     }
 
     @Test

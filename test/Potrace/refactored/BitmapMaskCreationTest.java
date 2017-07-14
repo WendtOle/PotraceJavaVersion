@@ -36,16 +36,16 @@ public class BitmapMaskCreationTest {
 
     @Test
     public void testCreatingMaskForAllPixels() {
-        assertEquals(-1l, BitMask.getMultiplePixelMaskUntilPosition(64));
+        assertEquals(-1l, BitMask.getMultiplePixelMaskFromStartUntilPosition(64));
     }
 
     @Test
     public void testCreatingMaskForFirstTwoPixels() {
-        assertEquals(0xc000000000000000l, BitMask.getMultiplePixelMaskUntilPosition(2));
+        assertEquals(0xc000000000000000l, BitMask.getMultiplePixelMaskFromStartUntilPosition(2));
     }
 
     @Test
     public void testCreatingMaskForAllPixelWithoutLastTwo() {
-        assertEquals(0xfffffffffffffffcl, BitMask.getMultiplePixelMaskUntilPosition(62));
+        assertEquals(0xfffffffffffffffcl, BitMask.getMultiplePixelMaskFromStartUntilPosition(62));
     }
 }

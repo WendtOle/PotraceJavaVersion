@@ -75,7 +75,7 @@ public class BitmapHandler implements BitmapHandlerInterface{
 
     private long getMaskForExcessPixel() {
         int indexOfLastPixelInLastWord = getAmountOfExcessPixel();
-        return BitMask.getMultiplePixelMaskUntilPosition(indexOfLastPixelInLastWord);
+        return BitMask.getMultiplePixelMaskFromStartUntilPosition(indexOfLastPixelInLastWord);
     }
 
     private void clearExcessPixelWithMaskInLine(long excessPixelMask, int line) {

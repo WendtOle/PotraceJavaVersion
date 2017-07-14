@@ -23,7 +23,7 @@ public class BoundingBoxTest {
 
     @Test
     public void testInitializingBoundingBoxWithPath() {
-        BoundingBox box = new BoundingBox(dummyPath);
+        PathBoundingBox box = new PathBoundingBox(dummyPath);
 
         assertEquals("min X",1,box.x0);
         assertEquals("max X",2,box.x1);

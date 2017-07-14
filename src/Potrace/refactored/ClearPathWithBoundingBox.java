@@ -11,13 +11,13 @@ public class ClearPathWithBoundingBox {
     BitmapHandlerInterface bitmapHandler;
     int indexOfWordWhereBoundingBoxStarts, indexOfwordWhereBoundingBoxEnds;
     int indexOfCurrentWord, currentLine;
-    BoundingBox boundingBox;
+    PathBoundingBox boundingBox;
 
     public ClearPathWithBoundingBox(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
-    public void clearBitmapWithBoundingBox(BoundingBox boundingBox) {
+    public void clearBitmapWithBoundingBox(PathBoundingBox boundingBox) {
         this.boundingBox = boundingBox;
         setHorizontalRange();
         clearBitmapInHorizontalRange();
