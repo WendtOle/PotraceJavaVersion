@@ -83,13 +83,6 @@ public class BitmapHandlerTest {
     }
 
     @Test
-    public void testGettingWidthOfBitmap(){
-        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
-
-        assertEquals(10,bitmapHandler.getWithOfBitmap());
-    }
-
-    @Test
     public void testClearingCompleteWord(){
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(10,10));
         bitmapHandler.setPixel(new Point(0,0));
@@ -118,5 +111,15 @@ public class BitmapHandlerTest {
         assertEquals(0,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(63,0)));
         assertEquals(64,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(70,0)));
         assertEquals(64,bitmapHandler.getBeginningIndexOfWordWithPixel(new Point(120,0)));
+    }
+
+    @Test
+    public void testIsPixelStillInBitmap(){
+        BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(1,1));
+
+        assertTrue(bitmapHandler.isPixelInBitmap(new Point(0,0)));
+        assertFalse(bitmapHandler.isPixelInBitmap(new Point(1,1)));
+        assertFalse(bitmapHandler.isPixelInBitmap(new Point(0,1)));
+        assertFalse(bitmapHandler.isPixelInBitmap(new Point(1,0)));
     }
 }

@@ -45,10 +45,6 @@ public class BitmapHandler implements BitmapHandlerInterface{
         return (pixel.x) & -Bitmap.PIXELINWORD;
     }
 
-    public int getWithOfBitmap(){
-        return bitmap.w;
-    }
-
     public void clearCompleteBitmap() {
         for(int i = 0; i < bitmap.map.length; i ++)
             bitmap.map[i] = 0;
@@ -105,7 +101,7 @@ public class BitmapHandler implements BitmapHandlerInterface{
         return bitmap.map[potraceWordArrayIndex] & onePixelMask;
     }
 
-    private boolean isPixelInBitmap(Point pixel) {
+    public boolean isPixelInBitmap(Point pixel) {
         return isCoordinateInRange(pixel.x, bitmap.w) && isCoordinateInRange(pixel.y, bitmap.h);
     }
 

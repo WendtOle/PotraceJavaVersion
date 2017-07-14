@@ -19,7 +19,7 @@ public interface BitmapHandlerInterface {
 
     int getBeginningIndexOfWordWithPixel(Point positionOfPixel);
 
-    int getWithOfBitmap();
-
     void clearCompleteBitmap();
+
+    boolean isPixelInBitmap(Point pixel);
 }

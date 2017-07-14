@@ -31,16 +31,22 @@ public class FindAllPathsOnBitmap {
 
     private void initializeFields(Bitmap bitmap, Param param) {
         this.workCopy = bitmap.bm_dup();
+        this.param = param;
+        initializeHelperClasses(bitmap);
+        setStartPointForNextPath();
+    }
+
+    private void initializeHelperClasses(Bitmap bitmap) {
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.pathInverter = new PathInverter(workCopy);
         this.nextFilledPixelFinder = new NextFilledPixelFinder(workCopy);
-        this.param = param;
     }
 
     private void findAllPathsOnBitmap() {
-        setStartPointForNextPath();
-        while(isThereAnotherPath())
-            findPathAndStartPointForNextPath();
+        while(isThereAnotherPath()) {
+            findAndProcessPath();
+            setStartPointForNextPath();
+        }
     }
 
     private void setStartPointForNextPath() {
@@ -49,11 +55,6 @@ public class FindAllPathsOnBitmap {
 
     private boolean isThereAnotherPath() {
         return !startPointOfCurrentPath.equals(new NoPointFound());
-    }
-
-    private void findPathAndStartPointForNextPath() {
-        findAndProcessPath();
-        setStartPointForNextPath();
     }
 
     private void findAndProcessPath() {
