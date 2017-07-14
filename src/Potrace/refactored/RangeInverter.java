@@ -7,14 +7,14 @@ import java.awt.*;
 /**
  * Created by andreydelany on 13.07.17.
  */
-public class PotraceRangeInverter {
+public class RangeInverter {
 
     BitmapHandlerInterface bitmapHandler;
     Point upperBoundIdentificationPixel, lowerBoundIdentificationPixel;
     int startWordIdentifier, lastWordIdentificationPixel;
     int line;
 
-    public PotraceRangeInverter(Bitmap bitmap){
+    public RangeInverter(Bitmap bitmap){
         bitmapHandler = new BitmapHandler(bitmap);
     }
 

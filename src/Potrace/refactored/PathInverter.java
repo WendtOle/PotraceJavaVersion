@@ -7,7 +7,7 @@ import java.awt.*;
  * Created by andreydelany on 02.07.17.
  */
 public class PathInverter {
-    PotraceRangeInverter lineInverter;
+    RangeInverter rangeInverter;
     BitmapHandlerInterface bitmapHandler;
     private Point currentPoint;
     private Point previousPoint;
@@ -16,7 +16,7 @@ public class PathInverter {
 
     public PathInverter(Bitmap bitmap){
         this.bitmapHandler = new BitmapHandler(bitmap);
-        this.lineInverter = new PotraceRangeInverter(bitmap);
+        this.rangeInverter = new RangeInverter(bitmap);
     }
 
     public void invertPathOnBitmap(Path path) {
@@ -54,7 +54,7 @@ public class PathInverter {
 
     private void tryToInvertRectangleBetweenCurrentAndPreviousPoint() {
         if (canInvertALine())
-            lineInverter.invertRangeInLine(currentPoint,previousPoint,getLineToInvert());
+            rangeInverter.invertRangeInLine(currentPoint,previousPoint,getLineToInvert());
     }
 
     private boolean canInvertALine() {

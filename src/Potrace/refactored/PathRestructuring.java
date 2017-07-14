@@ -5,12 +5,12 @@ import Potrace.General.Path;
 /**
  * Created by andreydelany on 13.07.17.
  */
-public class PathRestructerer {
+public class PathRestructuring {
 
     Path pathList;
     Path currentPath;
 
-    public PathRestructerer(Path pathList){
+    public PathRestructuring(Path pathList){
         this.pathList = pathList;
         this.currentPath = pathList;
     }

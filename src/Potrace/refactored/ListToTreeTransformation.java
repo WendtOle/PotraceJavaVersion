@@ -21,30 +21,30 @@ public class ListToTreeTransformation implements ListToTreeTransformationInterfa
     }
 
     private void clearBitmap() {
-        BitmapHandlerInterface manipulator = new BitmapHandler(this.bitmap);
+        BitmapHandlerInterface manipulator = new BitmapHandler(bitmap);
         manipulator.clearCompleteBitmap();
     }
 
     private void transformPathIntoTree() {
         saveOriginalNextPointerToSiblingComponent();
-        findChildrenAndSiblingsAndSaveThemIntoNextAndChildrenComponent();
+        findSiblingAndChildrenAndSaveThemIntoNextAndChildrenComponent();
         copySiblingStructurFromNextToSiblingComponent();
         reconstructNextComponentFromChildrenAndSiblingComponent();
     }
 
     private void saveOriginalNextPointerToSiblingComponent() {
-        PathRestructerer pathRestructerer = new PathRestructerer(pathList);
-        pathList = pathRestructerer.saveOriginalNextPointerToSiblingComponent();
+        PathRestructuring pathRestructuring = new PathRestructuring(pathList);
+        pathList = pathRestructuring.saveOriginalNextPointerToSiblingComponent();
     }
 
-    private void findChildrenAndSiblingsAndSaveThemIntoNextAndChildrenComponent() {
+    private void findSiblingAndChildrenAndSaveThemIntoNextAndChildrenComponent() {
         ChildrenAndSiblingFinder childrenAndSiblingFinder = new ChildrenAndSiblingFinder(pathList,bitmap);
         pathList = childrenAndSiblingFinder.getTreeTransformedPathStructure();
     }
 
     private void copySiblingStructurFromNextToSiblingComponent() {
-        PathRestructerer pathRestructerer = new PathRestructerer(pathList);
-        pathList = pathRestructerer.copySiblingStructurFromNextToSiblingComponent();
+        PathRestructuring pathRestructuring = new PathRestructuring(pathList);
+        pathList = pathRestructuring.copySiblingStructurFromNextToSiblingComponent();
     }
 
     private void reconstructNextComponentFromChildrenAndSiblingComponent() {
