@@ -100,6 +100,6 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void unmarkLocationOfReferencePath() {
-        bitmapClearer.clearBitmapWithBoundingBox(boundingBox);
+        bitmapClearer.clear(boundingBox);
     }
 }

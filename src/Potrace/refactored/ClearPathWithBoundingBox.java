@@ -17,7 +17,7 @@ public class ClearPathWithBoundingBox {
         this.bitmapHandler = new BitmapHandler(bitmap);
     }
 
-    public void clearBitmapWithBoundingBox(PathBoundingBox boundingBox) {
+    public void clear(PathBoundingBox boundingBox) {
         this.boundingBox = boundingBox;
         setHorizontalRange();
         clearBitmapInHorizontalRange();
@@ -61,7 +61,7 @@ public class ClearPathWithBoundingBox {
     }
 
     private void clearWord(int line, int indexOfWord) {
-        Point positionOfWord = new Point(indexOfWord * Bitmap.PIXELINWORD, line);
-        bitmapHandler.clearPotraceWord(positionOfWord);
+        Point potraceWordIdentificationPixel = new Point(indexOfWord * Bitmap.PIXELINWORD, line);
+        bitmapHandler.clearPotraceWord(potraceWordIdentificationPixel);
     }
 }
