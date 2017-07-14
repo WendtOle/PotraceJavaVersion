@@ -9,9 +9,6 @@ import org.openjdk.jmh.annotations.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
-/**
- * Created by andreydelany on 10.07.17.
- */
 
 public class Benchmarking{
 

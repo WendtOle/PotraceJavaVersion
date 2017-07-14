@@ -1,8 +1,5 @@
 package Potrace.General;
 
-/**
- * Created by andreydelany on 07.07.17.
- */
 public class PotraceLibrary {
 
     public static int POTRACE_TURNPOLICY_BLACK = 0;

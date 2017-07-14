@@ -1,13 +1,11 @@
 package Potrace.refactored;
 
 import Potrace.General.*;
-/**
- * Created by andreydelany on 29.06.17.
- */
-public class NextComponentReconstruction {
-    Path pathList;
-    Path pathesThatNeedToAdd;
-    Path currentPathToAdd;
+
+class NextComponentReconstruction {
+    private Path pathList;
+    private Path pathsThatNeedToAdd;
+    private Path currentPathToAdd;
 
     public NextComponentReconstruction(Path pathList) {
         initializeFields(pathList);
@@ -40,9 +38,9 @@ public class NextComponentReconstruction {
     }
 
     private void addPaths() {
-        pathesThatNeedToAdd = currentPathToAdd.next;
+        pathsThatNeedToAdd = currentPathToAdd.next;
         addAllSiblingsWithTrailingChildren(currentPathToAdd);
-        currentPathToAdd = pathesThatNeedToAdd;
+        currentPathToAdd = pathsThatNeedToAdd;
     }
 
     private void addAllSiblingsWithTrailingChildren(Path currentSibling) {
@@ -75,6 +73,6 @@ public class NextComponentReconstruction {
 
     private void scheduleChildrenOfCurrentChildForLaterProcessing(Path path) {
         if (path.childlist != null)
-            pathesThatNeedToAdd = List.elementInsertAtTheLastNextOfList(path.childlist, pathesThatNeedToAdd);
+            pathsThatNeedToAdd = List.elementInsertAtTheLastNextOfList(path.childlist, pathsThatNeedToAdd);
     }
 }

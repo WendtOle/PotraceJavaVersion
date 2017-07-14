@@ -3,9 +3,9 @@ package Potrace.refactored;
 import Potrace.General.*;
 
 public class Decompose implements DecompositionInterface {
-    Bitmap bitmap;
-    Param param;
-    Path pathList;
+    private Bitmap bitmap;
+    private Param param;
+    private Path pathList;
 
     public Path getPathList(Bitmap bitmap, Param param) {
         this.bitmap = bitmap;

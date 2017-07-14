@@ -4,48 +4,45 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 02.07.17.
- */
 public class BitmapMaskCreationTest {
 
     @Test
     public void testCreatingMaskForFirstPixel(){
-        assertEquals(0x8000000000000000l, BitMask.getOnePixelMaskForPosition(0));
+        assertEquals(0x8000000000000000L, BitMask.getOnePixelMaskForPosition(0));
     }
 
     @Test
     public void testCreatingMaskForFirstPixelOverBound(){
-        assertEquals(0x8000000000000000l, BitMask.getOnePixelMaskForPosition(64));
+        assertEquals(0x8000000000000000L, BitMask.getOnePixelMaskForPosition(64));
     }
 
     @Test
     public void testCreatingMaskForLastPixel(){
-        assertEquals(0x1l, BitMask.getOnePixelMaskForPosition(63));
+        assertEquals(0x1L, BitMask.getOnePixelMaskForPosition(63));
     }
 
     @Test
     public void testCreatingMaskForLastPixelOverBound(){
-        assertEquals(0x1l, BitMask.getOnePixelMaskForPosition(-1));
+        assertEquals(0x1L, BitMask.getOnePixelMaskForPosition(-1));
     }
 
     @Test
     public void testCreatingMaskForAPixel(){
-        assertEquals(0x8l, BitMask.getOnePixelMaskForPosition(60));
+        assertEquals(0x8L, BitMask.getOnePixelMaskForPosition(60));
     }
 
     @Test
     public void testCreatingMaskForAllPixels() {
-        assertEquals(-1l, BitMask.getMultiplePixelMaskFromStartUntilPosition(64));
+        assertEquals(-1L, BitMask.getMultiplePixelMaskFromStartUntilPosition(64));
     }
 
     @Test
     public void testCreatingMaskForFirstTwoPixels() {
-        assertEquals(0xc000000000000000l, BitMask.getMultiplePixelMaskFromStartUntilPosition(2));
+        assertEquals(0xc000000000000000L, BitMask.getMultiplePixelMaskFromStartUntilPosition(2));
     }
 
     @Test
     public void testCreatingMaskForAllPixelWithoutLastTwo() {
-        assertEquals(0xfffffffffffffffcl, BitMask.getMultiplePixelMaskFromStartUntilPosition(62));
+        assertEquals(0xfffffffffffffffcL, BitMask.getMultiplePixelMaskFromStartUntilPosition(62));
     }
 }

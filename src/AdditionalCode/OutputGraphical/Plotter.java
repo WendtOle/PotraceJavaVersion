@@ -6,9 +6,6 @@ import Potrace.General.Path;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by andreydelany on 08/04/2017.
- */
 public class Plotter {
     JFrame jFrame;
     Path path;

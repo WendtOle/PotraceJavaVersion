@@ -4,16 +4,14 @@ import Potrace.General.Bitmap;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 07.07.17.
- */
 public class DirectionHandler {
-    BitmapHandlerInterface bitmapHandler;
-    Point direction = new Point(0, -1);;
-    Point currentPoint;
-    TurnPolicyEnum turnPolicy;
-    boolean isRightPixelFilled, isLeftPixelEmpty;
-    PathKindEnum kindOfPath;
+    private BitmapHandlerInterface bitmapHandler;
+    private Point direction = new Point(0, -1);
+    private Point currentPoint;
+    private TurnPolicyEnum turnPolicy;
+    private boolean isRightPixelFilled;
+    private boolean isLeftPixelEmpty;
+    private PathKindEnum kindOfPath;
 
     public DirectionHandler(Bitmap bitmap, PathFindingCharacteristics pathFindingCharacteristics) {
         bitmapHandler = new BitmapHandler(bitmap);

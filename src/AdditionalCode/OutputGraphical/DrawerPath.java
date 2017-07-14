@@ -8,9 +8,6 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-/**
- * Created by andreydelany on 06/04/2017.
- */
 public class DrawerPath {
 
     Path path;

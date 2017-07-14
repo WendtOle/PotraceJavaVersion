@@ -13,19 +13,15 @@ import java.util.Collection;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by andreydelany on 04.07.17.
- */
-
 @RunWith(Parameterized.class)
 public class PathInverterTest {
 
     Point[] pointsOfPath;
-    Point[] controllPoints;
+    Point[] controlPoints;
     BitmapHandlerInterface bitmapHandler;
 
-    @Parameterized.Parameters(name = "{index}")
-    public static Collection testdata(){
+    @Parameterized.Parameters()
+    public static Collection testData(){
         return Arrays.asList(new Object[][]{
                 {new Bitmap(64, 1),
                         new Point[]{new Point(0, 0), new Point(1, 0)},
@@ -42,21 +38,21 @@ public class PathInverterTest {
         });
     }
 
-    public PathInverterTest(Bitmap bitmap, Point[] pointsOfPath, Point[] controllPoints){
-        initializeFields(bitmap, pointsOfPath, controllPoints);
+    public PathInverterTest(Bitmap bitmap, Point[] pointsOfPath, Point[] controlPoints){
+        initializeFields(bitmap, pointsOfPath, controlPoints);
         findPathAndInvertIt(bitmap);
     }
 
-    private void initializeFields(Bitmap bitmap, Point[] pointsOfPath, Point[] controllPoints) {
+    private void initializeFields(Bitmap bitmap, Point[] pointsOfPath, Point[] controlPoints) {
         this.pointsOfPath = pointsOfPath;
-        this.controllPoints = controllPoints;
+        this.controlPoints = controlPoints;
         this.bitmapHandler = new BitmapHandler(bitmap);
         setPixelsOnBitmap();
     }
 
     private void setPixelsOnBitmap() {
         setPixels(pointsOfPath);
-        setPixels(controllPoints);
+        setPixels(controlPoints);
     }
 
     private void setPixels(Point[] pixels) {
@@ -86,8 +82,8 @@ public class PathInverterTest {
     }
 
     @Test
-    public void checkThatControllPointsAreNotInverted(){
-        for(Point currentControllPoint : controllPoints)
-            assertTrue(currentControllPoint.toString(),bitmapHandler.isPixelFilled(currentControllPoint));
+    public void checkThatControlPointsAreNotInverted(){
+        for(Point currentControlPoint : controlPoints)
+            assertTrue(currentControlPoint.toString(),bitmapHandler.isPixelFilled(currentControlPoint));
     }
 }

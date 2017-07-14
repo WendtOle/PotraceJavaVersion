@@ -8,9 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Created by andreydelany on 11.07.17.
- */
+
 public class JsonDecoder {
     String folderName;
 

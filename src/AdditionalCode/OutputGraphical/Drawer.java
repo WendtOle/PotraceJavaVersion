@@ -6,9 +6,6 @@ import Potrace.General.*;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by andreydelany on 08/04/2017.
- */
 public class Drawer extends JPanel {
 
     Path path;

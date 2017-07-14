@@ -8,9 +8,6 @@ import java.awt.*;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by andreydelany on 04.07.17.
- */
 public class NextFilledPixelFinderTest {
 
     Bitmap bitmap = new Bitmap(100,100);

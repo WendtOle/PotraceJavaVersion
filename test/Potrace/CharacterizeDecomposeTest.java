@@ -16,10 +16,6 @@ import java.util.Collection;
 import static TestUtils.AssertPathes.assertEqualPathes;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 08/04/2017.
- */
-
 @RunWith(Parameterized.class)
 public class CharacterizeDecomposeTest {
     Bitmap bitmap;
@@ -35,10 +31,6 @@ public class CharacterizeDecomposeTest {
     }
 
     private static Object[][] getTestParameters(String folderNameOfTestPictures) {
-        return getAvailableBitmapPathPairs(folderNameOfTestPictures);
-    }
-
-    private static Object[][] getAvailableBitmapPathPairs(String folderNameOfTestPictures) {
         File[] bitmapFiles = getAllBitmapFilesForTesting(folderNameOfTestPictures);
         Object[][] testParameters = new Object[bitmapFiles.length][];
         for (int i = 0; i < bitmapFiles.length; i++)
@@ -95,7 +87,7 @@ public class CharacterizeDecomposeTest {
     }
 
     private void testNumberOfPaths(Path actualPath) {
-        assertEquals("Number of Pathes", countPaths(expectedPath), countPaths(actualPath));
+        assertEquals("Number of Paths", countPaths(expectedPath), countPaths(actualPath));
     }
 
     private void initializeFirstTestPairOfPaths(Path actualPath) {
@@ -121,12 +113,12 @@ public class CharacterizeDecomposeTest {
     }
 
     private int countPaths(Path path) {
-        int actualAmountOfPathes = 1;
+        int actualAmountOfPaths = 1;
         Path currentPath = path;
         while (currentPath.next != null) {
-            actualAmountOfPathes ++;
+            actualAmountOfPaths ++;
             currentPath = currentPath.next;
         }
-        return actualAmountOfPathes;
+        return actualAmountOfPaths;
     }
 }

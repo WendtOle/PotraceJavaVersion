@@ -2,11 +2,8 @@ package Potrace.refactored;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 14.07.17.
- */
-public class Random {
-    char[] nonLinearSequence = {
+class Random {
+    private char[] nonLinearSequence = {
             0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1,
             0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0,
             0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,

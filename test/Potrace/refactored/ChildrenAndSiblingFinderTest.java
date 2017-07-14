@@ -9,16 +9,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 13.07.17.
- */
 public class ChildrenAndSiblingFinderTest {
     Bitmap bitmap;
     Path pathList;
 
     @Before
     public void prepare(){
-        BitmapImporter importer = new BitmapImporter("determineHierachyTestPicture.png","testPictures");
+        BitmapImporter importer = new BitmapImporter("determineHierarchyTestPicture.png","testPictures");
         bitmap = importer.getBitmap();
         FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,new Param());
         pathList = findPathsOnBitmap.getPathList();
@@ -37,12 +34,12 @@ public class ChildrenAndSiblingFinderTest {
     }
 
     @Test
-    public void testSiblingofLeftPath_FirstInsidePath(){
+    public void testSiblingOfLeftPath_FirstInsidePath(){
         assertEquals(24,pathList.next.next.area);
     }
 
     @Test
-    public void testSiblingofFirstInsidePath_PathBelow(){
+    public void testSiblingOfFirstInsidePath_PathBelow(){
         assertEquals(28,pathList.next.next.next.area);
     }
 
@@ -52,12 +49,12 @@ public class ChildrenAndSiblingFinderTest {
     }
 
     @Test
-    public void testSiblingOfOusidePath_RightPass(){
+    public void testSiblingOfOutsidePath_RightPass(){
         assertEquals(12,pathList.next.childlist.next.area);
     }
 
     @Test
-    public void testChildOfOusidePath_SecondInsidePath(){
+    public void testChildOfOutsidePath_SecondInsidePath(){
         assertEquals(8,pathList.next.childlist.childlist.area);
     }
 }

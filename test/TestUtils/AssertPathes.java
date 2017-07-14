@@ -6,9 +6,6 @@ import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 05.07.17.
- */
 public class AssertPathes {
 
     public static void assertEqualPathes(Path expectedPath, Path actualPath) {

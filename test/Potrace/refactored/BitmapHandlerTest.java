@@ -9,9 +9,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by andreydelany on 04.07.17.
- */
 public class BitmapHandlerTest {
 
     @Test
@@ -20,7 +17,7 @@ public class BitmapHandlerTest {
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
         bitmapHandler.setPixel(new Point(0,0));
 
-        assertEquals(bitmap.map[0],0x8000000000000000l);
+        assertEquals(bitmap.map[0],0x8000000000000000L);
     }
 
     @Test
@@ -52,7 +49,7 @@ public class BitmapHandlerTest {
         bitmap.map[1] = -1;
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(bitmap);
 
-        assertEquals(bitmap.map[1],0x8000000000000000l);
+        assertEquals(bitmap.map[1],0x8000000000000000L);
     }
 
     @Test
@@ -93,7 +90,7 @@ public class BitmapHandlerTest {
 
     @Test
     public void testFlippingCompleteWordWithMask(){
-        long mask = 1l;
+        long mask = 1L;
         BitmapHandlerInterface bitmapHandler = new BitmapHandler(new Bitmap(64,1));
         bitmapHandler.setPixel(new Point(62,0));
         bitmapHandler.setPixel(new Point(63,0));

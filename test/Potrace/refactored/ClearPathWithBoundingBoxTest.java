@@ -12,10 +12,6 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertFalse;
 
-/**
- * Created by andreydelany on 05.07.17.
- */
-
 @RunWith(Parameterized.class)
 public class ClearPathWithBoundingBoxTest {
 
@@ -23,7 +19,7 @@ public class ClearPathWithBoundingBoxTest {
     Point[] pointsOfPath, controlPointsThatShouldBeCleared;
 
 
-    @Parameterized.Parameters(name = "{index}")
+    @Parameterized.Parameters()
     public static Collection testData(){
         return Arrays.asList(new Object[][]{
                 {new Bitmap(4,4),
@@ -41,15 +37,15 @@ public class ClearPathWithBoundingBoxTest {
         findPathAndClearItWithBoundingBox(bitmap);
     }
 
-    private void initializeFields(Bitmap bitmap, Point[] pointsOfPath, Point[] controllPoints) {
+    private void initializeFields(Bitmap bitmap, Point[] pointsOfPath, Point[] controlPoints) {
         this.bitmapHandler = new BitmapHandler(bitmap);
         this.pointsOfPath = pointsOfPath;
-        this.controlPointsThatShouldBeCleared = controllPoints;
+        this.controlPointsThatShouldBeCleared = controlPoints;
     }
 
-    private void fillBitmapWithPixels(Point[] pointsOfPath, Point[] controllPoints) {
+    private void fillBitmapWithPixels(Point[] pointsOfPath, Point[] controlPoints) {
         setPixels(pointsOfPath);
-        setPixels(controllPoints);
+        setPixels(controlPoints);
     }
 
     private void setPixels(Point[] pixels) {
@@ -80,7 +76,7 @@ public class ClearPathWithBoundingBoxTest {
 
     @Test
     public void checkThatControlPointsAreAlsoCleared(){
-        for(Point currentControllPoint : controlPointsThatShouldBeCleared)
-            assertFalse(currentControllPoint.toString(),bitmapHandler.isPixelFilled(currentControllPoint));
+        for(Point currentControlPoint : controlPointsThatShouldBeCleared)
+            assertFalse(currentControlPoint.toString(),bitmapHandler.isPixelFilled(currentControlPoint));
     }
 }

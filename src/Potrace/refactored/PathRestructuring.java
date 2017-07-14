@@ -2,13 +2,10 @@ package Potrace.refactored;
 
 import Potrace.General.Path;
 
-/**
- * Created by andreydelany on 13.07.17.
- */
-public class PathRestructuring {
+class PathRestructuring {
 
-    Path pathList;
-    Path currentPath;
+    private Path pathList;
+    private Path currentPath;
 
     public PathRestructuring(Path pathList){
         this.pathList = pathList;

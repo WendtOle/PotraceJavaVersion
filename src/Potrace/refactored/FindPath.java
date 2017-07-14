@@ -4,11 +4,11 @@ import Potrace.General.*;
 import java.awt.*;
 
 public class FindPath {
-    Point startPoint;
-    PathKindEnum kindOfPath;
-    PathShape pathShape;
-    Point currentPoint;
-    DirectionHandler directionHandler;
+    private Point startPoint;
+    private PathKindEnum kindOfPath;
+    private PathShape pathShape;
+    private Point currentPoint;
+    private DirectionHandler directionHandler;
 
     public FindPath(Bitmap bitmap, Point firstFilledPixel,PathFindingCharacteristics pathFindingCharacteristics) {
         this.kindOfPath = pathFindingCharacteristics.kindOfPath;

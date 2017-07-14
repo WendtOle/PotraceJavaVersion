@@ -3,17 +3,14 @@ package Potrace.refactored;
 import Potrace.General.Bitmap;
 import Potrace.General.Path;
 
-/**
- * Created by andreydelany on 29.06.17.
- */
 public class ChildrenAndSiblingFinder {
-    Path pathList;
-    ClearPathWithBoundingBox bitmapClearer;
-    PathInverter inverter;
-    BitmapHandlerInterface bitmapHandler;
-    PathOrganizer pathOrganizer;
-    PathBoundingBox boundingBox;
-    boolean shouldContinueDetermineChildrenAndSiblings;
+    private Path pathList;
+    private ClearPathWithBoundingBox bitmapClearer;
+    private PathInverter inverter;
+    private BitmapHandlerInterface bitmapHandler;
+    private PathOrganizer pathOrganizer;
+    private PathBoundingBox boundingBox;
+    private boolean shouldContinueDetermineChildrenAndSiblings;
 
     public ChildrenAndSiblingFinder(Path pathList, Bitmap bitmap){
         this.pathList = pathList;
@@ -33,7 +30,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void goThroughAllPathsAndDetermineChildrenAndSiblings() {
-        while (pathOrganizer.stillNeedToProcessPathes()) {
+        while (pathOrganizer.stillNeedToProcessPaths()) {
             pathOrganizer.unlinkAllDifferentParts();
             determineChildrenAndSiblingForReferencePath();
         }
@@ -95,7 +92,7 @@ public class ChildrenAndSiblingFinder {
     }
 
     private void scheduleOrderPathsForNextOrderingStep() {
-        pathOrganizer.scheduleOrderdPathsForNextOrderingStep();
+        pathOrganizer.scheduleOrderedPathsForNextOrderingStep();
     }
 
     private void unmarkLocationOfReferencePath() {

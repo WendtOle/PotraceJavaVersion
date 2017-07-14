@@ -3,12 +3,9 @@ package Potrace.refactored;
 import Potrace.General.*;
 import java.awt.*;
 
-/**
- * Created by andreydelany on 03.07.17.
- */
 public class BitmapHandler implements BitmapHandlerInterface{
 
-    public Bitmap bitmap;
+    private Bitmap bitmap;
 
     public BitmapHandler (Bitmap bitmap) {
         this.bitmap = bitmap;
@@ -50,6 +47,10 @@ public class BitmapHandler implements BitmapHandlerInterface{
             bitmap.map[i] = 0;
     }
 
+    public boolean isPixelInBitmap(Point pixel) {
+        return isCoordinateInRange(pixel.x, bitmap.w) && isCoordinateInRange(pixel.y, bitmap.h);
+    }
+
     private void clearExcessPixel() {
         if (areThereExcessPixel())
             clearExcessPixelOfLastWordInLines();
@@ -65,7 +66,7 @@ public class BitmapHandler implements BitmapHandlerInterface{
 
     private void clearExcessPixelOfLastWordInLines() {
         long mask = getMaskForExcessPixel();
-        for (int y = 0; y < bitmap.h; y ++) 
+        for (int y = 0; y < bitmap.h; y ++)
             clearExcessPixelWithMaskInLine(mask, y);
     }
 
@@ -99,10 +100,6 @@ public class BitmapHandler implements BitmapHandlerInterface{
     private long getPixelValueWithMask(Point potraceWordIdentificationPixel, long onePixelMask) {
         int potraceWordArrayIndex = getPotraceWordArrayIndex(potraceWordIdentificationPixel);
         return bitmap.map[potraceWordArrayIndex] & onePixelMask;
-    }
-
-    public boolean isPixelInBitmap(Point pixel) {
-        return isCoordinateInRange(pixel.x, bitmap.w) && isCoordinateInRange(pixel.y, bitmap.h);
     }
 
     private boolean isCoordinateInRange(int coordinate, int upperBound) {

@@ -12,16 +12,12 @@ import java.util.Collection;
 
 import static TestUtils.AssertPathes.assertEqualPathes;
 
-/**
- * Created by andreydelany on 05.07.17.
- */
-
 @RunWith(Parameterized.class)
 public class FindPathTest {
 
     Path actualPath, expectedPath;
 
-    @Parameterized.Parameters(name = "{index}")
+    @Parameterized.Parameters()
     public static Collection testData() {
         return Arrays.asList(new Object[][]{
                 {new Bitmap(10,10),

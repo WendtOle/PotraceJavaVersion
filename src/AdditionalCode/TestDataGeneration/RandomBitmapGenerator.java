@@ -6,10 +6,6 @@ import Potrace.General.Bitmap;
 import java.awt.*;
 import java.util.Random;
 
-/**
- * Created by andreydelany on 22.06.17.
- */
-
 public class RandomBitmapGenerator {
 
     Random randomGenerator = new Random();

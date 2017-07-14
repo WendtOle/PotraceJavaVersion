@@ -4,15 +4,14 @@ import Potrace.General.Bitmap;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 13.07.17.
- */
-public class RangeInverter {
+class RangeInverter {
 
-    BitmapHandlerInterface bitmapHandler;
-    Point upperBoundIdentificationPixel, lowerBoundIdentificationPixel;
-    int startWordIdentifier, lastWordIdentificationPixel;
-    int line;
+    private BitmapHandlerInterface bitmapHandler;
+    private Point upperBoundIdentificationPixel;
+    private Point lowerBoundIdentificationPixel;
+    private int startWordIdentifier;
+    private int lastWordIdentificationPixel;
+    private int line;
 
     public RangeInverter(Bitmap bitmap){
         bitmapHandler = new BitmapHandler(bitmap);
@@ -20,7 +19,7 @@ public class RangeInverter {
 
     public void invertRangeInLine(Point upperBoundIdentificationPixel, Point lowerBoundIdentificationPixel, int line) {
         setFields(upperBoundIdentificationPixel,lowerBoundIdentificationPixel,line);
-        invertCompletWordsOfRange();
+        invertCompleteWordsOfRange();
         if(hasRangeExcessPixels())
             invertExcessPixels();
     }
@@ -65,7 +64,7 @@ public class RangeInverter {
         lastWordIdentificationPixel = temp;
     }
 
-    private void invertCompletWordsOfRange(){
+    private void invertCompleteWordsOfRange(){
         for(int i = startWordIdentifier; i < lastWordIdentificationPixel; i += Bitmap.PIXELINWORD) {
             Point potraceWordIdentificationPixel = new Point(i,line);
             flipAllBitsInWord(potraceWordIdentificationPixel);

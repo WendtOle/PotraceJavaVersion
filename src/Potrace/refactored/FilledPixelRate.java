@@ -2,17 +2,14 @@ package Potrace.refactored;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 14.07.17.
- */
-public class FilledPixelRate {
-    final int startRadius = 2;
-    final int endRadius = 5;
-    
-    int radius;
-    BitmapHandlerInterface bitmapHandler;
-    Point intersection;
-    int majorityIdentifier;
+class FilledPixelRate {
+    private final int startRadius = 2;
+    private final int endRadius = 5;
+
+    private int radius;
+    private BitmapHandlerInterface bitmapHandler;
+    private Point intersection;
+    private int majorityIdentifier;
 
     public boolean isMinorityOfPixelFilledAtIntersection(Point intersection, BitmapHandlerInterface bitmapHandler){
         setFields(intersection, bitmapHandler);
@@ -24,7 +21,7 @@ public class FilledPixelRate {
         return isMajorityOfPixelFilledAtIntersection();
     }
 
-    public boolean isMajorityOfPixelFilledAtIntersection() {
+    private boolean isMajorityOfPixelFilledAtIntersection() {
         while (radius < endRadius){
             determineMajorityIdentifierAtRadius();
             if (wasMajorityIdentifierDefinite())

@@ -9,17 +9,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 13.07.17.
- */
-public class FindPathesOnBitmapTest {
+public class FindPathsOnBitmapTest {
 
     Bitmap bitmap;
     Path pathList;
 
     @Before
     public void prepare(){
-        BitmapImporter importer = new BitmapImporter("determineHierachyTestPicture.png","testPictures");
+        BitmapImporter importer = new BitmapImporter("determineHierarchyTestPicture.png","testPictures");
         bitmap = importer.getBitmap();
         FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,new Param());
         pathList = findPathsOnBitmap.getPathList();

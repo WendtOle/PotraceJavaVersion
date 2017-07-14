@@ -2,9 +2,6 @@ package Potrace.refactored;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 29.06.17.
- */
 public enum TurnPolicyEnum {
     BLACK, WHITE, LEFT, RIGHT, MINORITY, MAJORITY, RANDOM;
 

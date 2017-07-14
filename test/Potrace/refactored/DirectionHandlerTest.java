@@ -7,20 +7,17 @@ import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 12.07.17.
- */
 public class DirectionHandlerTest {
 
     Bitmap bitmap;
     DirectionHandler directionHandler;
-    PathFindingCharacteristics directionIdentificator = new PathFindingCharacteristics(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
+    PathFindingCharacteristics pathFindingCharacteristics = new PathFindingCharacteristics(TurnPolicyEnum.MINORITY,PathKindEnum.POSITIV);
 
     @Test
     public void testSimpleTurnToRight(){
         Point[] pixel = new Point[]{new Point(1,1)};
         setBitmap(pixel);
-        directionHandler = new DirectionHandler(bitmap,directionIdentificator);
+        directionHandler = new DirectionHandler(bitmap, pathFindingCharacteristics);
         directionHandler.turnInNextDirection(pixel[0]);
 
         assertEquals(new Point(2,1),directionHandler.moveInDirection());
@@ -30,24 +27,24 @@ public class DirectionHandlerTest {
     public void testSimpleTurnToLeft() {
         Point[] points = new Point[]{new Point(1,1),new Point(1,0),new Point(0,0)};
         setBitmap(points);
-        directionHandler = new DirectionHandler(bitmap,directionIdentificator);
+        directionHandler = new DirectionHandler(bitmap, pathFindingCharacteristics);
         directionHandler.turnInNextDirection(points[0]);
 
         assertEquals(new Point(0,1),directionHandler.moveInDirection());
     }
 
     @Test
-    public void testAmbigousTurnToLeft(){
+    public void testAmbiguousTurnToLeft(){
         Point[] points = new Point[]{new Point(1,1),new Point(0,0)};
         setBitmap(points);
-        directionHandler = new DirectionHandler(bitmap,directionIdentificator);
+        directionHandler = new DirectionHandler(bitmap, pathFindingCharacteristics);
         directionHandler.turnInNextDirection(points[0]);
 
         assertEquals(new Point(0,1),directionHandler.moveInDirection());
     }
 
     @Test
-    public void testAmbigousTurnToRight(){
+    public void testAmbiguousTurnToRight(){
         Point[] points = new Point[]{new Point(1,1),new Point(0,0)};
         setBitmap(points);
         directionHandler = new DirectionHandler(bitmap,new PathFindingCharacteristics(TurnPolicyEnum.WHITE,PathKindEnum.POSITIV));

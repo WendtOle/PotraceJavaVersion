@@ -3,16 +3,13 @@ package Potrace.refactored;
 import Potrace.General.*;
 import java.awt.*;
 
-/**
- * Created by andreydelany on 02.07.17.
- */
 public class PathInverter {
-    RangeInverter rangeInverter;
-    BitmapHandlerInterface bitmapHandler;
+    private RangeInverter rangeInverter;
+    private BitmapHandlerInterface bitmapHandler;
     private Point currentPoint;
     private Point previousPoint;
-    int currentPointIdentifier;
-    Path path;
+    private int currentPointIdentifier;
+    private Path path;
 
     public PathInverter(Bitmap bitmap){
         this.bitmapHandler = new BitmapHandler(bitmap);

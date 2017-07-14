@@ -2,9 +2,6 @@ package Potrace.refactored;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 03.07.17.
- */
 public interface BitmapHandlerInterface {
 
     void invertPotraceWordWithMask(Point positionOfWord, long mask);

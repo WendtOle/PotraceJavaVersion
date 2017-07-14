@@ -5,22 +5,17 @@ import Potrace.General.Path;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 12.07.17.
- */
-public class PathOrganizer {
-    Path pathList;
-    Path pathsThatNeedToProcess;
-    Path pathsToOrder;
-    Path referencePath;
-    Path currentPath;
+class PathOrganizer {
+    private Path pathsThatNeedToProcess;
+    private Path pathsToOrder;
+    private Path referencePath;
+    private Path currentPath;
 
     public PathOrganizer(Path pathList){
-        this.pathList = pathList;
         pathsThatNeedToProcess = pathList;
     }
 
-    public boolean stillNeedToProcessPathes() {
+    public boolean stillNeedToProcessPaths() {
         return pathsThatNeedToProcess != null;
     }
 
@@ -80,7 +75,7 @@ public class PathOrganizer {
         return currentPath.priv.pt[0].y;
     }
 
-    public void scheduleOrderdPathsForNextOrderingStep() {
+    public void scheduleOrderedPathsForNextOrderingStep() {
         if (referencePath.next != null)
             scheduleSiblingsForNextOrderingStep();
         if (referencePath.childlist != null)

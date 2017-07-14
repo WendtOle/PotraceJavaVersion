@@ -6,9 +6,6 @@ import java.awt.*;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 12.07.17.
- */
 public class PointShapeTest {
 
     @Test
@@ -18,13 +15,13 @@ public class PointShapeTest {
     }
 
     @Test
-    public void testAdding131PointsToPointshape(){
+    public void testAdding131PointsToPointShape(){
         PathShape pointShape =  getPointShapeWithLength(131);
         validatePointShape(pointShape,131,131);
     }
 
     @Test
-    public void testAdding132PointsToPointshape(){
+    public void testAdding132PointsToPointShape(){
         PathShape pointShape =  getPointShapeWithLength(132);
         validatePointShape(pointShape,132,300);
     }

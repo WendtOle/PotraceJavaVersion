@@ -2,12 +2,9 @@ package Potrace.refactored;
 
 import Potrace.General.*;
 
-/**
- * Created by andreydelany on 28.06.17.
- */
 public class ListToTreeTransformation implements ListToTreeTransformationInterface {
-    Path pathList;
-    Bitmap bitmap;
+    private Path pathList;
+    private Bitmap bitmap;
 
     public ListToTreeTransformation(Path pathList, Bitmap bitmap) {
         this.pathList = pathList;
@@ -28,7 +25,7 @@ public class ListToTreeTransformation implements ListToTreeTransformationInterfa
     private void transformPathIntoTree() {
         saveOriginalNextPointerToSiblingComponent();
         findSiblingAndChildrenAndSaveThemIntoNextAndChildrenComponent();
-        copySiblingStructurFromNextToSiblingComponent();
+        copySiblingStructureFromNextToSiblingComponent();
         reconstructNextComponentFromChildrenAndSiblingComponent();
     }
 
@@ -42,7 +39,7 @@ public class ListToTreeTransformation implements ListToTreeTransformationInterfa
         pathList = childrenAndSiblingFinder.getTreeTransformedPathStructure();
     }
 
-    private void copySiblingStructurFromNextToSiblingComponent() {
+    private void copySiblingStructureFromNextToSiblingComponent() {
         PathRestructuring pathRestructuring = new PathRestructuring(pathList);
         pathList = pathRestructuring.copySiblingStructureFromNextToSiblingComponent();
     }

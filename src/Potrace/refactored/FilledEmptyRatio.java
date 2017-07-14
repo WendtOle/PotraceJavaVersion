@@ -2,11 +2,9 @@ package Potrace.refactored;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 13.07.17.
- */
-public class FilledEmptyRatio {
-    BitmapHandlerInterface bitmapHandler;
+
+class FilledEmptyRatio {
+    private BitmapHandlerInterface bitmapHandler;
 
     public boolean isMajority(BitmapHandlerInterface bitmapHandler, Point intersection){
         this.bitmapHandler = bitmapHandler;

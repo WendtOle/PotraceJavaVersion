@@ -7,18 +7,15 @@ import Potrace.General.Path;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 12.07.17.
- */
 public class FindAllPathsOnBitmap {
 
-    Bitmap workCopy;
-    BitmapHandlerInterface bitmapHandler;
-    PathInverter pathInverter;
-    NextFilledPixelFinder nextFilledPixelFinder;
-    Param param;
-    Path pathList = null;
-    Point startPointOfCurrentPath;
+    private Bitmap workCopy;
+    private BitmapHandlerInterface bitmapHandler;
+    private PathInverter pathInverter;
+    private NextFilledPixelFinder nextFilledPixelFinder;
+    private Param param;
+    private Path pathList = null;
+    private Point startPointOfCurrentPath;
 
     public FindAllPathsOnBitmap(Bitmap bitmap, Param param){
         initializeFields(bitmap, param);

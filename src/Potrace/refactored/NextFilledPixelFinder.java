@@ -4,19 +4,14 @@ import Potrace.General.Bitmap;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 02.07.17.
- */
 public class NextFilledPixelFinder {
-    Point currentPixel;
-    boolean noPixelWasFound = false;
-    BitmapHandlerInterface bitmapHandler;
-    Bitmap bitmap;
+    private Point currentPixel;
+    private boolean noPixelWasFound = false;
+    private BitmapHandlerInterface bitmapHandler;
     private Point currentSearchPosition;
 
     public NextFilledPixelFinder(Bitmap bitmap){
         this.bitmapHandler = new BitmapHandler(bitmap);
-        this.bitmap = bitmap;
         currentPixel = new Point(0,bitmap.h-1);
     }
 

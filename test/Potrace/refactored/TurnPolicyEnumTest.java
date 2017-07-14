@@ -9,9 +9,6 @@ import java.awt.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by andreydelany on 04.07.17.
- */
 public class TurnPolicyEnumTest {
     BitmapHandlerInterface bitmapHandlerMinorityIsBlack = new BitmapHandler(new Bitmap(3,3));
     BitmapHandlerInterface bitmapHandlerMajorityIsBlack = new BitmapHandler(new Bitmap(4,4));
@@ -44,37 +41,37 @@ public class TurnPolicyEnumTest {
     }
 
     @Test
-    public void testTurnpolicyMinority() throws Exception {
+    public void testTurnPolicyMinority() throws Exception {
         assertTrue(TurnPolicyEnum.MINORITY.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMinorityIsBlack,new Point(1,1)));
     }
 
     @Test
-    public void testTurnpolicyMajority() throws Exception {
+    public void testTurnPolicyMajority() throws Exception {
         assertFalse(TurnPolicyEnum.MAJORITY.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMinorityIsBlack,new Point(1,1)));
     }
 
     @Test
-    public void testTurnpolicyBlack() throws Exception {
+    public void testTurnPolicyBlack() throws Exception {
         assertTrue(TurnPolicyEnum.BLACK.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMinorityIsBlack,new Point(1,1)));
     }
 
     @Test
-    public void testTurnpolicyWhite() throws Exception {
+    public void testTurnPolicyWhite() throws Exception {
         assertFalse(TurnPolicyEnum.WHITE.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMinorityIsBlack,new Point(1,1)));
     }
 
     @Test
-    public void testTurnpolicyLeft() throws Exception {
+    public void testTurnPolicyLeft() throws Exception {
         assertFalse(TurnPolicyEnum.LEFT.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMinorityIsBlack,new Point(1,1)));
     }
 
     @Test
-    public void testTurnpolicyRight() throws Exception {
+    public void testTurnPolicyRight() throws Exception {
         assertTrue(TurnPolicyEnum.RIGHT.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMinorityIsBlack,new Point(1,1)));
     }
 
     @Test
-    public void testTurnpolicyMajorityWithMajorityIsBlack() throws Exception {
+    public void testTurnPolicyMajorityWithMajorityIsBlack() throws Exception {
         assertTrue(TurnPolicyEnum.MAJORITY.isTurnPolicySatisfied(PathKindEnum.POSITIV, bitmapHandlerMajorityIsBlack,new Point(2,2)));
     }
 }

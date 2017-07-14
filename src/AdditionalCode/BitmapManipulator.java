@@ -3,9 +3,6 @@ package AdditionalCode;
 
 import Potrace.General.Bitmap;
 
-/**
- * Created by andreydelany on 24.06.17.
- */
 public class BitmapManipulator {
 
     private static boolean bm_range(int x, int a) {

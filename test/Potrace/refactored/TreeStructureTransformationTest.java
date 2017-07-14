@@ -9,20 +9,17 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by andreydelany on 13.07.17.
- */
 public class TreeStructureTransformationTest {
     Bitmap bitmap;
     Path pathList;
     @Before
     public void prepare(){
-        BitmapImporter importer = new BitmapImporter("determineHierachyTestPicture.png","testPictures");
+        BitmapImporter importer = new BitmapImporter("determineHierarchyTestPicture.png","testPictures");
         bitmap = importer.getBitmap();
         FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,new Param());
         pathList = findPathsOnBitmap.getPathList();
-        ListToTreeTransformation treeStructurTransformation = new ListToTreeTransformation(pathList,bitmap);
-        pathList = treeStructurTransformation.getTreeStructure();
+        ListToTreeTransformation treeStructureTransformation = new ListToTreeTransformation(pathList,bitmap);
+        pathList = treeStructureTransformation.getTreeStructure();
     }
 
     @Test

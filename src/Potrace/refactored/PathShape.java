@@ -2,14 +2,11 @@ package Potrace.refactored;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 07.07.17.
- */
 public class PathShape {
-    Point[] pointsOfPath = new Point[1];
+    private Point[] pointsOfPath = new Point[1];
     int indexOfCurrentPoint = 0;
-    Point currentPoint;
-    int areaOfPath = 0;
+    private Point currentPoint;
+    private int areaOfPath = 0;
 
     public void addPointToPathShape(Point point) {
         currentPoint = point;

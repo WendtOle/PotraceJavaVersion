@@ -4,9 +4,6 @@ import Potrace.General.*;
 
 import java.awt.*;
 
-/**
- * Created by andreydelany on 08/04/2017.
- */
 public class DrawerBitmap {
         Path path;
         Graphics2D graphics;
