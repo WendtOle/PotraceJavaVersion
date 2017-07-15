@@ -24,18 +24,8 @@ public class DrawerBitmap {
         private void drawPathes(Path startPath){
             Path currentPath = startPath;
             while (currentPath != null) {
-                //drawPath(currentPath);
                 drawPathAsPolygon(currentPath);
                 currentPath = currentPath.next;
-            }
-        }
-
-        private void drawPath(Path path) {
-            Point startPoint = path.priv.pt[path.priv.len - 1];
-            for (int i = 0; i < path.priv.len; i++) {
-                Point currentPoint = path.priv.pt[i];
-                drawLine(startPoint,currentPoint);
-                startPoint = currentPoint;
             }
         }
 
@@ -63,16 +53,6 @@ public class DrawerBitmap {
                 graphics.setColor(transparentWhite);
                 graphics.fillPolygon(xpoints,ypoints,amountOfPoints);
             }
-        }
-
-        private void drawLine(Point startIn, Point endIn){
-            Point start = scalePoint(startIn);
-            Point end = scalePoint(endIn);
-            graphics.drawLine(start.x,start.y,end.x,end.y);
-        };
-
-        private Point scalePoint(Point point){
-            return new Point((int)(point.x * scale), (int)(point.y * scale));
         }
 
         private int scaleCoordinate(int coordinate) {return (int)(coordinate * scale);}

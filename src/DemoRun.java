@@ -9,8 +9,8 @@ import Potrace.General.PotraceLibrary;
 
 public class DemoRun {
     static String jsonBitmapFileName = "04.json";
-    static String bitmapFileName = "pilot.jpg";
-    static String bitMapFileFolder = "benchmarkingPictures";
+    static String bitmapFileName = "12.jpg";
+    static String bitMapFileFolder = "benchMarkingPictures02";
     static Bitmap bitmap;
     static Path path;
 
