@@ -22,6 +22,7 @@ public class CompletePotraceAlgorithm {
     final static int amountOfForks = 10;
     final static int amountOfThreads = 2;
     final static int msPerRound = 500;
+    final static String testBitmapFolder = "benchMarkingPictures02";
 
     @State(Scope.Thread)
     public static class TestData {
@@ -41,7 +42,7 @@ public class CompletePotraceAlgorithm {
 
         @Setup
         public void setBitmap(){
-            BitmapImporter importer = new BitmapImporter("benchmarkingPictures");
+            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
             bitmaps = importer.getAllBitmaps();
 
             setFirstFilledPixel();
@@ -50,7 +51,7 @@ public class CompletePotraceAlgorithm {
         }
 
         private void setFirstFilledPixel(){
-            BitmapImporter importer = new BitmapImporter("benchmarkingPictures");
+            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
             Bitmap[] bitmaps = importer.getAllBitmaps();
             firstFilledPixelsAsPoint = new Point[bitmaps.length];
             firstFilledPixelsAsInt = new int[bitmaps.length][2];
@@ -64,7 +65,7 @@ public class CompletePotraceAlgorithm {
         }
 
         private void setPaths(){
-            BitmapImporter importer = new BitmapImporter("benchmarkingPictures");
+            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
             Bitmap[] bitmaps = importer.getAllBitmaps();
             paths = new Path[bitmaps.length];
             for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
@@ -74,7 +75,7 @@ public class CompletePotraceAlgorithm {
         }
 
         private void setUnstructuredPaths(){
-            BitmapImporter importer = new BitmapImporter("benchmarkingPictures");
+            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
             Bitmap[] bitmaps = importer.getAllBitmaps();
             unstructuredPaths = new Path[bitmaps.length];
             for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
