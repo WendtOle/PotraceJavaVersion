@@ -37,7 +37,7 @@ public class Decompose implements DecompositionInterface{
     /* Auxiliary BitmapManipulator manipulations */
 
     /* set the excess padding to 0 */
-    public static void bm_clearexcess(Bitmap bm) {
+    static void bm_clearexcess(Bitmap bm) {
         long mask;
         int y;
 
@@ -155,7 +155,7 @@ public class Decompose implements DecompositionInterface{
     /* Find the bounding box of a given Path. Path is assumed to be of
     non-zero length. */
 
-    static void setbbox_path(BBox bbox, Path p) {
+    public static void setbbox_path(BBox bbox, Path p) {
         int x, y;
         int k;
 

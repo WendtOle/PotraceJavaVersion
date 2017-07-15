@@ -14,8 +14,8 @@ public class TreeStructureTransformationTest {
     Path pathList;
     @Before
     public void prepare(){
-        BitmapImporter importer = new BitmapImporter("determineHierarchyTestPicture.png","testPictures");
-        bitmap = importer.getBitmap();
+        BitmapImporter importer = new BitmapImporter("testPictures");
+        bitmap = importer.getBitmap("determineHierarchyTestPicture.png");
         FindAllPathsOnBitmap findPathsOnBitmap = new FindAllPathsOnBitmap(bitmap,new Param());
         pathList = findPathsOnBitmap.getPathList();
         ListToTreeTransformation treeStructureTransformation = new ListToTreeTransformation(pathList,bitmap);

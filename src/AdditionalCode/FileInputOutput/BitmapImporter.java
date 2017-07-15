@@ -10,19 +10,39 @@ import java.io.File;
 import java.io.IOException;
 
 public class BitmapImporter {
-    File bitmapFile;
     Bitmap bitmap;
+    String folderName;
 
-    public BitmapImporter(String filename, String folderName) {
-        bitmapFile = new File(System.getProperty("user.dir") + File.separator + folderName + File.separator + filename);
+    public BitmapImporter(String folderName){
+        this.folderName = folderName;
     }
 
-    public Bitmap getBitmap(){
-        BufferedImage image = loadImage();
+    public Bitmap getBitmap(String fileName){
+        File bitmapFile = new File(System.getProperty("user.dir") + File.separator + folderName + File.separator + fileName);
+        BufferedImage image = loadImage(bitmapFile);
         return getAsBitmap(image);
     }
 
-    private BufferedImage loadImage() {
+    public Bitmap[] getAllBitmaps(){
+        File[] bitmapFiles = getAllBitmapFilesForTesting(folderName);
+        Bitmap[] bitmaps = new Bitmap[bitmapFiles.length];
+        for (int bitmapIndex = 0; bitmapIndex < bitmapFiles.length; bitmapIndex ++) {
+            bitmaps[bitmapIndex] = getAsBitmap(loadImage(bitmapFiles[bitmapIndex]));
+        }
+        return bitmaps;
+    }
+
+    private static File[] getAllBitmapFilesForTesting(String folderNameOfTestPictures) {
+        return new File(folderNameOfTestPictures).listFiles((dir, name) -> {
+                    return name.toLowerCase().endsWith(".png") ||
+                            name.toLowerCase().endsWith(".jpg") ||
+                            name.toLowerCase().endsWith(".gif") ||
+                            name.toLowerCase().endsWith(".bmp");
+                }
+        );
+    }
+
+    private BufferedImage loadImage(File bitmapFile) {
         BufferedImage image = null;
         try {
             image = ImageIO.read(bitmapFile);
@@ -45,7 +65,7 @@ public class BitmapImporter {
     }
 
     private void setPixel(BufferedImage image, Point pixel) {
-        if ((image.getRGB(pixel.x, pixel.y) & 0xff) == 0)
+        if ((image.getRGB(pixel.x, pixel.y) & 0xff) < 128)
             BitmapManipulator.BM_PUT(bitmap, pixel.x, image.getHeight() - pixel.y - 1, true);
     }
 }

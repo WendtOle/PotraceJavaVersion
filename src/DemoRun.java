@@ -9,7 +9,7 @@ import Potrace.General.PotraceLibrary;
 
 public class DemoRun {
     static String jsonBitmapFileName = "04.json";
-    static String bitmapFileName = "fox.png";
+    static String bitmapFileName = "pilot.jpg";
     static String bitMapFileFolder = "benchmarkingPictures";
     static Bitmap bitmap;
     static Path path;
@@ -46,7 +46,7 @@ public class DemoRun {
    }
 
     private static void loadBitmapFromPictureFile() {
-        BitmapImporter bitmapImporter = new BitmapImporter(bitmapFileName,bitMapFileFolder);
-        bitmap = bitmapImporter.getBitmap();
+        BitmapImporter bitmapImporter = new BitmapImporter(bitMapFileFolder);
+        bitmap = bitmapImporter.getBitmap(bitmapFileName);
     }
 }

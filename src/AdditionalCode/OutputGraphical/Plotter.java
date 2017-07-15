@@ -29,8 +29,8 @@ public class Plotter {
     };
 
     private void setOptimalScale(Bitmap bitmap) {
-        double scaleWidth = dimensionsOfWindow.width / bitmap.w;
-        double scaleHeight = dimensionsOfWindow.height / bitmap.h;
+        double scaleWidth = (double)dimensionsOfWindow.width / bitmap.w;
+        double scaleHeight = (double)dimensionsOfWindow.height / bitmap.h;
 
         if (scaleHeight < scaleWidth) {
             this.scale = scaleHeight;
