@@ -17,9 +17,9 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class CompletePotraceAlgorithm {
 
-    final static int amountOfWarmUpRounds = 15;
-    final static int amountOfMesuringRounds = 10;
-    final static int amountOfForks = 5;
+    final static int amountOfWarmUpRounds = 20;
+    final static int amountOfMesuringRounds = 15;
+    final static int amountOfForks = 10;
     final static int amountOfThreads = 2;
     final static int msPerRound = 500;
 
