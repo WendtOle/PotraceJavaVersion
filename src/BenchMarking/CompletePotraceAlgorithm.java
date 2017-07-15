@@ -1,4 +1,4 @@
-package Bencharking;
+package BenchMarking;
 
 import AdditionalCode.FileInputOutput.BitmapImporter;
 import Potrace.General.Bitmap;
@@ -17,20 +17,48 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class CompletePotraceAlgorithm {
 
-    final static int amountOfWarmUpRounds = 20;
-    final static int amountOfMesuringRounds = 15;
-    final static int amountOfForks = 10;
+    final static int amountOfWarmUpRounds = 10;
+    final static int amountOfMesuringRounds = 10;
+    final static int amountOfForks = 2;
     final static int amountOfThreads = 2;
     final static int msPerRound = 500;
     final static String testBitmapFolder = "benchMarkingPictures02";
 
     @State(Scope.Thread)
-    public static class TestData {
+    public static class BasicTestData {
+
+        Bitmap[] bitmaps;
+        Param params = new Param();
+
+        @Setup
+        public void setBitmap(){
+            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
+            bitmaps = importer.getAllBitmaps();
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class TestDataForInvertingPathBenchmark {
 
         Bitmap[] bitmaps;
         Path[] paths;
-        Path[] unstructuredPaths;
-        Param params = new Param();
+
+        @Setup
+        public void setBitmap(){
+            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
+            bitmaps = importer.getAllBitmaps();
+            paths = new Path[bitmaps.length];
+            for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
+                Potrace.refactored.Decompose decomposer = new Potrace.refactored.Decompose();
+                paths[bitmapIndex] = decomposer.getPathList(bitmaps[bitmapIndex],new Param());
+            }
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class TestDataForFindingPathBenchmark {
+
+        Bitmap[] bitmaps;
 
         TurnPolicyEnum turnPolicy = TurnPolicyEnum.MINORITY;
         int turnPolicyAsInt = turnPolicy.ordinal();
@@ -44,15 +72,6 @@ public class CompletePotraceAlgorithm {
         public void setBitmap(){
             BitmapImporter importer = new BitmapImporter(testBitmapFolder);
             bitmaps = importer.getAllBitmaps();
-
-            setFirstFilledPixel();
-            setPaths();
-            setUnstructuredPaths();
-        }
-
-        private void setFirstFilledPixel(){
-            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
-            Bitmap[] bitmaps = importer.getAllBitmaps();
             firstFilledPixelsAsPoint = new Point[bitmaps.length];
             firstFilledPixelsAsInt = new int[bitmaps.length][2];
             for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
@@ -63,27 +82,27 @@ public class CompletePotraceAlgorithm {
                 firstFilledPixelsAsInt[bitmapIndex][1] = firstFilledPixel.y + 1;
             }
         }
+    }
 
-        private void setPaths(){
-            BitmapImporter importer = new BitmapImporter(testBitmapFolder);
-            Bitmap[] bitmaps = importer.getAllBitmaps();
-            paths = new Path[bitmaps.length];
-            for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
-                Potrace.refactored.Decompose decomposer = new Potrace.refactored.Decompose();
-                paths[bitmapIndex] = decomposer.getPathList(bitmaps[bitmapIndex],new Param());
-            }
-        }
+    @State(Scope.Thread)
+    public static class TestDataForTreeStructureBenchmark {
 
-        private void setUnstructuredPaths(){
+        Bitmap[] bitmaps;
+        Path[] unstructuredPaths;
+
+        @Setup
+        public void setBitmap(){
             BitmapImporter importer = new BitmapImporter(testBitmapFolder);
-            Bitmap[] bitmaps = importer.getAllBitmaps();
+            bitmaps = importer.getAllBitmaps();
             unstructuredPaths = new Path[bitmaps.length];
             for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
                 FindAllPathsOnBitmap findAllPathsOnBitmap = new FindAllPathsOnBitmap(bitmaps[bitmapIndex],new Param());
                 unstructuredPaths[bitmapIndex] = findAllPathsOnBitmap.getPathList();
             }
         }
+
     }
+
 
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
@@ -92,7 +111,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void completeRefactored(TestData data) throws InterruptedException {
+    public void completeRefactored(BasicTestData data) throws InterruptedException {
         for(Bitmap currentBitmap : data.bitmaps) {
             DecompositionInterface decomposer = new Potrace.refactored.Decompose();
             decomposer.getPathList(currentBitmap,data.params);
@@ -106,7 +125,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void completeOriginal(TestData data) throws InterruptedException {
+    public void completeOriginal(BasicTestData data) throws InterruptedException {
         for(Bitmap currentBitmap : data.bitmaps) {
             DecompositionInterface decomposer = new Potrace.original.Decompose();
             decomposer.getPathList(currentBitmap,data.params);
@@ -120,7 +139,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void findPathRefactored(TestData data) throws InterruptedException {
+    public void findPathRefactored(TestDataForFindingPathBenchmark data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             Bitmap bitmap = data.bitmaps[bitmapIndex];
             Point point = data.firstFilledPixelsAsPoint[bitmapIndex];
@@ -136,7 +155,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void findPathOriginal(TestData data) throws InterruptedException {
+    public void findPathOriginal(TestDataForFindingPathBenchmark data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             Bitmap bitmap = data.bitmaps[bitmapIndex];
             int x0 = data.firstFilledPixelsAsInt[bitmapIndex][0];
@@ -152,7 +171,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void invertPathRefactored(TestData data) throws InterruptedException {
+    public void invertPathRefactored(TestDataForInvertingPathBenchmark data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             PathInverter pathInverter = new PathInverter(data.bitmaps[bitmapIndex]);
             pathInverter.invertPathOnBitmap(data.paths[bitmapIndex]);
@@ -166,7 +185,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void invertPathOriginal(TestData data) throws InterruptedException {
+    public void invertPathOriginal(TestDataForInvertingPathBenchmark data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             Decompose.xor_path(data.bitmaps[bitmapIndex],data.paths[bitmapIndex]);
         }
@@ -179,7 +198,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void findFilledPixelRefactored(NextFilledPixelFinderBenchmark.TestData data) throws InterruptedException {
+    public void findFilledPixelRefactored(BasicTestData data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             NextFilledPixelFinder nextFilledPixelFinder = new NextFilledPixelFinder(data.bitmaps[bitmapIndex]);
             nextFilledPixelFinder.getPositionOfNextFilledPixel();
@@ -193,7 +212,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void findFilledPixelOriginal(NextFilledPixelFinderBenchmark.TestData data) throws InterruptedException {
+    public void findFilledPixelOriginal(BasicTestData data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             Bitmap bitmap = data.bitmaps[bitmapIndex];
             Decompose.findnext(bitmap,new Point(0,bitmap.h-1));
@@ -207,7 +226,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void treeStructureTransformationRefactored(TestData data) throws InterruptedException {
+    public void treeStructureTransformationRefactored(TestDataForTreeStructureBenchmark data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             ListToTreeTransformationInterface transformator = new ListToTreeTransformation(data.unstructuredPaths[bitmapIndex],data.bitmaps[bitmapIndex]);
             transformator.getTreeStructure();
@@ -221,7 +240,7 @@ public class CompletePotraceAlgorithm {
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
-    public void treeStructureTransformationOriginal(TestData data) throws InterruptedException {
+    public void treeStructureTransformationOriginal(TestDataForTreeStructureBenchmark data) throws InterruptedException {
         for (int bitmapIndex = 0; bitmapIndex < data.bitmaps.length; bitmapIndex++) {
             Decompose.pathlist_to_tree(data.unstructuredPaths[bitmapIndex],data.bitmaps[bitmapIndex]);
         }

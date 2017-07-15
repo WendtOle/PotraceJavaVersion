@@ -1,4 +1,4 @@
-package Bencharking;
+package BenchMarking;
 
 import AdditionalCode.FileInputOutput.BitmapImporter;
 import Potrace.General.Bitmap;
