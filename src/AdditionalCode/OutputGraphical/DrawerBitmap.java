@@ -9,11 +9,13 @@ public class DrawerBitmap {
         Graphics2D graphics;
         double scale;
         PlotterOptionsEnum option;
+        int height;
 
-        public DrawerBitmap(Path path, double scale, PlotterOptionsEnum option)  {
+        public DrawerBitmap(Path path, double scale, PlotterOptionsEnum option,int height)  {
             this.path = path;
             this.scale = scale;
             this.option = option;
+            this.height = height;
         }
 
         public void paintComponent(Graphics g){
@@ -36,7 +38,7 @@ public class DrawerBitmap {
             for (int i = 0; i < amountOfPoints; i++) {
                 Point currentPoint = path.priv.pt[i];
                 xpoints[i] = scaleCoordinate(currentPoint.x);
-                ypoints[i] = scaleCoordinate(currentPoint.y);
+                ypoints[i] = height - scaleCoordinate(currentPoint.y);
             }
             Color black;
             if(option == PlotterOptionsEnum.BOTH) {

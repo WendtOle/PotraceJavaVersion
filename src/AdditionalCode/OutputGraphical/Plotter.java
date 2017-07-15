@@ -45,7 +45,7 @@ public class Plotter {
     }
 
     public void plot() {
-        Drawer drawer = new Drawer(option,path,scale);
+        Drawer drawer = new Drawer(option,path,scale, dimensionsOfWindow.height);
         jFrame.add(drawer);
         jFrame.setVisible(true);
     }
