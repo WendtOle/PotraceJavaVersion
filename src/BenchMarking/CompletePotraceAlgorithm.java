@@ -49,7 +49,7 @@ public class CompletePotraceAlgorithm {
             bitmaps = importer.getAllBitmaps();
             paths = new Path[bitmaps.length];
             for (int bitmapIndex = 0; bitmapIndex < bitmaps.length; bitmapIndex++) {
-                Potrace.refactored.Decompose decomposer = new Potrace.refactored.Decompose();
+                Potrace.original.Decompose decomposer = new Potrace.original.Decompose();
                 paths[bitmapIndex] = decomposer.getPathList(bitmaps[bitmapIndex],new Param());
             }
         }
