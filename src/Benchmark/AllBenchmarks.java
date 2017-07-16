@@ -1,4 +1,4 @@
-package BenchMarking;
+package Benchmark;
 
 import AdditionalCode.FileInputOutput.BitmapImporter;
 import Potrace.General.Bitmap;
@@ -15,14 +15,14 @@ import static java.util.concurrent.TimeUnit.MICROSECONDS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
-public class CompletePotraceAlgorithm {
+public class AllBenchmarks {
 
     final static int amountOfWarmUpRounds = 10;
     final static int amountOfMesuringRounds = 10;
     final static int amountOfForks = 2;
     final static int amountOfThreads = 2;
     final static int msPerRound = 500;
-    final static String testBitmapFolder = "benchMarkingPictures02";
+    final static String testBitmapFolder = "src/Benchmark/benchmarkingPictures";
 
     @State(Scope.Thread)
     public static class BasicTestData {

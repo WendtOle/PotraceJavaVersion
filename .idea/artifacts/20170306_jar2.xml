@@ -2,7 +2,7 @@
   <artifact type="jar" name="20170306:jar2">
     <output-path>$PROJECT_DIR$/out/artifacts/20170306_jar2</output-path>
     <root id="archive" name="20170306.jar">
-      <element id="module-output" name="20170306" />
+      <element id="module-output" name="PotraceJavaVersion" />
       <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/plugins/junit/lib/junit-jupiter-api-5.0.0-M4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$APPLICATION_HOME_DIR$/plugins/junit/lib/opentest4j-1.0.0-M2.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$USER_HOME$/Downloads/Jar/json-simple-1.1.1.jar" path-in-jar="/" />
