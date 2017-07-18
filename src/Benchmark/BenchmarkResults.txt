@@ -243,3 +243,67 @@ Benchmark.AllBenchmarks.invertPathOriginal                     avgt  200  232,87
 Benchmark.AllBenchmarks.invertPathRefactored                   avgt  200  301,319 ± 2,721  us/op      1.2939
 Benchmark.AllBenchmarks.treeStructureTransformationOriginal    avgt  200   14,729 ± 0,070  ms/op
 Benchmark.AllBenchmarks.treeStructureTransformationRefactored  avgt  200   17,920 ± 0,031  ms/op      1.2166
+
+
+Final Benchmarks
+
+Macbook Air - 11:36 - 17.07
+
+Benchmark                                                      Mode  Cnt       Score      Error  Units      ErrorRate
+Benchmark.AllBenchmarks.completeOriginal                       avgt  500  168053.586 ± 1222.561  us/op      0.73%
+Benchmark.AllBenchmarks.completeRefactored                     avgt  500    3067.452 ±   69.041  us/op      2.25%   !!!
+Benchmark.AllBenchmarks.findFilledPixelOriginal                avgt  500     127.083 ±    0.875  us/op      0.69%
+Benchmark.AllBenchmarks.findFilledPixelRefactored              avgt  500      62.939 ±    0.607  us/op      0.96%   !!!
+Benchmark.AllBenchmarks.findPathOriginal                       avgt  500    3505.739 ±   25.139  us/op      0.72%
+Benchmark.AllBenchmarks.findPathRefactored                     avgt  500    2510.510 ±   27.665  us/op      1.01%   !!!
+Benchmark.AllBenchmarks.invertPathOriginal                     avgt  500     457.742 ±    8.953  us/op      1.96%   !!!
+Benchmark.AllBenchmarks.invertPathRefactored                   avgt  500     619.538 ±    4.300  us/op      0.69%
+Benchmark.AllBenchmarks.treeStructureTransformationOriginal    avgt  500   25439.420 ±  183.109  us/op      0.54%
+Benchmark.AllBenchmarks.treeStructureTransformationRefactored  avgt  500   31634.945 ±  220.029  us/op      0.06%
+
+Macbook Air - 13:07 - 17.07
+
+Benchmark                                          Mode  Cnt       Score      Error  Units
+Benchmark.AllBenchmarks.completeOriginal           avgt  500  166754.654 ± 1174.217  us/op      0.7%
+Benchmark.AllBenchmarks.completeRefactored         avgt  500    2802.044 ±   66.342  us/op      2.36%   !!!
+Benchmark.AllBenchmarks.findFilledPixelOriginal    avgt  500     125.323 ±    0.867  us/op      0.7%
+Benchmark.AllBenchmarks.findFilledPixelRefactored  avgt  500      62.183 ±    0.562  us/op      0.9%
+Benchmark.AllBenchmarks.findPathOriginal           avgt  500    3460.808 ±   24.711  us/op      0.71%
+Benchmark.AllBenchmarks.findPathRefactored         avgt  500    2512.709 ±   22.532  us/op      0.9%
+Benchmark.AllBenchmarks.invertPathOriginal         avgt  500     443.257 ±    6.252  us/op      1.41%   !!!
+Benchmark.AllBenchmarks.invertPathRefactored       avgt  500     613.432 ±    4.380  us/op      0.71%
+
+Macbook Air - 13:54 - 17.07
+
+Benchmark                                     Mode  Cnt       Score      Error  Units
+Benchmark.AllBenchmarks.completeOriginal      avgt  500  165998.702 ± 1153.988  us/op       0.7%
+Benchmark.AllBenchmarks.completeRefactored    avgt  500    2885.559 ±   61.756  us/op       2.14%
+Benchmark.AllBenchmarks.invertPathOriginal    avgt  500     440.948 ±    5.683  us/op       1.29%
+Benchmark.AllBenchmarks.invertPathRefactored  avgt  500     609.586 ±    5.055  us/op       0.83%
+
+Macbook Air - 14:35 - 17.07
+
+Benchmark.AllBenchmarks.completeOriginal      avgt  500  165586.632 ± 1108.350  us/op       0.67%
+Benchmark.AllBenchmarks.completeRefactored    avgt  500    3049.792 ±   48.805  us/op       1.6%
+Benchmark.AllBenchmarks.invertPathOriginal    avgt  500     445.788 ±    6.704  us/op       1.5%
+Benchmark.AllBenchmarks.invertPathRefactored  avgt  500     544.893 ±   10.388  us/op       1.9%
+
+Macbook Air - 15:25 - 17.07
+
+Benchmark                                     Mode  Cnt       Score      Error  Units
+Benchmark.AllBenchmarks.completeOriginal      avgt  500  166135.730 ± 1126.297  us/op       0.68%
+Benchmark.AllBenchmarks.completeRefactored    avgt  500    3074.674 ±   47.682  us/op       1.16%
+Benchmark.AllBenchmarks.invertPathOriginal    avgt  500     434.484 ±    3.210  us/op       0.73%
+Benchmark.AllBenchmarks.invertPathRefactored  avgt  500     523.094 ±    9.610  us/op       1.84%
+
+Macbook Air - 16:15 - 17.07
+
+Benchmark                                     Mode  Cnt    Score   Error  Units
+Benchmark.AllBenchmarks.invertPathOriginal    avgt  900  476.077 ± 8.086  us/op         1.7%
+Benchmark.AllBenchmarks.invertPathRefactored  avgt  900  615.221 ± 3.361  us/op         0.55%
+
+Macbook Air - 17:00 - 17.07
+
+Benchmark                                     Mode  Cnt    Score   Error  Units
+Benchmark.AllBenchmarks.invertPathOriginal    avgt  900  449.727 ± 5.424  us/op
+Benchmark.AllBenchmarks.invertPathRefactored  avgt  900  613.656 ± 3.225  us/op

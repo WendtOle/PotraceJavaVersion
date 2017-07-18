@@ -1092,7 +1092,7 @@ but then restricted to one of the major wind directions (n, nw, width, etc) */
     }
 
     /* return 0 on success, 1 on error with errno set. */
-    static Path process_path(Path plist, Param param) {
+    public static Path process_path(Path plist, Param param) {
         /* call downstream function with each Path */
 
         for (Path p = plist; p!=null; p=p.next) {

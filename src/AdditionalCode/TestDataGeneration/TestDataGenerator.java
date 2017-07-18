@@ -1,5 +1,6 @@
 package AdditionalCode.TestDataGeneration;
 
+import AdditionalCode.FileInputOutput.BitmapImporter;
 import AdditionalCode.FileInputOutput.JsonDecoder;
 import Potrace.General.Bitmap;
 import org.json.simple.parser.ParseException;
@@ -14,19 +15,27 @@ public class TestDataGenerator {
     static String bitMapFileFolder = "testPictures";
 
     public static void main(String [] args) throws IOException, ParseException {
-        TestDataGenerator testDataGenerator = new TestDataGenerator(dimesionsOfRandomBitmap,noiseRatioOfRandomBitmap,bitMapFileFolder);
-        testDataGenerator.printBitmapInformationToPasteIntoCProgramm();
+        //TestDataGenerator testDataGenerator = new TestDataGenerator(dimesionsOfRandomBitmap,noiseRatioOfRandomBitmap,bitMapFileFolder);
+        //testDataGenerator.printBitmapInformationToPasteIntoCProgram();
+
+        BitmapImporter importer = new BitmapImporter("src/Benchmark/benchmarkingPictures");
+        TestDataGenerator testDataGenerator = new TestDataGenerator(importer.getBitmap("04_writing.jpg"));
+        testDataGenerator.printBitmapInformationToPasteIntoCProgram();
     }
 
     Bitmap bitmap;
 
-    public TestDataGenerator(Dimension dimesionsOfRandomBitmap, double noiseRatio, String folderToSave){
-        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(dimesionsOfRandomBitmap);
+    public TestDataGenerator(Dimension dimensionsOfRandomBitmap, double noiseRatio, String folderToSave){
+        RandomBitmapGenerator bitmapGenerator = new RandomBitmapGenerator(dimensionsOfRandomBitmap);
         this.bitmap = bitmapGenerator.generate(noiseRatio);
         saveBitmapInJsonFile(folderToSave);
     }
 
-    public void printBitmapInformationToPasteIntoCProgramm(){
+    public TestDataGenerator(Bitmap bitmap){
+        this.bitmap = bitmap;
+    }
+
+    public void printBitmapInformationToPasteIntoCProgram(){
         printConstructor();
         printAllPotraceWordsOfBitmap();
     }

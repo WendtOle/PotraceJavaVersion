@@ -17,10 +17,10 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class AllBenchmarks {
 
-    final static int amountOfWarmUpRounds = 10;
-    final static int amountOfMesuringRounds = 10;
-    final static int amountOfForks = 2;
-    final static int amountOfThreads = 2;
+    final static int amountOfWarmUpRounds = 20;
+    final static int amountOfMesuringRounds = 30;
+    final static int amountOfForks = 30;
+    final static int amountOfThreads = 1;
     final static int msPerRound = 500;
     final static String testBitmapFolder = "src/Benchmark/benchmarkingPictures";
 
@@ -106,7 +106,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -120,7 +120,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -134,7 +134,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -150,7 +150,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -166,7 +166,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -180,7 +180,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -221,7 +221,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)
@@ -235,7 +235,7 @@ public class AllBenchmarks {
     @Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
-    @OutputTimeUnit(MILLISECONDS)
+    @OutputTimeUnit(MICROSECONDS)
     @BenchmarkMode(Mode.AverageTime)
     @Fork(amountOfForks)
     @Threads(amountOfThreads)

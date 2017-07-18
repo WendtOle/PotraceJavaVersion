@@ -1,0 +1,9 @@
+Benchmark                                     Mode  Cnt   Score   Error  Units
+Benchmark.BenchmarksForCComparison.logo03     avgt  100   3.960 ± 0.128  ms/op
+    03Logo      average Time after 1000 runs: 7.762324 ms
+Benchmark.BenchmarksForCComparison.picture02  avgt  100  45.941 ± 0.778  ms/op
+    02Picture   average Time after 1000 runs: 50.191917 ms
+Benchmark.BenchmarksForCComparison.sketch01   avgt  100  34.757 ± 0.643  ms/op
+    01Sketch    average Time after 1000 runs: 50.779674 ms
+Benchmark.BenchmarksForCComparison.writing04  avgt  100  95.290 ± 1.909  ms/op
+    04Writing   average Time after 1000 runs: 111.294012 ms 
