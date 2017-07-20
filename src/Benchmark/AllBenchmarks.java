@@ -18,8 +18,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class AllBenchmarks {
 
     final static int amountOfWarmUpRounds = 20;
-    final static int amountOfMesuringRounds = 30;
-    final static int amountOfForks = 30;
+    final static int amountOfMesuringRounds = 20;
+    final static int amountOfForks = 25;
     final static int amountOfThreads = 1;
     final static int msPerRound = 500;
     final static String testBitmapFolder = "src/Benchmark/benchmarkingPictures";

@@ -307,3 +307,17 @@ Macbook Air - 17:00 - 17.07
 Benchmark                                     Mode  Cnt    Score   Error  Units
 Benchmark.AllBenchmarks.invertPathOriginal    avgt  900  449.727 ± 5.424  us/op
 Benchmark.AllBenchmarks.invertPathRefactored  avgt  900  613.656 ± 3.225  us/op
+
+Windows Ryzen - 22:00 - 18.07
+
+Benchmark                                                      Mode  Cnt       Score     Error  Units
+Benchmark.AllBenchmarks.completeOriginal                       avgt  900  101786,790 ? 489,721  us/op	0.48
+Benchmark.AllBenchmarks.completeRefactored                     avgt  900     889,180 ?   1,577  us/op	0.18
+Benchmark.AllBenchmarks.findFilledPixelOriginal                avgt  900      74,790 ?   1,559  us/op	2.08	!!!
+Benchmark.AllBenchmarks.findFilledPixelRefactored              avgt  900      33,852 ?   0,046  us/op	0.14
+Benchmark.AllBenchmarks.findPathOriginal                       avgt  900    1855,149 ?  25,989  us/op	1.4	    !!!
+Benchmark.AllBenchmarks.findPathRefactored                     avgt  900    1446,283 ?   2,590  us/op	0.18
+Benchmark.AllBenchmarks.invertPathOriginal                     avgt  900     243,835 ?   1,720  us/op	0.71
+Benchmark.AllBenchmarks.invertPathRefactored                   avgt  900     343,569 ?   1,271  us/op	0.37
+Benchmark.AllBenchmarks.treeStructureTransformationOriginal    avgt  900   15203,609 ?  47,809  us/op	0.31
+Benchmark.AllBenchmarks.treeStructureTransformationRefactored  avgt  900   19251,631 ?  20,721  us/op	0.11
