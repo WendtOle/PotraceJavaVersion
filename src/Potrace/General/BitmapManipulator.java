@@ -55,8 +55,8 @@ public class BitmapManipulator {
             BM_UPUT(bm, x, y, b);
     }
 
-    /* clear the given BitmapManipulator. Set all bits to c. Assumes a well-formed
-    BitmapManipulator. */
+    /* clear the given Bitmap. Set all bits to c. Assumes a well-formed
+    Bitmap. */
 
     public static Bitmap bm_clear(Bitmap bm, int c) {
         for (int y = 0; y < bm.h; y ++) {

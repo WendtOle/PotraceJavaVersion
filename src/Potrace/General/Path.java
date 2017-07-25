@@ -6,10 +6,10 @@ package Potrace.General;
 import java.awt.*;
 
 public class Path {
-    public int area;                //area of the BitmapManipulator Path
-    public int sign;                //+ or -, depending on orientation
+    public int area;        //area of the Bitmap Path
+    public int sign;        //+ or -, depending on orientation
     public Curve curve;     // this Path vector data
-    public Path next;       //linked Potrace.General.List structure
+    public Path next;       //linked list structure
     public Path childlist;  //tree structure
     public Path sibling;    //tree structure
     public PrivePath priv;  /* private state */

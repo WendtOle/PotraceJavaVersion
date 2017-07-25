@@ -4,9 +4,9 @@ import java.awt.geom.Point2D;
 
 /* a private type for the result of opti_penalty */
 public class Opti {
-    double pen;	                    /*  penalty */
+    double pen;	                                    /*  penalty */
     Point2D.Double[] c = new Point2D.Double[2];     /* Curve parameters */
-    double t, s;	                /* Curve parameters */
+    double t, s;	                                /* Curve parameters */
     double alpha;
 
     public Opti() {

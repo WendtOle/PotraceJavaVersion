@@ -321,3 +321,23 @@ Benchmark.AllBenchmarks.invertPathOriginal                     avgt  900     243
 Benchmark.AllBenchmarks.invertPathRefactored                   avgt  900     343,569 ?   1,271  us/op	0.37
 Benchmark.AllBenchmarks.treeStructureTransformationOriginal    avgt  900   15203,609 ?  47,809  us/op	0.31
 Benchmark.AllBenchmarks.treeStructureTransformationRefactored  avgt  900   19251,631 ?  20,721  us/op	0.11
+
+Windows Ryzen - 15:44 - 20.07
+
+Benchmark                                                      Mode  Cnt       Score      Error  Units
+Benchmark.AllBenchmarks.completeOriginal                       avgt  500  101787,949 ? 1072,122  us/op	0.11
+Benchmark.AllBenchmarks.completeRefactored                     avgt  500     892,949 ?    9,646  us/op	0.11
+Benchmark.AllBenchmarks.findFilledPixelOriginal                avgt  500      72,410 ?    0,090  us/op	0.12
+Benchmark.AllBenchmarks.findFilledPixelRefactored              avgt  500      33,980 ?    0,050  us/op	0.15
+Benchmark.AllBenchmarks.findPathOriginal                       avgt  500    1837,355 ?    2,847  us/op	0.16
+Benchmark.AllBenchmarks.findPathRefactored                     avgt  500    1440,098 ?    3,964  us/op	0.28
+Benchmark.AllBenchmarks.invertPathOriginal                     avgt  500     239,392 ?    2,097  us/op	0.88    !!
+Benchmark.AllBenchmarks.invertPathRefactored                   avgt  500     348,052 ?    3,623  us/op	1.04    !!
+Benchmark.AllBenchmarks.treeStructureTransformationOriginal    avgt  500   15070,723 ?   64,301  us/op	0.43
+Benchmark.AllBenchmarks.treeStructureTransformationRefactored  avgt  500   19108,317 ?   19,396  us/op	0.1
+
+Windows Ryzen - 15:45 - 20.07
+
+Benchmark                                     Mode  Cnt    Score   Error  Units
+Benchmark.AllBenchmarks.invertPathOriginal    avgt  500  239,411 ? 1,753  us/op	0.73
+Benchmark.AllBenchmarks.invertPathRefactored  avgt  500  344,943 ? 0,553  us/op	0.15

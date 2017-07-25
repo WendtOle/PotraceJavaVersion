@@ -34,7 +34,7 @@ public class Decompose implements DecompositionInterface{
 
 
     /* ---------------------------------------------------------------------- */
-    /* Auxiliary BitmapManipulator manipulations */
+    /* Auxiliary Bitmap manipulations */
 
     /* set the excess padding to 0 */
     static void bm_clearexcess(Bitmap bm) {
@@ -50,7 +50,7 @@ public class Decompose implements DecompositionInterface{
     }
 
     /* clear the bm, assuming the bounding box is set correctly (faster
-    than clearing the whole BitmapManipulator) */
+    than clearing the whole Bitmap) */
 
     static void clear_bm_with_bbox(Bitmap bm, BBox bbox) {
         int imin = (bbox.x0 / Bitmap.PIXELINWORD);
@@ -67,8 +67,8 @@ public class Decompose implements DecompositionInterface{
     /* ---------------------------------------------------------------------- */
     /* Auxiliary functions */
 
-    /* return the "majority" value of BitmapManipulator bm at intersection (x,y). We
-    assume that the BitmapManipulator is balanced at "radius" 1.  */
+    /* return the "majority" value of Bitmap bm at intersection (x,y). We
+    assume that the Bitmap is balanced at "radius" 1.  */
 
     static boolean majority(Bitmap bm, int x, int y) {
         int i, a, ct;
@@ -270,21 +270,21 @@ public class Decompose implements DecompositionInterface{
         return p;
     }
 
-    /* Give a tree structure to the given Path Potrace.General.List, based on "insideness"
-    testing. I.e., Path A is considered "below" Path B if it is inside
-    Path B. The input pathlist is assumed to be ordered so that "outer"
-    paths occur before "inner" paths. The tree structure is stored in
-    the "childlist" and "sibling" components of the path_t
-    structure. The linked Potrace.General.List structure is also changed so that
-    negative Path components are listed immediately after their
-    positive parent.  Note: some backends may ignore the tree
-    structure, others may use it e.g. to group Path components. We
-    assume that in the input, point 0 of each Path is an "upper left"
-    corner of the Path, as returned by decomposeBitmapIntoPathlist. This makes it
-    easy to find an "interior" point. The bm argument should be a
-    BitmapManipulator of the correct size (large enough to hold all the paths),
-    and will be used as scratch space. Return 0 on success or -1 on
-    error with errno set. */
+    /* Give a tree structure to the given path list, based on "insideness"
+   testing. I.e., path A is considered "below" path B if it is inside
+   path B. The input pathlist is assumed to be ordered so that "outer"
+   paths occur before "inner" paths. The tree structure is stored in
+   the "childlist" and "sibling" components of the path_t
+   structure. The linked list structure is also changed so that
+   negative path components are listed immediately after their
+   positive parent.  Note: some backends may ignore the tree
+   structure, others may use it e.g. to group path components. We
+   assume that in the input, point 0 of each path is an "upper left"
+   corner of the path, as returned by bm_to_pathlist. This makes it
+   easy to find an "interior" point. The bm argument should be a
+   bitmap of the correct size (large enough to hold all the paths),
+   and will be used as scratch space. Return 0 on success or -1 on
+   error with errno set. */
 
     public static void pathlist_to_tree(Path plist, Bitmap bm) {
         Path p = new Path();
@@ -299,7 +299,7 @@ public class Decompose implements DecompositionInterface{
 
         bm = BitmapManipulator.bm_clear(bm, 0);
 
-        // save Potrace.original "next" pointers
+        // save original "next" pointers
 
         for (p = plist; p != null; p = p.next) {
             p.sibling = p.next;
@@ -309,20 +309,20 @@ public class Decompose implements DecompositionInterface{
 
         heap = plist;
 
-        /* the heap holds a Potrace.General.List of lists of paths. Use "childlist" field
-        for outer Potrace.General.List, "next" field for inner Potrace.General.List. Each of the sublists
+        /* the heap holds a list of lists of paths. Use "childlist" field
+        for outer list, "next" field for inner list. Each of the sublists
         is to be turned into a tree. This code is messy, but it is
-        actually fast. Each Path is rendered exactly once. We use the
-        heap to get a tail recursive algorithm: the heap holds a Potrace.General.List of
+        actually fast. Each path is rendered exactly once. We use the
+        heap to get a tail recursive algorithm: the heap holds a list of
         pathlists which still need to be transformed. */
 
         while (heap != null) {
-            // seperateNextPathes first sublist
+            // unlink first sublist
             cur = heap;
             heap = heap.childlist;
             cur.childlist = null;
 
-            // seperateNextPathes first Path
+            // unlink first Path
             head = cur;
             cur = cur.next;
             head.next = null;
@@ -344,9 +344,7 @@ public class Decompose implements DecompositionInterface{
 
                 if (p.priv.pt[0].y <= bbox.y0) {
                     head.next = List.elementInsertAtTheLastNextOfList(p,head.next);
-	                // append the remainder of the Potrace.General.List to hook_out
                     head.next = List.listInsertAtTheLastNextOfList(cur,head.next);
-                    //head.next = List.insertListAtTheEndOfList(cur,head.next);
 
                     break;
 
@@ -386,29 +384,28 @@ public class Decompose implements DecompositionInterface{
             p = p1;
         }
 
-        // reconstruct a new linked Potrace.General.List ("next") structure from tree
-        // ("childlist", "sibling") structure. This code is slightly messy,
-        // because we use a heap to make it tail recursive: the heap
-        // contains a Potrace.General.List of childlists which still need to be
-        // processed.
+        /* reconstruct a new linked list ("next") structure from tree
+        ("childlist", "sibling") structure. This code is slightly messy,
+        because we use a heap to make it tail recursive: the heap
+        contains a list of childlists which still need to be
+        processed. */
         heap = plist;
         if (heap != null) {
-            heap.next = null;  // heap is a linked Potrace.General.List of childlists
+            heap.next = null;  /* heap is a linked list of childlists */
         }
         plist = null;
         while (heap != null) {
             heap1 = heap.next;
             for (p=heap; p != null; p=p.sibling) {
-                // p is a positive Path
-                // append to linked Potrace.General.List
+                /* p is a positive path */
+                /* append to linked list */
                 plist = List.elementInsertAtTheLastNextOfList(p, plist);
 
-                // go through its children
+                /* go through its children */
                 for (p1=p.childlist; p1 != null; p1=p1.sibling) {
-	                // append to linked Potrace.General.List
+	                /* append to linked list */
                     plist = List.elementInsertAtTheLastNextOfList(p1, plist);
-	                // append its childlist to heap, if non-empty
-
+	                /* append its childlist to heap, if non-empty */
                     if (p1.childlist != null) {
                         heap1 = List.elementInsertAtTheLastNextOfList(p1.childlist,heap1);
                     }
@@ -448,18 +445,17 @@ public class Decompose implements DecompositionInterface{
         return false;
     }
 
-    /* Decompose the given BitmapManipulator into paths. Returns a linked List of
-    path_t objects with the fields len, pt, area, sign filled
-    in. Returns 0 on success with plistp set, or -1 on error with errno
-    set. */
+    /* Decompose the given bitmap into paths. Returns a linked list of
+   path_t objects with the fields len, pt, area, sign filled
+   in. Returns 0 on success with plistp set, or -1 on error with errno
+   set. */
 
     public static Path bm_to_pathlist(Bitmap bm, Param param) {
         int x;
         int y;
         Path p;
         Path plist = null;
-        //Potrace.original.potrace.Path plist_hook = null;  // used to speed up appending to linked Potrace.General.List
-        Bitmap bm1 = bm.bm_dup();
+        Bitmap bm1;
         int sign;
 
         bm1 = bm.bm_dup();
@@ -473,8 +469,7 @@ public class Decompose implements DecompositionInterface{
         y = bm1.h - 1;
         Point xy = new Point(x,y);
         while ((findnext(bm1,xy))) {
-            // calculate the sign by looking at the Potrace.original BitmapManipulator, bm1 wird immer wieder invertiert nachdem ein pfad entfernt wurde.
-            // mit dem nachgucken nach dem sign in der Potrace.original BitmapManipulator bekommt einen eindruck darüber ob es ein wirklicher pfad ist oder nur der ausschnitt von einen pfad, also das innnere
+            /* calculate the sign by looking at the original */
             sign = BitmapManipulator.BM_GET(bm,xy.x, xy.y) ? '+' : '-';
 
             // calculate the Path
@@ -483,10 +478,8 @@ public class Decompose implements DecompositionInterface{
             // update buffered image
             xor_path(bm1, p);
 
-            // if it' a turd, eliminate it, else append it to the Potrace.General.List
+            /* if it's a turd, eliminate it, else append it to the list */
             if (p.area > param.turdsize) {
-
-                //TODO Originally it was made with a plist_hook, with which it was easier and faster to append a element at the end of the linkedlist
                 plist = List.elementInsertAtTheLastNextOfList(p,plist);
             }
         }

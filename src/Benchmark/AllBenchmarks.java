@@ -103,7 +103,7 @@ public class AllBenchmarks {
     }
 
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -117,7 +117,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -131,7 +131,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -147,7 +147,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -190,7 +190,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -204,7 +204,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -218,7 +218,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
@@ -232,7 +232,7 @@ public class AllBenchmarks {
         }
     }
 
-    @Benchmark
+    //@Benchmark
     @Warmup(iterations = amountOfWarmUpRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @Measurement(iterations = amountOfMesuringRounds, time = msPerRound, timeUnit = MILLISECONDS)
     @OutputTimeUnit(MICROSECONDS)
